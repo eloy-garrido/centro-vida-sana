@@ -4,7 +4,7 @@
 
 .pathologies {
     padding: 120px 0 100px 0;
-    background-image: url('../pix/fondo patología.png');
+    background-image: url('../pix/fondo-pato.png');
     background-size: cover;
     background-position: center;
     background-repeat: no-repeat;
@@ -44,66 +44,191 @@
 
 .pathologies-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-    gap: 25px;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 30px;
 }
 
 .pathology-item {
-    background: rgba(255, 255, 255, 0.15);
-    backdrop-filter: blur(10px);
-    -webkit-backdrop-filter: blur(10px);
-    border-radius: 20px;
-    padding: 30px 25px;
-    transition: all 0.6s cubic-bezier(0.25, 0.46, 0.45, 0.94);
-    border: 1px solid rgba(255, 255, 255, 0.3);
+    background: white;
+    border-radius: 24px;
+    padding: 35px 30px;
+    transition: all 0.5s cubic-bezier(0.34, 1.56, 0.64, 1);
     position: relative;
     overflow: hidden;
-    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+    cursor: pointer;
+    border: 2px solid rgba(0, 114, 49, 0.1);
+    box-shadow: 0 8px 30px rgba(0, 0, 0, 0.08);
+    min-height: 200px;
+    display: flex;
+    flex-direction: column;
 }
 
+/* Gradiente de acento verde en la parte superior */
 .pathology-item::before {
     content: '';
     position: absolute;
     top: 0;
     left: 0;
-    width: 100%;
-    height: 100%;
-    background: linear-gradient(135deg, rgba(255, 255, 255, 0.2), transparent);
-    opacity: 0;
-    transition: opacity 0.6s cubic-bezier(0.25, 0.46, 0.45, 0.94);
-}
-
-.pathology-item:hover::before {
+    right: 0;
+    height: 5px;
+    background: linear-gradient(90deg, var(--primary-green), var(--dark-green), #5cb85c);
+    border-radius: 24px 24px 0 0;
+    transition: all 0.4s ease;
     opacity: 1;
 }
 
-.pathology-item:hover {
-    transform: translateY(-8px);
-    box-shadow: 0 20px 50px rgba(0, 0, 0, 0.15);
-    border-color: rgba(255, 255, 255, 0.5);
-    background: rgba(255, 255, 255, 0.25);
+.pathology-item:hover::before {
+    height: 5px;
+    box-shadow: 0 0 20px rgba(0, 114, 49, 0.4);
 }
 
-.pathology-number {
-    font-size: 48px;
-    font-weight: 800;
-    color: rgba(255, 255, 255, 0.7);
-    line-height: 1;
-    margin-bottom: 15px;
+/* Efecto de resplandor en hover */
+.pathology-item::after {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 0;
+    height: 0;
+    border-radius: 50%;
+    background: radial-gradient(circle, rgba(0, 114, 49, 0.15), transparent 70%);
+    transform: translate(-50%, -50%);
+    transition: width 0.6s ease, height 0.6s ease;
+    pointer-events: none;
+}
+
+.pathology-item:hover::after {
+    width: 500px;
+    height: 500px;
+}
+
+.pathology-item:hover {
+    transform: translateY(-12px);
+    box-shadow: 0 20px 50px rgba(0, 114, 49, 0.2);
+    border-color: var(--primary-green);
+}
+
+/* Contenedor del contenido */
+.pathology-content {
     position: relative;
-    text-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+    z-index: 2;
+    margin-bottom: 18px;
+    flex-shrink: 0;
+}
+
+/* Icono de la patología */
+.pathology-icon {
+    width: 70px;
+    height: 70px;
+    background: linear-gradient(135deg, var(--primary-green), var(--dark-green));
+    border-radius: 18px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 0;
+    box-shadow: 0 8px 25px rgba(0, 114, 49, 0.25);
+    transition: all 0.5s cubic-bezier(0.34, 1.56, 0.64, 1);
+    position: relative;
+}
+
+/* Anillo decorativo alrededor del icono */
+.pathology-icon::before {
+    content: '';
+    position: absolute;
+    width: 110%;
+    height: 110%;
+    border-radius: 20px;
+    border: 3px solid rgba(0, 114, 49, 0.3);
+    opacity: 0;
+    transform: scale(0.8);
+    transition: all 0.5s ease;
+}
+
+.pathology-item:hover .pathology-icon::before {
+    opacity: 1;
+    transform: scale(1.15);
+}
+
+.pathology-item:hover .pathology-icon {
+    transform: translateY(-8px) rotate(-5deg) scale(1.1);
+    box-shadow: 0 15px 40px rgba(0, 114, 49, 0.35);
+}
+
+.pathology-icon svg {
+    width: 36px;
+    height: 36px;
+    color: white;
+    filter: drop-shadow(0 2px 8px rgba(0, 0, 0, 0.3));
+    transition: transform 0.5s ease;
+}
+
+.pathology-item:hover .pathology-icon svg {
+    transform: scale(1.2);
+}
+
+/* Información de la patología */
+.pathology-info {
+    position: relative;
+    z-index: 2;
+    flex: 1;
+    display: flex;
+    flex-direction: column;
 }
 
 .pathology-item h4 {
-    font-size: 20px;
+    font-size: 21px;
     font-weight: 700;
-    color: white;
-    margin-bottom: 10px;
-    text-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    color: var(--text-dark);
+    margin: 0 0 12px 0;
+    line-height: 1.3;
+    transition: all 0.4s ease;
+}
+
+.pathology-item:hover h4 {
+    color: var(--dark-green);
+    transform: translateX(3px);
 }
 
 .pathology-item p {
-    font-size: 14px;
-    color: rgba(255, 255, 255, 0.9);
-    line-height: 1.5;
+    font-size: 15px;
+    color: #5a7363;
+    line-height: 1.7;
+    margin: 0;
+    font-weight: 400;
+    transition: all 0.4s ease;
+}
+
+.pathology-item:hover p {
+    transform: translateX(3px);
+    color: var(--dark-green);
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+    .pathologies-grid {
+        grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+        gap: 25px;
+    }
+
+    .pathology-item {
+        padding: 30px 25px;
+    }
+
+    .pathology-icon {
+        width: 60px;
+        height: 60px;
+    }
+
+    .pathology-icon svg {
+        width: 30px;
+        height: 30px;
+    }
+
+    .pathology-item h4 {
+        font-size: 20px;
+    }
+
+    .pathology-item p {
+        font-size: 14px;
+    }
 }
