@@ -774,7 +774,7 @@ body {
    ============================================ */
 
 .pathologies {
-    padding: 100px 0;
+    padding: 120px 0 100px 0;
     background-image: url('fondo patología.png');
     background-size: cover;
     background-position: center;
@@ -782,12 +782,24 @@ body {
     position: relative;
     z-index: 1;
 }
+
+.pathologies .section-header {
+    position: relative;
+    z-index: 2;
+    margin-bottom: 80px;
+}
 #pato {
-    padding-top: 50px;
+    padding-top: 80px;
     color: white;
+    text-shadow: 0 4px 12px rgba(0, 0, 0, 0.5), 0 2px 4px rgba(0, 0, 0, 0.7);
+    position: relative;
+    z-index: 2;
 }
 #pato-desc {
     color: white;
+    text-shadow: 0 2px 8px rgba(0, 0, 0, 0.5), 0 1px 3px rgba(0, 0, 0, 0.7);
+    position: relative;
+    z-index: 2;
 }
 
 
@@ -1146,6 +1158,21 @@ body {
    RESPONSIVE DESIGN
    ============================================ */
 
+@media (min-width: 1400px) {
+    .pathologies {
+        padding: 150px 0 120px 0;
+    }
+
+    #pato {
+        padding-top: 100px;
+        margin-bottom: 20px;
+    }
+
+    .pathologies .section-header {
+        margin-bottom: 100px;
+    }
+}
+
 @media (max-width: 992px) {
     .contact-content {
         grid-template-columns: 1fr;
@@ -1250,6 +1277,15 @@ body {
         grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
     }
 
+    #pato {
+        padding-top: 30px;
+        font-size: clamp(28px, 7vw, 40px);
+    }
+
+    #pato-desc {
+        font-size: 16px;
+    }
+
     .action-buttons {
         flex-direction: column;
     }
@@ -1311,6 +1347,20 @@ body {
 
     .pathology-item {
         padding: 25px 20px;
+    }
+
+    #pato {
+        padding-top: 20px;
+        font-size: clamp(24px, 8vw, 36px);
+        margin-bottom: 10px;
+    }
+
+    #pato-desc {
+        font-size: 14px;
+    }
+
+    .pathologies {
+        padding: 80px 0 60px 0;
     }
 
     .yinyang-decoration-large {
