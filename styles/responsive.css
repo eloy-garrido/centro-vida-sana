@@ -69,6 +69,11 @@
         padding: 15px 20px;
     }
 
+    /* Fondo hero responsive en tablets */
+    .hero-top-decoration {
+        height: 200px;
+    }
+
     .logo-background-decoration {
         width: 600px;
         height: 600px;
@@ -183,6 +188,11 @@
 
 /* Mobile Phones */
 @media (max-width: 480px) {
+    /* Fondo hero responsive en móviles */
+    .hero-top-decoration {
+        height: 150px;
+    }
+
     .logo-background-decoration {
         width: 450px;
         height: 450px;
