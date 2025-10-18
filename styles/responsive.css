@@ -1,0 +1,267 @@
+/* ============================================
+   RESPONSIVE DESIGN - Media Queries
+   ============================================ */
+
+/* Extra Large Screens */
+@media (min-width: 1400px) {
+    .pathologies {
+        padding: 150px 0 120px 0;
+    }
+
+    #pato {
+        padding-top: 100px;
+        margin-bottom: 20px;
+    }
+
+    .pathologies .section-header {
+        margin-bottom: 100px;
+    }
+}
+
+/* Large Screens */
+@media (max-width: 992px) {
+    .contact-content {
+        grid-template-columns: 1fr;
+    }
+
+    .yinyang-decoration-large {
+        margin: 0 auto;
+    }
+}
+
+/* Tablets */
+@media (max-width: 768px) {
+    .nav-toggle {
+        display: flex;
+    }
+
+    .nav-menu {
+        position: fixed;
+        top: 70px;
+        left: 0;
+        right: 0;
+        background: rgba(255, 255, 255, 0.98);
+        backdrop-filter: blur(10px);
+        flex-direction: column;
+        gap: 0;
+        padding: 20px;
+        box-shadow: 0 10px 30px rgba(122, 152, 114, 0.2);
+        transform: translateY(-100%);
+        opacity: 0;
+        pointer-events: none;
+        transition: all 0.3s ease;
+    }
+
+    .nav-menu.active {
+        transform: translateY(0);
+        opacity: 1;
+        pointer-events: all;
+    }
+
+    .nav-menu li {
+        width: 100%;
+    }
+
+    .nav-link {
+        display: block;
+        width: 100%;
+        text-align: center;
+        padding: 15px 20px;
+    }
+
+    .logo-background-decoration {
+        width: 600px;
+        height: 600px;
+        right: -250px;
+        opacity: 0.03;
+    }
+
+    .logo-container-hero {
+        width: 150px;
+        height: 150px;
+        padding: 20px;
+    }
+
+    .professionals,
+    .services,
+    .pathologies,
+    .contact {
+        padding: 60px 0;
+    }
+
+    .professionals-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .professional-card {
+        padding: 25px;
+    }
+
+    .hero-actions {
+        flex-direction: column;
+        align-items: center;
+    }
+
+    .btn {
+        width: 100%;
+        max-width: 300px;
+    }
+
+    .contact-cards {
+        grid-template-columns: 1fr;
+    }
+
+    .service-card {
+        white-space: normal;
+    }
+
+    .service-title {
+        white-space: normal;
+        text-align: center;
+    }
+
+    .pathologies-grid {
+        grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    }
+
+    .pathology-item {
+        background: rgba(255, 255, 255, 0.4);
+        backdrop-filter: blur(15px);
+        -webkit-backdrop-filter: blur(15px);
+        border: 2px solid rgba(255, 255, 255, 0.5);
+        box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+    }
+
+    .pathology-item h4 {
+        font-size: 19px;
+        font-weight: 800;
+        text-shadow: 0 3px 10px rgba(0, 0, 0, 0.7), 0 1px 5px rgba(0, 0, 0, 0.8), 0 0 20px rgba(0, 0, 0, 0.4);
+    }
+
+    .pathology-item p {
+        font-size: 14px;
+        font-weight: 600;
+        color: white;
+        text-shadow: 0 2px 8px rgba(0, 0, 0, 0.7), 0 1px 4px rgba(0, 0, 0, 0.8), 0 0 15px rgba(0, 0, 0, 0.4);
+    }
+
+    .pathology-number {
+        font-size: 44px;
+        font-weight: 900;
+        color: rgba(255, 255, 255, 0.85);
+        text-shadow: 0 4px 12px rgba(0, 0, 0, 0.7), 0 2px 5px rgba(0, 0, 0, 0.8), 0 0 20px rgba(0, 0, 0, 0.4);
+    }
+
+    #pato {
+        padding-top: 30px;
+        font-size: clamp(28px, 7vw, 40px);
+    }
+
+    #pato-desc {
+        font-size: 16px;
+    }
+
+    .action-buttons {
+        flex-direction: column;
+    }
+
+    .action-btn {
+        width: 100%;
+    }
+}
+
+/* Mobile Phones */
+@media (max-width: 480px) {
+    .logo-background-decoration {
+        width: 450px;
+        height: 450px;
+        right: -200px;
+        opacity: 0.02;
+    }
+
+    .hero::after {
+        height: 100px;
+    }
+
+    .hero {
+        min-height: auto;
+        padding: 80px 0;
+    }
+
+    .logo-container-hero {
+        width: 130px;
+        height: 130px;
+        padding: 18px;
+    }
+
+    .logo-footer {
+        width: 50px;
+        height: 50px;
+    }
+
+    .contact-card {
+        padding: 20px;
+    }
+
+    .service-card {
+        padding: 12px 20px;
+    }
+
+    .service-icon {
+        width: 35px;
+        height: 35px;
+    }
+
+    .service-icon svg {
+        width: 18px;
+        height: 18px;
+    }
+
+    .service-title {
+        font-size: 14px;
+    }
+
+    .pathology-item {
+        padding: 25px 20px;
+        background: rgba(255, 255, 255, 0.45);
+        border: 2px solid rgba(255, 255, 255, 0.6);
+        box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4);
+    }
+
+    .pathology-item h4 {
+        font-size: 19px;
+        font-weight: 800;
+        text-shadow: 0 3px 12px rgba(0, 0, 0, 0.8), 0 1px 5px rgba(0, 0, 0, 0.9), 0 0 20px rgba(0, 0, 0, 0.5);
+    }
+
+    .pathology-item p {
+        font-size: 15px;
+        font-weight: 600;
+        text-shadow: 0 2px 10px rgba(0, 0, 0, 0.8), 0 1px 5px rgba(0, 0, 0, 0.9), 0 0 15px rgba(0, 0, 0, 0.5);
+    }
+
+    .pathology-number {
+        font-size: 42px;
+        font-weight: 900;
+        text-shadow: 0 4px 15px rgba(0, 0, 0, 0.8), 0 2px 6px rgba(0, 0, 0, 0.9), 0 0 20px rgba(0, 0, 0, 0.5);
+    }
+
+    #pato {
+        padding-top: 20px;
+        font-size: clamp(24px, 8vw, 36px);
+        margin-bottom: 10px;
+    }
+
+    #pato-desc {
+        font-size: 14px;
+    }
+
+    .pathologies {
+        padding: 80px 0 60px 0;
+    }
+
+    .yinyang-decoration-large {
+        width: 200px;
+        height: 200px;
+    }
+}

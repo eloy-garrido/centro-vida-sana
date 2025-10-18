@@ -1,0 +1,122 @@
+/* ============================================
+   SERVICES SECTION - Sección de Servicios
+   ============================================ */
+
+.services {
+    background: #c9e5d4;
+    position: relative;
+}
+
+.services svg#wave {
+    display: block;
+    width: 100%;
+    height: auto;
+    position: absolute;
+    bottom: 0;
+    left: 0;
+}
+
+.services-grid {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 15px;
+    justify-content: center;
+    max-width: 900px;
+    margin: 0 auto;
+}
+
+.service-card {
+    background: white;
+    border-radius: 50px;
+    padding: 15px 30px;
+    transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+    border: 2px solid var(--light-green);
+    position: relative;
+    overflow: hidden;
+    box-shadow: 0 4px 15px rgba(0, 114, 49, 0.1);
+    display: inline-flex;
+    align-items: center;
+    gap: 12px;
+    cursor: pointer;
+    text-decoration: none;
+}
+
+.service-card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: linear-gradient(135deg, var(--light-green), var(--primary-green));
+    opacity: 0;
+    transition: opacity 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+    z-index: 0;
+}
+
+.service-card:hover::before {
+    opacity: 0.15;
+}
+
+.service-card:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 8px 25px rgba(0, 114, 49, 0.2);
+    border-color: var(--primary-green);
+}
+
+.service-icon {
+    width: 40px;
+    height: 40px;
+    background: linear-gradient(135deg, var(--primary-green), var(--dark-green));
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+    flex-shrink: 0;
+    position: relative;
+    z-index: 1;
+}
+
+.service-card:hover .service-icon {
+    transform: rotate(360deg) scale(1.1);
+}
+
+.service-icon svg {
+    width: 20px;
+    height: 20px;
+    color: white;
+}
+
+.service-title {
+    font-size: 16px;
+    font-weight: 600;
+    color: var(--text-dark);
+    white-space: nowrap;
+    position: relative;
+    z-index: 1;
+}
+
+.service-description {
+    display: none;
+}
+
+.service-benefits {
+    display: none;
+}
+
+/* Shine effect for service cards */
+.service-card::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 50%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.4), transparent);
+    transition: left 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.service-card:hover::after {
+    animation: shine 0.8s;
+}

@@ -1,0 +1,128 @@
+/* ============================================
+   MAIN STYLES - Variables y Estilos Generales
+   ============================================ */
+
+/* Reset Global */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+/* Variables CSS */
+:root {
+    --primary-green: #a8c5a0;
+    --light-green: #c9d9c3;
+    --dark-green: #7a9872;
+    --accent-green: #8fb185;
+    --text-dark: #2d3e2d;
+    --text-light: #f5f5f0;
+    --bg-light: #f8faf8;
+    --shadow: rgba(122, 152, 114, 0.15);
+    --shadow-hover: rgba(122, 152, 114, 0.25);
+}
+
+/* Configuración Base */
+html {
+    scroll-behavior: smooth;
+}
+
+body {
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu', 'Cantarell', sans-serif;
+    color: var(--text-dark);
+    line-height: 1.6;
+    overflow-x: hidden;
+}
+
+/* Contenedor General */
+.container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 20px;
+}
+
+/* Encabezados de Sección */
+.section-header {
+    text-align: center;
+    margin-bottom: 60px;
+}
+
+.section-title {
+    font-size: clamp(32px, 5vw, 48px);
+    font-weight: 700;
+    color: var(--text-dark);
+    margin-bottom: 15px;
+}
+
+.section-description {
+    font-size: 18px;
+    color: var(--accent-green);
+}
+
+/* Botones Generales */
+.btn {
+    padding: 16px 40px;
+    font-size: 18px;
+    font-weight: 600;
+    border-radius: 50px;
+    text-decoration: none;
+    transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+    position: relative;
+    overflow: hidden;
+}
+
+.btn::before {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 0;
+    height: 0;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.3);
+    transform: translate(-50%, -50%);
+    transition: width 0.6s cubic-bezier(0.4, 0, 0.2, 1), height 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.btn:hover::before {
+    width: 300px;
+    height: 300px;
+}
+
+.btn-primary {
+    background: linear-gradient(135deg, var(--dark-green), var(--primary-green));
+    color: white;
+    box-shadow: 0 10px 30px var(--shadow);
+}
+
+.btn-primary:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 15px 40px var(--shadow-hover);
+}
+
+.btn-secondary {
+    background: white;
+    color: var(--dark-green);
+    border: 2px solid var(--primary-green);
+    box-shadow: 0 5px 20px var(--shadow);
+}
+
+.btn-secondary:hover {
+    background: var(--light-green);
+    transform: translateY(-3px);
+    box-shadow: 0 15px 40px var(--shadow-hover);
+}
+
+/* Notificaciones */
+.notification {
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    background: var(--primary-green);
+    color: white;
+    padding: 15px 25px;
+    border-radius: 15px;
+    box-shadow: 0 10px 30px var(--shadow-hover);
+    z-index: 10000;
+    animation: slideInRight 0.4s ease-out;
+}

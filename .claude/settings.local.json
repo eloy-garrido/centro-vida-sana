@@ -1,0 +1,12 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(mkdir:*)",
+      "Bash(findstr:*)",
+      "Bash(move \"logo-sin-texto.png\" \"pix\"\" && move \"pasto.png\" \"pix\"\")",
+      "Bash(move \"yinyang.png\" \"pix\"\" && move \"fondo patología.png\" \"pix\"\")"
+    ],
+    "deny": [],
+    "ask": []
+  }
+}
