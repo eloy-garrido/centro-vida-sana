@@ -53,8 +53,8 @@
     width: 200px;
     height: 200px;
     border-radius: 50%;
-    opacity: 0.1;
-    filter: blur(40px);
+    opacity: 0.3;
+    filter: blur(20px);
     z-index: 2;
 }
 
