@@ -162,11 +162,22 @@
     }
 
     .action-buttons {
-        flex-direction: column;
+        flex-direction: row;
+        align-items: center;
+        justify-content: flex-start;
     }
 
     .action-btn {
-        width: 100%;
+        width: auto;
+        flex: 0 0 auto;
+    }
+
+    .action-btn.share {
+        flex-shrink: 0;
+    }
+
+    .contact {
+        margin-top: -150px;
     }
 }
 
@@ -263,5 +274,27 @@
     .yinyang-decoration-large {
         width: 200px;
         height: 200px;
+    }
+
+    .contact {
+        margin-top: -110px;
+        background: linear-gradient(0deg, rgb(99 194 142) 90%, rgba(1, 82, 83, 0) 100%);
+    }
+
+    .action-buttons {
+        flex-direction: row;
+        align-items: center;
+        justify-content: flex-start;
+        flex-wrap: wrap;
+    }
+
+    .action-btn {
+        width: auto;
+        flex: 0 0 auto;
+    }
+
+    .action-btn.share {
+        flex-shrink: 0;
+        min-width: max-content;
     }
 }
