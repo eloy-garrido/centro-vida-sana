@@ -50,33 +50,59 @@
 
 .leaf-float {
     position: absolute;
-    width: 200px;
-    height: 200px;
-    border-radius: 50%;
-    opacity: 0.3;
-    filter: blur(20px);
+    width: 60px;
+    height: auto;
+    opacity: 0.5;
+    filter: drop-shadow(0 2px 4px rgba(122, 152, 114, 0.3));
     z-index: 2;
+    pointer-events: none;
 }
 
 .leaf-1 {
-    background: var(--primary-green);
-    top: 10%;
-    left: 5%;
-    animation: float 8s ease-in-out infinite;
+    top: -10%;
+    left: 10%;
+    animation: leafFall 20s linear infinite;
+    animation-delay: 0s;
 }
 
 .leaf-2 {
-    background: var(--dark-green);
-    top: 60%;
-    right: 10%;
-    animation: float 10s ease-in-out infinite reverse;
+    top: -10%;
+    left: 50%;
+    width: 50px;
+    animation: leafFall 25s linear infinite;
+    animation-delay: -8s;
 }
 
 .leaf-3 {
-    background: var(--accent-green);
-    bottom: 15%;
-    left: 50%;
-    animation: float 12s ease-in-out infinite;
+    top: -10%;
+    left: 80%;
+    width: 55px;
+    animation: leafFall 22s linear infinite;
+    animation-delay: -15s;
+}
+
+.leaf-4 {
+    top: -10%;
+    left: 25%;
+    width: 45px;
+    animation: leafFall 28s linear infinite;
+    animation-delay: -5s;
+}
+
+.leaf-5 {
+    top: -10%;
+    left: 65%;
+    width: 58px;
+    animation: leafFall 24s linear infinite;
+    animation-delay: -12s;
+}
+
+.leaf-6 {
+    top: -10%;
+    left: 40%;
+    width: 52px;
+    animation: leafFall 26s linear infinite;
+    animation-delay: -18s;
 }
 
 .hero-content {
