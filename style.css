@@ -1277,6 +1277,34 @@ body {
         grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
     }
 
+    .pathology-item {
+        background: rgba(255, 255, 255, 0.4);
+        backdrop-filter: blur(15px);
+        -webkit-backdrop-filter: blur(15px);
+        border: 2px solid rgba(255, 255, 255, 0.5);
+        box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+    }
+
+    .pathology-item h4 {
+        font-size: 19px;
+        font-weight: 800;
+        text-shadow: 0 3px 10px rgba(0, 0, 0, 0.7), 0 1px 5px rgba(0, 0, 0, 0.8), 0 0 20px rgba(0, 0, 0, 0.4);
+    }
+
+    .pathology-item p {
+        font-size: 14px;
+        font-weight: 600;
+        color: white;
+        text-shadow: 0 2px 8px rgba(0, 0, 0, 0.7), 0 1px 4px rgba(0, 0, 0, 0.8), 0 0 15px rgba(0, 0, 0, 0.4);
+    }
+
+    .pathology-number {
+        font-size: 44px;
+        font-weight: 900;
+        color: rgba(255, 255, 255, 0.85);
+        text-shadow: 0 4px 12px rgba(0, 0, 0, 0.7), 0 2px 5px rgba(0, 0, 0, 0.8), 0 0 20px rgba(0, 0, 0, 0.4);
+    }
+
     #pato {
         padding-top: 30px;
         font-size: clamp(28px, 7vw, 40px);
@@ -1347,6 +1375,27 @@ body {
 
     .pathology-item {
         padding: 25px 20px;
+        background: rgba(255, 255, 255, 0.45);
+        border: 2px solid rgba(255, 255, 255, 0.6);
+        box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4);
+    }
+
+    .pathology-item h4 {
+        font-size: 19px;
+        font-weight: 800;
+        text-shadow: 0 3px 12px rgba(0, 0, 0, 0.8), 0 1px 5px rgba(0, 0, 0, 0.9), 0 0 20px rgba(0, 0, 0, 0.5);
+    }
+
+    .pathology-item p {
+        font-size: 15px;
+        font-weight: 600;
+        text-shadow: 0 2px 10px rgba(0, 0, 0, 0.8), 0 1px 5px rgba(0, 0, 0, 0.9), 0 0 15px rgba(0, 0, 0, 0.5);
+    }
+
+    .pathology-number {
+        font-size: 42px;
+        font-weight: 900;
+        text-shadow: 0 4px 15px rgba(0, 0, 0, 0.8), 0 2px 6px rgba(0, 0, 0, 0.9), 0 0 20px rgba(0, 0, 0, 0.5);
     }
 
     #pato {
