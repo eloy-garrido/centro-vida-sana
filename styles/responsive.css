@@ -187,6 +187,29 @@
 
 /* Mobile Phones */
 @media (max-width: 480px) {
+    /* Desactivar animaciones en móviles para mejor rendimiento */
+    .hero-content,
+    .service-card,
+    .pathology-item,
+    .professional-card,
+    .logo-background-decoration,
+    .yinyang-decoration,
+    .yinyang-decoration-large,
+    .scroll-indicator,
+    .leaf,
+    * {
+        animation: none !important;
+        transition: opacity 0.3s ease, transform 0.3s ease !important;
+    }
+
+    /* Mantener solo transiciones suaves básicas */
+    .service-card:hover,
+    .pathology-item:hover,
+    .btn:hover,
+    .contact-btn:hover {
+        transform: none !important;
+    }
+
     /* Fondo hero responsive en móviles */
     .hero-top-decoration {
         height: 150px;
