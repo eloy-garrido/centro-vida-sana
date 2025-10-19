@@ -195,11 +195,14 @@
     .logo-background-decoration,
     .yinyang-decoration,
     .yinyang-decoration-large,
-    .scroll-indicator,
-    .leaf,
-    * {
+    .scroll-indicator {
         animation: none !important;
         transition: opacity 0.3s ease, transform 0.3s ease !important;
+    }
+
+    /* Mantener animación de hojas cayendo en móviles */
+    .leaf {
+        animation: leafFall 20s linear infinite !important;
     }
 
     /* Mantener solo transiciones suaves básicas */
@@ -216,7 +219,7 @@
     }
 
     .contact {
-    margin-top: -100px;
+    margin-top: -80px;
 }
 
     .logo-background-decoration {
