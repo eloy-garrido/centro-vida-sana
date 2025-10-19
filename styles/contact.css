@@ -9,6 +9,7 @@
     margin-top: -100px;
     position: relative;
     z-index: 10;
+    margin-top: -150px;
 }
 
 .contact .section-title {
@@ -20,6 +21,98 @@
     color: rgba(255, 255, 255, 0.9);
     margin-bottom: 40px;
     line-height: 1.6;
+}
+
+/* Professional Contact Cards */
+.professionals-contact-cards {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+    margin-bottom: 30px;
+}
+
+.professional-contact-card {
+    background: rgba(255, 255, 255, 0.15);
+    backdrop-filter: blur(10px);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    border-radius: 15px;
+    padding: 20px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 20px;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.professional-contact-card:hover {
+    background: rgba(255, 255, 255, 0.2);
+    transform: translateX(5px);
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
+}
+
+.professional-info {
+    flex: 1;
+}
+
+.prof-name {
+    font-size: 19px;
+    font-weight: 700;
+    color: white;
+    margin: 0 0 5px 0;
+}
+
+.prof-specialty {
+    font-size: 14px;
+    color: rgba(255, 255, 255, 0.85);
+    margin: 0;
+    font-weight: 500;
+}
+
+.professional-actions {
+    display: flex;
+    gap: 10px;
+    flex-shrink: 0;
+}
+
+.contact-btn {
+    width: 50px;
+    height: 50px;
+    border-radius: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-decoration: none;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    border: 2px solid rgba(255, 255, 255, 0.3);
+}
+
+.contact-btn svg {
+    width: 24px;
+    height: 24px;
+}
+
+.phone-btn {
+    background: rgba(255, 255, 255, 0.2);
+    color: white;
+}
+
+.phone-btn:hover {
+    background: white;
+    color: var(--dark-green);
+    transform: translateY(-3px);
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+}
+
+.whatsapp-btn {
+    background: rgba(37, 211, 102, 0.3);
+    color: white;
+}
+
+.whatsapp-btn:hover {
+    background: #25D366;
+    color: white;
+    transform: translateY(-3px);
+    box-shadow: 0 5px 15px rgba(37, 211, 102, 0.4);
 }
 
 .contact-content {
