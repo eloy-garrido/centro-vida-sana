@@ -4,12 +4,12 @@
 
 .contact {
     padding: 150px 0 100px 0;
-    background: linear-gradient(0deg, rgba(0, 0, 0, 1) 10%, rgba(172, 211, 63, 1) 90%, rgba(172, 211, 63, 0) 100%);
+    background: linear-gradient(0deg, rgba(0, 0, 0, 1) 10%, rgba(164 209 43) 95%, rgba(172, 211, 63, 0) 100%);
     color: white;
     margin-top: -100px;
     position: relative;
     z-index: 10;
-    margin-top: -150px;
+    margin-top: -120px;
 }
 
 .contact .section-title {
