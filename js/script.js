@@ -112,9 +112,9 @@ const shareBtn = document.getElementById('shareBtn');
 if (shareBtn) {
     shareBtn.addEventListener('click', async () => {
         const shareData = {
-            title: 'Felipe Méndez - Quiropráctico / Kinesiólogo',
-            text: 'Contacta a Felipe Méndez\n\nQuiropráctico / Kinesiólogo\nLos Armiños 1620, Temuco\nTeléfono: +569 7370 0616',
-            url: window.location.href
+            title: 'Centro Vida Sana Austral – Instagram',
+            text: 'Síguenos en Instagram: @vidasanaaustral\nAgenda por DM y conoce nuestras últimas novedades.',
+            url: 'https://www.instagram.com/vidasanaaustral/'
         };
 
         try {

@@ -40,3 +40,28 @@
     color: var(--accent-green);
     font-size: 12px;
 }
+
+.footer-credits {
+    /* Alta legibilidad sobre fondo oscuro */
+    color: var(--text-light);
+    font-size: 13px;
+    margin-top: 6px;
+    opacity: 0.95;
+}
+
+.footer-credits a {
+    /* Fuerza contraste y asegura prioridad frente a estilos del navegador */
+    color: var(--primary-green) !important;
+    font-weight: 600;
+    text-decoration: underline;
+    text-underline-offset: 2px;
+    transition: color 0.2s ease-in-out;
+}
+
+.footer-credits a:hover {
+    color: var(--accent-green) !important;
+}
+
+.facebook {
+   display: none;
+}
