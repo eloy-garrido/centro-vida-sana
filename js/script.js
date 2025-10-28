@@ -55,7 +55,7 @@ contactCards.forEach((card, index) => {
             window.open(`https://www.google.com/maps/search/?api=1&query=${address}`, '_blank');
         } else if (index === 1) {
             // Phone card - call
-            window.location.href = 'tel:+56973700616';
+            window.location.href = 'tel:+56989391929';
         }
     });
 });
@@ -82,7 +82,7 @@ if (saveContactBtn) {
 VERSION:3.0
 FN:Felipe Méndez
 TITLE:Quiropráctico / Kinesiólogo
-TEL;TYPE=CELL:+56973700616
+TEL;TYPE=CELL:+56989391929
 ADR;TYPE=WORK:;;Los Armiños 1620;Temuco;;;Chile
 URL:${window.location.href}
 END:VCARD`;
