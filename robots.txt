@@ -1,0 +1,32 @@
+# Centro Vida Sana Austral - robots.txt
+# Directivas para buscadores
+
+User-agent: *
+Allow: /
+Disallow: /private/
+
+# Sitemap
+Sitemap: https://centrovidasana.cl/sitemap.xml
+
+# Velocidad de rastreo (Google)
+Crawl-delay: 1
+
+# Reglas específicas para Googlebot
+User-agent: Googlebot
+Allow: /
+Crawl-delay: 0
+
+# Reglas para otros bots
+User-agent: Bingbot
+Allow: /
+Crawl-delay: 1
+
+# Bloquear bots maliciosos comunes
+User-agent: MJ12bot
+Disallow: /
+
+User-agent: AhrefsBot
+Disallow: /
+
+User-agent: SemrushBot
+Disallow: /
