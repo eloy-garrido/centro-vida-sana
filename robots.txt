@@ -4,6 +4,12 @@
 User-agent: *
 Allow: /
 Disallow: /private/
+Disallow: /admin/
+
+# Permitir rastreo de archivos estáticos
+Allow: /styles/
+Allow: /js/
+Allow: /pix/
 
 # Sitemap
 Sitemap: https://centrovidasana.cl/sitemap.xml
@@ -21,12 +27,19 @@ User-agent: Bingbot
 Allow: /
 Crawl-delay: 1
 
-# Bloquear bots maliciosos comunes
+# Permitir bots de análisis competitivos (útiles para monitoreo)
+User-agent: AhrefsBot
+Allow: /
+
+User-agent: SemrushBot
+Allow: /
+
+# Bloquear bots maliciosos
 User-agent: MJ12bot
 Disallow: /
 
-User-agent: AhrefsBot
+User-agent: DotBot
 Disallow: /
 
-User-agent: SemrushBot
+User-agent: BLEXBot
 Disallow: /
