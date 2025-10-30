@@ -28,9 +28,10 @@
     <meta property="og:description" content="Centro Vida Sana Austral Temuco: Acupuntura, Quiropraxia y Kinesiología. Felipe Méndez +569 8939 1929 | Eduardo Lagos +569 7388 8910. Profesionales certificados. ¡Agenda tu cita hoy!">
     <meta property="og:type" content="website">
     <meta property="og:url" content="https://centrovidasana.cl/">
-    <meta property="og:image" content="https://centrovidasana.cl/pix/logo-texto.png">
+    <meta property="og:image" content="https://centrovidasana.cl/pix/logo-texto.webp">
     <meta property="og:image:width" content="800">
     <meta property="og:image:height" content="800">
+    <meta property="og:image:type" content="image/webp">
     <meta property="og:locale" content="es_CL">
     <meta property="og:site_name" content="Centro Vida Sana Austral">
 
@@ -38,7 +39,7 @@
     <meta name="twitter:card" content="summary_large_image">
     <meta name="twitter:title" content="Acupuntura, Quiropraxia y Kinesiología en Temuco | Centro Vida Sana Austral">
     <meta name="twitter:description" content="Centro Vida Sana Austral Temuco: Acupuntura, Quiropraxia y Kinesiología. Felipe Méndez +569 8939 1929 | Eduardo Lagos +569 7388 8910. ¡Agenda tu cita!">
-    <meta name="twitter:image" content="https://centrovidasana.cl/pix/logo-texto.png">
+    <meta name="twitter:image" content="https://centrovidasana.cl/pix/logo-texto.webp">
 
     <!-- Schema.org Markup para SEO Local -->
     <script type="application/ld+json">
@@ -46,7 +47,7 @@
       "@context": "https://schema.org",
       "@type": ["LocalBusiness", "MedicalClinic"],
       "name": "Centro Vida Sana Austral",
-      "image": "https://centrovidasana.cl/pix/logo-texto.png",
+      "image": "https://centrovidasana.cl/pix/logo-texto.webp",
       "description": "Centro de terapias integrales en Temuco: Acupuntura, Kinesiología, Quiropraxia y Medicina China. Especialistas certificados.",
       "url": "https://centrovidasana.cl/",
       "telephone": "+56989391929",
@@ -96,9 +97,10 @@
     </script>
 
     <!-- Favicon and Mobile Icons -->
-    <link rel="icon" type="image/png" href="/favicon-96x96.png" sizes="96x96" />
+    <link rel="icon" type="image/webp" href="/favicon-96x96.webp" sizes="96x96" />
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
     <link rel="shortcut icon" href="/favicon.ico" />
+    <!-- Apple touch icon: fallback to PNG for iOS compatibility -->
     <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png" />
     <meta name="apple-mobile-web-app-title" content="Centro Vida Sana Austral" />
     <link rel="manifest" href="/site.webmanifest" />
@@ -318,7 +320,10 @@
     <nav class="navbar" id="navbar">
         <div class="nav-container">
             <div class="nav-logo">
-                <img src="pix/logo-sin-texto.png" alt="Logo Centro Vida Sana Austral" loading="lazy" width="40" height="40">
+                <picture>
+                    <source srcset="pix/logo-sin-texto.webp" type="image/webp">
+                    <img src="pix/logo-sin-texto.png" alt="Logo Centro Vida Sana Austral" loading="lazy" width="40" height="40">
+                </picture>
                 <span>Centro Vida Sana Austral</span>
             </div>
             <button class="nav-toggle" id="navToggle" aria-label="Toggle navigation">
@@ -342,14 +347,35 @@
             <!-- Fondo decorativo superior -->
             <div class="hero-top-decoration"></div>
 
-            <img src="pix/leaf-1.png" alt="Decoración de hoja" class="leaf-float leaf-1" loading="lazy" width="80" height="80">
-            <img src="pix/leaf-2.png" alt="Decoración de hoja" class="leaf-float leaf-2" loading="lazy" width="80" height="80">
-            <img src="pix/leaf-3.png" alt="Decoración de hoja" class="leaf-float leaf-3" loading="lazy" width="80" height="80">
-            <img src="pix/leaf-1.png" alt="Decoración de hoja" class="leaf-float leaf-4" loading="lazy" width="80" height="80">
-            <img src="pix/leaf-2.png" alt="Decoración de hoja" class="leaf-float leaf-5" loading="lazy" width="80" height="80">
-            <img src="pix/leaf-3.png" alt="Decoración de hoja" class="leaf-float leaf-6" loading="lazy" width="80" height="80">
+            <picture class="leaf-picture">
+                <source srcset="pix/leaf-1.webp" type="image/webp">
+                <img src="pix/leaf-1.png" alt="Decoración de hoja" class="leaf-float leaf-1" loading="lazy" width="80" height="80">
+            </picture>
+            <picture class="leaf-picture">
+                <source srcset="pix/leaf-2.webp" type="image/webp">
+                <img src="pix/leaf-2.png" alt="Decoración de hoja" class="leaf-float leaf-2" loading="lazy" width="80" height="80">
+            </picture>
+            <picture class="leaf-picture">
+                <source srcset="pix/leaf-3.webp" type="image/webp">
+                <img src="pix/leaf-3.png" alt="Decoración de hoja" class="leaf-float leaf-3" loading="lazy" width="80" height="80">
+            </picture>
+            <picture class="leaf-picture">
+                <source srcset="pix/leaf-1.webp" type="image/webp">
+                <img src="pix/leaf-1.png" alt="Decoración de hoja" class="leaf-float leaf-4" loading="lazy" width="80" height="80">
+            </picture>
+            <picture class="leaf-picture">
+                <source srcset="pix/leaf-2.webp" type="image/webp">
+                <img src="pix/leaf-2.png" alt="Decoración de hoja" class="leaf-float leaf-5" loading="lazy" width="80" height="80">
+            </picture>
+            <picture class="leaf-picture">
+                <source srcset="pix/leaf-3.webp" type="image/webp">
+                <img src="pix/leaf-3.png" alt="Decoración de hoja" class="leaf-float leaf-6" loading="lazy" width="80" height="80">
+            </picture>
             <div class="logo-background-decoration">
-                <img src="pix/logo-sin-texto.png" alt="Logo Centro Vida Sana Austral - Fondo" class="logo-bg-image" loading="lazy" width="400" height="400">
+                <picture>
+                    <source srcset="pix/logo-sin-texto.webp" type="image/webp">
+                    <img src="pix/logo-sin-texto.png" alt="Logo Centro Vida Sana Austral - Fondo" class="logo-bg-image" loading="lazy" width="400" height="400">
+                </picture>
             </div>
         </div>
 
@@ -357,7 +383,10 @@
             <div class="hero-content">
                 <!-- Logo -->
                 <div class="logo-container-hero">
-                    <img src="pix/logo-sin-texto.png" alt="Centro Vida Sana Austral - Acupuntura, Kinesiología y Quiropraxia en Temuco" class="logo-image" loading="lazy" width="200" height="200">
+                    <picture>
+                        <source srcset="pix/logo-sin-texto.webp" type="image/webp">
+                        <img src="pix/logo-sin-texto.png" alt="Centro Vida Sana Austral - Acupuntura, Kinesiología y Quiropraxia en Temuco" class="logo-image" loading="lazy" width="200" height="200">
+                    </picture>
                 </div>
 
                 <h1 class="hero-title">Centro Vida Sana Austral Temuco</h1>
@@ -893,7 +922,10 @@
                 </div>
 
                 <div class="yinyang-decoration-large">
-                    <img src="pix/yinyang.png" alt="Símbolo Yin Yang - Equilibrio y Armonía" class="yinyang-logo" loading="lazy" width="300" height="300">
+                    <picture>
+                        <source srcset="pix/yinyang.webp" type="image/webp">
+                        <img src="pix/yinyang.png" alt="Símbolo Yin Yang - Equilibrio y Armonía" class="yinyang-logo" loading="lazy" width="300" height="300">
+                    </picture>
                 </div>
             </div>
         </div>
@@ -904,7 +936,10 @@
         <div class="container">
             <div class="footer-content">
                 <div class="footer-logo">
-                    <img src="pix/yinyang.png" alt="Centro Vida Sana Austral - Logo Yin Yang" class="logo-footer" loading="lazy" width="120" height="120">
+                    <picture>
+                        <source srcset="pix/yinyang.webp" type="image/webp">
+                        <img src="pix/yinyang.png" alt="Centro Vida Sana Austral - Logo Yin Yang" class="logo-footer" loading="lazy" width="120" height="120">
+                    </picture>
                 </div>
                 <p class="footer-text">© 2025 Centro Vida Sana Austral - Temuco</p>
                 <p class="footer-subtitle">Especialistas en Acupuntura, Quiropraxia y Kinesiología Integral</p>
@@ -913,7 +948,8 @@
         </div>
     </footer>
 
-    <script src="js/script.js"></script>
-    <script src="js/professionals.js"></script>
+    <!-- Main scripts -->
+    <script src="js/script.js" defer></script>
+    <script src="js/professionals.js" defer></script>
 </body>
 </html>
