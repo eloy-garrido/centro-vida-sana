@@ -83,21 +83,13 @@
     <link rel="icon" type="image/png" href="pix/yinyang.png">
     <link rel="apple-touch-icon" href="pix/yinyang.png">
 
-    <!-- Estilos Principales -->
-    <link rel="stylesheet" href="styles/main.css">
-    <link rel="stylesheet" href="styles/animations.css">
+    <!-- Estilos Consolidados -->
+    <link rel="preload" href="styles/core.css" as="style">
+    <link rel="stylesheet" href="styles/core.css">
 
-    <!-- Estilos por Sección -->
-    <link rel="stylesheet" href="styles/navbar.css">
-    <link rel="stylesheet" href="styles/hero.css">
-    <link rel="stylesheet" href="styles/professionals.css">
-    <link rel="stylesheet" href="styles/services.css">
-    <link rel="stylesheet" href="styles/pathologies.css">
-    <link rel="stylesheet" href="styles/contact.css">
-    <link rel="stylesheet" href="styles/footer.css">
-
-    <!-- Estilos Responsive -->
-    <link rel="stylesheet" href="styles/responsive.css">
+    <!-- Estilos Responsive (Carga condicional - solo en pantallas <= 1024px) -->
+    <link rel="stylesheet" media="(max-width: 1024px)" href="styles/responsive.css">
+    <link rel="preload" href="styles/responsive.css" as="style" media="(max-width: 1024px)">
 
     <!-- FAQ Schema.org Markup -->
     <script type="application/ld+json">
