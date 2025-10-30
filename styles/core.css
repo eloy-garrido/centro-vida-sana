@@ -56,7 +56,7 @@ body {
 
 .section-description {
     font-size: 18px;
-    color: var(--accent-green);
+    color: #007231;
 }
 
 /* Botones Generales */
@@ -257,7 +257,7 @@ body {
     box-shadow: 0 2px 20px rgba(122, 152, 114, 0.1);
     z-index: 1000;
     transition: all 0.3s ease;
-    opacity: 0.8;
+    opacity: 0.9;
 }
 
 .navbar.scrolled {
@@ -1689,4 +1689,94 @@ body {
 
 .facebook {
    display: none;
+}
+
+/* ============================================
+   INTRO CONTENT - Sección de Introducción
+   ============================================ */
+
+.intro-content {
+    padding: 100px 0;
+    background: #007231;
+    position: relative;
+    z-index: 1;
+}
+
+.intro-content h2 {
+    font-size: clamp(32px, 5vw, 48px);
+    font-weight: 800;
+    color: white;
+    margin-bottom: 40px;
+    text-align: center;
+    text-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
+    letter-spacing: -0.5px;
+}
+
+.intro-content p {
+    font-size: 17px;
+    line-height: 1.9;
+    color: rgba(255, 255, 255, 0.95);
+    margin-bottom: 25px;
+    text-align: center;
+    max-width: 1000px;
+    margin-left: auto;
+    margin-right: auto;
+    font-weight: 400;
+    letter-spacing: 0.3px;
+}
+
+.intro-content p:last-child {
+    margin-bottom: 0;
+}
+
+.intro-content p strong {
+    font-weight: 700;
+    color: #c9e5d4;
+}
+
+/* ============================================
+   SERVICES INTRO - Introducción de Servicios
+   ============================================ */
+
+.services-intro {
+    margin-bottom: 60px;
+    padding: 40px;
+    background: linear-gradient(135deg, rgba(255, 255, 255, 0.95) 0%, rgba(201, 229, 212, 0.3) 100%);
+    border-radius: 25px;
+    border-left: 6px solid var(--dark-green);
+    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.08);
+    position: relative;
+    overflow: hidden;
+}
+
+.services-intro::before {
+    content: '';
+    position: absolute;
+    top: -50%;
+    right: -20%;
+    width: 300px;
+    height: 300px;
+    background: radial-gradient(circle, rgba(122, 152, 114, 0.1), transparent);
+    border-radius: 50%;
+    pointer-events: none;
+}
+
+.services-intro p {
+    font-size: 16px;
+    line-height: 1.85;
+    color: var(--text-dark);
+    margin: 0;
+    text-align: center;
+    position: relative;
+    z-index: 2;
+    font-weight: 500;
+}
+
+.services-intro strong {
+    color: var(--dark-green);
+    font-weight: 700;
+    background: linear-gradient(135deg, var(--primary-green), var(--dark-green));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
 }
