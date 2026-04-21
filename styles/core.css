@@ -694,9 +694,9 @@ body {
    ======================================== */
 
 .professionals {
-  background: linear-gradient(180deg, #007231, #c9e5d4);
+  background: linear-gradient(180deg, #007231 0%, #c9e5d4 100%);
   overflow: hidden;
-  padding: 30px 0;
+  padding: 80px 0 100px;
   position: relative;
 }
 
@@ -724,228 +724,184 @@ body {
   text-shadow: 0 1px 5px rgba(0, 0, 0, 0.1);
 }
 
+/* Grid */
 .professionals-grid {
   display: grid;
-  gap: 50px;
-  grid-template-columns: repeat(auto-fit, minmax(340px, 1fr));
+  gap: 48px;
+  grid-template-columns: repeat(auto-fit, minmax(320px, 400px));
+  justify-content: center;
   margin: 60px auto 0;
-  max-width: 1000px;
+  max-width: 920px;
   position: relative;
   z-index: 1;
 }
 
+/* Card */
 .professional-card {
   background: #fff;
-  border: 1px solid rgba(0, 114, 49, 0.1);
-  border-radius: 30px;
-  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05), 0 1px 3px rgba(0, 0, 0, 0.1);
+  border-radius: 24px;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1), 0 2px 8px rgba(0, 0, 0, 0.06);
   display: flex;
   flex-direction: column;
   opacity: 0;
   overflow: hidden;
-  padding: 0;
-  position: relative;
-  transform: translateY(30px);
-  transition: all 0.6s cubic-bezier(0.34, 1.56, 0.64, 1);
+  transform: translateY(40px);
+  transition: transform 0.5s cubic-bezier(0.34, 1.56, 0.64, 1),
+              box-shadow 0.5s ease;
 }
 
 .professional-card.fade-in {
-  animation: fadeInScale 0.8s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
+  animation: profCardIn 0.75s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
 }
 
-@keyframes fadeInScale {
-  0% {
-    opacity: 0;
-    transform: translateY(40px) scale(0.95);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0) scale(1);
-  }
+@keyframes profCardIn {
+  from { opacity: 0; transform: translateY(40px); }
+  to   { opacity: 1; transform: translateY(0); }
 }
 
 .professional-card:hover {
-  border-color: rgba(0, 114, 49, 0.2);
-  box-shadow: 0 20px 60px rgba(0, 114, 49, 0.15), 0 8px 25px rgba(0, 0, 0, 0.1);
-  transform: translateY(-12px);
+  box-shadow: 0 24px 64px rgba(0, 114, 49, 0.2), 0 8px 24px rgba(0, 0, 0, 0.1);
+  transform: translateY(-10px);
 }
 
-.professional-card-header {
-  background: linear-gradient(135deg, var(--primary-green) 0%, var(--dark-green) 100%);
+/* Zona de fotografía */
+.professional-photo-wrapper {
+  background: #e2efe7;
   flex-shrink: 0;
-  padding: 40px 35px 60px;
+  height: 400px;
+  overflow: hidden;
   position: relative;
-  z-index: 1;
 }
 
-.professional-card-header::before {
-  background: #fff;
-  border-radius: 50% 50% 0 0 / 100% 100% 0 0;
+.professional-photo {
+  display: block;
+  height: 400px;
+  object-fit: cover;
+  object-position: top center;
+  transition: transform 0.65s ease;
+  width: 100%;
+}
+
+.professional-card:hover .professional-photo {
+  transform: scale(1.05);
+}
+
+/* Difuminado inferior de la imagen */
+.professional-photo-wrapper::after {
+  background: linear-gradient(
+    to bottom,
+    transparent          0%,
+    rgba(255,255,255,.08) 20%,
+    rgba(255,255,255,.45) 50%,
+    rgba(255,255,255,.88) 75%,
+    #ffffff              100%
+  );
   bottom: 0;
   content: '';
-  height: 40px;
+  height: 60%;
   left: 0;
+  pointer-events: none;
   position: absolute;
   right: 0;
   z-index: 1;
 }
 
-.professional-header {
-  align-items: center;
-  display: flex;
-  gap: 20px;
-  position: relative;
+/* Identidad flotante sobre el difuminado */
+.professional-photo-identity {
+  bottom: 0;
+  left: 0;
+  padding: 0 28px 22px;
+  position: absolute;
+  right: 0;
   z-index: 2;
 }
 
-.professional-avatar {
-  background: #fff;
-  border-radius: 50%;
-  box-shadow: 0 8px 30px rgba(0, 0, 0, 0.2);
-  flex-shrink: 0;
-  height: 90px;
-  justify-content: center;
-  align-items: center;
-  display: flex;
-  transition: all 0.6s cubic-bezier(0.34, 1.56, 0.64, 1);
-  width: 90px;
-  position: relative;
-}
-
-.professional-avatar::before {
-  border: 3px solid hsla(0, 0%, 100%, 0.3);
-  border-radius: 50%;
-  content: '';
-  height: 110%;
-  opacity: 0;
-  position: absolute;
-  transform: scale(0.8);
-  transition: all 0.4s ease;
-  width: 110%;
-}
-
-.professional-card:hover .professional-avatar::before {
-  opacity: 1;
-  transform: scale(1);
-}
-
-.professional-card:hover .professional-avatar {
-  box-shadow: 0 12px 40px rgba(0, 0, 0, 0.3);
-  transform: scale(1.1) rotate(-5deg);
-}
-
-.professional-avatar svg {
-  color: var(--primary-green);
-  height: 45px;
-  transition: all 0.4s ease;
-  width: 45px;
-}
-
-.professional-card:hover .professional-avatar svg {
-  color: var(--dark-green);
-  transform: scale(1.15);
+.professional-badge {
+  background: #007231;
+  border-radius: 20px;
+  color: #fff;
+  display: inline-block;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.7px;
+  margin-bottom: 6px;
+  padding: 4px 12px;
+  text-transform: uppercase;
 }
 
 .professional-name {
-  color: #fff;
-  font-size: 28px;
+  color: #1a2e1f;
+  font-size: 24px;
   font-weight: 700;
-  margin-bottom: 8px;
-  text-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
-  transition: transform 0.4s ease;
-}
-
-.professional-card:hover .professional-name {
-  transform: translateX(5px);
+  line-height: 1.2;
+  margin: 0 0 3px;
 }
 
 .professional-title {
-  backdrop-filter: blur(10px);
-  background: hsla(0, 0%, 100%, 0.15);
-  border-radius: 20px;
-  color: hsla(0, 0%, 100%, 0.95);
-  display: inline-block;
-  font-size: 16px;
-  font-weight: 600;
-  padding: 6px 14px;
-  transition: all 0.4s ease;
+  color: #3d6b4f;
+  font-size: 13px;
+  font-weight: 500;
+  margin: 0;
 }
 
-.professional-card:hover .professional-title {
-  background: hsla(0, 0%, 100%, 0.25);
-  transform: translateX(5px);
-}
-
+/* Cuerpo inferior */
 .professional-card-body {
-  background: #fff;
   display: flex;
   flex: 1;
   flex-direction: column;
-  padding: 35px;
-  position: relative;
-  z-index: 2;
+  padding: 22px 28px 28px;
 }
 
 .professional-description {
-  color: var(--text-dark);
-  font-size: 15px;
-  line-height: 1.8;
-  margin-bottom: 25px;
-  opacity: 0.85;
-  text-align: center;
-  transition: opacity 0.3s;
+  color: #4a5c50;
+  font-size: 14px;
+  line-height: 1.75;
+  margin: 0 0 22px;
 }
 
-.professional-card:hover .professional-description {
-  opacity: 1;
-}
-
+/* Botones de contacto */
 .professional-contact {
   display: flex;
   flex-direction: column;
-  gap: 14px;
+  gap: 10px;
+  margin-top: auto;
 }
 
 .professional-contact-btn {
   align-items: center;
   background: #fff;
-  border: 2px solid rgba(0, 114, 49, 0.15);
-  border-radius: 16px;
-  color: var(--text-dark);
+  border: 1.5px solid rgba(0, 114, 49, 0.18);
+  border-radius: 12px;
+  color: #1a2e1f;
   display: flex;
-  font-size: 15px;
+  font-size: 14px;
   font-weight: 600;
-  gap: 12px;
+  gap: 10px;
   justify-content: center;
   overflow: hidden;
-  padding: 16px 24px;
+  padding: 13px 20px;
   position: relative;
   text-decoration: none;
-  transition: all 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+  transition: all 0.35s cubic-bezier(0.34, 1.56, 0.64, 1);
 }
 
 .professional-contact-btn::before {
-  background: linear-gradient(135deg, var(--primary-green), var(--dark-green));
+  background: linear-gradient(135deg, #007231, #004d20);
   content: '';
-  height: 100%;
-  left: 0;
+  inset: 0;
   opacity: 0;
   position: absolute;
-  top: 0;
-  transition: opacity 0.4s;
-  width: 100%;
-  z-index: -1;
+  transition: opacity 0.3s ease;
+  z-index: 0;
 }
 
-.professional-contact-btn:hover::before {
-  opacity: 1;
-}
+.professional-contact-btn:hover::before { opacity: 1; }
 
 .professional-contact-btn:hover {
-  border-color: var(--dark-green);
-  box-shadow: 0 8px 25px rgba(0, 114, 49, 0.25);
+  border-color: #004d20;
+  box-shadow: 0 6px 20px rgba(0, 114, 49, 0.25);
   color: #fff;
-  transform: translateY(-3px) scale(1.02);
+  transform: translateY(-2px);
 }
 
 .professional-contact-btn.whatsapp::before {
@@ -953,53 +909,28 @@ body {
 }
 
 .professional-contact-btn.whatsapp {
-  border-color: rgba(37, 211, 102, 0.2);
+  border-color: rgba(37, 211, 102, 0.25);
 }
 
 .professional-contact-btn.whatsapp:hover {
   border-color: #25d366;
-  box-shadow: 0 8px 25px rgba(37, 211, 102, 0.3);
+  box-shadow: 0 6px 20px rgba(37, 211, 102, 0.3);
 }
 
 .professional-contact-btn svg {
   flex-shrink: 0;
-  height: 22px;
+  height: 20px;
   position: relative;
-  transition: transform 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
-  width: 22px;
+  transition: transform 0.35s ease;
+  width: 20px;
   z-index: 1;
 }
 
-.professional-contact-btn:hover svg {
-  transform: scale(1.2) rotate(10deg);
-}
+.professional-contact-btn:hover svg { transform: scale(1.15) rotate(8deg); }
 
 .professional-contact-btn span {
   position: relative;
   z-index: 1;
-}
-
-.professional-badge {
-  backdrop-filter: blur(10px);
-  background: hsla(0, 0%, 100%, 0.2);
-  border-radius: 20px;
-  color: #fff;
-  font-size: 12px;
-  font-weight: 600;
-  letter-spacing: 1px;
-  opacity: 0.9;
-  padding: 8px 16px;
-  position: absolute;
-  right: 20px;
-  text-transform: uppercase;
-  top: 20px;
-  transition: all 0.4s ease;
-  z-index: 3;
-}
-
-.professional-card:hover .professional-badge {
-  opacity: 1;
-  transform: scale(1.05);
 }
 
 /* ========================================

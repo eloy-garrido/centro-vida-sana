@@ -1,1 +1,73 @@
-function initProfessionalsAnimations(){const t=document.querySelectorAll(".professional-card"),e=new IntersectionObserver(t=>{t.forEach((t,n)=>{t.isIntersecting&&(setTimeout(()=>{t.target.classList.add("fade-in")},200*n),e.unobserve(t.target))})},{threshold:.2,rootMargin:"0px 0px -50px 0px"});t.forEach(t=>{e.observe(t)})}function initCardInteractions(){if(document.querySelectorAll(".professional-card").forEach(t=>{t.addEventListener("mousemove",e=>{const n=t.getBoundingClientRect(),o=e.clientX-n.left,s=e.clientY-n.top,a=n.width/2,i=(s-n.height/2)/20,r=(a-o)/20;t.style.transform=`\n                translateY(-15px)\n                scale(1.02)\n                perspective(1000px)\n                rotateX(${i}deg)\n                rotateY(${r}deg)\n            `}),t.addEventListener("mouseleave",()=>{t.style.transform=""}),t.addEventListener("mouseenter",()=>{const e=t.querySelector(".professional-avatar");e.classList.add("pulse-animation"),setTimeout(()=>{e.classList.remove("pulse-animation")},600)})}),!document.getElementById("professionals-dynamic-styles")){const t=document.createElement("style");t.id="professionals-dynamic-styles",t.textContent="\n            @keyframes pulse-animation {\n                0%, 100% { transform: scale(1.15) rotate(5deg); }\n                50% { transform: scale(1.2) rotate(5deg); }\n            }\n            .pulse-animation {\n                animation: pulse-animation 0.6s ease-in-out;\n            }\n        ",document.head.appendChild(t)}}function initContactButtonEffects(){if(document.querySelectorAll(".professional-contact-btn").forEach(t=>{t.addEventListener("click",function(t){const e=document.createElement("span");e.classList.add("ripple-effect");const n=this.getBoundingClientRect(),o=Math.max(n.width,n.height),s=t.clientX-n.left-o/2,a=t.clientY-n.top-o/2;e.style.width=e.style.height=o+"px",e.style.left=s+"px",e.style.top=a+"px",this.appendChild(e),setTimeout(()=>{e.remove()},600)}),setInterval(()=>{Math.random()>.7&&(t.classList.add("shine-effect"),setTimeout(()=>{t.classList.remove("shine-effect")},1e3))},5e3)}),!document.getElementById("button-effects-styles")){const t=document.createElement("style");t.id="button-effects-styles",t.textContent="\n            .ripple-effect {\n                position: absolute;\n                border-radius: 50%;\n                background: rgba(255, 255, 255, 0.6);\n                transform: scale(0);\n                animation: ripple-animation 0.6s ease-out;\n                pointer-events: none;\n            }\n\n            @keyframes ripple-animation {\n                to {\n                    transform: scale(2);\n                    opacity: 0;\n                }\n            }\n\n            .shine-effect {\n                animation: shine-animation 1s ease-in-out;\n            }\n\n            @keyframes shine-animation {\n                0% { filter: brightness(1); }\n                50% { filter: brightness(1.2); }\n                100% { filter: brightness(1); }\n            }\n        ",document.head.appendChild(t)}}function initBackgroundParticles(){const t=document.querySelector(".professionals");if(!t)return;const e=document.createElement("div");e.className="professionals-particles",e.style.cssText="\n        position: absolute;\n        top: 0;\n        left: 0;\n        width: 100%;\n        height: 100%;\n        overflow: hidden;\n        pointer-events: none;\n        z-index: 0;\n    ";for(let t=0;t<15;t++){const t=document.createElement("div");t.className="particle";const n=8*Math.random()+4,o=100*Math.random(),s=15*Math.random()+10,a=5*Math.random();t.style.cssText=`\n            position: absolute;\n            width: ${n}px;\n            height: ${n}px;\n            background: rgba(255, 255, 255, 0.3);\n            border-radius: 50%;\n            left: ${o}%;\n            bottom: -20px;\n            animation: float-up ${s}s ease-in ${a}s infinite;\n            filter: blur(2px);\n        `,e.appendChild(t)}if(t.insertBefore(e,t.firstChild),!document.getElementById("particles-styles")){const t=document.createElement("style");t.id="particles-styles",t.textContent=`\n            @keyframes float-up {\n                0% {\n                    transform: translateY(0) translateX(0);\n                    opacity: 0;\n                }\n                10% {\n                    opacity: 1;\n                }\n                90% {\n                    opacity: 1;\n                }\n                100% {\n                    transform: translateY(-100vh) translateX(${100*Math.random()-50}px);\n                    opacity: 0;\n                }\n            }\n        `,document.head.appendChild(t)}}function trackContactClick(t,e){console.log(`Contacto iniciado: ${t} - ${e}`)}document.addEventListener("DOMContentLoaded",function(){initProfessionalsAnimations(),initCardInteractions(),initContactButtonEffects()}),document.addEventListener("DOMContentLoaded",function(){document.querySelectorAll(".professional-card").forEach(t=>{const e=t.querySelector(".professional-name")?.textContent||"Desconocido";t.querySelectorAll(".professional-contact-btn").forEach(t=>{t.addEventListener("click",function(){const t=this.classList.contains("whatsapp")?"WhatsApp":"Teléfono";trackContactClick(e,t)})})})});
+function initProfessionalsAnimations() {
+    const cards = document.querySelectorAll('.professional-card');
+    const observer = new IntersectionObserver(entries => {
+        entries.forEach((entry, i) => {
+            if (entry.isIntersecting) {
+                setTimeout(() => entry.target.classList.add('fade-in'), 180 * i);
+                observer.unobserve(entry.target);
+            }
+        });
+    }, { threshold: 0.15, rootMargin: '0px 0px -40px 0px' });
+    cards.forEach(card => observer.observe(card));
+}
+
+function initCardInteractions() {
+    document.querySelectorAll('.professional-card').forEach(card => {
+        card.addEventListener('mousemove', e => {
+            const rect = card.getBoundingClientRect();
+            const cx = rect.width / 2;
+            const rotX = (e.clientY - rect.top - rect.height / 2) / 22;
+            const rotY = (cx - (e.clientX - rect.left)) / 22;
+            card.style.transform = `translateY(-10px) perspective(900px) rotateX(${rotX}deg) rotateY(${rotY}deg)`;
+        });
+        card.addEventListener('mouseleave', () => { card.style.transform = ''; });
+    });
+}
+
+function initContactButtonEffects() {
+    document.querySelectorAll('.professional-contact-btn').forEach(btn => {
+        btn.addEventListener('click', function (e) {
+            const ripple = document.createElement('span');
+            const rect = this.getBoundingClientRect();
+            const size = Math.max(rect.width, rect.height);
+            ripple.style.cssText = `
+                position:absolute;border-radius:50%;pointer-events:none;
+                width:${size}px;height:${size}px;
+                left:${e.clientX - rect.left - size / 2}px;
+                top:${e.clientY - rect.top - size / 2}px;
+                background:rgba(255,255,255,.55);
+                transform:scale(0);animation:ripple-anim .55s ease-out;
+            `;
+            this.appendChild(ripple);
+            setTimeout(() => ripple.remove(), 600);
+        });
+    });
+
+    if (!document.getElementById('prof-ripple-style')) {
+        const s = document.createElement('style');
+        s.id = 'prof-ripple-style';
+        s.textContent = '@keyframes ripple-anim{to{transform:scale(2.2);opacity:0}}';
+        document.head.appendChild(s);
+    }
+}
+
+function trackContactClick(name, channel) {
+    if (typeof gtag === 'function') {
+        gtag('event', 'contact_click', { professional: name, channel });
+    }
+}
+
+document.addEventListener('DOMContentLoaded', () => {
+    initProfessionalsAnimations();
+    initCardInteractions();
+    initContactButtonEffects();
+
+    document.querySelectorAll('.professional-card').forEach(card => {
+        const name = card.querySelector('.professional-name')?.textContent || '';
+        card.querySelectorAll('.professional-contact-btn').forEach(btn => {
+            btn.addEventListener('click', () => {
+                trackContactClick(name, btn.classList.contains('whatsapp') ? 'WhatsApp' : 'Teléfono');
+            });
+        });
+    });
+});

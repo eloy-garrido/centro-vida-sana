@@ -3,7 +3,7 @@
    ============================================ */
 
 .professionals {
-    padding: 30px 0;
+    padding: 80px 0 100px;
     background: linear-gradient(180deg, #007231 0%, #c9e5d4 100%);
     position: relative;
     overflow: hidden;
@@ -33,244 +33,195 @@
     text-shadow: 0 1px 5px rgba(0, 0, 0, 0.1);
 }
 
+/* ---- Grid ---- */
 .professionals-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(340px, 1fr));
-    gap: 50px;
+    grid-template-columns: repeat(auto-fit, minmax(340px, 420px));
+    gap: 48px;
+    justify-content: center;
     max-width: 1000px;
-    margin: 0 auto;
+    margin: 60px auto 0;
     position: relative;
     z-index: 1;
-    margin-top: 60px;
 }
 
+/* ---- Card ---- */
 .professional-card {
     background: white;
-    border-radius: 30px;
-    padding: 0;
-    transition: all 0.6s cubic-bezier(0.34, 1.56, 0.64, 1);
-    border: 1px solid rgba(0, 114, 49, 0.1);
-    position: relative;
+    border-radius: 28px;
     overflow: hidden;
     box-shadow:
-        0 4px 20px rgba(0, 0, 0, 0.05),
-        0 1px 3px rgba(0, 0, 0, 0.1);
+        0 4px 24px rgba(0, 0, 0, 0.07),
+        0 1px 4px rgba(0, 0, 0, 0.08);
+    transition: transform 0.5s cubic-bezier(0.34, 1.56, 0.64, 1),
+                box-shadow 0.5s ease;
     opacity: 0;
-    transform: translateY(30px);
+    transform: translateY(36px);
     display: flex;
     flex-direction: column;
 }
 
-/* Animación de entrada */
 .professional-card.fade-in {
-    animation: fadeInScale 0.8s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
+    animation: fadeInUp 0.8s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
 }
 
-@keyframes fadeInScale {
-    0% {
-        opacity: 0;
-        transform: translateY(40px) scale(0.95);
-    }
-    100% {
-        opacity: 1;
-        transform: translateY(0) scale(1);
-    }
+@keyframes fadeInUp {
+    0%   { opacity: 0; transform: translateY(40px) scale(0.97); }
+    100% { opacity: 1; transform: translateY(0)   scale(1); }
 }
-
 
 .professional-card:hover {
-    transform: translateY(-12px);
+    transform: translateY(-10px);
     box-shadow:
-        0 20px 60px rgba(0, 114, 49, 0.15),
-        0 8px 25px rgba(0, 0, 0, 0.1);
-    border-color: rgba(0, 114, 49, 0.2);
+        0 24px 64px rgba(0, 114, 49, 0.18),
+        0 8px 24px rgba(0, 0, 0, 0.1);
 }
 
-/* Sección superior de la tarjeta con degradado */
-.professional-card-header {
-    background: linear-gradient(135deg, var(--primary-green) 0%, var(--dark-green) 100%);
-    padding: 40px 35px 60px;
+/* ---- Photo wrapper ---- */
+.professional-photo-wrapper {
     position: relative;
-    z-index: 1;
+    height: 420px;
+    overflow: hidden;
+    background: linear-gradient(160deg, #e6f4ee 0%, #d0ecdd 100%);
     flex-shrink: 0;
 }
 
-.professional-card-header::before {
+.professional-photo {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: top center;
+    display: block;
+    transition: transform 0.7s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+}
+
+.professional-card:hover .professional-photo {
+    transform: scale(1.05);
+}
+
+/* Efecto difuminado en el borde inferior de la imagen */
+.professional-photo-wrapper::after {
     content: '';
     position: absolute;
     bottom: 0;
     left: 0;
     right: 0;
-    height: 40px;
-    background: white;
-    border-radius: 50% 50% 0 0 / 100% 100% 0 0;
+    height: 62%;
+    background: linear-gradient(
+        to bottom,
+        transparent          0%,
+        rgba(255,255,255,.12) 22%,
+        rgba(255,255,255,.50) 48%,
+        rgba(255,255,255,.88) 72%,
+        #ffffff              100%
+    );
+    pointer-events: none;
     z-index: 1;
 }
 
-.professional-header {
-    display: flex;
-    align-items: center;
-    gap: 20px;
-    position: relative;
+/* Identidad flotante sobre el degradado */
+.professional-photo-identity {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    padding: 0 28px 24px;
     z-index: 2;
 }
 
-.professional-avatar {
-    width: 90px;
-    height: 90px;
-    background: white;
-    border-radius: 50%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    flex-shrink: 0;
-    box-shadow: 0 8px 30px rgba(0, 0, 0, 0.2);
-    transition: all 0.6s cubic-bezier(0.34, 1.56, 0.64, 1);
-    position: relative;
-}
-
-/* Anillo decorativo */
-.professional-avatar::before {
-    content: '';
-    position: absolute;
-    width: 110%;
-    height: 110%;
-    border-radius: 50%;
-    border: 3px solid rgba(255, 255, 255, 0.3);
-    opacity: 0;
-    transform: scale(0.8);
-    transition: all 0.4s ease;
-}
-
-.professional-card:hover .professional-avatar::before {
-    opacity: 1;
-    transform: scale(1);
-}
-
-.professional-card:hover .professional-avatar {
-    transform: scale(1.1) rotate(-5deg);
-    box-shadow: 0 12px 40px rgba(0, 0, 0, 0.3);
-}
-
-.professional-avatar svg {
-    width: 45px;
-    height: 45px;
-    color: var(--primary-green);
-    transition: all 0.4s ease;
-}
-
-.professional-card:hover .professional-avatar svg {
-    transform: scale(1.15);
-    color: var(--dark-green);
-}
-
-.professional-info {
-    flex: 1;
+.professional-badge {
+    display: inline-block;
+    background: var(--primary-green, #007231);
+    color: white;
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 0.8px;
+    text-transform: uppercase;
+    padding: 5px 13px;
+    border-radius: 20px;
+    margin-bottom: 8px;
 }
 
 .professional-name {
-    font-size: 28px;
+    font-size: 26px;
     font-weight: 700;
-    color: white;
-    margin-bottom: 8px;
-    transition: transform 0.4s ease;
-    text-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
-}
-
-.professional-card:hover .professional-name {
-    transform: translateX(5px);
+    color: #1a2e1f;
+    margin: 0 0 4px;
+    line-height: 1.2;
 }
 
 .professional-title {
-    font-size: 16px;
-    font-weight: 600;
-    color: rgba(255, 255, 255, 0.95);
-    background: rgba(255, 255, 255, 0.15);
-    padding: 6px 14px;
-    border-radius: 20px;
-    display: inline-block;
-    backdrop-filter: blur(10px);
-    transition: all 0.4s ease;
+    font-size: 14px;
+    font-weight: 500;
+    color: #4a6856;
+    margin: 0;
+    line-height: 1.4;
 }
 
-.professional-card:hover .professional-title {
-    background: rgba(255, 255, 255, 0.25);
-    transform: translateX(5px);
-}
-
-/* Cuerpo de la tarjeta */
+/* ---- Card body ---- */
 .professional-card-body {
-    padding: 35px 35px 35px;
-    position: relative;
-    z-index: 2;
-    flex: 1;
+    padding: 20px 28px 32px;
     display: flex;
     flex-direction: column;
-    background: white;
+    flex: 1;
 }
 
 .professional-description {
     font-size: 15px;
-    color: var(--text-dark);
-    line-height: 1.8;
-    margin-bottom: 25px;
-    opacity: 0.85;
-    transition: opacity 0.3s;
-    text-align: center;
+    color: #4a4a4a;
+    line-height: 1.75;
+    margin: 0 0 24px;
+    opacity: 0.9;
+    transition: opacity 0.3s ease;
 }
 
 .professional-card:hover .professional-description {
     opacity: 1;
 }
 
-/* Botones de contacto mejorados */
+/* ---- Botones de contacto ---- */
 .professional-contact {
     display: flex;
     flex-direction: column;
-    gap: 14px;
+    gap: 12px;
+    margin-top: auto;
 }
 
 .professional-contact-btn {
     display: flex;
     align-items: center;
     justify-content: center;
-    gap: 12px;
-    padding: 16px 24px;
+    gap: 10px;
+    padding: 14px 22px;
     background: white;
     border: 2px solid rgba(0, 114, 49, 0.15);
-    border-radius: 16px;
-    color: var(--text-dark);
+    border-radius: 14px;
+    color: #1a2e1f;
     text-decoration: none;
     font-weight: 600;
     font-size: 15px;
-    transition: all 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+    transition: all 0.35s cubic-bezier(0.34, 1.56, 0.64, 1);
     position: relative;
     overflow: hidden;
 }
 
-/* Gradiente de fondo animado */
 .professional-contact-btn::before {
     content: '';
     position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background: linear-gradient(135deg, var(--primary-green), var(--dark-green));
+    inset: 0;
+    background: linear-gradient(135deg, var(--primary-green, #007231), #004d20);
     opacity: 0;
-    transition: opacity 0.4s;
-    z-index: -1;
+    transition: opacity 0.35s ease;
+    z-index: 0;
 }
 
-.professional-contact-btn:hover::before {
-    opacity: 1;
-}
+.professional-contact-btn:hover::before { opacity: 1; }
 
 .professional-contact-btn:hover {
-    transform: translateY(-3px) scale(1.02);
     color: white;
-    border-color: var(--dark-green);
-    box-shadow: 0 8px 25px rgba(0, 114, 49, 0.25);
+    border-color: #004d20;
+    transform: translateY(-3px) scale(1.02);
+    box-shadow: 0 8px 24px rgba(0, 114, 49, 0.25);
 }
 
 .professional-contact-btn.whatsapp::before {
@@ -278,25 +229,25 @@
 }
 
 .professional-contact-btn.whatsapp {
-    border-color: rgba(37, 211, 102, 0.2);
+    border-color: rgba(37, 211, 102, 0.22);
 }
 
 .professional-contact-btn.whatsapp:hover {
     border-color: #25D366;
-    box-shadow: 0 8px 25px rgba(37, 211, 102, 0.3);
+    box-shadow: 0 8px 24px rgba(37, 211, 102, 0.28);
 }
 
 .professional-contact-btn svg {
-    width: 22px;
-    height: 22px;
+    width: 20px;
+    height: 20px;
     flex-shrink: 0;
-    transition: transform 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
     position: relative;
     z-index: 1;
+    transition: transform 0.35s cubic-bezier(0.34, 1.56, 0.64, 1);
 }
 
 .professional-contact-btn:hover svg {
-    transform: scale(1.2) rotate(10deg);
+    transform: scale(1.2) rotate(8deg);
 }
 
 .professional-contact-btn span {
@@ -304,65 +255,38 @@
     z-index: 1;
 }
 
-/* Badge decorativo de especialidad */
-.professional-badge {
-    position: absolute;
-    top: 20px;
-    right: 20px;
-    background: rgba(255, 255, 255, 0.2);
-    backdrop-filter: blur(10px);
-    padding: 8px 16px;
-    border-radius: 20px;
-    font-size: 12px;
-    font-weight: 600;
-    color: white;
-    text-transform: uppercase;
-    letter-spacing: 1px;
-    z-index: 3;
-    opacity: 0.9;
-    transition: all 0.4s ease;
-}
-
-.professional-card:hover .professional-badge {
-    opacity: 1;
-    transform: scale(1.05);
-}
-
-/* Responsive mejoras */
+/* ---- Responsive ---- */
 @media (max-width: 768px) {
     .professionals {
-        padding: 80px 0;
+        padding: 60px 0 80px;
     }
 
     .professionals-grid {
-        gap: 35px;
+        gap: 32px;
         margin-top: 40px;
+        grid-template-columns: 1fr;
+        max-width: 420px;
     }
 
-    .professional-card-header {
-        padding: 35px 25px 70px;
-    }
-
-    .professional-card-body {
-        padding: 25px;
-    }
-
-    .professional-avatar {
-        width: 75px;
-        height: 75px;
-    }
-
-    .professional-avatar svg {
-        width: 38px;
-        height: 38px;
+    .professional-photo-wrapper {
+        height: 360px;
     }
 
     .professional-name {
-        font-size: 23px;
+        font-size: 22px;
     }
 
-    .professional-title {
-        font-size: 14px;
-        padding: 5px 12px;
+    .professional-card-body {
+        padding: 18px 22px 28px;
+    }
+}
+
+@media (max-width: 480px) {
+    .professional-photo-wrapper {
+        height: 300px;
+    }
+
+    .professional-card:hover {
+        transform: none;
     }
 }
