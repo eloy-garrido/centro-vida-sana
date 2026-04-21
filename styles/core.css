@@ -939,6 +939,7 @@ body {
 
 .services {
   background: #c9e5d4;
+  padding: 100px 0 160px;
   position: relative;
 }
 
@@ -951,33 +952,117 @@ body {
   width: 100%;
 }
 
-.services-grid {
+/* Single-column stacked layout */
+.services-groups {
   display: flex;
-  flex-wrap: wrap;
-  gap: 15px;
-  justify-content: center;
-  margin: 0 auto;
-  max-width: 900px;
+  flex-direction: column;
+  gap: 60px;
 }
 
+/* Group container – sin caja, solo separación */
+.services-group {
+  background: none;
+  border: none;
+  border-radius: 0;
+  overflow: visible;
+}
+
+/* Group header – etiqueta simple de profesional */
+.services-group-header {
+  align-items: flex-end;
+  background: none;
+  display: flex;
+  justify-content: space-between;
+  gap: 16px;
+  padding: 0 0 22px 0;
+  border-bottom: 1px solid rgba(122, 152, 114, 0.18);
+  margin-bottom: 22px;
+  position: relative;
+}
+
+/* Accent bar below the title */
+.services-group-header::after {
+  content: '';
+  position: absolute;
+  bottom: -1px;
+  left: 0;
+  width: 52px;
+  height: 3px;
+  background: linear-gradient(90deg, var(--dark-green), var(--primary-green));
+  border-radius: 2px;
+}
+
+.services-group--mca .services-group-header {
+  background: none;
+}
+
+/* Badge ya no se usa, mantenemos selector vacío por retrocompatibilidad */
+.services-group-badge {
+  display: none;
+}
+
+.services-group-info {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+}
+
+.services-group-name {
+  color: var(--text-dark);
+  font-size: clamp(22px, 2.2vw, 30px);
+  font-weight: 800;
+  letter-spacing: -0.5px;
+  line-height: 1.1;
+  margin: 0;
+}
+
+.services-group-role {
+  color: var(--dark-green);
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: 1.2px;
+  text-transform: uppercase;
+  margin: 0;
+  opacity: 0.75;
+}
+
+/* Contador de tratamientos – esquina derecha */
+.services-group-count {
+  color: var(--dark-green);
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: 0.5px;
+  white-space: nowrap;
+  opacity: 0.55;
+  padding-bottom: 2px;
+  flex-shrink: 0;
+}
+
+/* Services list inside group (acupunctura – pills en flex-wrap) */
+.services-group-grid {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  padding: 0;
+}
+
+/* Individual service card */
 .service-card {
   align-items: center;
-  background: #fff;
-  border: 2px solid var(--light-green);
-  border-radius: 50px;
-  box-shadow: 0 4px 15px rgba(0, 114, 49, 0.1);
-  cursor: pointer;
-  display: inline-flex;
-  gap: 12px;
+  border: 1.5px solid transparent;
+  border-radius: 16px;
+  display: flex;
+  gap: 14px;
   overflow: hidden;
-  padding: 15px 30px;
+  padding: 14px 16px;
   position: relative;
   text-decoration: none;
-  transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 .service-card::before {
-  background: linear-gradient(135deg, var(--light-green), var(--primary-green));
+  background: linear-gradient(135deg, rgba(168, 197, 160, 0.15), rgba(122, 152, 114, 0.07));
+  border-radius: 16px;
   bottom: 0;
   content: '';
   left: 0;
@@ -985,268 +1070,98 @@ body {
   position: absolute;
   right: 0;
   top: 0;
-  transition: opacity 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+  transition: opacity 0.3s ease;
   z-index: 0;
 }
 
 .service-card:hover::before {
-  opacity: 0.15;
+  opacity: 1;
 }
 
 .service-card:hover {
   border-color: var(--primary-green);
-  box-shadow: 0 8px 25px rgba(0, 114, 49, 0.2);
-  transform: translateY(-3px);
+  transform: translateX(4px);
+}
+
+.service-card::after {
+  display: none;
 }
 
 .service-icon {
   align-items: center;
   background: linear-gradient(135deg, var(--primary-green), var(--dark-green));
-  border-radius: 50%;
+  border-radius: 12px;
   display: flex;
   flex-shrink: 0;
-  height: 40px;
+  height: 44px;
   justify-content: center;
   position: relative;
-  transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
-  width: 40px;
+  transition: all 0.3s ease;
+  width: 44px;
   z-index: 1;
 }
 
 .service-card:hover .service-icon {
-  transform: rotate(360deg) scale(1.1);
+  box-shadow: 0 6px 16px rgba(0, 114, 49, 0.3);
+  transform: scale(1.08);
 }
 
 .service-icon svg {
   color: #fff;
-  height: 20px;
-  width: 20px;
+  height: 22px;
+  width: 22px;
+}
+
+.service-content {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  min-width: 0;
+  position: relative;
+  z-index: 1;
 }
 
 .service-title {
   color: var(--text-dark);
+  font-size: 15px;
+  font-weight: 700;
+  line-height: 1.3;
+  margin: 0 0 3px;
+  white-space: normal;
+}
+
+.service-description {
+  color: #5a7363;
+  display: block;
+  font-size: 12.5px;
+  font-weight: 400;
+  line-height: 1.5;
+  margin: 0;
+}
+
+.service-arrow {
+  color: var(--primary-green);
+  flex-shrink: 0;
   font-size: 16px;
-  font-weight: 600;
+  font-weight: 700;
+  opacity: 0;
   position: relative;
-  white-space: nowrap;
+  transform: translateX(-6px);
+  transition: all 0.3s ease;
   z-index: 1;
 }
 
-.service-benefits,
-.service-description {
+.service-card:hover .service-arrow {
+  opacity: 1;
+  transform: translateX(0);
+}
+
+.service-benefits {
   display: none;
 }
 
-.service-card::after {
-  background: linear-gradient(90deg, transparent, hsla(0, 0%, 100%, 0.4), transparent);
-  content: '';
-  height: 100%;
-  left: -100%;
-  position: absolute;
-  top: 0;
-  transition: left 0.5s cubic-bezier(0.4, 0, 0.2, 1);
-  width: 50%;
-}
+/* Pathologies styles moved to pathologies.css */
 
-.service-card:hover::after {
-  animation: shine 0.8s;
-}
-
-/* ========================================
-   PATHOLOGIES SECTION
-   ======================================== */
-
-.pathologies {
-  background-color: #d3f6e8;
-  padding: 120px 0 100px;
-  position: relative;
-  z-index: 1;
-}
-
-.pathologies .section-header {
-  margin-bottom: 50px;
-  position: relative;
-  z-index: 2;
-}
-
-#pato {
-  color: #1a3a2a;
-  font-weight: 800;
-  padding-top: 80px;
-  position: relative;
-  z-index: 2;
-}
-
-#pato-desc {
-  color: #2d5a45;
-  font-weight: 500;
-  position: relative;
-  z-index: 2;
-}
-
-.pathologies svg#wave {
-  display: block;
-  height: auto;
-  left: 0;
-  position: absolute;
-  top: -1px;
-  width: 100%;
-}
-
-.pathologies-grid {
-  display: grid;
-  gap: 30px;
-  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-}
-
-.pathology-item {
-  background: #fff;
-  border: 2px solid rgba(0, 114, 49, 0.1);
-  border-radius: 24px;
-  box-shadow: 0 8px 30px rgba(0, 0, 0, 0.08);
-  cursor: pointer;
-  display: flex;
-  flex-direction: column;
-  min-height: 200px;
-  overflow: hidden;
-  padding: 35px 30px;
-  position: relative;
-  transition: all 0.5s cubic-bezier(0.34, 1.56, 0.64, 1);
-}
-
-.pathology-item::before {
-  background: linear-gradient(90deg, var(--primary-green), var(--dark-green), #5cb85c);
-  border-radius: 24px 24px 0 0;
-  content: '';
-  height: 5px;
-  left: 0;
-  opacity: 1;
-  position: absolute;
-  right: 0;
-  top: 0;
-  transition: all 0.4s ease;
-}
-
-.pathology-item:hover::before {
-  box-shadow: 0 0 20px rgba(0, 114, 49, 0.4);
-  height: 5px;
-}
-
-.pathology-item::after {
-  background: radial-gradient(circle, rgba(0, 114, 49, 0.15), transparent 70%);
-  border-radius: 50%;
-  content: '';
-  height: 0;
-  left: 50%;
-  pointer-events: none;
-  position: absolute;
-  top: 50%;
-  transform: translate(-50%, -50%);
-  transition: width 0.6s ease, height 0.6s ease;
-  width: 0;
-}
-
-.pathology-item:hover::after {
-  height: 500px;
-  width: 500px;
-}
-
-.pathology-item:hover {
-  border-color: var(--primary-green);
-  box-shadow: 0 20px 50px rgba(0, 114, 49, 0.2);
-  transform: translateY(-12px);
-}
-
-.pathology-content {
-  flex-shrink: 0;
-  margin-bottom: 18px;
-  position: relative;
-  z-index: 2;
-}
-
-.pathology-icon {
-  align-items: center;
-  background: linear-gradient(135deg, var(--primary-green), var(--dark-green));
-  border-radius: 18px;
-  box-shadow: 0 8px 25px rgba(0, 114, 49, 0.25);
-  display: flex;
-  height: 70px;
-  justify-content: center;
-  margin-bottom: 0;
-  position: relative;
-  transition: all 0.5s cubic-bezier(0.34, 1.56, 0.64, 1);
-  width: 70px;
-}
-
-.pathology-icon::before {
-  border: 3px solid rgba(0, 114, 49, 0.3);
-  border-radius: 20px;
-  content: '';
-  height: 110%;
-  opacity: 0;
-  position: absolute;
-  transform: scale(0.8);
-  transition: all 0.5s ease;
-  width: 110%;
-}
-
-.pathology-item:hover .pathology-icon::before {
-  opacity: 1;
-  transform: scale(1.15);
-}
-
-.pathology-item:hover .pathology-icon {
-  box-shadow: 0 15px 40px rgba(0, 114, 49, 0.35);
-  transform: translateY(-8px) rotate(-5deg) scale(1.1);
-}
-
-.pathology-icon svg {
-  color: #fff;
-  filter: drop-shadow(0 2px 8px rgba(0, 0, 0, 0.3));
-  height: 36px;
-  transition: transform 0.5s ease;
-  width: 36px;
-}
-
-.pathology-item:hover .pathology-icon svg {
-  transform: scale(1.2);
-}
-
-.pathology-info {
-  display: flex;
-  flex: 1;
-  flex-direction: column;
-  position: relative;
-  z-index: 2;
-}
-
-.pathology-item h4 {
-  color: var(--text-dark);
-  font-size: 21px;
-  font-weight: 700;
-  line-height: 1.3;
-  margin: 0 0 12px;
-  transition: all 0.4s ease;
-}
-
-.pathology-item:hover h4 {
-  color: var(--dark-green);
-  transform: translateX(3px);
-}
-
-.pathology-item p {
-  color: #5a7363;
-  font-size: 15px;
-  font-weight: 400;
-  line-height: 1.7;
-  margin: 0;
-  transition: all 0.4s ease;
-}
-
-.pathology-item:hover p {
-  color: var(--dark-green);
-  transform: translateX(3px);
-}
 
 /* ========================================
    INTRO CONTENT SECTION
@@ -1339,12 +1254,8 @@ body {
    ======================================== */
 
 .reviews-section {
-  background-image: url(../pix/fondo-pato.webp);
-  background-position: 50%;
-  background-repeat: no-repeat;
-  background-size: cover;
-  background-color: #f8faf8;
-  padding: 100px 0 130px;
+  background: linear-gradient(180deg, #005a26 0%, #007231 35%, #4a8a60 65%, #8bbf3a 85%, #a4d12b 100%);
+  padding: 100px 0 180px;
   position: relative;
   z-index: 5;
 }
@@ -1354,12 +1265,13 @@ body {
 }
 
 .reviews-section .section-title {
-  color: var(--text-dark);
+  color: #fff;
   position: relative;
+  text-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
 }
 
 .reviews-section .section-title::before {
-  background: linear-gradient(90deg, transparent, var(--primary-green), transparent);
+  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.5), transparent);
   bottom: -15px;
   content: '';
   height: 3px;
@@ -1371,113 +1283,149 @@ body {
 }
 
 .reviews-section .section-description {
-  color: var(--dark-green);
+  color: rgba(255, 255, 255, 0.9);
   font-weight: 600;
+  text-shadow: 0 1px 5px rgba(0, 0, 0, 0.1);
 }
 
 .reviews-container {
   margin: 0 auto;
-  max-width: 900px;
+  max-width: 1000px;
 }
 
 .reviews-content {
   animation: fadeInUp 0.8s ease-out;
-  background: #fff;
-  border: 2px solid rgba(122, 152, 114, 0.15);
+  background: linear-gradient(135deg, #ffffff 0%, #e8f7ef 30%, #b8dfc8 65%, #7ab89a 100%);
+  border: none;
   border-radius: 30px;
-  box-shadow: 0 10px 40px rgba(122, 152, 114, 0.12);
-  overflow: hidden;
-  padding: 60px 50px;
+  box-shadow: 0 24px 70px rgba(0, 0, 0, 0.25), 0 4px 16px rgba(255, 255, 255, 0.2) inset;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 50px;
+  align-items: center;
+  padding: 60px 55px;
   position: relative;
 }
 
-.reviews-content::before {
-  background: radial-gradient(circle at 20% 50%, rgba(168, 197, 160, 0.1), transparent);
-  border-radius: 50%;
-  content: '';
-  height: 400px;
-  position: absolute;
-  right: -100px;
-  top: -100px;
-  width: 400px;
+.reviews-left {
+  display: flex;
+  flex-direction: column;
+  gap: 30px;
+  position: relative;
+  z-index: 2;
+}
+
+.reviews-right {
+  position: relative;
+  z-index: 2;
+}
+
+.reviews-rating {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+}
+
+.reviews-stars {
+  color: #fbbf24;
+  font-size: 28px;
+  letter-spacing: 3px;
+  filter: drop-shadow(0 1px 4px rgba(251, 191, 36, 0.4));
+  line-height: 1;
+}
+
+.reviews-rating-label {
+  color: var(--dark-green);
+  font-size: 16px;
+}
+
+.reviews-rating-label strong {
+  color: var(--text-dark);
+  font-size: 22px;
+  font-weight: 700;
 }
 
 .reviews-intro {
   color: var(--text-dark);
-  font-size: 17px;
-  font-weight: 500;
+  font-size: 16px;
+  font-weight: 400;
   line-height: 1.8;
-  margin-bottom: 45px;
+  margin: 0;
   position: relative;
-  text-align: center;
-  z-index: 2;
-}
-
-.reviews-intro strong {
-  color: var(--dark-green);
-  font-weight: 700;
 }
 
 .reviews-benefits {
-  display: grid;
-  gap: 30px;
-  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-  margin-bottom: 50px;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
   position: relative;
   z-index: 2;
 }
 
 .benefit-item {
   align-items: center;
-  background: linear-gradient(135deg, rgba(168, 197, 160, 0.1), rgba(122, 152, 114, 0.05));
-  border-radius: 20px;
+  background: rgba(255, 255, 255, 0.5);
+  border: 1px solid rgba(255, 255, 255, 0.7);
+  border-radius: 16px;
   display: flex;
-  flex-direction: column;
-  gap: 15px;
-  padding: 30px;
-  text-align: center;
-  transition: all 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+  flex-direction: row;
+  gap: 16px;
+  padding: 18px 22px;
+  text-align: left;
+  transition: all 0.35s cubic-bezier(0.34, 1.56, 0.64, 1);
 }
 
 .benefit-item:hover {
-  background: linear-gradient(135deg, rgba(168, 197, 160, 0.15), rgba(122, 152, 114, 0.1));
-  transform: translateY(-5px);
+  background: rgba(255, 255, 255, 0.75);
+  transform: translateX(6px);
+  box-shadow: 0 6px 20px rgba(122, 152, 114, 0.2);
 }
 
 .benefit-item svg {
   color: var(--dark-green);
   flex-shrink: 0;
-  height: 40px;
-  transition: all 0.4s ease;
-  width: 40px;
+  height: 28px;
+  transition: all 0.35s ease;
+  width: 28px;
 }
 
 .benefit-item:hover svg {
-  transform: scale(1.15) rotate(5deg);
+  transform: scale(1.15);
+  color: #005a26;
 }
 
 .benefit-item span {
   color: var(--text-dark);
   font-size: 15px;
-  font-weight: 600;
+  font-weight: 500;
   line-height: 1.4;
 }
 
 .reviews-cta {
-  align-items: center;
-  display: flex;
-  justify-content: center;
   position: relative;
   z-index: 2;
 }
 
 .reviews-cta .btn-primary {
-  font-size: 18px;
-  padding: 18px 50px;
+  background: linear-gradient(135deg, #005a26, var(--dark-green));
+  color: #fff;
+  font-size: 16px;
+  font-weight: 700;
+  padding: 16px 36px;
+  box-shadow: 0 8px 30px rgba(0, 90, 38, 0.35);
+  width: 100%;
+  text-align: center;
+  display: block;
+}
+
+.reviews-cta .btn-primary::before {
+  display: none;
 }
 
 .reviews-cta .btn-primary:hover {
-  transform: translateY(-4px);
+  background: linear-gradient(135deg, #007231, #4a8a60);
+  transform: scale(1.03);
+  box-shadow: 0 0 0 4px rgba(122, 184, 120, 0.35), 0 14px 40px rgba(0, 90, 38, 0.4);
 }
 
 .action-btn.review {
@@ -1870,25 +1818,21 @@ body {
 
 @media (max-width: 768px) {
   .reviews-content {
-    padding: 40px 25px;
+    grid-template-columns: 1fr;
+    gap: 36px;
+    padding: 40px 28px;
   }
 
   .reviews-intro {
     font-size: 15px;
-    margin-bottom: 35px;
-  }
-
-  .reviews-benefits {
-    gap: 20px;
-    grid-template-columns: 1fr;
   }
 
   .benefit-item {
-    padding: 20px;
+    padding: 14px 18px;
   }
 
   .reviews-cta .btn-primary {
-    font-size: 16px;
-    padding: 14px 40px;
+    font-size: 15px;
+    padding: 14px 28px;
   }
 }

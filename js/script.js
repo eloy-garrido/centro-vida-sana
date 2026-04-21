@@ -252,12 +252,12 @@ window.addEventListener('scroll', () => {
 const serviceCards = document.querySelectorAll('.service-card');
 
 serviceCards.forEach(card => {
-    card.addEventListener('mouseenter', function() {
+    card.addEventListener('mouseenter', function () {
         this.style.transition = 'all 0.4s cubic-bezier(0.4, 0, 0.2, 1)';
     });
 
     // Add ripple effect on click
-    card.addEventListener('click', function(e) {
+    card.addEventListener('click', function (e) {
         const ripple = document.createElement('div');
         const rect = this.getBoundingClientRect();
         const size = Math.max(rect.width, rect.height);
