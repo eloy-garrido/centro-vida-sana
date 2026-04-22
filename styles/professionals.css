@@ -55,10 +55,14 @@
         0 1px 4px rgba(0, 0, 0, 0.08);
     transition: transform 0.5s cubic-bezier(0.34, 1.56, 0.64, 1),
                 box-shadow 0.5s ease;
-    opacity: 0;
-    transform: translateY(36px);
     display: flex;
     flex-direction: column;
+}
+
+/* JS agrega esta clase antes de observar; si JS falla, las tarjetas siguen visibles */
+.professional-card.will-animate {
+    opacity: 0;
+    transform: translateY(36px);
 }
 
 .professional-card.fade-in {

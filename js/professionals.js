@@ -1,32 +1,34 @@
+function revealCard(card) {
+    card.classList.remove('will-animate');
+    card.classList.add('fade-in');
+}
+
 function initProfessionalsAnimations() {
     const cards = document.querySelectorAll('.professional-card');
 
     if (!('IntersectionObserver' in window)) {
-        cards.forEach(card => card.classList.add('fade-in'));
+        cards.forEach(revealCard);
         return;
     }
 
-    const revealed = new Set();
+    // Ocultar solo si JS está corriendo correctamente
+    cards.forEach(card => card.classList.add('will-animate'));
+
     const observer = new IntersectionObserver(entries => {
         entries.forEach((entry, i) => {
-            if (entry.isIntersecting && !revealed.has(entry.target)) {
-                revealed.add(entry.target);
-                setTimeout(() => entry.target.classList.add('fade-in'), 180 * i);
+            if (entry.isIntersecting) {
+                setTimeout(() => revealCard(entry.target), 180 * i);
                 observer.unobserve(entry.target);
             }
         });
-    }, { threshold: 0.05, rootMargin: '0px 0px 0px 0px' });
+    }, { threshold: 0.05 });
 
     cards.forEach(card => observer.observe(card));
 
-    // Fallback: si tras 2s alguna tarjeta sigue invisible, forzar visibilidad
-    setTimeout(() => {
-        cards.forEach(card => {
-            if (!card.classList.contains('fade-in')) {
-                card.classList.add('fade-in');
-            }
-        });
-    }, 2000);
+    // Fallback: si tras 1.5s alguna tarjeta sigue oculta, forzar visibilidad
+    setTimeout(() => cards.forEach(card => {
+        if (card.classList.contains('will-animate')) revealCard(card);
+    }), 1500);
 }
 
 function initCardInteractions() {
