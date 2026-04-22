@@ -227,16 +227,28 @@
         grid-column: span 2;
     }
 
+    /* Cards pequeñas más altas para que quepa el contenido */
+    .svc-img-card:not(.svc-img-card--featured) {
+        aspect-ratio: 3 / 4;
+    }
+
     .svc-img-title {
-        font-size: 14px;
+        font-size: 13px;
+        line-height: 1.25;
     }
 
     .svc-img-body {
-        padding: 12px;
+        padding: 10px;
+        gap: 3px;
     }
 
-    .svc-img-desc {
-        font-size: 11px;
+    /* Ocultar descripción en cards pequeñas — no hay espacio suficiente */
+    .svc-img-card:not(.svc-img-card--featured) .svc-img-desc {
+        display: none;
+    }
+
+    .svc-img-cta {
+        font-size: 12px;
     }
 }
 
