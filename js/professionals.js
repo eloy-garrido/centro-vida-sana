@@ -1,14 +1,32 @@
 function initProfessionalsAnimations() {
     const cards = document.querySelectorAll('.professional-card');
+
+    if (!('IntersectionObserver' in window)) {
+        cards.forEach(card => card.classList.add('fade-in'));
+        return;
+    }
+
+    const revealed = new Set();
     const observer = new IntersectionObserver(entries => {
         entries.forEach((entry, i) => {
-            if (entry.isIntersecting) {
+            if (entry.isIntersecting && !revealed.has(entry.target)) {
+                revealed.add(entry.target);
                 setTimeout(() => entry.target.classList.add('fade-in'), 180 * i);
                 observer.unobserve(entry.target);
             }
         });
-    }, { threshold: 0.15, rootMargin: '0px 0px -40px 0px' });
+    }, { threshold: 0.05, rootMargin: '0px 0px 0px 0px' });
+
     cards.forEach(card => observer.observe(card));
+
+    // Fallback: si tras 2s alguna tarjeta sigue invisible, forzar visibilidad
+    setTimeout(() => {
+        cards.forEach(card => {
+            if (!card.classList.contains('fade-in')) {
+                card.classList.add('fade-in');
+            }
+        });
+    }, 2000);
 }
 
 function initCardInteractions() {

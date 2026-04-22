@@ -20,6 +20,6 @@
   "scope": "/",
   "theme_color": "#1a7a5e",
   "background_color": "#ffffff",
-  "display": "standalone",
+  "display": "browser",
   "orientation": "portrait-primary"
 }
