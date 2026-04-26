@@ -26,7 +26,7 @@ html {
 
 body {
   color: var(--text-dark);
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+  font-family: 'DM Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
   line-height: 1.6;
   overflow-x: hidden;
 }
@@ -416,7 +416,6 @@ body {
 
 .hero {
   align-items: center;
-  background: linear-gradient(135deg, #e8f0e6, #f8faf8 50%, #e0ebe0);
   display: flex;
   justify-content: center;
   min-height: 100vh;
@@ -534,7 +533,7 @@ body {
 .hero-content {
   animation: fadeInUp 0.8s ease-out;
   position: relative;
-  text-align: center;
+  text-align: left;
   z-index: 10;
 }
 
@@ -568,47 +567,61 @@ body {
 
 .hero-title {
   color: var(--text-dark);
-  font-size: clamp(40px, 6vw, 72px);
+  font-family: 'Playfair Display', Georgia, serif;
+  font-size: clamp(44px, 5.5vw, 104px);
   font-weight: 800;
-  line-height: 1.1;
-  margin-bottom: 15px;
+  line-height: 1.08;
+  letter-spacing: -0.5px;
+  margin-bottom: 18px;
+}
+
+.hero-highlight {
+  background: linear-gradient(90deg, #3a7d44, #6aab5e, #3a7d44);
+  background-size: 200% auto;
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  font-style: italic;
+  padding-right: 0.12em;
+  animation: gradientFlow 5s ease-in-out infinite;
 }
 
 .hero-subtitle {
-  color: var(--accent-green);
-  display: inline-block;
-  font-size: clamp(22px, 3vw, 32px);
+  color: var(--dark-green);
+  display: block;
+  font-size: clamp(22px, 2.2vw, 38px);
   font-weight: 500;
-  margin-bottom: 15px;
-  padding-bottom: 10px;
-  position: relative;
+  letter-spacing: 0.5px;
+  margin-bottom: 16px;
 }
 
 .hero-subtitle::after {
-  background: linear-gradient(90deg, transparent, var(--primary-green), transparent);
-  bottom: 0;
-  content: '';
+  content: none;
+}
+
+.hero-divider {
+  width: 48px;
   height: 3px;
-  left: 50%;
-  position: absolute;
-  transform: translateX(-50%);
-  width: 80%;
+  background: var(--dark-green);
+  border-radius: 2px;
+  margin-bottom: 22px;
 }
 
 .hero-description {
-  color: var(--dark-green);
-  font-size: 18px;
-  margin-bottom: 40px;
-  margin-left: auto;
-  margin-right: auto;
-  max-width: 600px;
+  color: #4a5e4a;
+  font-size: clamp(15px, 1.2vw, 20px);
+  line-height: 1.65;
+  margin-bottom: 36px;
+  margin-left: 0;
+  margin-right: 0;
+  max-width: 540px;
 }
 
 .hero-actions {
   display: flex;
   flex-wrap: wrap;
   gap: 20px;
-  justify-content: center;
+  justify-content: flex-start;
   margin-bottom: 50px;
 }
 

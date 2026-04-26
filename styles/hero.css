@@ -8,8 +8,27 @@
     align-items: center;
     justify-content: center;
     position: relative;
-    background: linear-gradient(135deg, #e8f0e6 0%, #f8faf8 50%, #e0ebe0 100%);
+    background: #faedda;
     overflow: hidden;
+    padding: 200px 0 140px;
+    box-sizing: border-box;
+}
+
+.hero>.container {
+    display: flex;
+    align-items: center;
+    width: 100%;
+    max-width: 1600px;
+    padding: 0 clamp(20px, 5vw, 80px);
+}
+
+.hero>.container .hero-content {
+    flex: 0 0 48%;
+    max-width: 48%;
+    text-align: left;
+    position: relative;
+    z-index: 10;
+    animation: fadeInUp 0.8s ease-out;
 }
 
 .hero::after {
@@ -121,16 +140,16 @@
 }
 
 .hero-content {
-    text-align: center;
     position: relative;
     z-index: 10;
     animation: fadeInUp 0.8s ease-out;
+    text-align: left;
 }
 
 .logo-container-hero {
     width: 180px;
     height: 180px;
-    margin: 0 auto 30px;
+    margin: 0 0 30px;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -156,11 +175,11 @@
 }
 
 .hero-title {
-    font-size: clamp(40px, 6vw, 72px);
+    font-size: clamp(44px, 5.5vw, 104px);
     font-weight: 800;
     color: var(--text-dark);
-    margin-bottom: 15px;
-    line-height: 1.1;
+    margin-bottom: 18px;
+    line-height: 1.08;
 }
 
 .hero-subtitle {
@@ -168,37 +187,42 @@
     font-weight: 500;
     color: var(--accent-green);
     margin-bottom: 15px;
-    position: relative;
-    display: inline-block;
-    padding-bottom: 10px;
+    display: block;
 }
 
 .hero-subtitle::after {
-    content: '';
-    position: absolute;
-    bottom: 0;
-    left: 50%;
-    transform: translateX(-50%);
-    width: 80%;
-    height: 3px;
-    background: linear-gradient(90deg, transparent, var(--primary-green), transparent);
+    content: none;
 }
 
 .hero-description {
     font-size: 18px;
     color: var(--dark-green);
     margin-bottom: 40px;
-    max-width: 600px;
-    margin-left: auto;
-    margin-right: auto;
+    max-width: 520px;
 }
 
 .hero-actions {
     display: flex;
     gap: 20px;
-    justify-content: center;
+    justify-content: flex-start;
+    align-items: flex-start;
+    flex-direction: row;
     margin-bottom: 50px;
     flex-wrap: wrap;
+}
+
+.hero-actions .btn {
+    width: auto;
+}
+
+.hero-duo {
+    position: absolute;
+    bottom: 0;
+    right: 0;
+    height: clamp(460px, 80vh, 1100px);
+    width: auto;
+    z-index: 4;
+    pointer-events: none;
 }
 
 .contact-cards {
@@ -268,6 +292,49 @@
     font-size: 18px;
     font-weight: 600;
     color: var(--text-dark);
+}
+
+@media (min-width: 1400px) {
+    .hero>.container .hero-content {
+        flex: 0 0 44%;
+        max-width: 44%;
+    }
+
+    .hero-duo {
+        height: clamp(780px, 84vh, 1100px);
+    }
+}
+
+@media (max-width: 768px) {
+    .hero {
+        padding: 120px 0 300px;
+        align-items: flex-start;
+    }
+
+    .hero-duo {
+        display: block;
+        position: absolute;
+        bottom: 0;
+        left: 50%;
+        transform: translateX(-50%);
+        right: auto;
+        height: clamp(260px, 40vh, 360px);
+        width: auto;
+        z-index: 4;
+    }
+
+    .hero>.container .hero-content {
+        flex: none;
+        max-width: 100%;
+        text-align: center;
+        padding-right: 0;
+    }
+
+    .hero-actions {
+        justify-content: center;
+        flex-direction: column;
+        align-items: center;
+    }
 }
 
 .scroll-indicator {

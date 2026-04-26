@@ -218,6 +218,39 @@
     align-items: center;
     gap: 24px;
     box-shadow: 0 8px 32px rgba(0, 0, 0, 0.06);
+    position: relative;
+    overflow: hidden;
+}
+
+.pathologies-footer-inner::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    height: 90px;
+    background-image: url('../pix/pasto.webp');
+    background-repeat: repeat-x;
+    background-position: bottom center;
+    background-size: auto 90px;
+    opacity: 0.18;
+    pointer-events: none;
+    transform: translateY(50px);
+    transition: transform 0.6s cubic-bezier(0.25, 1, 0.5, 1),
+        opacity 0.45s ease;
+    z-index: 0;
+}
+
+.pathologies-footer-inner:hover::after {
+    transform: translateY(0);
+    opacity: 0.52;
+}
+
+.pathologies-footer-icon,
+.pathologies-footer-text,
+.pathologies-footer-btn {
+    position: relative;
+    z-index: 1;
 }
 
 .pathologies-footer-icon {
