@@ -983,7 +983,6 @@ body {
 
 .services {
   background: #c9e5d4;
-  padding: 100px 0 60px;
   position: relative;
 }
 
@@ -1213,7 +1212,6 @@ body {
 
 .intro-content {
   background: #007231;
-  padding: 100px 0;
   position: relative;
   z-index: 1;
 }

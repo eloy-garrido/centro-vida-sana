@@ -330,6 +330,11 @@
         padding-right: 0;
     }
 
+    .hero-divider {
+        margin-left: auto;
+        margin-right: auto;
+    }
+
     .hero-actions {
         justify-content: center;
         flex-direction: column;
