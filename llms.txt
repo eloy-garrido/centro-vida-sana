@@ -1,0 +1,68 @@
+# Centro Vida Sana Austral - AI Crawler Information
+
+## Empresa
+Centro Vida Sana Austral
+Centro de terapias alternativas integrales en Temuco, Chile
+
+## Servicios
+- Acupuntura y Medicina Tradicional China
+- Kinesiología terapéutica
+- Quiropraxia
+- Electroacupuntura
+- Ventosas (cupping therapy)
+- Moxibustión
+- Gua Sha
+- Auriculoterapia
+- Fisioterapia
+- Masoterapia
+- Plantillas ortopédicas
+- Ejercicio terapéutico
+- Kinesiología a domicilio
+
+## Profesionales
+- Eduardo Lagos: Acupunturista certificado por Minsal, especialista en Acupuntura y Medicina Tradicional China
+- Felipe Méndez: Lic. en Quiropraxia y Kinesiología, especialista en tratamientos quiroprácticos y rehabilitación corporal
+
+## Especialidades Médicas
+- Dolor lumbar y cervical
+- Hernias discales
+- Lesiones deportivas
+- Problemas posturales (escoliosis, cifosis, lordosis)
+- Cefaleas y migrañas
+- Síndrome del túnel carpiano
+- Artrosis y artritis
+- Ciática
+- Fibromialgia
+- Estrés y ansiedad
+
+## Ubicación
+Los Armiños 1620, Temuco, La Araucanía, Chile
+
+## Contacto
+- Tel: +569 7370 0616 (Felipe)
+- Tel: +569 7388 8910 (Eduardo)
+- WhatsApp disponible
+- Email: No específico
+
+## Horario
+Lunes a viernes: 10:00 - 21:00
+
+## Redes Sociales
+- Instagram: @vidasanaaustral
+
+## Certificaciones
+- Acupunturista certificado por Minsal
+- Profesional de quiropraxia y kinesiología licenciado
+- Google Rating: 5.0/5 (156 reseñas)
+
+## URL Principal
+https://centrovidasana.cl
+
+## Tipo de Sitio
+Website informativo de servicios de salud, single-page application
+
+## Palabras Clave
+acupuntura temuco, quiropraxia temuco, kinesiologia temuco, medicina alternativa chile, dolor lumbar, tratamiento natural
+
+---
+Última actualización: Abril 2026

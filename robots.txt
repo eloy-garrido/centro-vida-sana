@@ -13,21 +13,13 @@ Allow: /pix/
 
 # Sitemap
 Sitemap: https://centrovidasana.cl/sitemap.xml
-
-# Velocidad de rastreo (Google)
-Crawl-delay: 1
+Sitemap: https://centrovidasana.cl/llms.txt
 
 # Reglas específicas para Googlebot
 User-agent: Googlebot
 Allow: /
-Crawl-delay: 0
 
-# Reglas para otros bots
-User-agent: Bingbot
-Allow: /
-Crawl-delay: 1
-
-# Permitir bots de análisis competitivos (útiles para monitoreo)
+# Permitir bots de análisis competitivos
 User-agent: AhrefsBot
 Allow: /
 
