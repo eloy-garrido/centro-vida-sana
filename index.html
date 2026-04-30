@@ -119,20 +119,20 @@
     <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700&family=DM+Sans:ital,opsz,wght@0,9..40,400;0,9..40,500;0,9..40,600;1,9..40,400&display=swap" rel="stylesheet">
 
     <!-- Estilos Animaciones -->
-    <link rel="preload" href="styles/animations.css?v=3" as="style">
-    <link rel="stylesheet" href="styles/animations.css?v=3">
+    <link rel="preload" href="styles/animations.css?v=4" as="style">
+    <link rel="stylesheet" href="styles/animations.css?v=4">
 
     <!-- Estilos Hero -->
-    <link rel="preload" href="styles/hero.css?v=11" as="style">
-    <link rel="stylesheet" href="styles/hero.css?v=11">
+    <link rel="preload" href="styles/hero.css?v=16" as="style">
+    <link rel="stylesheet" href="styles/hero.css?v=16">
 
     <!-- Estilos Consolidados -->
     <link rel="preload" href="styles/core.css?v=5" as="style">
     <link rel="stylesheet" href="styles/core.css?v=5">
 
     <!-- Estilos Responsive (Carga condicional - solo en pantallas <= 1024px) -->
-    <link rel="stylesheet" media="(max-width: 1024px)" href="styles/responsive.css?v=3">
-    <link rel="preload" href="styles/responsive.css?v=3" as="style" media="(max-width: 1024px)">
+    <link rel="stylesheet" media="(max-width: 1024px)" href="styles/responsive.css?v=5">
+    <link rel="preload" href="styles/responsive.css?v=5" as="style" media="(max-width: 1024px)">
 
     <!-- Estilos Patologías -->
     <link rel="stylesheet" href="styles/pathologies.css?v=3">
@@ -464,7 +464,7 @@
                 </div>
             </div>
         </div>
-        <img src="pix/duo.webp" alt="Felipe y Eduardo, profesionales de Centro Vida Sana" class="hero-duo" loading="eager" width="560" height="700">
+        <img src="pix/duo.webp" srcset="pix/duo.webp 560w, pix/duo-hd.webp 1200w" sizes="(min-width: 1024px) 1200px, 560px" alt="Felipe y Eduardo, profesionales de Centro Vida Sana" class="hero-duo" loading="eager" width="560" height="700">
 
         <div class="scroll-indicator">
             <span>Desliza para conocer más</span>
@@ -472,6 +472,10 @@
                 <path d="M7.41 8.59L12 13.17l4.59-4.58L18 10l-6 6-6-6 1.41-1.41z" />
             </svg>
         </div>
+
+        <!-- Botón Agendar Cita: solo visible en móvil, reemplaza el scroll indicator -->
+        <a href="#contacto" class="hero-mobile-cta btn btn-primary" aria-label="Agendar cita">Agendar Cita</a>
+
     </section>
 
     <!-- Sección de Introducción con Keywords SEO -->

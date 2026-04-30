@@ -87,32 +87,41 @@ body {
 }
 
 .btn::before {
-  background: hsla(0, 0%, 100%, 0.3);
-  border-radius: 50%;
-  content: '';
-  height: 0;
-  left: 50%;
-  position: absolute;
-  top: 50%;
-  transform: translate(-50%, -50%);
-  transition: width 0.6s cubic-bezier(0.4, 0, 0.2, 1), height 0.6s cubic-bezier(0.4, 0, 0.2, 1);
-  width: 0;
-}
-
-.btn:hover::before {
-  height: 300px;
-  width: 300px;
+  display: none;
 }
 
 .btn-primary {
-  background: linear-gradient(135deg, var(--dark-green), var(--primary-green));
-  box-shadow: 0 10px 30px var(--shadow);
+  background: linear-gradient(135deg, #004d20, #007231 40%, #3a7d44 60%, #5a9c55);
+  background-size: 300% 300%;
+  box-shadow: 0 8px 25px rgba(0, 90, 38, 0.4), inset 0 1px 0 rgba(255,255,255,0.15);
   color: #fff;
+  position: relative;
+  overflow: hidden;
+  transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+  animation: btnGradient 3s ease infinite;
+}
+
+@keyframes btnGradient {
+  0%, 100% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+}
+
+.btn-primary::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: linear-gradient(180deg, rgba(255,255,255,0.15) 0%, transparent 50%);
+  pointer-events: none;
 }
 
 .btn-primary:hover {
-  box-shadow: 0 15px 40px var(--shadow-hover);
-  transform: translateY(-3px);
+  box-shadow: 0 15px 45px rgba(0, 114, 49, 0.5), 0 0 30px rgba(0, 114, 49, 0.2);
+  transform: translateY(-4px) scale(1.02);
+  animation: none;
+  background-position: 100% 50%;
 }
 
 .btn-secondary {

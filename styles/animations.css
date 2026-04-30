@@ -118,3 +118,14 @@
     50%  { background-position: 100% center; }
     100% { background-position: 0% center; }
 }
+
+.hero-mobile-cta {
+    animation: shimmer 2s linear infinite;
+    position: relative;
+    overflow: hidden;
+}
+
+@keyframes shimmer {
+    0% { background-position: -200% 0; }
+    100% { background-position: 200% 0; }
+}

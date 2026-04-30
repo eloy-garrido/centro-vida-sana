@@ -4,6 +4,7 @@
 
 .hero {
     min-height: 100vh;
+    min-height: 100svh;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -307,7 +308,7 @@
 
 @media (max-width: 768px) {
     .hero {
-        padding: 120px 0 300px;
+        padding: 120px 0 140px;
         align-items: flex-start;
     }
 
@@ -325,6 +326,7 @@
 
     .hero>.container .hero-content {
         flex: none;
+        width: 100%;
         max-width: 100%;
         text-align: center;
         padding-right: 0;
@@ -335,39 +337,20 @@
         margin-right: auto;
     }
 
+    /* Ocultar botón dentro del contenido — se muestra abajo via hero-mobile-cta */
     .hero-actions {
-        justify-content: center;
-        flex-direction: column;
-        align-items: center;
+        display: none;
     }
 }
 
-.scroll-indicator {
-    position: absolute;
-    bottom: 30px;
-    left: 50%;
-    transform: translateX(-50%);
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: 8px;
-    animation: bounce 2s infinite;
-    z-index: 10;
-    background: rgba(255, 255, 255, 0.6);
-    backdrop-filter: blur(5px);
-    padding: 10px 20px;
-    border-radius: 30px;
-    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+/* Botón Agendar Cita solo móvil — oculto en desktop por defecto */
+.hero-mobile-cta {
+    display: none;
 }
 
-.scroll-indicator span {
-    color: var(--text-dark);
-    font-size: 13px;
-    font-weight: 600;
-}
-
-.scroll-indicator svg {
-    width: 22px;
-    height: 22px;
-    color: var(--dark-green);
+@media (max-width: 768px) {
+    /* Ocultar scroll indicator en móvil */
+    .scroll-indicator {
+        display: none !important;
+    }
 }
