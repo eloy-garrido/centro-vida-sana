@@ -5,13 +5,14 @@
 .hero {
     min-height: 100vh;
     min-height: 100svh;
+    min-height: 100dvh;
     display: flex;
     align-items: center;
     justify-content: center;
     position: relative;
     background: #faedda;
     overflow: hidden;
-    padding: 200px 0 140px;
+    padding: clamp(120px, 15vh, 200px) 0 clamp(100px, 12vh, 140px);
     box-sizing: border-box;
 }
 
@@ -24,12 +25,13 @@
 }
 
 .hero>.container .hero-content {
-    flex: 0 0 48%;
-    max-width: 48%;
+    flex: 0 0 60%;
+    max-width: 60%;
     text-align: left;
     position: relative;
     z-index: 10;
     animation: fadeInUp 0.8s ease-out;
+    margin-top: 60px;
 }
 
 .hero::after {
@@ -57,7 +59,7 @@
     top: 0;
     left: 0;
     width: 100%;
-    height: 250px;
+    height: clamp(180px, 20vh, 250px);
     background-image: url('../pix/patron-follage.webp');
     background-repeat: repeat-x;
     background-position: top center;
@@ -140,12 +142,7 @@
     animation-delay: -18s;
 }
 
-.hero-content {
-    position: relative;
-    z-index: 10;
-    animation: fadeInUp 0.8s ease-out;
-    text-align: left;
-}
+
 
 .logo-container-hero {
     width: 180px;
@@ -176,11 +173,24 @@
 }
 
 .hero-title {
-    font-size: clamp(44px, 5.5vw, 104px);
+    font-family: 'Playfair Display', Georgia, serif;
+    font-size: clamp(44px, 4.5vw, 72px);
     font-weight: 800;
     color: var(--text-dark);
     margin-bottom: 18px;
     line-height: 1.08;
+    letter-spacing: -0.5px;
+}
+
+.hero-highlight {
+    background: linear-gradient(90deg, #3a7d44, #6aab5e, #3a7d44);
+    background-size: 200% auto;
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+    font-style: italic;
+    padding-right: 0.12em;
+    animation: gradientFlow 5s ease-in-out infinite;
 }
 
 .hero-subtitle {
@@ -302,13 +312,35 @@
     }
 
     .hero-duo {
-        height: clamp(780px, 84vh, 1100px);
+        height: clamp(780px, 88vh, 1300px);
+    }
+
+    .hero>.container {
+        max-width: 1800px;
+    }
+
+    .hero-top-decoration {
+        height: clamp(200px, 18vh, 280px);
+    }
+}
+
+@media (min-width: 2000px) {
+    .hero>.container {
+        max-width: 2200px;
+    }
+
+    .hero-duo {
+        height: clamp(900px, 90vh, 1600px);
+    }
+
+    .hero-top-decoration {
+        height: clamp(200px, 16vh, 280px);
     }
 }
 
 @media (max-width: 768px) {
     .hero {
-        padding: 120px 0 140px;
+        padding: 60px 0 140px;
         align-items: flex-start;
     }
 
@@ -330,6 +362,7 @@
         max-width: 100%;
         text-align: center;
         padding-right: 0;
+        margin-top: 0;
     }
 
     .hero-divider {
@@ -341,9 +374,59 @@
     .hero-actions {
         display: none;
     }
+
+    .hero-title {
+        font-size: 50px;
+    }
+
+    .hero-subtitle {
+        font-size: 30px;
+    }
+}
+
+@media (max-width: 480px) {
+    .hero-title {
+        font-size: clamp(28px, 18vw, 42px);
+        margin-bottom: 10px;
+    }
+
+    .hero-subtitle {
+        font-size: clamp(16px, 20vw, 22px);
+        margin-bottom: 10px;
+    }
 }
 
 /* Botón Agendar Cita solo móvil — oculto en desktop por defecto */
+.scroll-indicator {
+    align-items: center;
+    animation: bounce 2s infinite;
+    backdrop-filter: blur(5px);
+    background: hsla(0, 0%, 100%, 0.6);
+    border-radius: 30px;
+    bottom: 30px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    left: 50%;
+    padding: 10px 20px;
+    position: absolute;
+    transform: translateX(-50%);
+    z-index: 10;
+}
+
+.scroll-indicator span {
+    color: var(--text-dark);
+    font-size: 13px;
+    font-weight: 600;
+}
+
+.scroll-indicator svg {
+    color: var(--dark-green);
+    height: 22px;
+    width: 22px;
+}
+
 .hero-mobile-cta {
     display: none;
 }
