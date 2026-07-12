@@ -12,6 +12,7 @@
   --primary-green: #a8c5a0;
   --light-green: #c9d9c3;
   --dark-green: #7a9872;
+  --green-contrast: #44593e; /* verde oscuro con contraste AA (>=4.5:1) sobre fondos claros del sitio */
   --accent-green: #8fb185;
   --text-dark: #2d3e2d;
   --text-light: #f5f5f0;
@@ -755,23 +756,21 @@ body {
 }
 
 .services-group-role {
-  color: var(--dark-green);
+  color: var(--green-contrast);
   font-size: 12px;
   font-weight: 600;
   letter-spacing: 1.2px;
   text-transform: uppercase;
   margin: 0;
-  opacity: 0.75;
 }
 
 /* Contador de tratamientos – esquina derecha */
 .services-group-count {
-  color: var(--dark-green);
+  color: var(--green-contrast);
   font-size: 12px;
   font-weight: 600;
   letter-spacing: 0.5px;
   white-space: nowrap;
-  opacity: 0.55;
   padding-bottom: 2px;
   flex-shrink: 0;
 }

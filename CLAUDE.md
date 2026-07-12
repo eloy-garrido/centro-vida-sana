@@ -33,9 +33,11 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 ### CSS Architecture
 - **Component-based**: Each section has its own CSS file:
   - `core.css` (base, variables, utilities)
+  - `fonts.css` (@font-face for self-hosted variable fonts served from /fonts/)
   - `animations.css` (keyframe animations)
   - `navbar.css`, `hero.css`, `services.css`, `professionals.css`, `pathologies.css`, `contact.css`, `footer.css`
   - `responsive.css` (all responsive breakpoints)
+- **Production bundle**: index.html loads a single `styles/bundle.min.css`. After editing any source CSS file, regenerate the bundle with `python scripts/build-css.py` and bump the `?v=` query string in index.html
 - **CSS variables**: Color scheme defined in `:root` with green palette
 - **Design tokens**:
   - `--primary-green: #a8c5a0;`
