@@ -1,4 +1,20 @@
 // ============================================
+// VERCEL WEB ANALYTICS
+// El endpoint /_vercel/ solo existe en producción (lo inyecta Vercel).
+// Se carga condicionalmente para evitar 404 en desarrollo local.
+// ============================================
+
+(function () {
+    const host = window.location.hostname;
+    if (host === 'centrovidasana.cl' || host === 'www.centrovidasana.cl' || host.endsWith('.vercel.app')) {
+        const s = document.createElement('script');
+        s.defer = true;
+        s.src = '/_vercel/insights/script.js';
+        document.head.appendChild(s);
+    }
+})();
+
+// ============================================
 // SMOOTH SCROLL
 // ============================================
 

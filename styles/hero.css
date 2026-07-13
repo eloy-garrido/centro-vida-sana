@@ -191,6 +191,26 @@
     font-style: italic;
     padding-right: 0.12em;
     animation: gradientFlow 5s ease-in-out infinite;
+    text-shadow: none;
+}
+
+/* Variante clara del highlight para títulos sobre fondos oscuros */
+.hero-highlight--light {
+    background: linear-gradient(90deg, #c9f26e, #f4ffd0, #c9f26e);
+    background-size: 200% auto;
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+    font-style: italic;
+    padding-right: 0.12em;
+    animation: gradientFlow 5s ease-in-out infinite;
+    text-shadow: none;
+}
+
+/* En títulos de sección el highlight va sin cursiva (el hero la conserva) */
+.section-title .hero-highlight,
+.section-title .hero-highlight--light {
+    font-style: normal;
 }
 
 .hero-subtitle {
