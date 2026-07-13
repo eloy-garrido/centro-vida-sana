@@ -37,7 +37,7 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
   - `animations.css` (keyframe animations)
   - `navbar.css`, `hero.css`, `services.css`, `professionals.css`, `pathologies.css`, `contact.css`, `footer.css`
   - `responsive.css` (all responsive breakpoints)
-- **Production bundle**: index.html loads a single `styles/bundle.min.css`. After editing any source CSS file, regenerate the bundle with `python scripts/build-css.py` and bump the `?v=` query string in index.html
+- **Inline production CSS**: index.html carries the minified CSS inline between the `bundle-css:start/end` markers (zero render-blocking requests). After editing any source CSS file, run `python scripts/build-css.py` — it rebuilds `styles/bundle.min.css` (reference only) and re-injects the inline `<style>` block automatically. Never edit the inline block by hand
 - **CSS variables**: Color scheme defined in `:root` with green palette
 - **Design tokens**:
   - `--primary-green: #a8c5a0;`
