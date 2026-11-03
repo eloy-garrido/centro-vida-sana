@@ -9,6 +9,7 @@ const quiroServices = [
     price: '$30.000',
     img: '/pix/kine/quiro.webp',
     featured: true,
+    tags: ['Alineación Vertebral', 'Descompresión Radicular', 'Sin Cirugía'],
   },
   {
     name: 'Fisioterapia y Desinflamación',
@@ -55,6 +56,7 @@ const acupServices = [
     price: '$30.000',
     img: '/pix/mtc/acupuntura.webp',
     featured: true,
+    tags: ['Equilibrio de Qi', 'Agujas Estériles Minsal', 'Neuroanalgesia'],
   },
   {
     name: 'Electroacupuntura para Dolor Crónico',
@@ -96,7 +98,7 @@ const acupServices = [
 
 <section id="servicios" class="py-20 lg:py-28 bg-[#FBFDFB] text-[#152219] relative overflow-hidden border-b border-[#E5EBE6]">
 
-  <!-- Ambient light glowing auras (sin fondos oscuros) -->
+  <!-- Ambient light glowing auras (libre de fondos oscuros) -->
   <div class="absolute inset-0 pointer-events-none overflow-hidden">
     <div class="absolute -top-32 -left-32 w-[600px] h-[600px] bg-[#134E5E]/[0.04] rounded-full blur-[140px]"></div>
     <div class="absolute top-1/2 -right-32 w-[650px] h-[650px] bg-[#2E4D38]/[0.05] rounded-full blur-[150px]"></div>
@@ -214,7 +216,7 @@ const acupServices = [
             }`}
           >
             <!-- Contenedor Fotográfico Limpio -->
-            <div class={`relative overflow-hidden bg-[#F0F6F8] ${svc.featured ? 'h-[250px] sm:h-[320px] lg:h-[350px]' : 'h-48'}`}>
+            <div class={`relative overflow-hidden bg-[#F0F6F8] ${svc.featured ? 'h-[280px] sm:h-[340px] lg:h-[380px]' : 'h-48'}`}>
               <img
                 src={svc.img}
                 alt={svc.name}
@@ -244,17 +246,28 @@ const acupServices = [
                     {svc.name}
                   </h4>
                   <span class={`font-bold text-[#134E5E] shrink-0 font-sans ${
-                    svc.featured ? 'text-2xl' : 'text-lg'
+                    svc.featured ? 'text-2xl sm:text-3xl' : 'text-lg'
                   }`}>
                     {svc.price}
                   </span>
                 </div>
 
-                <p class={`text-[#44594A] leading-relaxed mb-4 ${
+                <p class={`text-[#44594A] leading-relaxed mb-3 ${
                   svc.featured ? 'text-sm sm:text-base' : 'text-xs sm:text-sm line-clamp-2'
                 }`}>
                   {svc.subtitle}
                 </p>
+
+                <!-- Tags clínicos en el item destacado -->
+                {svc.featured && svc.tags && (
+                  <div class="flex flex-wrap gap-2 mb-4">
+                    {svc.tags.map((tag) => (
+                      <span class="px-3 py-1 rounded-lg text-xs font-semibold bg-[#EBF5F8] text-[#134E5E] border border-[#C2DFE8]">
+                        {tag}
+                      </span>
+                    ))}
+                  </div>
+                )}
               </div>
 
               <!-- Footer de la Tarjeta con Llamado a la Acción -->
@@ -264,10 +277,17 @@ const acupServices = [
                   <span>Box Privado Felipe</span>
                 </span>
 
-                <span class="inline-flex items-center gap-1.5 text-xs font-bold text-[#134E5E] group-hover:text-[#0E3B47] transition-all">
-                  <span>Agendar</span>
-                  <span class="group-hover:translate-x-1 transition-transform">→</span>
-                </span>
+                {svc.featured ? (
+                  <span class="inline-flex items-center gap-2 px-4 py-2 rounded-xl bg-[#134E5E] text-white text-xs font-bold shadow-sm group-hover:bg-[#0E3B47] transition-all">
+                    <span>Agendar este tratamiento</span>
+                    <span class="group-hover:translate-x-1 transition-transform">→</span>
+                  </span>
+                ) : (
+                  <span class="inline-flex items-center gap-1.5 text-xs font-bold text-[#134E5E] group-hover:text-[#0E3B47] transition-all">
+                    <span>Agendar</span>
+                    <span class="group-hover:translate-x-1 transition-transform">→</span>
+                  </span>
+                )}
               </div>
             </div>
           </a>
@@ -371,7 +391,7 @@ const acupServices = [
             }`}
           >
             <!-- Contenedor Fotográfico Limpio -->
-            <div class={`relative overflow-hidden bg-[#F2F7F3] ${svc.featured ? 'h-[250px] sm:h-[320px] lg:h-[350px]' : 'h-48'}`}>
+            <div class={`relative overflow-hidden bg-[#F2F7F3] ${svc.featured ? 'h-[280px] sm:h-[340px] lg:h-[380px]' : 'h-48'}`}>
               <img
                 src={svc.img}
                 alt={svc.name}
@@ -401,17 +421,28 @@ const acupServices = [
                     {svc.name}
                   </h4>
                   <span class={`font-bold text-[#2E4D38] shrink-0 font-sans ${
-                    svc.featured ? 'text-2xl' : 'text-lg'
+                    svc.featured ? 'text-2xl sm:text-3xl' : 'text-lg'
                   }`}>
                     {svc.price}
                   </span>
                 </div>
 
-                <p class={`text-[#44594A] leading-relaxed mb-4 ${
+                <p class={`text-[#44594A] leading-relaxed mb-3 ${
                   svc.featured ? 'text-sm sm:text-base' : 'text-xs sm:text-sm line-clamp-2'
                 }`}>
                   {svc.subtitle}
                 </p>
+
+                <!-- Tags clínicos en el item destacado -->
+                {svc.featured && svc.tags && (
+                  <div class="flex flex-wrap gap-2 mb-4">
+                    {svc.tags.map((tag) => (
+                      <span class="px-3 py-1 rounded-lg text-xs font-semibold bg-[#EEF5F0] text-[#2E4D38] border border-[#CCE2D2]">
+                        {tag}
+                      </span>
+                    ))}
+                  </div>
+                )}
               </div>
 
               <!-- Footer de la Tarjeta con Llamado a la Acción -->
@@ -421,10 +452,17 @@ const acupServices = [
                   <span>Box Privado Eduardo</span>
                 </span>
 
-                <span class="inline-flex items-center gap-1.5 text-xs font-bold text-[#2E4D38] group-hover:text-[#233C2C] transition-all">
-                  <span>Agendar</span>
-                  <span class="group-hover:translate-x-1 transition-transform">→</span>
-                </span>
+                {svc.featured ? (
+                  <span class="inline-flex items-center gap-2 px-4 py-2 rounded-xl bg-[#2E4D38] text-white text-xs font-bold shadow-sm group-hover:bg-[#233C2C] transition-all">
+                    <span>Agendar este tratamiento</span>
+                    <span class="group-hover:translate-x-1 transition-transform">→</span>
+                  </span>
+                ) : (
+                  <span class="inline-flex items-center gap-1.5 text-xs font-bold text-[#2E4D38] group-hover:text-[#233C2C] transition-all">
+                    <span>Agendar</span>
+                    <span class="group-hover:translate-x-1 transition-transform">→</span>
+                  </span>
+                )}
               </div>
             </div>
           </a>
