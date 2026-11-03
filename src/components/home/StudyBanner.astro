@@ -1,67 +1,364 @@
 ---
-import { professionals } from '../../data/professionals';
+// StudyBanner.astro - Sección "Estudia con Nosotros" (Curso Online MTC con Eduardo Lagos)
+// Diseño Híbrido: Combina la composición original de gran impacto (Eduardo integrado a sangre,
+// yin-yang tradicional, becas, estadísticas del curso, acreditación Minsal) con la sobriedad,
+// tipografía editorial Playfair Display / DM Sans y paleta botánica refinada del rediseño actual.
 ---
 
-<section id="academia" class="py-16 relative">
-  <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
-    <div class="rounded-3xl bg-gradient-to-br from-[#1C3B29] to-[#0E2417] text-white p-8 sm:p-12 lg:p-14 relative overflow-hidden shadow-soft-lg border border-[#2D543B]">
+<!-- JSON-LD Course Schema estructurado para SEO -->
+<script type="application/ld+json" is:inline>
+{
+  "@context": "https://schema.org",
+  "@type": "Course",
+  "name": "Medicina Tradicional China: Fundamentos y Teoría Yin Yang",
+  "description": "Curso online de introducción a la medicina tradicional china dictado por el acupunturista Eduardo Lagos Neira, acreditado por el MINSAL.",
+  "provider": {
+    "@type": "Organization",
+    "name": "Centro Vida Sana Austral & Ideas Interactivas",
+    "sameAs": "https://centrovidasana.cl"
+  },
+  "offers": {
+    "@type": "Offer",
+    "category": "Beca",
+    "price": "0",
+    "priceCurrency": "CLP",
+    "url": "https://ideasinteractivas.cl/medicina-tradicional-china.html",
+    "description": "Becas de hasta 100% de descuento asignadas por orden de llegada"
+  },
+  "hasCourseInstance": {
+    "@type": "CourseInstance",
+    "courseMode": "Online",
+    "courseWorkload": "PT10H",
+    "instructor": {
+      "@type": "Person",
+      "name": "Eduardo Lagos Neira",
+      "jobTitle": "Acupunturista acreditado por el MINSAL en Medicina Tradicional China",
+      "worksFor": {
+        "@id": "https://centrovidasana.cl/#clinic"
+      }
+    }
+  }
+}
+</script>
 
-      <!-- Decorative ambient glow -->
-      <div class="absolute -right-20 -bottom-20 w-80 h-80 rounded-full bg-sage-accent/20 blur-3xl pointer-events-none"></div>
+<section class="study-section py-20 lg:py-28 bg-[#EEF5F0] border-y border-[#D9E6DC] relative overflow-hidden" id="estudia" aria-labelledby="estudia-title">
+  <!-- Ilustración / textura tradicional de fondo (paisaje chino en tinta sumi-e / shan shui) -->
+  <div class="study-landscape-bg pointer-events-none select-none absolute inset-0 overflow-hidden" aria-hidden="true">
+    <img
+      src="/pix/paisaje-chino-bg.webp"
+      alt=""
+      class="w-full h-full object-cover object-top opacity-20 sm:opacity-25 mix-blend-multiply filter contrast-125 transition-opacity"
+      loading="lazy"
+      onerror="this.style.display='none'"
+    />
+  </div>
 
-      <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 items-center relative z-10">
+  <!-- Sutil gradiente ambiental superior para armonizar la entrada -->
+  <div class="absolute inset-0 bg-gradient-to-b from-[#2E4D38]/[0.03] via-transparent to-[#2E4D38]/[0.04] pointer-events-none" aria-hidden="true"></div>
 
-        <!-- Text info -->
-        <div class="lg:col-span-8 space-y-4 text-center lg:text-left">
-          <span class="inline-flex items-center gap-2 px-3 py-1 rounded-full text-xs font-bold uppercase tracking-widest bg-white/10 text-sage-light border border-white/20">
-            Formación Continua en Temuco
-          </span>
-          <h2 class="font-serif text-2xl sm:text-3xl lg:text-4xl font-bold tracking-tight text-white leading-snug">
-            Estudia con Nosotros: Fundamentos de Medicina Tradicional China
-          </h2>
-          <p class="text-sm sm:text-base text-[#C2D6C7] leading-relaxed max-w-2xl">
-            Curso teórico-práctico presencial impartido por <strong>Eduardo Lagos</strong>. Aprende teoría Yin-Yang, los 5 elementos, meridianos principales y técnicas básicas de auriculoterapia y ventosas para terapeutas y público general.
-          </p>
-          <div class="flex flex-wrap items-center justify-center lg:justify-start gap-4 pt-2 text-xs text-[#A8C8B1]">
-            <span class="flex items-center gap-1.5">
-              <svg class="w-4 h-4 text-sage-light" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"/></svg>
-              Clases prácticas en Temuco
-            </span>
-            <span class="flex items-center gap-1.5">
-              <svg class="w-4 h-4 text-sage-light" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"/></svg>
-              Material bibliográfico incluido
-            </span>
-            <span class="flex items-center gap-1.5">
-              <svg class="w-4 h-4 text-sage-light" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"/></svg>
-              Certificado de participación
-            </span>
-          </div>
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+
+    <!-- Encabezado de Sección: Editorial, sobrio y claro -->
+    <div class="text-center max-w-2xl mx-auto mb-12 sm:mb-16">
+      <div class="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-white/85 border border-[#CCE2D2] text-[#2E4D38] text-xs font-bold uppercase tracking-wider mb-4 shadow-soft-sm backdrop-blur-xs">
+        <span class="w-2 h-2 rounded-full bg-[#2E4D38] animate-pulse" aria-hidden="true"></span>
+        <span>Academia & Formación Continua</span>
+      </div>
+      <h2 id="estudia-title" class="font-serif text-3xl sm:text-4xl lg:text-5xl font-bold text-ink-primary tracking-tight mb-4">
+        Estudia con <span class="font-serif italic font-normal text-[#007231]">Nosotros</span>
+      </h2>
+      <p class="text-base sm:text-lg text-ink-secondary leading-relaxed">
+        ¿Quieres estudiar medicina tradicional china? Lleva tu interés por la salud natural al siguiente nivel con nuestro curso online guiado por el acupunturista Eduardo Lagos.
+      </p>
+    </div>
+
+    <!-- Tarjeta Principal: Composición Híbrida Refinada -->
+    <div class="study-card relative max-w-6xl mx-auto rounded-3xl sm:rounded-[36px] overflow-hidden border border-white/15 shadow-[0_24px_60px_rgba(15,36,24,0.22)]">
+
+      <!-- Yin-Yang sutil decorativo tradicional (rotación lenta, opacidad baja) -->
+      <img
+        src="/pix/yinyang.webp"
+        alt=""
+        class="study-yinyang pointer-events-none select-none"
+        aria-hidden="true"
+        loading="lazy"
+        width="340"
+        height="340"
+      />
+
+      <!-- Brillo sutil ambiental interno en la esquina superior izquierda -->
+      <div class="absolute -top-32 -left-32 w-96 h-96 rounded-full bg-[#C8E667]/10 blur-3xl pointer-events-none" aria-hidden="true"></div>
+
+      <!-- Contenido Textual (Izquierda en desktop, arriba en móviles) -->
+      <div class="study-content-wrapper relative z-10">
+
+        <!-- Insignia de Beca Refinada (Atractiva, sobria, sin neón estridente) -->
+        <div class="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full text-xs font-bold uppercase tracking-wider bg-[#C8E667]/20 text-[#D8F276] border border-[#C8E667]/35 backdrop-blur-sm self-start mb-4 shadow-sm">
+          <svg class="w-3.5 h-3.5 text-[#D8F276]" fill="currentColor" viewBox="0 0 20 20" aria-hidden="true">
+            <path fill-rule="evenodd" d="M5 2a2 2 0 00-2 2v14l3.5-2 3.5 2 3.5-2 3.5 2V4a2 2 0 00-2-2H5zm2.5 3a1.5 1.5 0 100 3 1.5 1.5 0 000-3zm6.207.293a1 1 0 00-1.414 0l-6 6a1 1 0 101.414 1.414l6-6a1 1 0 000-1.414zM12.5 10a1.5 1.5 0 100 3 1.5 1.5 0 000-3z" clip-rule="evenodd"/>
+          </svg>
+          <span>Becas de hasta 100% de descuento</span>
         </div>
 
-        <!-- Instructor Badge & CTA -->
-        <div class="lg:col-span-4 flex flex-col items-center justify-center p-6 rounded-2xl bg-white/5 border border-white/10 backdrop-blur-sm text-center">
-          <div class="w-20 h-20 rounded-2xl overflow-hidden border-2 border-sage-light/30 shadow-soft mb-3">
-            <img
-              src="/pix/eduardo-instructor-560.webp"
-              alt="Eduardo Lagos Instructor"
-              class="w-full h-full object-cover"
-            />
-          </div>
-          <span class="font-serif font-bold text-base text-white">Eduardo Lagos</span>
-          <span class="text-xs text-sage-light mb-4">Instructor Titular MTC</span>
+        <!-- Título del Curso -->
+        <h3 class="font-serif text-2xl sm:text-3xl lg:text-4xl font-bold text-white leading-tight tracking-tight mb-3">
+          Medicina Tradicional China: <span class="italic font-normal text-[#D8F276]">Fundamentos y Teoría Yin&nbsp;Yang</span>
+        </h3>
 
+        <!-- Subtítulo / Modalidad -->
+        <p class="text-xs sm:text-sm font-semibold uppercase tracking-wider text-[#9EC4A7] mb-5 flex items-center gap-2">
+          <span>Curso 100% Online</span>
+          <span class="text-white/40">&middot;</span>
+          <span>Certificación Digital Incluida</span>
+        </p>
+
+        <!-- Texto Descriptivo Enriquecido -->
+        <p class="text-sm sm:text-base text-[#D4E4D8] leading-relaxed mb-6 max-w-xl font-normal">
+          Descubre el Qi, los meridianos, el Yin Yang y los Cinco Movimientos en un curso de introducción a la medicina tradicional china <strong class="text-white font-semibold">100% online y a tu propio ritmo</strong>, sin necesidad de conocimientos previos. Aprende con lecturas enriquecidas y videos explicativos, desde la cosmovisión filosófica hasta la comprensión clínica.
+        </p>
+
+        <!-- Fichas de Datos del Curso (Badges de valor transparentes/esmerilados) -->
+        <ul class="flex flex-wrap gap-2.5 sm:gap-3 mb-8 p-0 list-none">
+          <li class="inline-flex items-center gap-2 px-3.5 py-2 rounded-xl bg-white/[0.08] border border-white/12 text-white/95 text-xs sm:text-sm font-medium backdrop-blur-sm shadow-soft-sm">
+            <svg class="w-4 h-4 text-[#D8F276] shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2" aria-hidden="true">
+              <circle cx="12" cy="12" r="10"></circle>
+              <polyline points="12 6 12 12 16 14"></polyline>
+            </svg>
+            <span>10 horas de contenido</span>
+          </li>
+          <li class="inline-flex items-center gap-2 px-3.5 py-2 rounded-xl bg-white/[0.08] border border-white/12 text-white/95 text-xs sm:text-sm font-medium backdrop-blur-sm shadow-soft-sm">
+            <svg class="w-4 h-4 text-[#D8F276] shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2" aria-hidden="true">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"/>
+            </svg>
+            <span>2 módulos &middot; 7 unidades</span>
+          </li>
+          <li class="inline-flex items-center gap-2 px-3.5 py-2 rounded-xl bg-white/[0.08] border border-white/12 text-white/95 text-xs sm:text-sm font-medium backdrop-blur-sm shadow-soft-sm">
+            <svg class="w-4 h-4 text-[#D8F276] shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2" aria-hidden="true">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M21 12a9 9 0 01-9 9m9-9a9 9 0 00-9-9m9 9H3m9 9a9 9 0 01-9-9m9 9c1.657 0 3-4.03 3-9s-1.343-9-3-9m0 18c-1.657 0-3-4.03-3-9s1.343-9 3-9m-9 9a9 9 0 019-9"/>
+            </svg>
+            <span>100% online, a tu ritmo</span>
+          </li>
+        </ul>
+
+        <!-- Botón de Acción Principal & Garantía de Cupos -->
+        <div class="flex flex-col sm:flex-row sm:items-center gap-4 sm:gap-6 pt-1">
           <a
-            href="https://wa.me/56973888910?text=Hola%20Eduardo,%20quisiera%20recibir%20el%20programa%20y%20fechas%20del%20Curso%20de%20Medicina%20Tradicional%20China."
+            href="https://ideasinteractivas.cl/medicina-tradicional-china.html"
             target="_blank"
             rel="noopener noreferrer"
-            class="btn-press w-full py-3 px-4 rounded-xl bg-sage-light text-sage-900 font-bold text-xs hover:bg-white transition-colors cursor-pointer"
+            class="btn-press inline-flex items-center justify-center gap-2.5 px-8 py-3.5 rounded-full bg-[#C8E667] text-[#0D2417] font-bold text-sm sm:text-base shadow-[0_10px_25px_rgba(200,230,103,0.3)] hover:bg-[#D8F276] hover:shadow-[0_14px_32px_rgba(200,230,103,0.4)] transition-all cursor-pointer group"
+            aria-label="Quiero mi beca para el curso de Medicina Tradicional China (se abre en pestaña nueva)"
           >
-            Solicitar Programa y Fechas
+            <span>Quiero mi beca</span>
+            <svg class="w-4 h-4 transform group-hover:translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2.2" aria-hidden="true">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M14 5l7 7m0 0l-7 7m7-7H3"/>
+            </svg>
           </a>
+
+          <!-- Indicador sutil de urgencia -->
+          <div class="inline-flex items-center gap-2 text-xs text-[#A3C7AD]">
+            <span class="relative flex h-2.5 w-2.5 shrink-0" aria-hidden="true">
+              <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-[#C8E667] opacity-75"></span>
+              <span class="relative inline-flex rounded-full h-2.5 w-2.5 bg-[#C8E667]"></span>
+            </span>
+            <span>Cupos con beca limitados: asignación por orden de llegada</span>
+          </div>
         </div>
 
       </div>
 
+      <!-- Foto de Eduardo Integrada a Sangre + Placa de Acreditación Minsal -->
+      <div class="study-photo-wrapper">
+        <img
+          src="/pix/eduardo-instructor-900.webp"
+          srcset="/pix/eduardo-instructor-560.webp 560w, /pix/eduardo-instructor-900.webp 900w"
+          sizes="(max-width: 1024px) 100vw, 550px"
+          alt="Eduardo Lagos Neira, instructor del curso de Medicina Tradicional China en su consulta"
+          class="study-photo-img"
+          loading="lazy"
+          width="900"
+          height="1118"
+        />
+
+        <!-- Placa Flotante del Instructor Acreditado Minsal -->
+        <div class="study-instructor-card">
+          <h4 class="font-serif text-base sm:text-lg font-bold text-white mb-0.5">
+            Eduardo Lagos Neira
+          </h4>
+          <p class="text-xs sm:text-[13px] text-[#D0E2D5] leading-relaxed mb-2.5">
+            Instructor del curso y acupunturista de nuestro centro.
+          </p>
+          <div class="inline-flex items-center gap-1.5 text-xs text-[#D8F276] font-semibold bg-[#C8E667]/10 px-2.5 py-1 rounded-lg border border-[#C8E667]/20">
+            <svg class="w-3.5 h-3.5 text-[#D8F276] shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2" aria-hidden="true">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"/>
+            </svg>
+            <span>Acreditado por el MINSAL en MTC</span>
+          </div>
+        </div>
+      </div>
+
     </div>
+
   </div>
 </section>
+
+<style>
+  /* Fondo principal de la tarjeta: Verde Botánico Profundo y Texturado */
+  .study-card {
+    background: linear-gradient(135deg, #0F271B 0%, #173B28 45%, #1F4932 75%, #25543A 100%);
+    isolation: isolate;
+  }
+
+  /* Yin-Yang decorativo giratorio - atmósfera tradicional sobria */
+  .study-yinyang {
+    position: absolute;
+    right: 34%;
+    top: -80px;
+    width: 340px;
+    height: 340px;
+    opacity: 0.09;
+    filter: grayscale(1) brightness(2.6);
+    animation: studySpin 75s linear infinite;
+    z-index: 1;
+  }
+
+  @keyframes studySpin {
+    from { transform: rotate(0deg); }
+    to { transform: rotate(360deg); }
+  }
+
+  /* =======================================================
+     Layout Desktop (>= 1024px):
+     Contenido a la izquierda con padding dedicado;
+     Foto a la derecha ocupando el 48% con fundido gradual.
+     ======================================================= */
+  @media (min-width: 1024px) {
+    .study-card {
+      padding: 56px 46% 56px 56px;
+    }
+
+    .study-content-wrapper {
+      max-width: 580px;
+    }
+
+    .study-photo-wrapper {
+      position: absolute;
+      top: 0;
+      right: 0;
+      bottom: 0;
+      width: 48%;
+      z-index: 1;
+    }
+
+    .study-photo-img {
+      display: block;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      object-position: top center;
+      -webkit-mask-image: linear-gradient(to left, #000 62%, transparent 100%);
+      mask-image: linear-gradient(to left, #000 62%, transparent 100%);
+    }
+
+    .study-instructor-card {
+      position: absolute;
+      bottom: 24px;
+      right: 24px;
+      left: 15%;
+      padding: 16px 20px;
+      border-radius: 18px;
+      background: rgba(9, 28, 18, 0.82);
+      backdrop-filter: blur(10px);
+      -webkit-backdrop-filter: blur(10px);
+      border: 1px solid rgba(255, 255, 255, 0.16);
+      box-shadow: 0 10px 28px rgba(0, 0, 0, 0.35);
+      text-align: left;
+    }
+  }
+
+  /* =======================================================
+     Layout Tablet y Móvil (< 1024px):
+     Contenido arriba a ancho completo;
+     Foto abajo a sangre (full-bleed) fundiéndose hacia arriba;
+     Placa del instructor centrada sobre la foto.
+     ======================================================= */
+  @media (max-width: 1023px) {
+    .study-card {
+      padding: 44px 32px 0;
+    }
+
+    .study-yinyang {
+      right: -60px;
+      top: -60px;
+      width: 260px;
+      height: 260px;
+      opacity: 0.07;
+    }
+
+    .study-photo-wrapper {
+      position: relative;
+      width: calc(100% + 64px);
+      margin: 36px -32px 0;
+      height: 480px;
+      z-index: 1;
+    }
+
+    .study-photo-img {
+      display: block;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      object-position: center 12%;
+      -webkit-mask-image: linear-gradient(to top, #000 72%, transparent 100%);
+      mask-image: linear-gradient(to top, #000 72%, transparent 100%);
+    }
+
+    .study-instructor-card {
+      position: absolute;
+      bottom: 24px;
+      left: 20px;
+      right: 20px;
+      padding: 16px 20px;
+      border-radius: 16px;
+      background: rgba(9, 28, 18, 0.88);
+      backdrop-filter: blur(8px);
+      -webkit-backdrop-filter: blur(8px);
+      border: 1px solid rgba(255, 255, 255, 0.16);
+      box-shadow: 0 10px 24px rgba(0, 0, 0, 0.3);
+      text-align: center;
+    }
+  }
+
+  @media (max-width: 640px) {
+    .study-card {
+      padding: 36px 20px 0;
+      border-radius: 28px;
+    }
+
+    .study-photo-wrapper {
+      width: calc(100% + 40px);
+      margin: 28px -20px 0;
+      height: 400px;
+    }
+
+    .study-photo-img {
+      object-position: center 10%;
+      -webkit-mask-image: linear-gradient(to top, #000 75%, transparent 100%);
+      mask-image: linear-gradient(to top, #000 75%, transparent 100%);
+    }
+
+    .study-instructor-card {
+      left: 14px;
+      right: 14px;
+      bottom: 16px;
+      padding: 14px 16px;
+    }
+  }
+
+  /* Accesibilidad: movimiento reducido */
+  @media (prefers-reduced-motion: reduce) {
+    .study-yinyang {
+      animation: none;
+    }
+  }
+</style>

@@ -10,7 +10,7 @@
     align-items: center;
     justify-content: center;
     position: relative;
-    background: #faedda;
+    background: #ffffff;
     overflow: hidden;
     padding: clamp(120px, 15vh, 200px) 0 clamp(100px, 12vh, 140px);
     box-sizing: border-box;
@@ -51,6 +51,27 @@
     position: absolute;
     inset: 0;
     overflow: hidden;
+    background-color: #ffffff;
+    background-image: url('../pix/hero-bg-bright.webp');
+    background-repeat: no-repeat;
+    background-position: 50% center;
+    background-size: cover;
+}
+
+.hero-background::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(
+        90deg,
+        #ffffff 0%,
+        rgba(255, 255, 255, 0.92) 24%,
+        rgba(255, 255, 255, 0.58) 48%,
+        rgba(255, 255, 255, 0.18) 75%,
+        rgba(255, 255, 255, 0.05) 100%
+    );
+    z-index: 1;
+    pointer-events: none;
 }
 
 /* Fondo Decorativo Superior */
@@ -178,7 +199,7 @@
     font-weight: 800;
     color: var(--text-dark);
     margin-bottom: 18px;
-    line-height: 1.08;
+    line-height: 1.15;
     letter-spacing: -0.5px;
 }
 
@@ -189,7 +210,9 @@
     background-clip: text;
     -webkit-text-fill-color: transparent;
     font-style: italic;
+    display: inline-block;
     padding-right: 0.12em;
+    padding-bottom: 2px;
     animation: gradientFlow 5s ease-in-out infinite;
     text-shadow: none;
 }
@@ -202,12 +225,14 @@
     background-clip: text;
     -webkit-text-fill-color: transparent;
     font-style: italic;
+    display: inline-block;
     padding-right: 0.12em;
+    padding-bottom: 2px;
     animation: gradientFlow 5s ease-in-out infinite;
     text-shadow: none;
 }
 
-/* En títulos de sección el highlight va sin cursiva (el hero la conserva) */
+/* En títulos de sección el highlight conserva la cursiva solo si se desea */
 .section-title .hero-highlight,
 .section-title .hero-highlight--light {
     font-style: normal;
@@ -219,6 +244,19 @@
     color: var(--accent-green);
     margin-bottom: 15px;
     display: block;
+}
+
+.hero-subtitle .subtitle-serif-accent {
+    font-family: 'Playfair Display', Georgia, serif;
+    font-style: italic;
+    font-weight: 700;
+    color: var(--dark-green);
+}
+
+.hero-actions .btn:active,
+.hero-mobile-cta:active {
+    transform: scale(0.97) !important;
+    transition-duration: 120ms !important;
 }
 
 .hero-subtitle::after {
@@ -359,9 +397,27 @@
 }
 
 @media (max-width: 768px) {
+    .hero-background {
+        background-position: 50% bottom;
+    }
+
+    .hero-background::before {
+        background: linear-gradient(
+            180deg,
+            rgba(255, 255, 255, 0.97) 0%,
+            rgba(255, 255, 255, 0.85) 42%,
+            rgba(255, 255, 255, 0.30) 75%,
+            rgba(255, 255, 255, 0.05) 100%
+        );
+    }
+
     .hero {
-        padding: 60px 0 140px;
+        padding: clamp(160px, 19vh, 195px) 20px clamp(220px, 32vh, 320px);
         align-items: flex-start;
+    }
+
+    .hero-top-decoration {
+        height: clamp(110px, 13vh, 130px);
     }
 
     .hero-duo {
@@ -388,35 +444,64 @@
     .hero-divider {
         margin-left: auto;
         margin-right: auto;
+        margin-top: 12px;
+        margin-bottom: 14px;
     }
 
-    /* Ocultar botón dentro del contenido — se muestra abajo via hero-mobile-cta */
+    /* Ocultar botón dentro del contenido en móvil */
     .hero-actions {
-        display: none;
+        display: none !important;
     }
 
     .hero-title {
-        font-size: 50px;
+        font-size: clamp(28px, 6.8vw, 40px);
+        line-height: 1.15;
+        margin-bottom: 12px;
     }
 
     .hero-subtitle {
-        font-size: 30px;
+        font-size: clamp(15.5px, 3.6vw, 20px);
+        margin-bottom: 12px;
+    }
+
+    .hero-description {
+        font-size: clamp(14px, 3.1vw, 15.5px);
+        margin-bottom: 0;
+        max-width: 480px;
+        margin-left: auto;
+        margin-right: auto;
+    }
+
+    .hero-mobile-cta {
+        display: none !important;
     }
 }
 
 @media (max-width: 480px) {
+    .hero {
+        padding: clamp(145px, 18vh, 180px) 16px clamp(200px, 30vh, 280px);
+    }
+
+    .hero-top-decoration {
+        height: clamp(100px, 12vh, 120px);
+    }
+
     .hero-title {
-        font-size: clamp(28px, 18vw, 42px);
+        font-size: clamp(26px, 7.2vw, 34px);
         margin-bottom: 10px;
     }
 
     .hero-subtitle {
-        font-size: clamp(16px, 20vw, 22px);
+        font-size: clamp(14.5px, 3.8vw, 18px);
         margin-bottom: 10px;
+    }
+
+    .hero-description {
+        font-size: clamp(13.5px, 3.2vw, 15px);
     }
 }
 
-/* Botón Agendar Cita solo móvil — oculto en desktop por defecto */
+/* Botón Agendar Cita solo móvil — oculto por defecto */
 .scroll-indicator {
     align-items: center;
     animation: bounce 2s infinite;
@@ -448,7 +533,7 @@
 }
 
 .hero-mobile-cta {
-    display: none;
+    display: none !important;
 }
 
 @media (max-width: 768px) {

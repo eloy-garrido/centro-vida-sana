@@ -3,67 +3,50 @@ export interface FaqItem {
   question: string;
   answer: string;
   category: 'general' | 'quiropraxia' | 'acupuntura';
+  badge: string;
 }
 
 export const faqsData: FaqItem[] = [
   {
     id: 'valores-sesion',
-    question: '¿Cuánto cuesta una sesión de atención?',
-    answer: 'Los valores oscilan entre $20.000 y $35.000 CLP según la terapia específica (Quiropraxia, Acupuntura, Kinesiología o Atención a Domicilio). Emitimos boleta electrónica para que puedas solicitar reembolso con tu Isapre o seguro de salud complementario si cuentas con cobertura.',
+    question: '¿Cuánto cuesta una sesión y cómo se paga?',
+    answer: 'Los aranceles oscilan entre $20.000 y $35.000 CLP según la terapia específica (Quiropraxia, Acupuntura, Kinesiología o Atención a Domicilio). No exigimos planes ni paquetes forzados: pagas sesión a sesión evaluando tu evolución real. Puedes consultar aranceles vigentes y disponibilidad vía WhatsApp.',
     category: 'general',
+    badge: 'Valores',
   },
   {
-    id: 'dolor-acupuntura',
-    question: '¿Es dolorosa la acupuntura?',
-    answer: 'No. Empleamos agujas estériles y desechables de grado médico con diámetros ultrafinos (0.16 a 0.25 mm, casi el grosor de un cabello). La mayoría de los pacientes siente apenas un hormigueo sutil o calor placentero (sensación "De Qi"). Es muy común que los pacientes se queden dormidos durante la sesión por la relajación generada.',
-    category: 'acupuntura',
-  },
-  {
-    id: 'diferencia-quiro-kine',
-    question: '¿Cuál es la diferencia entre Quiropraxia y Kinesiología?',
-    answer: 'La Quiropraxia se enfoca en el diagnóstico y corrección manual precisa de bloqueos articulares y desalineaciones de la columna para liberar interferencias nerviosas. La Kinesiología, por su parte, rehabilita los tejidos musculares y ligamentos mediante agentes físicos y ejercicio terapéutico. En nuestro centro, Felipe Méndez integra ambas disciplinas en un solo plan de tratamiento.',
-    category: 'quiropraxia',
+    id: 'dolor-procedimientos',
+    question: '¿Los tratamientos (agujas o ajuste de columna) causan dolor?',
+    answer: 'No. En acupuntura usamos agujas de grado médico ultrafinas (0.16 a 0.25 mm, como un cabello) que generan una sensación placentera de relajación o calor ("De Qi"). En quiropraxia, los ajustes articulares son maniobras suaves y rápidas para descomprimir la zona; el característico sonido es solo liberación inofensiva de gas articular, nunca roce de huesos.',
+    category: 'general',
+    badge: 'Procedimiento',
   },
   {
     id: 'orden-medica',
-    question: '¿Necesito orden médica o derivación para atenderme?',
-    answer: 'No es obligatoria. Puedes agendar tu consulta directamente con nosotros para ser evaluado. Si cuentas con radiografías, resonancias magnéticas (RMN) o exámenes previos, te recomendamos traerlos para complementar tu evaluación clínica.',
+    question: '¿Necesito orden médica o exámenes previos para atenderme?',
+    answer: 'No es obligatoria ninguna derivación médica para agendar tu consulta. En la primera sesión realizamos una evaluación clínica integral. Si cuentas con radiografías, resonancias magnéticas (RMN) o exámenes previos, te recomendamos traerlos para complementar tu diagnóstico.',
     category: 'general',
+    badge: 'Requisitos',
   },
   {
     id: 'cuantas-sesiones',
     question: '¿Cuántas sesiones necesitaré para sentir alivio?',
-    answer: 'En cuadros agudos (como un lumbago reciente o tortícolis), suele experimentarse un alivio notable desde la 1ª o 2ª sesión. En afecciones crónicas o de larga data (como discopatías o fibromialgia), estructuramos planes de 4 a 8 sesiones con reevaluaciones periódicas.',
+    answer: 'En cuadros agudos (como un lumbago reciente o tortícolis), la gran mayoría experimenta un alivio notable entre la 1ª y 2ª sesión. En afecciones crónicas o de larga data (discopatías, fibromialgia o artrosis), estructuramos planes de 4 a 6 sesiones con pautas preventivas para evitar recaídas.',
     category: 'general',
+    badge: 'Tratamiento',
   },
   {
-    id: 'atencion-domicilio',
-    question: '¿Ofrecen atención kinesiológica a domicilio en Temuco?',
-    answer: 'Sí. Felipe Méndez realiza atención kinesiológica a domicilio en Temuco y sectores cercanos, ideal para personas con movilidad reducida, postrados, post-quirúrgicos inmediatos o adultos mayores. Coordinamos los traslados con previa reserva.',
+    id: 'diferencia-quiro-kine',
+    question: '¿Cuál es la diferencia entre Quiropraxia y Kinesiología?',
+    answer: 'La Quiropraxia se especializa en la alineación articular de la columna y la liberación de interferencias nerviosas. La Kinesiología se enfoca en la rehabilitación muscular, control motor y fortalecimiento de tejidos. En nuestro centro, Felipe Méndez integra ambas en una misma sesión para un tratamiento completo y duradero.',
     category: 'quiropraxia',
+    badge: 'Especialidades',
   },
   {
-    id: 'certificacion-minsal',
-    question: '¿Los profesionales están acreditados por el Ministerio de Salud?',
-    answer: 'Sí, 100%. Eduardo Lagos cuenta con certificación oficial del Minsal como Acupunturista en el Registro Nacional de Prestadores de Salud. Felipe Méndez es Kinesiólogo titulado y Quiropráctico con formación de postgrado y registro en la Superintendencia de Salud.',
+    id: 'ubicacion-agenda',
+    question: '¿Dónde están ubicados y cómo puedo agendar una hora?',
+    answer: 'Estamos en Los Armiños 1620, Temuco, en un barrio residencial tranquilo, seguro y con estacionamiento directo frente al recinto. Puedes agendar tu consulta enviando un WhatsApp o llamando a Felipe Méndez (+569 7370 0616) o Eduardo Lagos (+569 7388 8910).',
     category: 'general',
-  },
-  {
-    id: 'tratamiento-ciatica',
-    question: '¿Cómo tratan el dolor de ciática?',
-    answer: 'La ciática es nuestra consulta más habitual. Combinamos el ajuste quiropráctico para descomprimir la raíz nerviosa en la columna lumbosacra con electroacupuntura y calor local para desinflamar el trayecto del nervio ciático en glúteo y pierna con rapidez.',
-    category: 'general',
-  },
-  {
-    id: 'ubicacion-estacionamiento',
-    question: '¿Dónde están ubicados y cuentan con estacionamiento?',
-    answer: 'Estamos ubicados en Los Armiños 1620, Temuco, en un sector residencial tranquilo, seguro y de fácil acceso, con disponibilidad de estacionamiento directo y expedito frente al recinto.',
-    category: 'general',
-  },
-  {
-    id: 'como-agendar',
-    question: '¿Cómo puedo agendar una hora de atención?',
-    answer: 'Puedes contactar directamente al profesional de tu preferencia vía WhatsApp o llamada telefónica: Felipe Méndez (+569 7370 0616) o Eduardo Lagos (+569 7388 8910). También dispones de los botones directos distribuidos en este sitio web.',
-    category: 'general',
+    badge: 'Contacto',
   },
 ];

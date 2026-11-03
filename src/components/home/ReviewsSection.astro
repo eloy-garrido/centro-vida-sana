@@ -3,64 +3,124 @@ import { reviewsData } from '../../data/reviews';
 import { clinicInfo } from '../../data/clinic';
 ---
 
-<section id="resenas" class="py-20 lg:py-28 bg-canvas-muted/40 relative">
-  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+<section id="resenas" class="pt-20 lg:pt-24 pb-28 lg:pb-36 bg-gradient-to-b from-[#edf7f1] via-[#f8faf8] to-[#f8faf8] relative overflow-hidden">
+  <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
 
-    <!-- Section Header -->
-    <div class="text-center max-w-2xl mx-auto mb-14">
-      <div class="inline-flex items-center gap-1.5 text-amber-500 mb-3 text-lg">
-        <span>★★★★★</span>
-        <span class="text-xs font-bold text-ink-primary ml-1.5 px-2 py-0.5 rounded-md bg-amber-500/10 border border-amber-500/20">
-          5.0 de 5 Estrellas
-        </span>
+    <!-- Section Header Sobrio -->
+    <div class="text-center max-w-2xl mx-auto mb-12 sm:mb-14">
+      <div class="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-white border border-[#007231]/15 shadow-xs mb-4">
+        <svg class="w-4 h-4" viewBox="0 0 24 24" aria-hidden="true">
+          <path fill="#4285F4" d="M23.745 12.27c0-.7-.06-1.4-.19-2.07H12v4.51h6.6c-.29 1.52-1.14 2.82-2.4 3.68v3.05h3.88c2.27-2.09 3.665-5.17 3.665-9.17Z"/>
+          <path fill="#34A853" d="M12 24c3.24 0 5.95-1.08 7.93-2.91l-3.88-3.05c-1.08.72-2.45 1.16-4.05 1.16-3.12 0-5.77-2.1-6.72-4.93H1.25v3.15C3.27 21.39 7.33 24 12 24Z"/>
+          <path fill="#FBBC05" d="M5.28 14.27c-.25-.72-.38-1.49-.38-2.27s.13-1.55.38-2.27V6.58H1.25C.45 8.18 0 9.99 0 12s.45 3.82 1.25 5.42l4.03-3.15Z"/>
+          <path fill="#EA4335" d="M12 4.75c1.77 0 3.35.61 4.6 1.8l3.42-3.42C17.95 1.19 15.24 0 12 0 7.33 0 3.27 2.61 1.25 6.58l4.03 3.15c.95-2.83 3.6-4.98 6.72-4.98Z"/>
+        </svg>
+        <span class="text-xs font-bold text-[#007231]">Google Reviews</span>
+        <span class="text-xs text-amber-500 tracking-wider">★★★★★</span>
+        <span class="text-xs font-extrabold text-[#0d2616]">5.0</span>
       </div>
-      <h2 class="font-serif text-3xl sm:text-4xl lg:text-5xl font-semibold text-ink-primary tracking-tight mb-4">
-        La Experiencia de Nuestros Pacientes
+
+      <h2 class="font-serif text-3xl sm:text-4xl lg:text-5xl font-semibold text-ink-primary tracking-tight mb-3">
+        ¿Qué Dicen Nuestros <span class="text-[#007231] italic">Pacientes</span>?
       </h2>
-      <p class="text-base text-ink-secondary leading-relaxed">
-        Opiniones reales verificadas en Google Maps de personas en Temuco que recuperaron su bienestar y movilidad con nosotros.
+      <p class="text-sm sm:text-base text-ink-secondary leading-relaxed">
+        Opiniones reales verificadas en Google Maps de personas que recuperaron su movilidad y bienestar en Temuco.
       </p>
     </div>
 
-    <!-- Reviews Grid -->
-    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 max-w-6xl mx-auto mb-12">
-      {reviewsData.map(rev => (
-        <div class="rounded-2xl bg-surface border border-surface-border p-6 shadow-soft flex flex-col justify-between hover:shadow-soft-lg transition-all duration-300">
+    <!-- Grid de Tarjetas de Testimonios Directas (6 Tarjetas con Simetría Perfecta) -->
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 max-w-6xl mx-auto">
+      {reviewsData.map((rev) => (
+        <article class="rounded-2xl bg-white border border-[#007231]/12 p-6 shadow-soft hover:shadow-soft-lg hover:-translate-y-1 transition-all duration-300 flex flex-col justify-between">
           <div>
-            <div class="flex items-center justify-between text-xs text-ink-muted mb-3">
-              <span class="text-amber-500 font-bold">★★★★★</span>
-              <span>{rev.date}</span>
+            <div class="flex items-center justify-between text-xs mb-3">
+              <span class="text-amber-500 font-bold tracking-wider">★★★★★</span>
+              <span class="text-[#738a7a] font-medium">{rev.date}</span>
             </div>
-            <p class="text-xs sm:text-sm text-ink-secondary leading-relaxed mb-6 italic">
+            <p class="text-xs sm:text-sm text-[#1e3523] leading-relaxed italic mb-6">
               "{rev.text}"
             </p>
           </div>
-          <div class="pt-4 border-t border-surface-border">
-            <span class="font-serif text-sm font-bold text-ink-primary block">
-              {rev.author}
-            </span>
-            <span class="text-[11px] text-ink-muted">
+          <div class="pt-4 border-t border-[#007231]/8 flex items-center justify-between gap-3">
+            <div class="flex items-center gap-2.5">
+              <div class="w-8 h-8 rounded-full bg-gradient-to-br from-[#007231] to-[#3a7d44] text-white font-bold text-xs flex items-center justify-center shrink-0 shadow-xs">
+                {rev.initials}
+              </div>
+              <div class="flex flex-col">
+                <span class="font-serif text-sm font-bold text-[#0d2616] leading-none">
+                  {rev.author}
+                </span>
+                {rev.badge && (
+                  <span class="text-[10.5px] text-[#007231] font-medium mt-0.5">
+                    {rev.badge}
+                  </span>
+                )}
+              </div>
+            </div>
+            <span class="text-[10.5px] font-bold text-[#00682c] bg-[#007231]/8 px-2.5 py-1 rounded-full whitespace-nowrap">
               {rev.service}
             </span>
           </div>
-        </div>
+        </article>
       ))}
-    </div>
 
-    <!-- Google Reviews Callout -->
-    <div class="text-center">
-      <a
-        href={clinicInfo.social.googleReviews}
-        target="_blank"
-        rel="noopener noreferrer"
-        class="btn-press inline-flex items-center gap-2.5 px-6 py-3 rounded-xl bg-surface border border-surface-border hover:border-ink-muted shadow-soft text-xs sm:text-sm font-semibold text-ink-primary cursor-pointer transition-all"
-      >
-        <svg class="w-4 h-4 text-emerald-600" viewBox="0 0 24 24" fill="currentColor">
-          <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z"/>
-        </svg>
-        <span>Ver todas las 156+ opiniones en Google Maps</span>
-        <svg class="w-4 h-4 text-ink-muted" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6M15 3h6v6M10 14L21 3"/></svg>
-      </a>
+      <!-- Tarjeta 6: Invitación a Dejar Reseña & Ver Más (CTA) -->
+      <article class="rounded-2xl bg-gradient-to-br from-white via-[#f4faf6] to-[#e8f5ec] border border-[#007231]/22 p-6 shadow-soft hover:shadow-soft-lg hover:-translate-y-1 transition-all duration-300 flex flex-col justify-between relative overflow-hidden group">
+        <!-- Decoración botánica de fondo sutil -->
+        <div class="absolute -right-6 -bottom-6 w-28 h-28 bg-[#007231]/5 rounded-full blur-xl pointer-events-none group-hover:bg-[#007231]/10 transition-colors duration-500"></div>
+
+        <div>
+          <div class="flex items-center justify-between text-xs mb-3">
+            <div class="flex items-center gap-1.5">
+              <svg class="w-4 h-4 shrink-0" viewBox="0 0 24 24" aria-hidden="true">
+                <path fill="#4285F4" d="M23.745 12.27c0-.7-.06-1.4-.19-2.07H12v4.51h6.6c-.29 1.52-1.14 2.82-2.4 3.68v3.05h3.88c2.27-2.09 3.665-5.17 3.665-9.17Z"/>
+                <path fill="#34A853" d="M12 24c3.24 0 5.95-1.08 7.93-2.91l-3.88-3.05c-1.08.72-2.45 1.16-4.05 1.16-3.12 0-5.77-2.1-6.72-4.93H1.25v3.15C3.27 21.39 7.33 24 12 24Z"/>
+                <path fill="#FBBC05" d="M5.28 14.27c-.25-.72-.38-1.49-.38-2.27s.13-1.55.38-2.27V6.58H1.25C.45 8.18 0 9.99 0 12s.45 3.82 1.25 5.42l4.03-3.15Z"/>
+                <path fill="#EA4335" d="M12 4.75c1.77 0 3.35.61 4.6 1.8l3.42-3.42C17.95 1.19 15.24 0 12 0 7.33 0 3.27 2.61 1.25 6.58l4.03 3.15c.95-2.83 3.6-4.98 6.72-4.98Z"/>
+              </svg>
+              <span class="text-amber-500 font-bold tracking-wider">★★★★★</span>
+            </div>
+            <span class="text-[10.5px] font-bold text-[#00682c] bg-[#007231]/10 px-2.5 py-0.5 rounded-full">
+              Tu Opinión Suma
+            </span>
+          </div>
+
+          <h3 class="font-serif text-base sm:text-lg font-bold text-[#0d2616] leading-snug mb-2">
+            ¿Te atendiste con nosotros?
+          </h3>
+          <p class="text-xs sm:text-sm text-[#2d4d35] leading-relaxed mb-4">
+            Tu opinión ayuda a otros pacientes de Temuco a conocer nuestra atención y recuperar su bienestar.
+          </p>
+        </div>
+
+        <div class="pt-3.5 border-t border-[#007231]/10 flex flex-col gap-2 relative z-10">
+          <a
+            href={clinicInfo.social.googleReviews}
+            target="_blank"
+            rel="noopener noreferrer"
+            class="inline-flex items-center justify-center gap-2 w-full py-2.5 px-4 rounded-xl bg-gradient-to-r from-[#004d20] via-[#007231] to-[#3a7d44] hover:from-[#006028] hover:to-[#438a4d] text-white font-semibold text-xs sm:text-sm shadow-xs hover:shadow-md transition-all duration-300 hover:-translate-y-0.5 cursor-pointer text-center"
+            aria-label="Escribir una reseña en Google para Centro Vida Sana Austral"
+          >
+            <svg class="w-4 h-4 fill-amber-300 shrink-0" viewBox="0 0 24 24" aria-hidden="true">
+              <path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2l-2.81 6.63L2 9.24l5.46 4.73L5.82 21z"/>
+            </svg>
+            <span>Escribir reseña en Google</span>
+          </a>
+
+          <a
+            href={clinicInfo.social.googleMapsPlace}
+            target="_blank"
+            rel="noopener noreferrer"
+            class="inline-flex items-center justify-center gap-1.5 text-[11.5px] font-semibold text-[#007231] hover:text-[#004d20] hover:underline transition-colors py-1 text-center"
+            aria-label="Ver todas las opiniones en Google Maps de Centro Vida Sana Austral"
+          >
+            <span>Ver más opiniones en Google</span>
+            <svg class="w-3.5 h-3.5 transition-transform group-hover:translate-x-0.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.2" aria-hidden="true">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M13.5 4.5 21 12m0 0-7.5 7.5M21 12H3"/>
+            </svg>
+          </a>
+        </div>
+      </article>
     </div>
 
   </div>

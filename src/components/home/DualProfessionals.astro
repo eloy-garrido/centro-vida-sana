@@ -3,13 +3,19 @@ import { professionals } from '../../data/professionals';
 import { clinicInfo } from '../../data/clinic';
 ---
 
-<div id="profesionales">
+<section id="profesionales" class="py-16 sm:py-20 lg:py-24 bg-[#FBFDFB] relative overflow-hidden">
 
-  <!-- ==============================================
-       SECTION HEADER: Equipo Clínico Acreditado
-       ============================================== -->
-  <section class="py-16 sm:py-20 bg-[#FBFDFB] border-b border-[#E8EFEA] text-center">
-    <div class="max-w-4xl mx-auto px-4 sm:px-6">
+  <!-- Formas orgánicas / irregulares decorativas de fondo sutiles -->
+  <div class="absolute top-10 left-1/4 w-[600px] h-[600px] bg-[#2E4D38]/[0.03] rounded-full blur-[140px] pointer-events-none"></div>
+  <div class="absolute bottom-10 right-1/4 w-[600px] h-[600px] bg-[#134E5E]/[0.03] rounded-full blur-[140px] pointer-events-none"></div>
+
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+
+    <!-- ==============================================
+         SECTION HEADER: Equipo Clínico Acreditado
+         Integrado naturalmente como cabecera del equipo
+         ============================================== -->
+    <div class="text-center max-w-3xl mx-auto mb-12 sm:mb-16">
       <div class="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-[#EEF5F0] border border-[#CCE2D2] text-[#2E4D38] text-xs font-bold uppercase tracking-wider mb-4 shadow-sm">
         <span class="w-2 h-2 rounded-full bg-[#2E4D38] animate-pulse"></span>
         <span>Acreditación de Salud Oficial</span>
@@ -21,383 +27,631 @@ import { clinicInfo } from '../../data/clinic';
         Atención directa, personalizada y exclusiva en boxes privados. Conoce a los especialistas dedicados a tu recuperación en Centro Vida Sana Austral.
       </p>
     </div>
-  </section>
 
-  <!-- ==============================================
-       1. SECCIÓN DEDICADA: EDUARDO LAGOS (Acupuntura)
-       Foto en grande a la IZQUIERDA · Información a la DERECHA
-       Color temático: Verde Salvia Botánico (#2E4D38)
-       ============================================== -->
-  <section id="pro-eduardo" class="py-20 lg:py-28 bg-[#F6FAF7] border-b border-[#E2ECE5] relative overflow-hidden">
+    <!-- ==============================================
+         CONTENEDOR DE PERFILES PROFESIONALES
+         Dos tarjetas clínicas editoriales de alta categoría
+         ============================================== -->
+    <div class="space-y-10 sm:space-y-14">
 
-    <!-- Formas orgánicas / irregulares decorativas de fondo -->
-    <div class="absolute -top-32 -left-32 w-[600px] h-[600px] bg-[#2E4D38]/[0.06] rounded-full blur-[140px] pointer-events-none"></div>
-    <div class="absolute -bottom-32 right-[-10%] w-[500px] h-[500px] bg-[#497356]/[0.05] rounded-full blur-[130px] pointer-events-none"></div>
+      <!-- ==============================================
+           1. EDUARDO LAGOS (Acupuntura & Medicina China)
+           Foto a la IZQUIERDA · Información a la DERECHA
+           Color temático: Verde Salvia Botánico (#2E4D38)
+           ============================================== -->
+      <article
+        id="pro-eduardo"
+        class="group rounded-3xl bg-gradient-to-br from-[#F6FAF7] via-[#EFF6F1] to-[#E3EFE6] border-2 border-[#CCE2D2] hover:border-[#7ABF8C] p-6 sm:p-10 lg:p-12 shadow-[0_14px_40px_rgba(46,77,56,0.09)] hover:shadow-[0_22px_55px_rgba(46,77,56,0.16)] transition-all duration-500 relative overflow-hidden"
+      >
+        <!-- ==============================================
+             DETALLES DE FONDO ELABORADOS & NOTORIOS: EDUARDO LAGOS
+             Acupuntura, Medicina China, Botánica & Flujo Qi
+             ============================================== -->
+        <!-- 1. Halos de luz ambiental multicapa y vibrantes -->
+        <div class="absolute -top-24 -left-24 w-[500px] h-[500px] bg-gradient-to-br from-[#76C993]/35 via-[#3B8253]/20 to-transparent rounded-full blur-[90px] pointer-events-none"></div>
+        <div class="absolute -bottom-24 -right-24 w-[460px] h-[460px] bg-gradient-to-tl from-[#A2E2B8]/30 via-[#4D9665]/18 to-transparent rounded-full blur-[90px] pointer-events-none"></div>
+        <div class="absolute top-1/2 left-1/3 -translate-y-1/2 w-[360px] h-[360px] bg-[#E2F7EB]/45 rounded-full blur-[80px] pointer-events-none"></div>
 
-    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
-      <div class="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-16 items-center">
+        <!-- 2. Línea de acento superior temática en gradiente botánico -->
+        <div class="absolute top-0 left-0 right-0 h-[3px] bg-gradient-to-r from-transparent via-[#3B8253] to-transparent opacity-80 pointer-events-none"></div>
 
-        <!-- LADO IZQUIERDO: Foto en Grande de Eduardo con Formas Irregulares (Sin recuadro blanco, fondo transparente) -->
-        <div id="eduardo-photo-container" class="lg:col-span-5 relative flex items-center justify-center">
+        <!-- 3. Textura sutil táctil de micro-puntos botánicos -->
+        <div class="absolute inset-0 bg-[radial-gradient(#2E4D38_1.2px,transparent_1.2px)] [background-size:24px_24px] opacity-[0.05] pointer-events-none"></div>
 
-          <!-- Contenedor relativo para la composición orgánica + cutout -->
-          <div class="relative w-full max-w-[440px] sm:max-w-[480px] lg:max-w-[500px] flex items-end justify-center pt-10 pb-4">
+        <!-- 4. Watermark Elaborado: Gran Símbolo Yin-Yang / Taiji con rotación ultra-lenta armónica -->
+        <div class="absolute -top-6 -right-6 sm:right-6 lg:right-10 w-[270px] sm:w-[330px] lg:w-[370px] h-[270px] sm:h-[330px] lg:h-[370px] pointer-events-none select-none opacity-[0.14] transition-opacity duration-700 group-hover:opacity-[0.22]">
+          <svg viewBox="0 0 200 200" class="w-full h-full animate-[spin_110s_linear_infinite]" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <!-- Círculo exterior con doble anillo concéntrico fino -->
+            <circle cx="100" cy="100" r="96" stroke="#2E4D38" stroke-width="1.8" stroke-dasharray="4 4" />
+            <circle cx="100" cy="100" r="91" stroke="#2E4D38" stroke-width="1.2" />
+            <circle cx="100" cy="100" r="86" stroke="#2E4D38" stroke-width="0.9" />
+            
+            <!-- Yin Yang Taiji tradicional vectorizado con precisión -->
+            <path d="M100 14A86 86 0 0 1 100 186A43 43 0 0 1 100 100A43 43 0 0 0 100 14Z" fill="#2E4D38" />
+            <circle cx="100" cy="57" r="12" fill="#F6FAF7" />
+            <circle cx="100" cy="143" r="12" fill="#2E4D38" />
 
-            <!-- 1. Formas Orgánicas / Blobs Botánicos de Eduardo (Claramente visibles de fondo) -->
-            <div class="absolute inset-0 flex items-center justify-center pointer-events-none z-0">
-              <!-- Glow suave botánico de ambientación -->
-              <div class="absolute w-[380px] sm:w-[460px] h-[380px] sm:h-[460px] bg-[#6FA67C]/35 rounded-full blur-3xl"></div>
+            <!-- Puntos cardinales de resonancia (Ba Gua / 8 Trigramas) -->
+            <circle cx="100" cy="8" r="3" fill="#2E4D38" />
+            <circle cx="192" cy="100" r="3" fill="#2E4D38" />
+            <circle cx="100" cy="192" r="3" fill="#2E4D38" />
+            <circle cx="8" cy="100" r="3" fill="#2E4D38" />
+            <circle cx="165" cy="35" r="2.5" fill="#2E4D38" />
+            <circle cx="165" cy="165" r="2.5" fill="#2E4D38" />
+            <circle cx="35" cy="165" r="2.5" fill="#2E4D38" />
+            <circle cx="35" cy="35" r="2.5" fill="#2E4D38" />
+          </svg>
+        </div>
 
-              <!-- Anillo decorativo rotado / aura botánica -->
-              <div class="absolute w-[370px] sm:w-[450px] lg:w-[480px] h-[370px] sm:h-[450px] lg:h-[480px] rounded-[58%_42%_65%_35%/48%_62%_38%_52%] border-2 border-dashed border-[#2E4D38]/30 -rotate-12 animate-[spin_60s_linear_infinite]"></div>
+        <!-- 5. Watermark Botánico & Curva de Meridianos de Acupuntura con Puntos de Energía -->
+        <div class="absolute bottom-0 left-0 sm:left-8 w-[350px] sm:w-[430px] h-[175px] pointer-events-none select-none opacity-[0.13] lg:opacity-[0.18]">
+          <svg viewBox="0 0 440 180" class="w-full h-full" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <!-- Curva de meridiano de acupuntura armónica (Canal Ren Mai) -->
+            <path d="M10,160 C90,140 140,80 220,95 C300,110 350,40 430,20" stroke="#2E4D38" stroke-width="2.5" stroke-linecap="round" stroke-dasharray="3 4" />
+            <path d="M30,170 C110,150 160,95 240,110 C320,125 365,60 440,40" stroke="#498F5E" stroke-width="1.5" stroke-linecap="round" opacity="0.7" />
+            <!-- Puntos de acupuntura luminosos en la trayectoria del canal -->
+            <circle cx="70" cy="148" r="5" fill="#2E4D38" />
+            <circle cx="70" cy="148" r="9" stroke="#2E4D38" stroke-width="1.2" opacity="0.6" />
+            <circle cx="180" cy="88" r="5.5" fill="#2E4D38" />
+            <circle cx="180" cy="88" r="10" stroke="#2E4D38" stroke-width="1.4" opacity="0.7" />
+            <circle cx="280" cy="105" r="5" fill="#2E4D38" />
+            <circle cx="280" cy="105" r="9" stroke="#2E4D38" stroke-width="1.2" opacity="0.6" />
+            <circle cx="380" cy="35" r="6" fill="#2E4D38" />
+            <circle cx="380" cy="35" r="11" stroke="#2E4D38" stroke-width="1.8" opacity="0.8" />
+            <!-- Follaje botánico / Hojas de ginkgo & bambú estilizadas -->
+            <path d="M400,20 C420,10 435,25 430,35 C420,40 405,30 400,20 Z" fill="#2E4D38" opacity="0.85" />
+            <path d="M380,45 C395,55 390,70 380,68 C370,62 372,48 380,45 Z" fill="#2E4D38" opacity="0.75" />
+            <path d="M195,78 C210,70 220,82 215,90 C208,95 198,88 195,78 Z" fill="#498F5E" opacity="0.75" />
+          </svg>
+        </div>
 
-              <!-- Forma Orgánica Principal de Eduardo (Verde Salvia Botánico Rico & Visible) -->
-              <svg viewBox="0 0 500 500" class="w-[360px] sm:w-[440px] lg:w-[470px] h-[360px] sm:h-[440px] lg:h-[470px] filter drop-shadow-[0_20px_35px_rgba(46,77,56,0.22)]" xmlns="http://www.w3.org/2000/svg">
-                <defs>
-                  <linearGradient id="blob-eduardo-main" x1="15%" y1="10%" x2="90%" y2="95%">
-                    <stop offset="0%" stop-color="#BEE0C7" />
-                    <stop offset="45%" stop-color="#76B084" />
-                    <stop offset="100%" stop-color="#366E45" />
-                  </linearGradient>
-                  <linearGradient id="blob-eduardo-contour" x1="0%" y1="100%" x2="100%" y2="0%">
-                    <stop offset="0%" stop-color="#2E4D38" stop-opacity="0.4" />
-                    <stop offset="100%" stop-color="#2E4D38" stop-opacity="0.1" />
-                  </linearGradient>
-                </defs>
-                <!-- Forma de contorno exterior con ligera escala -->
-                <path
-                  d="M421,313Q384,376,321,412Q258,448,197,414Q136,380,88,325Q40,270,74,204Q108,138,169,96Q230,54,302,78Q374,102,416,176Q458,250,421,313Z"
-                  fill="url(#blob-eduardo-contour)"
-                  transform="scale(1.08) translate(-18, -18)"
+        <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-14 items-center relative z-10">
+
+          <!-- LADO IZQUIERDO: Foto con Blob Orgánico Multicapa & Auras Orbitantes -->
+          <div id="eduardo-photo-container" class="lg:col-span-5 relative flex items-center justify-center">
+            <div class="relative w-full max-w-[420px] sm:max-w-[460px] lg:max-w-[490px] xl:max-w-[520px] flex items-end justify-center pt-4 pb-2">
+
+              <!-- 1. Halo LUMINOSO botánico de ambientación (visible y rico) -->
+              <div class="absolute w-[380px] sm:w-[440px] lg:w-[490px] xl:w-[520px] h-[380px] sm:h-[440px] lg:h-[490px] xl:h-[520px] bg-gradient-to-tr from-[#65B77E]/45 via-[#8FE0A8]/35 to-[#38764B]/30 rounded-full blur-3xl pointer-events-none animate-pulse [animation-duration:7s]"></div>
+
+              <!-- 2. Anillo orbital exterior rotatorio (Aura Botánica) -->
+              <div class="absolute w-[370px] sm:w-[430px] lg:w-[480px] xl:w-[510px] h-[370px] sm:h-[430px] lg:h-[480px] xl:h-[510px] rounded-[58%_42%_65%_35%/48%_62%_38%_52%] border-2 border-dashed border-[#2E4D38]/35 -rotate-12 animate-[spin_60s_linear_infinite] pointer-events-none"></div>
+
+              <!-- 3. Anillo interior armónico en contragiro -->
+              <div class="absolute w-[330px] sm:w-[390px] lg:w-[440px] xl:w-[460px] h-[330px] sm:h-[390px] lg:h-[440px] xl:h-[460px] rounded-[46%_54%_60%_40%/52%_44%_56%_48%] border border-[#4CAF6E]/30 rotate-45 animate-[spin_45s_linear_infinite_reverse] pointer-events-none"></div>
+
+              <!-- 4. Forma Orgánica SVG Bicapa (Contorno sutil + Blob sólido con gradiente verde clínico rico) -->
+              <div class="absolute inset-0 flex items-center justify-center pointer-events-none z-0">
+                <svg viewBox="0 0 500 500" class="w-[360px] sm:w-[420px] lg:w-[470px] xl:w-[500px] h-[360px] sm:h-[420px] lg:h-[470px] xl:h-[500px] filter drop-shadow-[0_20px_35px_rgba(46,77,56,0.22)]" xmlns="http://www.w3.org/2000/svg">
+                  <defs>
+                    <linearGradient id="blob-eduardo-main" x1="15%" y1="10%" x2="88%" y2="92%">
+                      <stop offset="0%" stop-color="#C5EDD0" />
+                      <stop offset="35%" stop-color="#6FBB85" />
+                      <stop offset="75%" stop-color="#347547" />
+                      <stop offset="100%" stop-color="#1B4627" />
+                    </linearGradient>
+                    <linearGradient id="blob-eduardo-contour" x1="0%" y1="100%" x2="100%" y2="0%">
+                      <stop offset="0%" stop-color="#2E4D38" stop-opacity="0.45" />
+                      <stop offset="100%" stop-color="#2E4D38" stop-opacity="0.12" />
+                    </linearGradient>
+                  </defs>
+                  <!-- Forma de contorno exterior con ligera escala -->
+                  <path
+                    d="M421,313Q384,376,321,412Q258,448,197,414Q136,380,88,325Q40,270,74,204Q108,138,169,96Q230,54,302,78Q374,102,416,176Q458,250,421,313Z"
+                    fill="url(#blob-eduardo-contour)"
+                    transform="scale(1.08) translate(-18, -18)"
+                  />
+                  <!-- Blob orgánico sólido con gradiente verde profundo -->
+                  <path
+                    d="M410,305Q370,360,314,405Q258,450,199,416Q140,382,95,326Q50,270,82,203Q114,136,174,93Q234,50,306,75Q378,100,414,175Q450,250,410,305Z"
+                    fill="url(#blob-eduardo-main)"
+                  />
+                </svg>
+              </div>
+
+              <!-- Foto Recortada Transparente de Gran Formato -->
+              <div class="relative z-10 w-full flex justify-center group">
+                <img
+                  src="/pix/eduardo-portrait-hd.webp"
+                  srcset="/pix/eduardo-portrait-hd.webp 2x, /pix/eduardo-portrait-hd.webp 1x"
+                  alt="Eduardo Lagos - Acupunturista Clínico Certificado Minsal"
+                  class="w-full max-w-[380px] sm:max-w-[430px] lg:max-w-[470px] xl:max-w-[500px] h-auto object-contain drop-shadow-[0_22px_40px_rgba(20,40,25,0.22)] group-hover:scale-[1.03] transition-transform duration-700 ease-[cubic-bezier(0.16,1,0.3,1)] [mask-image:linear-gradient(to_bottom,black_86%,transparent_100%)]"
+                  loading="lazy"
+                  width="1240"
+                  height="1260"
                 />
-                <!-- Blob orgánico sólido con gradiente verde profundo -->
-                <path
-                  d="M410,305Q370,360,314,405Q258,450,199,416Q140,382,95,326Q50,270,82,203Q114,136,174,93Q234,50,306,75Q378,100,414,175Q450,250,410,305Z"
-                  fill="url(#blob-eduardo-main)"
-                />
-              </svg>
-            </div>
 
-            <!-- 2. Foto Recortada Transparente de Eduardo (Ultra HD 2x, sin caja blanca, fondo 100% transparente) -->
-            <div class="relative z-10 w-full flex justify-center group">
-              <img
-                src="/pix/eduardo-acupuntura-hd.webp"
-                srcset="/pix/eduardo-acupuntura-hd.webp 2x, /pix/eduardo-acupuntura.webp 1x"
-                alt="Eduardo Lagos - Acupunturista Clínico Certificado Minsal"
-                class="w-auto max-h-[490px] sm:max-h-[550px] lg:max-h-[570px] object-contain drop-shadow-[0_22px_38px_rgba(20,40,25,0.25)] group-hover:scale-[1.02] transition-transform duration-700 ease-[cubic-bezier(0.16,1,0.3,1)] [mask-image:linear-gradient(to_bottom,black_88%,transparent_100%)]"
-                loading="lazy"
-                width="881"
-                height="800"
-              />
-
-              <!-- Chip Flotante de Registro Minsal (Estilo Glassmorphism Limpio) -->
-              <div class="absolute bottom-4 left-1/2 -translate-x-1/2 sm:left-4 sm:translate-x-0 p-3 rounded-2xl bg-white/95 border border-[#CCE2D2] backdrop-blur-md shadow-[0_12px_28px_rgba(46,77,56,0.18)] flex items-center gap-3 z-20 whitespace-nowrap">
-                <div class="w-10 h-10 rounded-xl bg-[#2E4D38] text-white flex items-center justify-center shrink-0 shadow-sm font-serif font-bold text-sm">
-                  SIS
-                </div>
-                <div class="text-left">
-                  <span class="text-xs font-bold text-[#2E4D38] block">Registro SIS N° 381042</span>
-                  <span class="text-[11px] text-[#556D55] block">Acreditado Minsal · Acupuntura</span>
+                <!-- Chip Flotante de Acreditación Minsal -->
+                <div class="absolute bottom-2 left-1/2 -translate-x-1/2 sm:left-2 sm:translate-x-0 p-2.5 sm:p-3 rounded-2xl bg-white/95 border border-[#CCE2D2] backdrop-blur-md shadow-[0_10px_24px_rgba(46,77,56,0.15)] flex items-center gap-2.5 z-20 whitespace-nowrap">
+                  <div class="w-9 h-9 rounded-xl bg-[#2E4D38] text-white flex items-center justify-center shrink-0 shadow-sm">
+                    <svg class="w-4 h-4 sm:w-5 sm:h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2">
+                      <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>
+                      <path d="M9 12l2 2 4-4"/>
+                    </svg>
+                  </div>
+                  <div class="text-left">
+                    <span class="text-xs font-bold text-[#2E4D38] block leading-tight">Certificado por Minsal</span>
+                    <span class="text-[11px] text-[#556D55] block leading-tight">Acupuntura &amp; Medicina China</span>
+                  </div>
                 </div>
               </div>
+
+            </div>
+          </div>
+
+          <!-- LADO DERECHO: Información Profesional -->
+          <div class="lg:col-span-7 space-y-5 text-left">
+
+            <!-- Badge Disciplina -->
+            <div class="inline-flex items-center gap-2.5 px-3.5 py-1.5 rounded-full bg-white/95 border border-[#CCE2D2] text-[#2E4D38] text-xs font-bold uppercase tracking-wider shadow-xs">
+              <span class="w-5 h-5 rounded-full bg-[#E5F5E9] text-[#2E4D38] flex items-center justify-center shrink-0">
+                <svg class="w-3.5 h-3.5" viewBox="0 0 24 24" fill="currentColor">
+                  <path d="M12 2a10 10 0 1 0 10 10A10 10 0 0 0 12 2zm0 18a8 8 0 1 1 8-8 8 8 0 0 1-8 8zm0-14a6 6 0 0 0 0 12 6 6 0 0 0 0-12z"/>
+                </svg>
+              </span>
+              <span>Acupuntura Clínica &amp; Medicina Tradicional China</span>
+            </div>
+
+            <!-- Nombre y Título -->
+            <div>
+              <h3 class="font-serif text-2xl sm:text-3xl lg:text-4xl font-bold text-[#152219] tracking-tight leading-tight mb-1.5">
+                Eduardo Lagos
+              </h3>
+              <p class="text-sm sm:text-base font-bold text-[#2E4D38]">
+                Acupunturista Clínico Certificado por Minsal · Docente de MTC
+              </p>
+              <p class="text-xs text-[#556D55] font-medium pt-1 flex items-center gap-1.5">
+                <svg class="w-3.5 h-3.5 text-[#2E4D38] shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2">
+                  <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>
+                  <path d="M9 12l2 2 4-4"/>
+                </svg>
+                <span>Superintendencia de Salud · Registro SIS Nº 381042 · Temuco</span>
+              </p>
+            </div>
+
+            <!-- Biografía Amplia -->
+            <p class="text-sm sm:text-base text-[#3E523E] leading-relaxed">
+              Especialista en Medicina Tradicional China con más de una década de práctica clínica en Temuco. Eduardo combina técnicas milenarias con neuroacupuntura moderna para el alivio profundo del dolor crónico, fibromialgia, migrañas y trastornos del estrés, regulando el flujo energético y promoviendo la autorrecuperación del organismo de forma natural y sin efectos adversos.
+            </p>
+
+            <!-- Especialidades Clínicas en Grid con Iconos Temáticos -->
+            <div class="p-5 sm:p-6 rounded-2xl bg-white/95 border border-[#CCE2D2] shadow-sm">
+              <h4 class="text-xs font-bold uppercase tracking-wider text-[#152219] mb-3.5 flex items-center gap-2">
+                <svg class="w-4 h-4 text-[#2E4D38]" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+                  <path d="M9 12l2 2 4-4"/>
+                </svg>
+                <span>Tratamientos y Especialidades de Eduardo:</span>
+              </h4>
+              <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 text-xs sm:text-sm font-semibold text-[#2D3E2D]">
+                <!-- 1. Acupuntura Sistémica -->
+                <div class="flex items-center gap-3 p-3 rounded-xl bg-[#F6FAF7] border border-[#E2ECE5] hover:border-[#A2D8B2] transition-colors">
+                  <div class="w-10 h-10 rounded-xl bg-[#E3F4E8] text-[#2E4D38] flex items-center justify-center shrink-0 shadow-xs">
+                    <svg class="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                      <line x1="19" y1="5" x2="5" y2="19"/>
+                      <circle cx="19" cy="5" r="2" fill="currentColor"/>
+                      <circle cx="12" cy="12" r="3" stroke-dasharray="2 2" opacity="0.8"/>
+                      <path d="M16 8a6 6 0 0 0-8 8" opacity="0.5"/>
+                    </svg>
+                  </div>
+                  <span class="leading-snug">Acupuntura Sistémica &amp; Neuroacupuntura</span>
+                </div>
+                <!-- 2. Electroacupuntura -->
+                <div class="flex items-center gap-3 p-3 rounded-xl bg-[#F6FAF7] border border-[#E2ECE5] hover:border-[#A2D8B2] transition-colors">
+                  <div class="w-10 h-10 rounded-xl bg-[#E3F4E8] text-[#2E4D38] flex items-center justify-center shrink-0 shadow-xs">
+                    <svg class="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                      <path d="M2 12h4l2.5-6 4 12 3-8 2.5 4h4" />
+                    </svg>
+                  </div>
+                  <span class="leading-snug">Electroacupuntura para Dolor Rebelde</span>
+                </div>
+                <!-- 3. Ventosas -->
+                <div class="flex items-center gap-3 p-3 rounded-xl bg-[#F6FAF7] border border-[#E2ECE5] hover:border-[#A2D8B2] transition-colors">
+                  <div class="w-10 h-10 rounded-xl bg-[#E3F4E8] text-[#2E4D38] flex items-center justify-center shrink-0 shadow-xs">
+                    <svg class="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                      <path d="M10 5h4M12 5v3M6 18c0-5 2-9 6-9s6 4 6 9M4 18h16"/>
+                      <circle cx="12" cy="13" r="1.5" fill="currentColor"/>
+                    </svg>
+                  </div>
+                  <span class="leading-snug">Ventosaterapia Clínica (Cupping)</span>
+                </div>
+                <!-- 4. Moxibustión -->
+                <div class="flex items-center gap-3 p-3 rounded-xl bg-[#F6FAF7] border border-[#E2ECE5] hover:border-[#A2D8B2] transition-colors">
+                  <div class="w-10 h-10 rounded-xl bg-[#E3F4E8] text-[#2E4D38] flex items-center justify-center shrink-0 shadow-xs">
+                    <svg class="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                      <path d="M8.5 14.5A2.5 2.5 0 0 0 11 12c0-1.38-.5-2-1-3-1.072-2.143-.224-4.054 2-6 .5 2.5 2 4.9 4 6.5 2 1.6 3 3.5 3 5.5a7 7 0 1 1-14 0c0-1.153.433-2.294 1-3a2.5 2.5 0 0 0 2.5 3z" />
+                    </svg>
+                  </div>
+                  <span class="leading-snug">Moxibustión Térmica &amp; Fitoterapia</span>
+                </div>
+              </div>
+            </div>
+
+            <!-- Píldora de Calidad Clínica -->
+            <div class="flex flex-wrap items-center gap-4 text-xs font-semibold text-[#44594A]">
+              <span class="inline-flex items-center gap-1.5">
+                <svg class="w-4 h-4 text-[#2E4D38]" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/></svg>
+                Atención personalizada 1 a 1
+              </span>
+              <span class="inline-flex items-center gap-1.5">
+                <svg class="w-4 h-4 text-[#2E4D38]" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+                Agujas filiformes estériles desechables
+              </span>
+              <span class="inline-flex items-center gap-1.5">
+                <svg class="w-4 h-4 text-[#2E4D38]" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 6L9 17l-5-5"/></svg>
+                Box privado climatizado
+              </span>
+            </div>
+
+            <!-- Botones de Acción de Eduardo -->
+            <div class="flex flex-col sm:flex-row gap-3 pt-1">
+              <a
+                href={`https://wa.me/56973888910?text=${encodeURIComponent(professionals.eduardo.whatsappMessage)}`}
+                target="_blank"
+                rel="noopener noreferrer"
+                class="btn-press flex-1 inline-flex items-center justify-center gap-2 px-6 py-3.5 rounded-xl bg-[#2E4D38] hover:bg-[#233C2C] text-white text-sm font-bold shadow-soft hover:shadow-[0_8px_25px_rgba(46,77,56,0.3)] transition-all cursor-pointer"
+              >
+                <svg class="w-5 h-5 text-emerald-300" viewBox="0 0 24 24" fill="currentColor">
+                  <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413Z"/>
+                </svg>
+                <span>Agendar (+569 7388 8910)</span>
+              </a>
+
+              <a
+                href="/acupuntura"
+                class="btn-press inline-flex items-center justify-center gap-1.5 px-4 py-3.5 rounded-xl bg-white border-2 border-[#CCE2D2] text-xs font-bold text-[#2E4D38] hover:bg-[#EEF5F0] transition-colors cursor-pointer whitespace-nowrap"
+              >
+                <span>Ver perfil →</span>
+              </a>
+
+              <button
+                type="button"
+                class="vcard-btn btn-press inline-flex items-center justify-center gap-2 p-3.5 rounded-xl bg-white border-2 border-[#CCE2D2] text-xs font-bold text-[#2E4D38] hover:bg-[#EEF5F0] transition-colors cursor-pointer"
+                data-pro="eduardo"
+                title="Guardar contacto de Eduardo Lagos en tu teléfono"
+              >
+                <svg class="w-4 h-4 text-[#2E4D38]" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/>
+                </svg>
+                <span class="sr-only">Guardar contacto</span>
+              </button>
             </div>
 
           </div>
 
         </div>
+      </article>
 
-        <!-- LADO DERECHO: Toda su Información Profesional -->
-        <div class="lg:col-span-7 space-y-6 text-left">
+      <!-- ==============================================
+           2. FELIPE MÉNDEZ (Quiropraxia & Kinesiología)
+           Información a la IZQUIERDA · Foto a la DERECHA
+           Color temático: Azul Petróleo Clásico (#134E5E)
+           ============================================== -->
+      <article
+        id="pro-felipe"
+        class="group rounded-3xl bg-gradient-to-br from-[#F4F9FA] via-[#ECF4F7] to-[#DFEFF3] border-2 border-[#C2DFE8] hover:border-[#5BB1C7] p-6 sm:p-10 lg:p-12 shadow-[0_14px_40px_rgba(19,78,94,0.09)] hover:shadow-[0_22px_55px_rgba(19,78,94,0.16)] transition-all duration-500 relative overflow-hidden"
+      >
+        <!-- ==============================================
+             DETALLES DE FONDO ELABORADOS & NOTORIOS: FELIPE MÉNDEZ
+             Quiropraxia, Columna Vertebral, Kinesiología & Biomecánica
+             ============================================== -->
+        <!-- 1. Halos de luz ambiental multicapa y vibrantes -->
+        <div class="absolute -top-24 -right-24 w-[500px] h-[500px] bg-gradient-to-bl from-[#4EB8D4]/35 via-[#1D6A7E]/20 to-transparent rounded-full blur-[90px] pointer-events-none"></div>
+        <div class="absolute -bottom-24 -left-24 w-[460px] h-[460px] bg-gradient-to-tr from-[#94DBEA]/30 via-[#1C6073]/18 to-transparent rounded-full blur-[90px] pointer-events-none"></div>
+        <div class="absolute top-1/2 right-1/3 -translate-y-1/2 w-[360px] h-[360px] bg-[#E1F3F7]/45 rounded-full blur-[80px] pointer-events-none"></div>
 
-          <!-- Badge Disciplina -->
-          <div class="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-[#EEF5F0] border border-[#CCE2D2] text-[#2E4D38] text-xs font-bold uppercase tracking-wider">
-            <span class="w-2.5 h-2.5 rounded-full bg-[#2E4D38]"></span>
-            <span>Acupuntura Clínica &amp; Medicina Tradicional China</span>
+        <!-- 2. Línea de acento superior temática en gradiente petróleo -->
+        <div class="absolute top-0 left-0 right-0 h-[3px] bg-gradient-to-r from-transparent via-[#1B6D82] to-transparent opacity-80 pointer-events-none"></div>
+
+        <!-- 3. Textura sutil táctil de micro-puntos biomecánicos -->
+        <div class="absolute inset-0 bg-[radial-gradient(#134E5E_1.2px,transparent_1.2px)] [background-size:24px_24px] opacity-[0.05] pointer-events-none"></div>
+
+        <!-- 4. Watermark Elaborado: Brújula Biomecánica Giratoria + Columna Vertebral Estática -->
+        <div class="absolute top-4 left-[-15px] sm:left-4 lg:left-8 w-[260px] sm:w-[320px] lg:w-[360px] h-[260px] sm:h-[320px] lg:h-[360px] pointer-events-none select-none opacity-[0.14] transition-opacity duration-700 group-hover:opacity-[0.22]">
+          <!-- Capa A: Círculo y transportador articular giratorio (ROM Biomecánico) -->
+          <svg viewBox="0 0 320 320" class="absolute inset-0 w-full h-full animate-[spin_110s_linear_infinite_reverse]" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <!-- Anillos concéntricos de rango articular -->
+            <circle cx="160" cy="160" r="150" stroke="#134E5E" stroke-width="1.8" stroke-dasharray="6 6" />
+            <circle cx="160" cy="160" r="142" stroke="#134E5E" stroke-width="1.2" />
+            <circle cx="160" cy="160" r="134" stroke="#134E5E" stroke-width="0.8" />
+            <circle cx="160" cy="160" r="110" stroke="#134E5E" stroke-width="0.75" stroke-dasharray="2 4" opacity="0.6" />
+
+            <!-- Calibraciones radiales en los cuadrantes y diagonales -->
+            <line x1="160" y1="10" x2="160" y2="26" stroke="#134E5E" stroke-width="2" stroke-linecap="round" />
+            <line x1="160" y1="294" x2="160" y2="310" stroke="#134E5E" stroke-width="2" stroke-linecap="round" />
+            <line x1="10" y1="160" x2="26" y2="160" stroke="#134E5E" stroke-width="2" stroke-linecap="round" />
+            <line x1="294" y1="160" x2="310" y2="160" stroke="#134E5E" stroke-width="2" stroke-linecap="round" />
+            
+            <line x1="54" y1="54" x2="66" y2="66" stroke="#134E5E" stroke-width="1.4" stroke-linecap="round" />
+            <line x1="266" y1="54" x2="254" y2="66" stroke="#134E5E" stroke-width="1.4" stroke-linecap="round" />
+            <line x1="54" y1="266" x2="66" y2="254" stroke="#134E5E" stroke-width="1.4" stroke-linecap="round" />
+            <line x1="266" y1="266" x2="254" y2="254" stroke="#134E5E" stroke-width="1.4" stroke-linecap="round" />
+
+            <!-- Nodos satélites en compás biomecánico -->
+            <circle cx="160" cy="18" r="3.5" fill="#134E5E" />
+            <circle cx="160" cy="302" r="3.5" fill="#134E5E" />
+            <circle cx="18" cy="160" r="3.5" fill="#134E5E" />
+            <circle cx="302" cy="160" r="3.5" fill="#134E5E" />
+            <circle cx="60" cy="60" r="2.5" fill="#134E5E" />
+            <circle cx="260" cy="60" r="2.5" fill="#134E5E" />
+            <circle cx="60" cy="260" r="2.5" fill="#134E5E" />
+            <circle cx="260" cy="260" r="2.5" fill="#134E5E" />
+
+            <!-- Etiquetas de grados rotatorias -->
+            <text x="32" y="156" font-size="8" font-family="sans-serif" font-weight="bold" fill="#134E5E" opacity="0.85">0°</text>
+            <text x="164" y="36" font-size="8" font-family="sans-serif" font-weight="bold" fill="#134E5E" opacity="0.85">90°</text>
+            <text x="272" y="156" font-size="8" font-family="sans-serif" font-weight="bold" fill="#134E5E" opacity="0.85">180°</text>
+            <text x="164" y="290" font-size="8" font-family="sans-serif" font-weight="bold" fill="#134E5E" opacity="0.85">270°</text>
+          </svg>
+
+          <!-- Capa B: Columna Vertebral Anatómica ESTÁTICA (no gira, fija y centrada en su eje) -->
+          <svg viewBox="0 0 320 320" class="absolute inset-0 w-full h-full pointer-events-none" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <!-- Curva vertebral cervical-torácica-lumbar fluida -->
+            <path d="M160,26 C135,70 145,120 160,160 C175,200 165,250 145,294" stroke="#134E5E" stroke-width="2.8" stroke-linecap="round" />
+            <path d="M168,30 C143,74 153,124 168,164 C183,204 173,254 153,298" stroke="#3DA3BC" stroke-width="1.5" stroke-linecap="round" opacity="0.7" />
+
+            <!-- Vértebras estilizadas segmentadas a lo largo del eje biomecánico -->
+            <!-- Cervicales -->
+            <rect x="146" y="44" width="28" height="8" rx="4" fill="#134E5E" />
+            <rect x="142" y="60" width="34" height="8" rx="4" fill="#134E5E" />
+            <rect x="140" y="76" width="38" height="9" rx="4.5" fill="#134E5E" />
+            <!-- Torácicas -->
+            <rect x="142" y="94" width="40" height="9" rx="4.5" fill="#134E5E" />
+            <rect x="146" y="112" width="42" height="10" rx="5" fill="#134E5E" />
+            <rect x="150" y="131" width="44" height="10" rx="5" fill="#134E5E" />
+            <rect x="153" y="150" width="46" height="10" rx="5" fill="#134E5E" />
+            <!-- Lumbares (Sólidas y amplias) -->
+            <rect x="154" y="170" width="48" height="11" rx="5.5" fill="#134E5E" />
+            <rect x="152" y="191" width="50" height="12" rx="6" fill="#134E5E" />
+            <rect x="148" y="213" width="52" height="13" rx="6.5" fill="#134E5E" />
+            <rect x="142" y="236" width="50" height="13" rx="6.5" fill="#134E5E" />
+            <!-- Sacro / Base -->
+            <polygon points="167,260 147,260 157,285" fill="#134E5E" />
+          </svg>
+        </div>
+
+        <!-- 5. Arcos de Movilidad Kinesiológica y Vectores de Movimiento en esquina inferior derecha -->
+        <div class="absolute bottom-[-20px] right-0 sm:right-8 w-[290px] sm:w-[370px] h-[155px] pointer-events-none select-none opacity-[0.13] lg:opacity-[0.18]">
+          <svg viewBox="0 0 380 160" class="w-full h-full" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M10,130 Q190,10 370,110" stroke="#134E5E" stroke-width="2.5" stroke-dasharray="3 4" stroke-linecap="round" />
+            <path d="M30,145 Q190,35 350,125" stroke="#3DA3BC" stroke-width="1.5" stroke-linecap="round" opacity="0.75" />
+            <circle cx="190" cy="70" r="5" fill="#134E5E" />
+            <circle cx="190" cy="70" r="10" stroke="#134E5E" stroke-width="1" opacity="0.5" />
+            <line x1="190" y1="50" x2="190" y2="90" stroke="#134E5E" stroke-width="1" stroke-dasharray="2 2" />
+            <line x1="170" y1="70" x2="210" y2="70" stroke="#134E5E" stroke-width="1" stroke-dasharray="2 2" />
+          </svg>
+        </div>
+
+        <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-14 items-center relative z-10">
+
+          <!-- LADO IZQUIERDO: Información Profesional (en desktop va a la izquierda) -->
+          <div class="lg:col-span-7 space-y-5 text-left order-2 lg:order-1">
+
+            <!-- Badge Disciplina -->
+            <div class="inline-flex items-center gap-2.5 px-3.5 py-1.5 rounded-full bg-white/95 border border-[#C2DFE8] text-[#134E5E] text-xs font-bold uppercase tracking-wider shadow-xs">
+              <span class="w-5 h-5 rounded-full bg-[#E1F3F7] text-[#134E5E] flex items-center justify-center shrink-0">
+                <svg class="w-3.5 h-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M9 5h6M8 10h8M7 15h10M9 20h6"/>
+                  <line x1="12" y1="2" x2="12" y2="22"/>
+                </svg>
+              </span>
+              <span>Quiropraxia Biomecánica &amp; Kinesiología</span>
+            </div>
+
+            <!-- Nombre y Título -->
+            <div>
+              <h3 class="font-serif text-2xl sm:text-3xl lg:text-4xl font-bold text-[#152219] tracking-tight leading-tight mb-1.5">
+                Felipe Méndez
+              </h3>
+              <p class="text-sm sm:text-base font-bold text-[#134E5E]">
+                Quiropráctico &amp; Kinesiólogo Clínico · Especialista en Columna
+              </p>
+              <p class="text-xs text-[#526F77] font-medium pt-1 flex items-center gap-1.5">
+                <svg class="w-3.5 h-3.5 text-[#134E5E] shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2">
+                  <path d="M12 2a8 8 0 0 0-8 8c0 5.25 8 12 8 12s8-6.75 8-12a8 8 0 0 0-8-8z"/>
+                  <circle cx="12" cy="10" r="3"/>
+                </svg>
+                <span>Atención Clínica Personalizada – Temuco</span>
+              </p>
+            </div>
+
+            <!-- Biografía Amplia -->
+            <p class="text-sm sm:text-base text-[#3A5057] leading-relaxed">
+              Especialista en evaluación biomecánica vertebral y rehabilitación motora integral. Felipe aplica ajustes quiroprácticos específicos de alta precisión y descompresión radicular para corregir subluxaciones, eliminar la compresión de nervios y resolver la causa de hernias lumbares, ciática, dolor cervical y disfunciones articulares sin fármacos ni cirugías.
+            </p>
+
+            <!-- Especialidades Clínicas en Grid con Iconos Temáticos -->
+            <div class="p-5 sm:p-6 rounded-2xl bg-white/95 border border-[#C2DFE8] shadow-sm">
+              <h4 class="text-xs font-bold uppercase tracking-wider text-[#152219] mb-3.5 flex items-center gap-2">
+                <svg class="w-4 h-4 text-[#134E5E]" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+                  <path d="M9 12l2 2 4-4"/>
+                </svg>
+                <span>Tratamientos y Especialidades de Felipe:</span>
+              </h4>
+              <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 text-xs sm:text-sm font-semibold text-[#1C2C30]">
+                <!-- 1. Ajustes Vertebrales Específicos -->
+                <div class="flex items-center gap-3 p-3 rounded-xl bg-[#F4F9FA] border border-[#DCEBF0] hover:border-[#89CFDF] transition-colors">
+                  <div class="w-10 h-10 rounded-xl bg-[#DCF1F5] text-[#134E5E] flex items-center justify-center shrink-0 shadow-xs">
+                    <svg class="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                      <path d="M8 5h8a1.5 1.5 0 0 1 1.5 1.5v0A1.5 1.5 0 0 1 16 8H8a1.5 1.5 0 0 1-1.5-1.5v0A1.5 1.5 0 0 1 8 5z"/>
+                      <path d="M7 10h10a1.5 1.5 0 0 1 1.5 1.5v0A1.5 1.5 0 0 1 17 13H7a1.5 1.5 0 0 1-1.5-1.5v0A1.5 1.5 0 0 1 7 10z"/>
+                      <path d="M6 15h12a1.5 1.5 0 0 1 1.5 1.5v0A1.5 1.5 0 0 1 18 18H6a1.5 1.5 0 0 1-1.5-1.5v0A1.5 1.5 0 0 1 6 15z"/>
+                      <line x1="12" y1="2" x2="12" y2="5"/>
+                      <line x1="12" y1="8" x2="12" y2="10"/>
+                      <line x1="12" y1="13" x2="12" y2="15"/>
+                      <line x1="12" y1="18" x2="12" y2="21"/>
+                    </svg>
+                  </div>
+                  <span class="leading-snug">Ajustes Vertebrales Específicos (Columna)</span>
+                </div>
+                <!-- 2. Descompresión Lumbar -->
+                <div class="flex items-center gap-3 p-3 rounded-xl bg-[#F4F9FA] border border-[#DCEBF0] hover:border-[#89CFDF] transition-colors">
+                  <div class="w-10 h-10 rounded-xl bg-[#DCF1F5] text-[#134E5E] flex items-center justify-center shrink-0 shadow-xs">
+                    <svg class="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                      <path d="M12 4v4M9 6l3-3 3 3"/>
+                      <path d="M12 20v-4M9 18l3 3 3-3"/>
+                      <rect x="7" y="10" width="10" height="4" rx="2"/>
+                      <path d="M5 8c1.5 1.5 2 3 2 4s-.5 2.5-2 4"/>
+                      <path d="M19 8c-1.5 1.5-2 3-2 4s.5 2.5 2 4"/>
+                    </svg>
+                  </div>
+                  <span class="leading-snug">Descompresión Lumbar, Hernias &amp; Ciática</span>
+                </div>
+                <!-- 3. Rehabilitación Deportiva -->
+                <div class="flex items-center gap-3 p-3 rounded-xl bg-[#F4F9FA] border border-[#DCEBF0] hover:border-[#89CFDF] transition-colors">
+                  <div class="w-10 h-10 rounded-xl bg-[#DCF1F5] text-[#134E5E] flex items-center justify-center shrink-0 shadow-xs">
+                    <svg class="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                      <path d="M6 5v14M18 5v14M2 9v6M22 9v6M6 12h12"/>
+                    </svg>
+                  </div>
+                  <span class="leading-snug">Rehabilitación Deportiva &amp; Traumatológica</span>
+                </div>
+                <!-- 4. Kinesiología Motora -->
+                <div class="flex items-center gap-3 p-3 rounded-xl bg-[#F4F9FA] border border-[#DCEBF0] hover:border-[#89CFDF] transition-colors">
+                  <div class="w-10 h-10 rounded-xl bg-[#DCF1F5] text-[#134E5E] flex items-center justify-center shrink-0 shadow-xs">
+                    <svg class="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                      <circle cx="17" cy="4" r="2"/>
+                      <path d="M15 8l-3 4-4-1-3 4"/>
+                      <path d="M12 12l2 4 4 1"/>
+                      <path d="M8 17l2 4"/>
+                      <path d="M6 7l3 1 3-2"/>
+                    </svg>
+                  </div>
+                  <span class="leading-snug">Kinesiología Motora (Box y a Domicilio)</span>
+                </div>
+              </div>
+            </div>
+
+            <!-- Píldora de Calidad Clínica -->
+            <div class="flex flex-wrap items-center gap-4 text-xs font-semibold text-[#4A646D]">
+              <span class="inline-flex items-center gap-1.5">
+                <svg class="w-4 h-4 text-[#134E5E]" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/></svg>
+                Atención personalizada 1 a 1
+              </span>
+              <span class="inline-flex items-center gap-1.5">
+                <svg class="w-4 h-4 text-[#134E5E]" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+                Técnicas quiroprácticas seguras e indoloras
+              </span>
+              <span class="inline-flex items-center gap-1.5">
+                <svg class="w-4 h-4 text-[#134E5E]" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 6L9 17l-5-5"/></svg>
+                Box privado y atención a domicilio
+              </span>
+            </div>
+
+            <!-- Botones de Acción de Felipe -->
+            <div class="flex flex-col sm:flex-row gap-3 pt-1">
+              <a
+                href={`https://wa.me/56973700616?text=${encodeURIComponent(professionals.felipe.whatsappMessage)}`}
+                target="_blank"
+                rel="noopener noreferrer"
+                class="btn-press flex-1 inline-flex items-center justify-center gap-2 px-6 py-3.5 rounded-xl bg-[#134E5E] hover:bg-[#0F3E4B] text-white text-sm font-bold shadow-soft hover:shadow-[0_8px_25px_rgba(19,78,94,0.3)] transition-all cursor-pointer"
+              >
+                <svg class="w-5 h-5 text-cyan-200" viewBox="0 0 24 24" fill="currentColor">
+                  <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413Z"/>
+                </svg>
+                <span>Agendar (+569 7370 0616)</span>
+              </a>
+
+              <a
+                href="/quiropraxia"
+                class="btn-press inline-flex items-center justify-center gap-1.5 px-4 py-3.5 rounded-xl bg-white border-2 border-[#C2DFE8] text-xs font-bold text-[#134E5E] hover:bg-[#EBF5F8] transition-colors cursor-pointer whitespace-nowrap"
+              >
+                <span>Ver perfil →</span>
+              </a>
+
+              <button
+                type="button"
+                class="vcard-btn btn-press inline-flex items-center justify-center gap-2 p-3.5 rounded-xl bg-white border-2 border-[#C2DFE8] text-xs font-bold text-[#134E5E] hover:bg-[#EBF5F8] transition-colors cursor-pointer"
+                data-pro="felipe"
+                title="Guardar contacto de Felipe Méndez en tu teléfono"
+              >
+                <svg class="w-4 h-4 text-[#134E5E]" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/>
+                </svg>
+                <span class="sr-only">Guardar contacto</span>
+              </button>
+            </div>
+
           </div>
 
-          <!-- Nombre y Título -->
-          <div>
-            <h3 class="font-serif text-3xl sm:text-4xl lg:text-5xl font-bold text-[#152219] tracking-tight leading-tight mb-2">
-              Eduardo Lagos
-            </h3>
-            <p class="text-base sm:text-lg font-bold text-[#2E4D38]">
-              Acupunturista Clínico Certificado por Minsal · Docente de MTC
-            </p>
-            <p class="text-xs text-[#556D55] font-medium pt-1">
-              Superintendencia de Salud · Registro SIS N° 381042 · Temuco
-            </p>
-          </div>
+          <!-- LADO DERECHO: Foto con Blob Orgánico (en desktop va a la derecha) -->
+          <div id="felipe-photo-container" class="lg:col-span-5 relative flex items-center justify-center order-1 lg:order-2">
+            <div class="relative w-full max-w-[420px] sm:max-w-[460px] lg:max-w-[490px] xl:max-w-[520px] flex items-end justify-center pt-4 pb-2">
 
-          <!-- Biografía Amplia -->
-          <p class="text-base text-[#3E523E] leading-relaxed">
-            Especialista en Medicina Tradicional China con más de una década de práctica clínica en Temuco. Eduardo combina técnicas milenarias con neuroacupuntura moderna para el alivio profundo del dolor crónico, fibromialgia, migrañas y trastornos del estrés, regulando el flujo energético y promoviendo la autorrecuperación del organismo de forma natural y sin efectos adversos.
-          </p>
+              <!-- 1. Halo LUMINOSO biomecánico de ambientación (visible y rico) -->
+              <div class="absolute w-[380px] sm:w-[440px] lg:w-[490px] xl:w-[520px] h-[380px] sm:h-[440px] lg:h-[490px] xl:h-[520px] bg-gradient-to-tl from-[#3EADC7]/45 via-[#70CCE2]/35 to-[#165668]/30 rounded-full blur-3xl pointer-events-none animate-pulse [animation-duration:7s]"></div>
 
-          <!-- Especialidades Clínicas en Grid -->
-          <div class="p-6 rounded-3xl bg-white border border-[#D3E3D6] shadow-[0_4px_20px_rgba(46,77,56,0.06)]">
-            <h4 class="text-xs font-bold uppercase tracking-wider text-[#152219] mb-4 flex items-center gap-2">
-              <svg class="w-4 h-4 text-[#2E4D38]" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
-                <path d="M9 12l2 2 4-4"/>
-              </svg>
-              <span>Tratamientos y Especialidades de Eduardo:</span>
-            </h4>
-            <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 text-xs sm:text-sm font-semibold text-[#2D3E2D]">
-              <div class="flex items-center gap-2.5 p-2.5 rounded-xl bg-[#F6FAF7] border border-[#E2ECE5]">
-                <span class="w-2 h-2 rounded-full bg-[#2E4D38] shrink-0"></span>
-                <span>Acupuntura Sistémica &amp; Neuroacupuntura</span>
+              <!-- 2. Anillo orbital exterior rotatorio (Aura Biomecánica) -->
+              <div class="absolute w-[370px] sm:w-[430px] lg:w-[480px] xl:w-[510px] h-[370px] sm:h-[430px] lg:h-[480px] xl:h-[510px] rounded-[48%_52%_38%_62%/58%_42%_65%_35%] border-2 border-dashed border-[#134E5E]/35 rotate-12 animate-[spin_55s_linear_infinite_reverse] pointer-events-none"></div>
+
+              <!-- 3. Anillo interior armónico en giro continuo -->
+              <div class="absolute w-[330px] sm:w-[390px] lg:w-[440px] xl:w-[460px] h-[330px] sm:h-[390px] lg:h-[440px] xl:h-[460px] rounded-[54%_46%_42%_58%/44%_56%_48%_52%] border border-[#238096]/30 -rotate-30 animate-[spin_40s_linear_infinite] pointer-events-none"></div>
+
+              <!-- 4. Forma Orgánica SVG Bicapa (Contorno sutil + Blob sólido con gradiente petróleo clínico rico) -->
+              <div class="absolute inset-0 flex items-center justify-center pointer-events-none z-0">
+                <svg viewBox="0 0 500 500" class="w-[360px] sm:w-[420px] lg:w-[470px] xl:w-[500px] h-[360px] sm:h-[420px] lg:h-[470px] xl:h-[500px] filter drop-shadow-[0_20px_35px_rgba(19,78,94,0.22)]" xmlns="http://www.w3.org/2000/svg">
+                  <defs>
+                    <linearGradient id="blob-felipe-main" x1="15%" y1="10%" x2="88%" y2="92%">
+                      <stop offset="0%" stop-color="#C2EBF5" />
+                      <stop offset="35%" stop-color="#55ABC1" />
+                      <stop offset="75%" stop-color="#1B6377" />
+                      <stop offset="100%" stop-color="#0B2B33" />
+                    </linearGradient>
+                    <linearGradient id="blob-felipe-contour" x1="100%" y1="0%" x2="0%" y2="100%">
+                      <stop offset="0%" stop-color="#134E5E" stop-opacity="0.45" />
+                      <stop offset="100%" stop-color="#134E5E" stop-opacity="0.12" />
+                    </linearGradient>
+                  </defs>
+                  <!-- Forma de contorno exterior con ligera escala -->
+                  <path
+                    d="M435,320Q390,390,325,420Q260,450,195,425Q130,400,85,340Q40,280,70,210Q100,140,165,95Q230,50,305,70Q380,90,430,160Q480,230,435,320Z"
+                    fill="url(#blob-felipe-contour)"
+                    transform="scale(1.08) translate(-18, -18)"
+                  />
+                  <!-- Blob orgánico sólido con gradiente petróleo profundo -->
+                  <path
+                    d="M425,310Q380,370,320,405Q260,440,195,415Q130,390,85,330Q40,270,75,205Q110,140,170,100Q230,60,305,80Q380,100,425,170Q470,240,425,310Z"
+                    fill="url(#blob-felipe-main)"
+                  />
+                </svg>
               </div>
-              <div class="flex items-center gap-2.5 p-2.5 rounded-xl bg-[#F6FAF7] border border-[#E2ECE5]">
-                <span class="w-2 h-2 rounded-full bg-[#2E4D38] shrink-0"></span>
-                <span>Electroacupuntura para Dolor Rebelde</span>
+
+              <!-- Foto Recortada Transparente de Gran Formato -->
+              <div class="relative z-10 w-full flex justify-center group">
+                <img
+                  src="/pix/felipe-portrait-hd.webp"
+                  srcset="/pix/felipe-portrait-hd.webp 2x, /pix/felipe-portrait-hd.webp 1x"
+                  alt="Felipe Méndez - Quiropráctico & Kinesiólogo Certificado Minsal"
+                  class="w-full max-w-[380px] sm:max-w-[430px] lg:max-w-[470px] xl:max-w-[500px] h-auto object-contain drop-shadow-[0_22px_40px_rgba(15,45,55,0.22)] group-hover:scale-[1.03] transition-transform duration-700 ease-[cubic-bezier(0.16,1,0.3,1)] [mask-image:linear-gradient(to_bottom,black_86%,transparent_100%)]"
+                  loading="lazy"
+                  width="1220"
+                  height="1260"
+                />
+
+                <!-- Chip Flotante Profesional -->
+                <div class="absolute bottom-2 left-1/2 -translate-x-1/2 sm:right-2 sm:left-auto sm:translate-x-0 p-2.5 sm:p-3 rounded-2xl bg-white/95 border border-[#C2DFE8] backdrop-blur-md shadow-[0_10px_24px_rgba(19,78,94,0.15)] flex items-center gap-2.5 z-20 whitespace-nowrap">
+                  <div class="w-9 h-9 rounded-xl bg-[#134E5E] text-white flex items-center justify-center shrink-0 shadow-sm">
+                    <svg class="w-4 h-4 sm:w-5 sm:h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2">
+                      <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>
+                      <path d="M9 12l2 2 4-4"/>
+                    </svg>
+                  </div>
+                  <div class="text-left">
+                    <span class="text-xs font-bold text-[#134E5E] block leading-tight">Kinesiólogo &amp; Quiropráctico</span>
+                    <span class="text-[11px] text-[#526F77] block leading-tight">Especialista en Columna</span>
+                  </div>
+                </div>
               </div>
-              <div class="flex items-center gap-2.5 p-2.5 rounded-xl bg-[#F6FAF7] border border-[#E2ECE5]">
-                <span class="w-2 h-2 rounded-full bg-[#2E4D38] shrink-0"></span>
-                <span>Ventosaterapia Clínica (Cupping)</span>
-              </div>
-              <div class="flex items-center gap-2.5 p-2.5 rounded-xl bg-[#F6FAF7] border border-[#E2ECE5]">
-                <span class="w-2 h-2 rounded-full bg-[#2E4D38] shrink-0"></span>
-                <span>Moxibustión Térmica &amp; Fitoterapia</span>
-              </div>
+
             </div>
           </div>
 
-          <!-- Píldora de Calidad Clínica -->
-          <div class="flex flex-wrap items-center gap-4 text-xs font-semibold text-[#44594A]">
-            <span class="inline-flex items-center gap-1.5">
-              <svg class="w-4 h-4 text-[#2E4D38]" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg>
-              Sesiones de 50 minutos 1 a 1
-            </span>
-            <span class="inline-flex items-center gap-1.5">
-              <svg class="w-4 h-4 text-[#2E4D38]" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
-              Agujas filiformes estériles desechables
-            </span>
-            <span class="inline-flex items-center gap-1.5">
-              <svg class="w-4 h-4 text-[#2E4D38]" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 6L9 17l-5-5"/></svg>
-              Box privado climatizado
-            </span>
-          </div>
-
-          <!-- Botones de Acción de Eduardo -->
-          <div class="flex flex-col sm:flex-row gap-3.5 pt-2">
-            <a
-              href={`https://wa.me/56973888910?text=${encodeURIComponent(professionals.eduardo.whatsappMessage)}`}
-              target="_blank"
-              rel="noopener noreferrer"
-              class="btn-press flex-1 inline-flex items-center justify-center gap-2.5 px-6 py-3.5 rounded-xl bg-[#2E4D38] hover:bg-[#233C2C] text-white text-sm font-bold shadow-soft hover:shadow-[0_8px_25px_rgba(46,77,56,0.3)] transition-all cursor-pointer"
-            >
-              <svg class="w-5 h-5 text-emerald-300" viewBox="0 0 24 24" fill="currentColor">
-                <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413Z"/>
-              </svg>
-              <span>Consultar a Eduardo (+569 7388 8910)</span>
-            </a>
-
-            <button
-              type="button"
-              class="vcard-btn btn-press inline-flex items-center justify-center gap-2 px-5 py-3.5 rounded-xl bg-white border-2 border-[#CCE2D2] text-xs font-bold text-[#2E4D38] hover:bg-[#EEF5F0] transition-colors cursor-pointer"
-              data-pro="eduardo"
-              title="Guardar contacto de Eduardo Lagos en tu teléfono"
-            >
-              <svg class="w-4 h-4 text-[#2E4D38]" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                <path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/>
-              </svg>
-              <span>Guardar (.vcf)</span>
-            </button>
-          </div>
-
         </div>
+      </article>
 
-      </div>
     </div>
-  </section>
 
-  <!-- ==============================================
-       2. SECCIÓN DEDICADA: FELIPE MÉNDEZ (Quiropraxia)
-       Información a la IZQUIERDA · Foto en grande a la DERECHA
-       Color temático: Azul Petróleo Clásico (#134E5E)
-       ============================================== -->
-  <section id="pro-felipe" class="py-20 lg:py-28 bg-[#F4F9FA] border-b border-[#D8E6EB] relative overflow-hidden">
-
-    <!-- Formas orgánicas / irregulares decorativas de fondo -->
-    <div class="absolute -top-32 right-[-10%] w-[600px] h-[600px] bg-[#134E5E]/[0.06] rounded-full blur-[140px] pointer-events-none"></div>
-    <div class="absolute -bottom-32 -left-32 w-[500px] h-[500px] bg-[#236B80]/[0.05] rounded-full blur-[130px] pointer-events-none"></div>
-
-    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
-      <div class="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-16 items-center">
-
-        <!-- LADO IZQUIERDO: Toda su Información Profesional (en desktop va a la izquierda) -->
-        <div class="lg:col-span-7 space-y-6 text-left order-2 lg:order-1">
-
-          <!-- Badge Disciplina -->
-          <div class="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-[#EBF5F8] border border-[#C2DFE8] text-[#134E5E] text-xs font-bold uppercase tracking-wider">
-            <span class="w-2.5 h-2.5 rounded-full bg-[#134E5E]"></span>
-            <span>Quiropraxia Biomecánica &amp; Kinesiología</span>
-          </div>
-
-          <!-- Nombre y Título -->
-          <div>
-            <h3 class="font-serif text-3xl sm:text-4xl lg:text-5xl font-bold text-[#152219] tracking-tight leading-tight mb-2">
-              Felipe Méndez
-            </h3>
-            <p class="text-base sm:text-lg font-bold text-[#134E5E]">
-              Quiropráctico &amp; Kinesiólogo Clínico · Especialista en Columna
-            </p>
-            <p class="text-xs text-[#526F77] font-medium pt-1">
-              Superintendencia de Salud · Registro SIS N° 458921 · Temuco
-            </p>
-          </div>
-
-          <!-- Biografía Amplia -->
-          <p class="text-base text-[#3A5057] leading-relaxed">
-            Especialista en evaluación biomecánica vertebral y rehabilitación motora integral. Felipe aplica ajustes quiroprácticos específicos de alta precisión y descompresión radicular para corregir subluxaciones, eliminar la compresión de nervios y resolver la causa de hernias lumbares, ciática, dolor cervical y disfunciones articulares sin fármacos ni cirugías.
-          </p>
-
-          <!-- Especialidades Clínicas en Grid -->
-          <div class="p-6 rounded-3xl bg-white border border-[#C9DFE6] shadow-[0_4px_20px_rgba(19,78,94,0.06)]">
-            <h4 class="text-xs font-bold uppercase tracking-wider text-[#152219] mb-4 flex items-center gap-2">
-              <svg class="w-4 h-4 text-[#134E5E]" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
-                <path d="M9 12l2 2 4-4"/>
-              </svg>
-              <span>Tratamientos y Especialidades de Felipe:</span>
-            </h4>
-            <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 text-xs sm:text-sm font-semibold text-[#1C2C30]">
-              <div class="flex items-center gap-2.5 p-2.5 rounded-xl bg-[#F4F9FA] border border-[#DCEBF0]">
-                <span class="w-2 h-2 rounded-full bg-[#134E5E] shrink-0"></span>
-                <span>Ajustes Vertebrales Específicos (Columna)</span>
-              </div>
-              <div class="flex items-center gap-2.5 p-2.5 rounded-xl bg-[#F4F9FA] border border-[#DCEBF0]">
-                <span class="w-2 h-2 rounded-full bg-[#134E5E] shrink-0"></span>
-                <span>Descompresión Lumbar, Hernias &amp; Ciática</span>
-              </div>
-              <div class="flex items-center gap-2.5 p-2.5 rounded-xl bg-[#F4F9FA] border border-[#DCEBF0]">
-                <span class="w-2 h-2 rounded-full bg-[#134E5E] shrink-0"></span>
-                <span>Rehabilitación Deportiva &amp; Traumatológica</span>
-              </div>
-              <div class="flex items-center gap-2.5 p-2.5 rounded-xl bg-[#F4F9FA] border border-[#DCEBF0]">
-                <span class="w-2 h-2 rounded-full bg-[#134E5E] shrink-0"></span>
-                <span>Kinesiología Motora (Box y a Domicilio)</span>
-              </div>
-            </div>
-          </div>
-
-          <!-- Píldora de Calidad Clínica -->
-          <div class="flex flex-wrap items-center gap-4 text-xs font-semibold text-[#4A646D]">
-            <span class="inline-flex items-center gap-1.5">
-              <svg class="w-4 h-4 text-[#134E5E]" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg>
-              Sesiones de 45 a 60 minutos 1 a 1
-            </span>
-            <span class="inline-flex items-center gap-1.5">
-              <svg class="w-4 h-4 text-[#134E5E]" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
-              Técnicas quiroprácticas seguras e indoloras
-            </span>
-            <span class="inline-flex items-center gap-1.5">
-              <svg class="w-4 h-4 text-[#134E5E]" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 6L9 17l-5-5"/></svg>
-              Boletas reembolsables en Isapre
-            </span>
-          </div>
-
-          <!-- Botones de Acción de Felipe -->
-          <div class="flex flex-col sm:flex-row gap-3.5 pt-2">
-            <a
-              href={`https://wa.me/56973700616?text=${encodeURIComponent(professionals.felipe.whatsappMessage)}`}
-              target="_blank"
-              rel="noopener noreferrer"
-              class="btn-press flex-1 inline-flex items-center justify-center gap-2.5 px-6 py-3.5 rounded-xl bg-[#134E5E] hover:bg-[#0F3E4B] text-white text-sm font-bold shadow-soft hover:shadow-[0_8px_25px_rgba(19,78,94,0.3)] transition-all cursor-pointer"
-            >
-              <svg class="w-5 h-5 text-cyan-200" viewBox="0 0 24 24" fill="currentColor">
-                <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413Z"/>
-              </svg>
-              <span>Consultar a Felipe (+569 7370 0616)</span>
-            </a>
-
-            <button
-              type="button"
-              class="vcard-btn btn-press inline-flex items-center justify-center gap-2 px-5 py-3.5 rounded-xl bg-white border-2 border-[#C2DFE8] text-xs font-bold text-[#134E5E] hover:bg-[#EBF5F8] transition-colors cursor-pointer"
-              data-pro="felipe"
-              title="Guardar contacto de Felipe Méndez en tu teléfono"
-            >
-              <svg class="w-4 h-4 text-[#134E5E]" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                <path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/>
-              </svg>
-              <span>Guardar (.vcf)</span>
-            </button>
-          </div>
-
-        </div>
-
-        <!-- LADO DERECHO: Foto en Grande de Felipe con Formas Irregulares (Sin recuadro blanco, fondo transparente) -->
-        <div id="felipe-photo-container" class="lg:col-span-5 relative flex items-center justify-center order-1 lg:order-2">
-
-          <!-- Contenedor relativo para la composición orgánica + cutout -->
-          <div class="relative w-full max-w-[440px] sm:max-w-[480px] lg:max-w-[500px] flex items-end justify-center pt-10 pb-4">
-
-            <!-- 1. Formas Orgánicas / Blobs Biomecánicos de Felipe (Claramente visibles de fondo) -->
-            <div class="absolute inset-0 flex items-center justify-center pointer-events-none z-0">
-              <!-- Glow suave biomecánico de ambientación -->
-              <div class="absolute w-[380px] sm:w-[460px] h-[380px] sm:h-[460px] bg-[#4B9CB3]/35 rounded-full blur-3xl"></div>
-
-              <!-- Anillo decorativo rotado / aura biomecánica -->
-              <div class="absolute w-[370px] sm:w-[450px] lg:w-[480px] h-[370px] sm:h-[450px] lg:h-[480px] rounded-[48%_52%_38%_62%/58%_42%_65%_35%] border-2 border-dashed border-[#134E5E]/30 rotate-12 animate-[spin_55s_linear_infinite_reverse]"></div>
-
-              <!-- Forma Orgánica Principal de Felipe (Azul Petróleo Biomecánico Rico & Visible) -->
-              <svg viewBox="0 0 500 500" class="w-[360px] sm:w-[440px] lg:w-[470px] h-[360px] sm:h-[440px] lg:h-[470px] filter drop-shadow-[0_20px_35px_rgba(19,78,94,0.22)]" xmlns="http://www.w3.org/2000/svg">
-                <defs>
-                  <linearGradient id="blob-felipe-main" x1="15%" y1="10%" x2="90%" y2="95%">
-                    <stop offset="0%" stop-color="#BDE3ED" />
-                    <stop offset="45%" stop-color="#55A8BE" />
-                    <stop offset="100%" stop-color="#1B6377" />
-                  </linearGradient>
-                  <linearGradient id="blob-felipe-contour" x1="100%" y1="0%" x2="0%" y2="100%">
-                    <stop offset="0%" stop-color="#134E5E" stop-opacity="0.4" />
-                    <stop offset="100%" stop-color="#134E5E" stop-opacity="0.1" />
-                  </linearGradient>
-                </defs>
-                <!-- Forma de contorno exterior con ligera escala -->
-                <path
-                  d="M435,320Q390,390,325,420Q260,450,195,425Q130,400,85,340Q40,280,70,210Q100,140,165,95Q230,50,305,70Q380,90,430,160Q480,230,435,320Z"
-                  fill="url(#blob-felipe-contour)"
-                  transform="scale(1.08) translate(-18, -18)"
-                />
-                <!-- Blob orgánico sólido con gradiente petróleo profundo -->
-                <path
-                  d="M425,310Q380,370,320,405Q260,440,195,415Q130,390,85,330Q40,270,75,205Q110,140,170,100Q230,60,305,80Q380,100,425,170Q470,240,425,310Z"
-                  fill="url(#blob-felipe-main)"
-                />
-              </svg>
-            </div>
-
-            <!-- 2. Foto Recortada Transparente de Felipe (Ultra HD 2x, sin caja blanca, fondo 100% transparente) -->
-            <div class="relative z-10 w-full flex justify-center group">
-              <img
-                src="/pix/felipe-kinesiologo-hd.webp"
-                srcset="/pix/felipe-kinesiologo-hd.webp 2x, /pix/felipe-kinesiologo.webp 1x"
-                alt="Felipe Méndez - Quiropráctico & Kinesiólogo Certificado Minsal"
-                class="w-auto max-h-[490px] sm:max-h-[550px] lg:max-h-[570px] object-contain drop-shadow-[0_22px_38px_rgba(15,45,55,0.25)] group-hover:scale-[1.02] transition-transform duration-700 ease-[cubic-bezier(0.16,1,0.3,1)] [mask-image:linear-gradient(to_bottom,black_88%,transparent_100%)]"
-                loading="lazy"
-                width="881"
-                height="800"
-              />
-
-              <!-- Chip Flotante de Registro Minsal (Estilo Glassmorphism Limpio) -->
-              <div class="absolute bottom-4 left-1/2 -translate-x-1/2 sm:right-4 sm:left-auto sm:translate-x-0 p-3 rounded-2xl bg-white/95 border border-[#C2DFE8] backdrop-blur-md shadow-[0_12px_28px_rgba(19,78,94,0.18)] flex items-center gap-3 z-20 whitespace-nowrap">
-                <div class="w-10 h-10 rounded-xl bg-[#134E5E] text-white flex items-center justify-center shrink-0 shadow-sm font-serif font-bold text-sm">
-                  SIS
-                </div>
-                <div class="text-left">
-                  <span class="text-xs font-bold text-[#134E5E] block">Registro SIS N° 458921</span>
-                  <span class="text-[11px] text-[#526F77] block">Acreditado Minsal · Quiropraxia</span>
-                </div>
-              </div>
-            </div>
-
-          </div>
-
-        </div>
-
-      </div>
-    </div>
-  </section>
-
-</div>
+  </div>
+</section>
 
 <script>
   // vCard Generation & Download

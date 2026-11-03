@@ -1,0 +1,42 @@
+# Centro Vida Sana Austral
+
+> Centro de salud integral y terapias avanzadas en Temuco, Chile. Acupuntura y Medicina Tradicional China acreditada por Minsal, Quiropraxia Clínica, Kinesiología y Fisioterapia. Atención personalizada en box privado y a domicilio.
+
+Centro Vida Sana Austral (https://centrovidasana.cl) es una clínica de salud y rehabilitación integral ubicada en Temuco, Región de La Araucanía, Chile. Fundada por Felipe Méndez (Quiropráctico y Kinesiólogo) y Eduardo Lagos (Acupunturista acreditado por el Ministerio de Salud de Chile - Minsal).
+
+## Páginas Principales
+
+- [Inicio](https://centrovidasana.cl/): Presentación de la clínica, modelo terapéutico integrativo, equipo profesional acreditado, guía interactiva de patologías, opiniones de pacientes (5.0 en Google) y canales directos de contacto.
+- [Quiropraxia y Kinesiología](https://centrovidasana.cl/quiropraxia): Servicios a cargo de Felipe Méndez. Evaluación biomecánica de columna, ajuste articular quiropráctico de alta precisión, kinesiología traumatológica, fisioterapia con agentes físicos, prescripción de plantillas ortopédicas biomecánicas a medida y kinesiología a domicilio en Temuco.
+- [Acupuntura y Medicina Tradicional China](https://centrovidasana.cl/acupuntura): Servicios a cargo de Eduardo Lagos. Acupuntura clínica acreditada Minsal con agujas estériles desechables ultrafinas, electroacupuntura para dolor crónico, ventosas terapéuticas (cupping), moxibustión tradicional y auriculoterapia.
+
+## Profesionales Acreditados
+
+- **Felipe Méndez**: Licenciado en Kinesiología y Quiropráctico Clínico. Registro Minsal N° 458912. Especialista en dolor de columna vertebral, hernias discales, ciática, lesiones deportivas y reeducación postural.
+- **Eduardo Lagos**: Acupunturista Clínico Certificado por Minsal (Registro N° 683294). Especialista en Medicina Tradicional China, dolor crónico generalizado, fibromialgia, bruxismo (ATM), insomnio, estrés y cefaleas.
+
+## Condiciones Clínicas Tratadas
+
+- Columna Vertebral: Lumbago agudo y mecánico, ciática, dolor cervical, dorsalgia, discopatías y hernias discales lumbares/cervicales.
+- Dolor Crónico e Inflamatorio: Fibromialgia, artrosis de rodilla y cadera, artritis, dolor miofascial y contracturas musculares persistentes.
+- Cráneo y Mandíbula: Cefaleas tensionales, migrañas rebeldes, bruxismo y trastornos de la articulación temporomandibular (ATM).
+- Extremidades y Lesiones Deportivas: Esguinces de tobillo y rodilla, tendinitis de hombro/manguito rotador, fascitis plantar, síndrome del túnel carpiano y epicondilitis.
+- Bienestar Neurovegetativo: Estrés crónico, estados de ansiedad, insomnio de conciliación y fatiga persistente (Shen).
+- Biomecánica y Postura: Escoliosis, hiperlordosis, asimetrías de carga y alteraciones del apoyo plantar mediante plantillas ortopédicas personalizadas.
+
+## Ubicación y Contacto Directo
+
+- Dirección: Los Armiños 1620, Temuco, La Araucanía, Chile (Estacionamiento privado y acceso universal).
+- Horario de Atención: Lunes a Viernes de 10:00 a 21:00 hrs (Atención con cita previa programada).
+- Teléfono / WhatsApp Felipe Méndez (Quiropraxia & Kine): +569 7370 0616
+- Teléfono / WhatsApp Eduardo Lagos (Acupuntura & MTC): +569 7388 8910
+- Instagram: https://www.instagram.com/vidasanaaustral
+- Calificación: 5.0 / 5.0 estrellas en Google Reviews
+
+## Recursos Técnicos
+
+- [Sitemap XML](https://centrovidasana.cl/sitemap.xml): Índice de URLs canónicas indexables para rastreadores de motores de búsqueda.
+- [Robots TXT](https://centrovidasana.cl/robots.txt): Directivas oficiales de rastreo e indexación.
+
+---
+Última actualización: Noviembre 2026

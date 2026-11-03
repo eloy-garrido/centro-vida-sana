@@ -1,5 +1,5 @@
 ---
-// PathologiesGuide.astro - Sección Condiciones de Salud en Temuco
+// PathologiesGuide.astro - Sección Condiciones de Salud en Temuco (Alta Artesanía Editorial & Emil Kowalski Physics)
 import { pathologiesData } from '../../data/pathologies';
 ---
 
@@ -26,16 +26,17 @@ import { pathologiesData } from '../../data/pathologies';
 
   <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-8 sm:pt-12 pb-20 sm:pb-28 relative z-20">
 
-    <!-- Encabezado de Sección -->
+    <!-- Encabezado Editorial de Sección -->
     <div class="text-center max-w-3xl mx-auto mb-14 sm:mb-18">
-      <span class="inline-block text-xs font-bold uppercase tracking-widest text-[#1e6f40] bg-[#c2edd9]/60 px-3.5 py-1 rounded-full mb-3.5 border border-[#1e6f40]/15">
+      <span class="inline-flex items-center gap-2 text-[11.5px] font-bold uppercase tracking-[0.14em] text-[#005a26] bg-white/85 border border-[#007231]/20 px-3.5 py-1 rounded-full mb-3.5 shadow-sm backdrop-blur-sm">
+        <span class="w-1.5 h-1.5 rounded-full bg-[#007231]" aria-hidden="true"></span>
         Enfoque Terapéutico Integral
       </span>
-      <h2 class="font-sans text-3xl sm:text-4xl lg:text-5xl font-extrabold text-[#1a3a2a] tracking-tight mb-4 leading-tight">
-        Condiciones de <span class="text-[#007231]">Salud</span> que Tratamos en Temuco
+      <h2 class="font-serif text-3xl sm:text-4xl lg:text-5xl font-semibold text-[#14281d] tracking-tight mb-4 leading-[1.18]">
+        Condiciones de <span class="font-serif italic font-normal text-[#007231]">Salud</span> que Tratamos en Temuco
       </h2>
-      <p class="text-base sm:text-lg text-[#2d5a45] leading-relaxed max-w-2xl mx-auto font-normal">
-        Nuestros especialistas en <strong class="text-[#007231] font-bold">acupuntura</strong>, <strong class="text-[#007231] font-bold">quiropraxia</strong> y <strong class="text-[#007231] font-bold">kinesiología</strong> en Temuco abordan una amplia variedad de condiciones musculoesqueléticas, dolor crónico y lesiones con un enfoque natural e integral.
+      <p class="font-sans text-base sm:text-lg text-[#264835] leading-relaxed max-w-2xl mx-auto font-normal">
+        Nuestros especialistas en <strong class="text-[#005a26] font-semibold">acupuntura</strong>, <strong class="text-[#005a26] font-semibold">quiropraxia</strong> y <strong class="text-[#005a26] font-semibold">kinesiología</strong> en Temuco abordan una amplia variedad de condiciones musculoesqueléticas, dolor crónico y lesiones con un enfoque natural e integral.
       </p>
     </div>
 
@@ -85,16 +86,17 @@ import { pathologiesData } from '../../data/pathologies';
                   <div class="treatment-tags" aria-label="Tratamientos recomendados">
                     {item.treatments.map((t) => (
                       <span class={`tag tag-${t.type}`}>
+                        <span class="tag-dot" aria-hidden="true"></span>
                         {t.label}
                       </span>
                     ))}
                   </div>
 
-                  <!-- Indicador de acción sutil al hover -->
+                  <!-- Indicador de acción sutil con física Emil Kowalski -->
                   <div class="action-hint" aria-hidden="true">
                     <span>Consultar</span>
-                    <svg class="w-3.5 h-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
-                      <path d="M5 12h14M12 5l7 7-7 7" stroke-linecap="round" stroke-linejoin="round"/>
+                    <svg class="w-3.5 h-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                      <path d="M5 12h14M12 5l7 7-7 7"/>
                     </svg>
                   </div>
                 </div>
@@ -110,29 +112,33 @@ import { pathologiesData } from '../../data/pathologies';
       <div class="pathologies-footer-inner">
         <!-- Ícono de información / orientación médica -->
         <div class="pathologies-footer-icon" aria-hidden="true">
-          <svg viewBox="0 0 24 24" fill="currentColor">
-            <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-2h2v2zm0-4h-2V7h2v6z" />
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <circle cx="12" cy="12" r="10"/>
+            <line x1="12" y1="16" x2="12" y2="12"/>
+            <line x1="12" y1="8" x2="12.01" y2="8"/>
           </svg>
         </div>
 
-        <!-- Texto explicativo -->
+        <!-- Texto explicativo con tipografía editorial -->
         <div class="pathologies-footer-text">
-          <p>
-            <strong>¿Tu condición no está en la lista?</strong>
-            Tratamos muchas más patologías. Escríbenos y te orientamos sin costo.
+          <h3 class="font-serif text-lg sm:text-xl font-bold text-[#14281d] mb-1 leading-snug">
+            ¿Tu condición no está en la lista?
+          </h3>
+          <p class="font-sans text-sm sm:text-[15px] text-[#2d5a45] leading-relaxed">
+            Abordamos muchas más patologías musculoesqueléticas y cuadros de dolor. Escríbenos directamente y te orientamos sin costo sobre el mejor tratamiento para tu caso.
           </p>
         </div>
 
-        <!-- Botón de acción WhatsApp -->
+        <!-- Botón de acción WhatsApp con micro-feedback Emil Kowalski -->
         <a
           href="https://wa.me/56973700616?text=Hola,%20quisiera%20consultar%20por%20una%20condici%C3%B3n%20que%20no%20aparece%20en%20la%20lista%20de%20patolog%C3%ADas."
           target="_blank"
           rel="noopener noreferrer"
-          class="btn-cta pathologies-footer-btn"
+          class="pathologies-footer-btn"
         >
           <span>Consultar ahora</span>
-          <svg class="w-4 h-4 ml-2" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2">
-            <path d="M5 12h14M12 5l7 7-7 7" stroke-linecap="round" stroke-linejoin="round"/>
+          <svg class="w-4 h-4 ml-1.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M5 12h14M12 5l7 7-7 7"/>
           </svg>
         </a>
       </div>
@@ -159,62 +165,74 @@ import { pathologiesData } from '../../data/pathologies';
 
 <style>
   /* =====================================================================
-     SECCIÓN PATOLOGÍAS - ESTILO ORGÁNICO BOTÁNICO CON FÍSICA ARTESANAL
+     SECCIÓN PATOLOGÍAS - ALTA ARTESANÍA (IMPECCABLE + EMIL KOWALSKI PHYSICS)
      ===================================================================== */
 
   .pathologies-section {
-    background-color: #d3f6e8;
+    background: radial-gradient(120% 80% at 50% 20%, #e2f8ee 0%, #d3f3e6 60%, #c4ebd9 100%);
   }
 
   /* ---- Tarjeta Individual ---- */
   .pathology-item {
     background: #ffffff;
-    border-radius: 22px;
-    border: 2px solid rgba(0, 114, 49, 0.08);
-    box-shadow: 0 6px 24px rgba(0, 0, 0, 0.05);
+    border-radius: 20px;
+    border: 1px solid rgba(0, 114, 49, 0.12);
+    box-shadow:
+      inset 0 1px 0 rgba(255, 255, 255, 0.95),
+      0 2px 8px rgba(0, 40, 20, 0.04),
+      0 12px 28px -10px rgba(0, 60, 25, 0.06);
     position: relative;
     overflow: hidden;
     cursor: pointer;
     display: flex;
     flex-direction: column;
     transition:
-      transform 0.38s cubic-bezier(0.34, 1.56, 0.64, 1),
-      box-shadow 0.38s ease,
-      border-color 0.3s ease;
+      transform 220ms cubic-bezier(0.23, 1, 0.32, 1),
+      box-shadow 220ms cubic-bezier(0.23, 1, 0.32, 1),
+      border-color 200ms ease;
   }
 
-  /* Silueta del pasto que emerge desde abajo en hover */
+  /* Micro-feedback Emil Kowalski: escala sutil en :active */
+  .pathology-item:active {
+    transform: scale(0.985);
+    transition-duration: 100ms;
+  }
+
+  /* Silueta del pasto que emerge suavemente en hover */
   .pathology-item::after {
     content: '';
     position: absolute;
     bottom: 0;
     left: 0;
     right: 0;
-    height: 100px;
+    height: 90px;
     background-image: url('/pix/pasto.webp');
     background-repeat: repeat-x;
     background-position: bottom center;
-    background-size: auto 100px;
-    opacity: 0.18;
+    background-size: auto 90px;
+    opacity: 0.14;
     pointer-events: none;
-    transform: translateY(48px);
+    transform: translateY(45px);
     transition:
-      transform 0.6s cubic-bezier(0.25, 1, 0.5, 1),
-      opacity 0.45s ease;
+      transform 450ms cubic-bezier(0.23, 1, 0.32, 1),
+      opacity 350ms ease;
     z-index: 1;
   }
 
-  .pathology-item:hover {
-    transform: translateY(-9px) scale(1.015);
-    box-shadow:
-      0 20px 48px -10px rgba(0, 114, 49, 0.18),
-      0 8px 16px -4px rgba(0, 0, 0, 0.04);
-    border-color: rgba(0, 114, 49, 0.28);
-  }
+  @media (hover: hover) and (pointer: fine) {
+    .pathology-item:hover {
+      transform: translateY(-5px);
+      box-shadow:
+        inset 0 1px 0 rgba(255, 255, 255, 1),
+        0 8px 24px -4px rgba(0, 114, 49, 0.12),
+        0 20px 38px -10px rgba(0, 70, 30, 0.13);
+      border-color: rgba(0, 114, 49, 0.3);
+    }
 
-  .pathology-item:hover::after {
-    transform: translateY(0);
-    opacity: 0.55;
+    .pathology-item:hover::after {
+      transform: translateY(0);
+      opacity: 0.45;
+    }
   }
 
   /* Enlace contenedor */
@@ -222,7 +240,7 @@ import { pathologiesData } from '../../data/pathologies';
     display: flex;
     flex-direction: column;
     height: 100%;
-    padding: 32px 28px 24px;
+    padding: 30px 28px 24px;
     text-decoration: none;
     color: inherit;
     position: relative;
@@ -232,24 +250,26 @@ import { pathologiesData } from '../../data/pathologies';
   /* Logo decorativo en marca de agua */
   .pathology-logo-deco {
     position: absolute;
-    top: 50%;
+    top: 55%;
     right: -36px;
     width: 175px;
     height: 175px;
     object-fit: contain;
-    opacity: 0.07;
+    opacity: 0.06;
     pointer-events: none;
     z-index: 1;
     transform: translateY(-50%);
     transition:
-      transform 0.45s cubic-bezier(0.34, 1.56, 0.64, 1),
-      opacity 0.35s ease;
+      transform 350ms cubic-bezier(0.23, 1, 0.32, 1),
+      opacity 300ms ease;
     filter: saturate(0.4) brightness(0.85);
   }
 
-  .pathology-item:hover .pathology-logo-deco {
-    transform: translateY(-50%) scale(1.12);
-    opacity: 0.18;
+  @media (hover: hover) and (pointer: fine) {
+    .pathology-item:hover .pathology-logo-deco {
+      transform: translateY(-50%) scale(1.08);
+      opacity: 0.14;
+    }
   }
 
   /* Contenido interno */
@@ -263,23 +283,28 @@ import { pathologiesData } from '../../data/pathologies';
   }
 
   .pathology-title {
-    font-size: 19.5px;
+    font-family: 'Playfair Display', Georgia, serif;
+    font-size: 21px;
     font-weight: 700;
-    color: #1a3a2a;
+    color: #14281d;
     margin: 0 0 10px;
-    line-height: 1.32;
-    transition: color 0.3s ease;
+    line-height: 1.28;
+    letter-spacing: -0.015em;
+    transition: color 200ms ease;
   }
 
-  .pathology-item:hover .pathology-title {
-    color: #007231;
+  @media (hover: hover) and (pointer: fine) {
+    .pathology-item:hover .pathology-title {
+      color: #007231;
+    }
   }
 
   .pathology-desc {
+    font-family: 'DM Sans', -apple-system, sans-serif;
     font-size: 14.5px;
     color: #415a4b;
     line-height: 1.62;
-    margin: 0 0 20px;
+    margin: 0 0 22px;
     font-weight: 400;
   }
 
@@ -288,63 +313,86 @@ import { pathologiesData } from '../../data/pathologies';
     display: flex;
     align-items: center;
     justify-content: space-between;
-    gap: 12px;
+    gap: 10px;
     margin-top: auto;
+    padding-top: 6px;
   }
 
-  /* Treatment Tags */
+  /* Treatment Tags con micro-punto y contraste de disciplina */
   .treatment-tags {
     display: flex;
     flex-wrap: wrap;
-    gap: 7px;
+    gap: 6px;
   }
 
   .tag {
-    display: inline-block;
-    font-size: 11.5px;
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+    font-family: 'DM Sans', -apple-system, sans-serif;
+    font-size: 11px;
     font-weight: 600;
-    padding: 3.5px 11px;
+    padding: 3.5px 9px;
     border-radius: 9999px;
     letter-spacing: 0.02em;
     white-space: nowrap;
-    transition: transform 0.2s ease;
+    line-height: 1;
+  }
+
+  .tag-dot {
+    width: 5px;
+    height: 5px;
+    border-radius: 50%;
+    background-color: currentColor;
+    opacity: 0.8;
   }
 
   .tag-kine {
-    background: #dcf5e7;
-    color: #1a6b3a;
-    border: 1px solid rgba(26, 107, 58, 0.18);
+    background: #e7f7ee;
+    color: #126336;
+    border: 1px solid rgba(18, 99, 54, 0.2);
   }
 
   .tag-quiro {
-    background: #d0eff5;
-    color: #0e6680;
-    border: 1px solid rgba(14, 102, 128, 0.18);
+    background: #e5f2f6;
+    color: #0c576e;
+    border: 1px solid rgba(12, 87, 110, 0.2);
   }
 
   .tag-acu {
-    background: #fef5d7;
-    color: #8a6200;
-    border: 1px solid rgba(138, 98, 0, 0.18);
+    background: #fdf5de;
+    color: #7d5700;
+    border: 1px solid rgba(125, 87, 0, 0.22);
   }
 
-  /* Micro indicador de acción que aparece al hover */
+  /* Micro indicador de acción interactivo */
   .action-hint {
     display: inline-flex;
     align-items: center;
     gap: 4px;
-    font-size: 12px;
+    font-family: 'DM Sans', -apple-system, sans-serif;
+    font-size: 11.5px;
     font-weight: 700;
     color: #007231;
-    opacity: 0;
-    transform: translateX(6px);
-    transition: opacity 0.3s ease, transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
     white-space: nowrap;
+    opacity: 0.8;
+    transition:
+      opacity 200ms ease,
+      color 200ms ease;
   }
 
-  .pathology-item:hover .action-hint {
-    opacity: 1;
-    transform: translateX(0);
+  .action-hint svg {
+    transition: transform 220ms cubic-bezier(0.23, 1, 0.32, 1);
+  }
+
+  @media (hover: hover) and (pointer: fine) {
+    .pathology-item:hover .action-hint {
+      opacity: 1;
+    }
+
+    .pathology-item:hover .action-hint svg {
+      transform: translateX(3px);
+    }
   }
 
   /* ---- Banner Footer Inferior ---- */
@@ -355,19 +403,22 @@ import { pathologiesData } from '../../data/pathologies';
   }
 
   .pathologies-footer-inner {
-    background: linear-gradient(135deg, rgba(255, 255, 255, 0.95), rgba(211, 246, 232, 0.55));
-    border: 2px solid rgba(0, 114, 49, 0.12);
-    border-radius: 24px;
-    padding: 30px 38px;
+    background: linear-gradient(135deg, rgba(255, 255, 255, 0.98), rgba(226, 248, 238, 0.7));
+    border: 1px solid rgba(0, 114, 49, 0.18);
+    border-radius: 22px;
+    padding: 30px 36px;
     display: flex;
     flex-direction: column;
     align-items: center;
     gap: 20px;
-    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.05);
+    box-shadow:
+      inset 0 1px 0 rgba(255, 255, 255, 1),
+      0 4px 16px rgba(0, 40, 20, 0.04),
+      0 16px 36px -12px rgba(0, 70, 30, 0.08);
     position: relative;
     overflow: hidden;
-    backdrop-filter: blur(8px);
-    transition: border-color 0.3s ease, box-shadow 0.3s ease;
+    backdrop-filter: blur(10px);
+    transition: border-color 200ms ease, box-shadow 200ms ease;
   }
 
   @media (min-width: 640px) {
@@ -383,23 +434,25 @@ import { pathologiesData } from '../../data/pathologies';
     bottom: 0;
     left: 0;
     right: 0;
-    height: 90px;
+    height: 85px;
     background-image: url('/pix/pasto.webp');
     background-repeat: repeat-x;
     background-position: bottom center;
-    background-size: auto 90px;
-    opacity: 0.18;
+    background-size: auto 85px;
+    opacity: 0.14;
     pointer-events: none;
-    transform: translateY(45px);
+    transform: translateY(40px);
     transition:
-      transform 0.6s cubic-bezier(0.25, 1, 0.5, 1),
-      opacity 0.45s ease;
+      transform 450ms cubic-bezier(0.23, 1, 0.32, 1),
+      opacity 350ms ease;
     z-index: 0;
   }
 
-  .pathologies-footer-inner:hover::after {
-    transform: translateY(0);
-    opacity: 0.52;
+  @media (hover: hover) and (pointer: fine) {
+    .pathologies-footer-inner:hover::after {
+      transform: translateY(0);
+      opacity: 0.4;
+    }
   }
 
   .pathologies-footer-icon,
@@ -410,29 +463,25 @@ import { pathologiesData } from '../../data/pathologies';
   }
 
   .pathologies-footer-icon {
-    width: 52px;
-    height: 52px;
-    background: linear-gradient(135deg, #007231, #1e6f40);
-    border-radius: 16px;
+    width: 50px;
+    height: 50px;
+    background: linear-gradient(135deg, #007231, #005a26);
+    border-radius: 15px;
     display: flex;
     align-items: center;
     justify-content: center;
     flex-shrink: 0;
-    box-shadow: 0 4px 12px rgba(0, 114, 49, 0.25);
+    box-shadow: 0 4px 14px rgba(0, 114, 49, 0.25);
+    color: #ffffff;
   }
 
   .pathologies-footer-icon svg {
-    width: 26px;
-    height: 26px;
-    color: #ffffff;
+    width: 24px;
+    height: 24px;
   }
 
   .pathologies-footer-text {
     flex: 1;
-    font-size: 15.5px;
-    color: #2d5a45;
-    margin: 0;
-    line-height: 1.5;
     text-align: center;
   }
 
@@ -442,19 +491,12 @@ import { pathologiesData } from '../../data/pathologies';
     }
   }
 
-  .pathologies-footer-text strong {
-    color: #1a3a2a;
-    display: block;
-    font-size: 17.5px;
-    margin-bottom: 3px;
-    font-weight: 700;
-  }
-
   .pathologies-footer-btn {
     flex-shrink: 0;
     white-space: nowrap;
-    background: linear-gradient(135deg, #005a26, #1e6f40);
+    background: linear-gradient(135deg, #005a26, #007231);
     color: #ffffff;
+    font-family: 'DM Sans', -apple-system, sans-serif;
     font-size: 14.5px;
     font-weight: 700;
     padding: 13px 26px;
@@ -463,13 +505,31 @@ import { pathologiesData } from '../../data/pathologies';
     align-items: center;
     justify-content: center;
     text-decoration: none;
-    box-shadow: 0 6px 20px rgba(0, 90, 38, 0.3);
-    transition: transform 0.25s cubic-bezier(0.34, 1.56, 0.64, 1), box-shadow 0.25s ease, background 0.3s ease;
+    box-shadow: 0 4px 16px rgba(0, 90, 38, 0.3);
+    transition:
+      transform 200ms cubic-bezier(0.23, 1, 0.32, 1),
+      box-shadow 200ms cubic-bezier(0.23, 1, 0.32, 1),
+      background 200ms ease;
   }
 
-  .pathologies-footer-btn:hover {
-    transform: translateY(-2px) scale(1.02);
-    box-shadow: 0 10px 28px rgba(0, 90, 38, 0.4);
-    background: linear-gradient(135deg, #00471e, #175a34);
+  .pathologies-footer-btn:active {
+    transform: scale(0.97);
+    transition-duration: 100ms;
+  }
+
+  @media (hover: hover) and (pointer: fine) {
+    .pathologies-footer-btn:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 8px 24px rgba(0, 90, 38, 0.4);
+      background: linear-gradient(135deg, #004d20, #005a26);
+    }
+
+    .pathologies-footer-btn:hover svg {
+      transform: translateX(3px);
+    }
+  }
+
+  .pathologies-footer-btn svg {
+    transition: transform 200ms cubic-bezier(0.23, 1, 0.32, 1);
   }
 </style>

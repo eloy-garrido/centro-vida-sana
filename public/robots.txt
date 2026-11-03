@@ -1,32 +1,56 @@
 # Centro Vida Sana Austral - robots.txt
-# Directivas para buscadores
+# https://centrovidasana.cl
 
 User-agent: *
 Allow: /
 Disallow: /private/
 Disallow: /admin/
 
-# Permitir rastreo de archivos estáticos
-Allow: /styles/
-Allow: /js/
+# Permitir recursos estáticos y compilados de Astro
+Allow: /_astro/
 Allow: /pix/
+Allow: /fonts/
 
-# Sitemap
+# Sitemap oficial (solo formato XML para evitar errores en Google Search Console)
 Sitemap: https://centrovidasana.cl/sitemap.xml
-Sitemap: https://centrovidasana.cl/llms.txt
 
-# Reglas específicas para Googlebot
+# Contexto para Modelos de Lenguaje (LLMs)
+# LLMs.txt: https://centrovidasana.cl/llms.txt
+
+# Buscadores principales
 User-agent: Googlebot
 Allow: /
 
-# Permitir bots de análisis competitivos
+User-agent: Bingbot
+Allow: /
+
+# Rastreadores de IA y motores de búsqueda generativa (Permitir indexación y respuestas citadas)
+User-agent: GPTBot
+Allow: /
+
+User-agent: OAI-SearchBot
+Allow: /
+
+User-agent: ChatGPT-User
+Allow: /
+
+User-agent: PerplexityBot
+Allow: /
+
+User-agent: ClaudeBot
+Allow: /
+
+User-agent: Google-Extended
+Allow: /
+
+# Herramientas de análisis SEO
 User-agent: AhrefsBot
 Allow: /
 
 User-agent: SemrushBot
 Allow: /
 
-# Bloquear bots maliciosos
+# Bloquear bots basura / scrapers agresivos no autorizados
 User-agent: MJ12bot
 Disallow: /
 

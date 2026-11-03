@@ -1,78 +1,286 @@
 ---
-import { faqsData } from '../../data/faqs';
+import { faqsData, type FaqItem } from '../../data/faqs';
+
+export interface FaqItemProp {
+  id?: string;
+  question?: string;
+  q?: string;
+  answer?: string;
+  a?: string;
+  category?: 'general' | 'quiropraxia' | 'acupuntura';
+  badge?: string;
+}
+
+interface Props {
+  faqs?: FaqItemProp[];
+  eyebrow?: string;
+  title?: string;
+  subtitle?: string;
+  theme?: 'general' | 'quiropraxia' | 'acupuntura';
+  ctaType?: 'all' | 'quiropraxia' | 'acupuntura';
+  ctaTitle?: string;
+  ctaSubtitle?: string;
+  id?: string;
+}
+
+const {
+  faqs,
+  eyebrow = "Dudas Resueltas & Transparencia",
+  title = "Preguntas Frecuentes",
+  subtitle = "Todo lo que necesitas saber sobre aranceles, orden médica, procedimientos y sesiones para resolver tu dolor con total tranquilidad.",
+  theme = "general",
+  ctaType = "all",
+  ctaTitle = "¿Tienes una consulta específica sobre tu caso?",
+  ctaSubtitle = "Te asesoramos de manera directa antes de tu cita sin ningún compromiso.",
+  id = "faqs",
+} = Astro.props;
+
+const rawList = faqs && faqs.length > 0 ? faqs : faqsData;
+
+const items = rawList.map((item, idx) => {
+  const itemId = item.id || `faq-${theme}-${idx + 1}`;
+  const question = item.question || item.q || '';
+  const answer = item.answer || item.a || '';
+  const category = item.category || (theme !== 'general' ? theme : 'general');
+  const badge = item.badge || (category === 'quiropraxia' ? 'Quiropraxia' : category === 'acupuntura' ? 'Acupuntura' : 'Información');
+  return { id: itemId, question, answer, category, badge };
+});
+
+const isAcupTheme = theme === 'acupuntura';
+
+const accentDotClass = isAcupTheme ? 'bg-[#2E4D38]' : 'bg-[#134E5E]';
+const themeStyles = isAcupTheme
+  ? '--faq-accent-bg: #2E4D38; --faq-accent-border: rgba(46, 77, 56, 0.35); --faq-accent-shadow: rgba(46, 77, 56, 0.06);'
+  : '--faq-accent-bg: #134E5E; --faq-accent-border: rgba(19, 78, 94, 0.35); --faq-accent-shadow: rgba(19, 78, 94, 0.06);';
+
+const cardHoverClasses = isAcupTheme
+  ? 'hover:border-[#CCDED1] hover:shadow-[0_4px_16px_rgba(46,77,56,0.05)]'
+  : 'hover:border-[#C9DFE6] hover:shadow-[0_4px_16px_rgba(19,78,94,0.04)]';
+
+const titleHoverClass = isAcupTheme ? 'group-hover:text-[#2E4D38]' : 'group-hover:text-[#134E5E]';
+const ringFocusClass = isAcupTheme ? 'focus-visible:ring-[#2E4D38]' : 'focus-visible:ring-[#134E5E]';
+const iconHoverClasses = isAcupTheme
+  ? 'group-hover:border-[#2E4D38] group-hover:text-[#2E4D38]'
+  : 'group-hover:border-[#134E5E] group-hover:text-[#134E5E]';
+
+const accentColorClass = isAcupTheme
+  ? 'text-[#2E4D38]'
+  : theme === 'quiropraxia'
+  ? 'text-[#134E5E]'
+  : 'text-[#007231]';
+
+const displayTitle = title === "Preguntas Frecuentes"
+  ? `Preguntas <span class="font-serif italic font-normal ${accentColorClass}">Frecuentes</span>`
+  : title;
+
+const displayCtaTitle = ctaTitle === "¿Tienes una consulta específica sobre tu caso?"
+  ? `¿Tienes una <span class="font-serif italic font-normal ${accentColorClass}">consulta específica</span> sobre tu caso?`
+  : ctaTitle;
 ---
 
-<section id="faqs" class="py-20 lg:py-28 relative">
-  <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+<section id={id} class="faq-section py-20 lg:py-28 bg-[#F8F9F6] text-[#151C17] relative scroll-mt-20 border-t border-surface-border/60" style={themeStyles}>
+  <div class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
 
-    <!-- Section Header -->
-    <div class="text-center max-w-2xl mx-auto mb-14">
-      <span class="inline-block text-xs font-bold uppercase tracking-widest text-ink-muted mb-3">
-        Dudas Resueltas
+    <!-- Section Header Editorial -->
+    <div class="text-center max-w-2xl mx-auto mb-12 sm:mb-14">
+      <span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-bold uppercase tracking-wider bg-white border border-[#E5E8E2] text-[#4A564D] shadow-soft-sm mb-3">
+        <span class={`w-1.5 h-1.5 rounded-full ${accentDotClass}`}></span>
+        {eyebrow}
       </span>
-      <h2 class="font-serif text-3xl sm:text-4xl lg:text-5xl font-semibold text-ink-primary tracking-tight mb-4">
-        Preguntas Frecuentes
+      <h2 class="font-serif text-3xl sm:text-4xl lg:text-5xl font-bold text-[#151C17] tracking-tight mb-4">
+        <Fragment set:html={displayTitle} />
       </h2>
-      <p class="text-base text-ink-secondary leading-relaxed">
-        Todo lo que necesitas saber sobre valores, procedimientos, orden médica y sesiones antes de asistir a tu consulta.
+      <p class="text-base sm:text-lg text-[#4A564D] leading-relaxed">
+        {subtitle}
       </p>
     </div>
 
-    <!-- Accordion List -->
-    <div class="space-y-4">
-      {faqsData.map((faq, index) => (
-        <details class="faq-item group rounded-2xl bg-surface border border-surface-border p-5 sm:p-6 shadow-soft-sm transition-all duration-200 open:shadow-soft open:border-petrol/40">
-          <summary class="flex items-center justify-between gap-4 cursor-pointer list-none select-none focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-petrol rounded-lg">
-            <span class="font-serif text-lg font-bold text-ink-primary group-hover:text-petrol transition-colors">
-              {faq.question}
-            </span>
-            <div class="w-8 h-8 rounded-full bg-canvas flex items-center justify-center shrink-0 border border-surface-border text-ink-muted group-hover:border-petrol group-hover:text-petrol transition-colors">
-              <svg class="w-4 h-4 transform group-open:rotate-180 transition-transform duration-300" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2.2">
-                <path stroke-linecap="round" stroke-linejoin="round" d="M19 9l-7 7-7-7"></path>
-              </svg>
+    <!-- Accordion Grid: 2 Columnas alineadas en PC (3 filas x 2 columnas) y 1 columna en móvil -->
+    <div class="faq-list grid grid-cols-1 md:grid-cols-2 gap-4 lg:gap-5 items-start" role="region" aria-label="Preguntas frecuentes">
+      {items.map((faq) => {
+        const isQuiro = faq.category === 'quiropraxia';
+        const isAcup = faq.category === 'acupuntura';
+        const badgeClasses = isQuiro
+          ? 'bg-[#EBF4F6] text-[#134E5E] border-[#C9DFE6]'
+          : isAcup
+          ? 'bg-[#EFF5F0] text-[#2E4D38] border-[#D3E3D6]'
+          : 'bg-[#F2F5F2] text-[#4A564D] border-[#E0E6DF]';
+
+        return (
+          <div
+            id={`faq-card-${faq.id}`}
+            class={`faq-card group bg-white rounded-2xl border border-[#E5E8E2] shadow-[0_2px_8px_rgba(0,0,0,0.02)] transition-all duration-250 ${cardHoverClasses}`}
+          >
+            <!-- Accessible Accordion Button -->
+            <button
+              type="button"
+              id={`faq-btn-${faq.id}`}
+              class={`faq-trigger w-full text-left py-4 sm:py-5 px-5 sm:px-6 flex items-start justify-between gap-4 select-none focus-visible:outline-none focus-visible:ring-2 ${ringFocusClass} focus-visible:ring-offset-2 rounded-2xl cursor-pointer`}
+              aria-expanded="false"
+              aria-controls={`faq-panel-${faq.id}`}
+            >
+              <div class="pr-2 space-y-2 flex-1">
+                <div class="flex items-center gap-2">
+                  <span class={`inline-block text-[11px] font-semibold uppercase tracking-wider px-2 py-0.5 rounded-md border ${badgeClasses}`}>
+                    {faq.badge}
+                  </span>
+                </div>
+                <!-- Altura uniforme para que todas las cards cerradas tengan exactamente la misma altura y línea base -->
+                <div class="min-h-[3.25rem] sm:min-h-[3.5rem] flex items-center">
+                  <h3 class={`font-serif text-base sm:text-lg font-bold text-[#151C17] ${titleHoverClass} transition-colors leading-snug`}>
+                    {faq.question}
+                  </h3>
+                </div>
+              </div>
+
+              <!-- Animated Toggle Indicator (+ to ×) -->
+              <div class={`faq-icon-wrapper w-8 h-8 sm:w-9 sm:h-9 rounded-full bg-[#F8F9F6] border border-[#E5E8E2] flex items-center justify-center shrink-0 text-[#5A6860] transition-all duration-300 ${iconHoverClasses} mt-1 sm:mt-1.5`}>
+                <svg
+                  class="faq-icon w-4 h-4 transition-transform duration-300 ease-[cubic-bezier(0.16,1,0.3,1)]"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="2.2"
+                  stroke-linecap="round"
+                >
+                  <line x1="12" y1="5" x2="12" y2="19"></line>
+                  <line x1="5" y1="12" x2="19" y2="12"></line>
+                </svg>
+              </div>
+            </button>
+
+            <!-- Silky CSS Grid Accordion Content -->
+            <div
+              id={`faq-panel-${faq.id}`}
+              class="faq-panel grid grid-rows-[0fr] transition-[grid-template-rows] duration-300 ease-[cubic-bezier(0.16,1,0.3,1)]"
+              role="region"
+              aria-labelledby={`faq-btn-${faq.id}`}
+            >
+              <div class="overflow-hidden">
+                <div class="faq-panel-inner px-5 sm:px-6 pb-5 pt-1.5 text-sm sm:text-base text-[#4A564D] leading-relaxed border-t border-[#EEF0EA]/80 opacity-0 -translate-y-2 transition-all duration-200">
+                  <p class="font-normal">{faq.answer}</p>
+                </div>
+              </div>
             </div>
-          </summary>
-          <div class="faq-content pt-4 mt-3 border-t border-surface-border/60 text-sm text-ink-secondary leading-relaxed">
-            <p>{faq.answer}</p>
           </div>
-        </details>
-      ))}
+        );
+      })}
     </div>
 
-    <!-- Support CTA -->
-    <div class="mt-10 text-center text-xs text-ink-muted">
-      ¿Tienes otra pregunta sobre tu caso particular?{' '}
-      <a
-        href="https://wa.me/56973700616?text=Hola,%20tengo%20una%20consulta%20espec%C3%ADfica%20antes%20de%20agendar."
-        target="_blank"
-        rel="noopener noreferrer"
-        class="font-semibold text-petrol hover:underline"
-      >
-        Escríbenos directamente por WhatsApp
-      </a>
+    <!-- Personalized WhatsApp Consultation Card -->
+    <div class="mt-12 sm:mt-16 p-6 sm:p-8 rounded-2xl bg-white border border-[#E5E8E2] shadow-soft-sm flex flex-col sm:flex-row items-center justify-between gap-6 text-center sm:text-left">
+      <div class="space-y-1">
+        <h4 class="font-serif text-lg sm:text-xl font-bold text-[#151C17]">
+          <Fragment set:html={displayCtaTitle} />
+        </h4>
+        <p class="text-xs sm:text-sm text-[#5A6860]">
+          {ctaSubtitle}
+        </p>
+      </div>
+
+      <div class="flex flex-wrap items-center justify-center sm:justify-end gap-3 shrink-0">
+        {(ctaType === 'all' || ctaType === 'quiropraxia') && (
+          <a
+            href="https://wa.me/56973700616?text=Hola%20Felipe,%20tengo%20una%20consulta%20espec%C3%ADfica%20antes%20de%20agendar%20en%20Quiropraxia."
+            target="_blank"
+            rel="noopener noreferrer"
+            class="inline-flex items-center gap-2 px-4 py-2.5 rounded-xl bg-[#134E5E] text-white text-xs sm:text-sm font-semibold hover:bg-[#0E3B47] transition-colors shadow-soft-sm hover:scale-[1.02] active:scale-[0.98]"
+          >
+            <span>Consultar Quiropraxia</span>
+          </a>
+        )}
+        {(ctaType === 'all' || ctaType === 'acupuntura') && (
+          <a
+            href="https://wa.me/56973888910?text=Hola%20Eduardo,%20tengo%20una%20consulta%20espec%C3%ADfica%20antes%20de%20agendar%20en%20Acupuntura."
+            target="_blank"
+            rel="noopener noreferrer"
+            class="inline-flex items-center gap-2 px-4 py-2.5 rounded-xl bg-[#2E4D38] text-white text-xs sm:text-sm font-semibold hover:bg-[#213C2B] transition-colors shadow-soft-sm hover:scale-[1.02] active:scale-[0.98]"
+          >
+            <span>Consultar Acupuntura</span>
+          </a>
+        )}
+      </div>
     </div>
 
   </div>
 </section>
 
 <style>
-  /* Emil Kowalski Smooth Accordion Expansion */
-  details summary::-webkit-details-marker {
-    display: none;
+  /* Emil Kowalski Silky Accordion & Micro-interactions */
+  .faq-card.is-open {
+    border-color: var(--faq-accent-border, rgba(19, 78, 94, 0.35)) !important;
+    box-shadow: 0 8px 24px var(--faq-accent-shadow, rgba(19, 78, 94, 0.06)) !important;
   }
 
-  details[open] .faq-content {
-    animation: accordionOpen 0.28s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+  .faq-card.is-open .faq-panel {
+    grid-template-rows: 1fr;
   }
 
-  @keyframes accordionOpen {
-    from {
-      opacity: 0;
-      transform: translateY(-6px);
-    }
-    to {
-      opacity: 1;
-      transform: translateY(0);
-    }
+  .faq-card.is-open .faq-panel-inner {
+    opacity: 1;
+    transform: translateY(0);
+    transition-delay: 50ms;
+  }
+
+  .faq-card.is-open .faq-icon-wrapper {
+    background-color: var(--faq-accent-bg, #134E5E) !important;
+    color: #FFFFFF !important;
+    border-color: var(--faq-accent-bg, #134E5E) !important;
+  }
+
+  .faq-card.is-open .faq-icon {
+    transform: rotate(45deg);
   }
 </style>
+
+<script>
+  function setupFaqs() {
+    const sections = document.querySelectorAll<HTMLElement>('.faq-section');
+    sections.forEach((section) => {
+      if (section.dataset.initialized === 'true') return;
+      section.dataset.initialized = 'true';
+
+      const faqList = section.querySelector<HTMLElement>('.faq-list');
+      const faqCards = section.querySelectorAll<HTMLElement>('.faq-card');
+
+      if (!faqList) return;
+
+      faqList.addEventListener('click', (e) => {
+        const target = e.target as HTMLElement;
+        const trigger = target.closest<HTMLButtonElement>('.faq-trigger');
+        if (!trigger) return;
+
+        const card = trigger.closest<HTMLElement>('.faq-card');
+        if (!card) return;
+
+        const isCurrentlyOpen = card.classList.contains('is-open');
+
+        // Cerrar las demás tarjetas suavemente dentro de esta sección
+        faqCards.forEach((c) => {
+          if (c !== card && c.classList.contains('is-open')) {
+            c.classList.remove('is-open');
+            const otherBtn = c.querySelector<HTMLButtonElement>('.faq-trigger');
+            if (otherBtn) otherBtn.setAttribute('aria-expanded', 'false');
+          }
+        });
+
+        // Alternar estado de la tarjeta actual
+        if (isCurrentlyOpen) {
+          card.classList.remove('is-open');
+          trigger.setAttribute('aria-expanded', 'false');
+        } else {
+          card.classList.add('is-open');
+          trigger.setAttribute('aria-expanded', 'true');
+        }
+      });
+    });
+  }
+
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', setupFaqs);
+  } else {
+    setupFaqs();
+  }
+
+  document.addEventListener('astro:page-load', setupFaqs);
+</script>

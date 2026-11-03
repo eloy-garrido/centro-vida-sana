@@ -1,43 +1,63 @@
 export interface ReviewItem {
   id: string;
   author: string;
+  initials: string;
   rating: number;
   date: string;
   text: string;
   service: string;
+  badge?: string;
 }
 
 export const reviewsData: ReviewItem[] = [
   {
     id: 'rev-1',
-    author: 'Carolina Morales',
+    author: 'Felipe VA',
+    initials: 'FV',
     rating: 5,
-    date: 'Hace 3 semanas',
-    text: 'Llegué con un lumbago invalidante que casi no me dejaba caminar. La combinación del ajuste de Felipe con la acupuntura de Eduardo me devolvió la movilidad en solo 2 sesiones. Profesionales con una vocación tremenda.',
-    service: 'Quiropraxia y Acupuntura',
+    date: 'Hace 5 meses',
+    text: 'Profesionales de primer nivel. 100% recomendable. Llegué con mi pierna adolorida y salí sin dolor después de atenderme.',
+    service: 'Alivio del Dolor & Movilidad',
+    badge: 'Local Guide · Google Maps',
   },
   {
     id: 'rev-2',
-    author: 'Gonzalo Riquelme',
+    author: 'Javier Dentista',
+    initials: 'JD',
     rating: 5,
-    date: 'Hace 1 mes',
-    text: 'Excelente atención. Tenía dolores de cabeza tensionales día por medio por el trabajo. Con Eduardo y sus sesiones de acupuntura disminuyeron un 90%. El lugar es sumamente grato y acogedor.',
-    service: 'Acupuntura Clínica',
+    date: 'Hace 3 semanas',
+    text: 'Excelente experiencia con Eduardo (acupuntura) y Felipe (Quiropraxia) 🙌🏾',
+    service: 'Acupuntura & Quiropraxia',
+    badge: 'Opinión Verificada',
   },
   {
     id: 'rev-3',
-    author: 'Marcela Fuentes',
+    author: 'Elayne Daer',
+    initials: 'ED',
     rating: 5,
-    date: 'Hace 2 meses',
-    text: 'Felipe atendió a mi madre a domicilio tras una fractura de cadera. Su paciencia, técnica y calidez humana fueron clave para que volviera a dar pasos con confianza. 100% recomendado en Temuco.',
-    service: 'Kinesiología a Domicilio',
+    date: 'Hace 1 mes',
+    text: 'Excelente profesional, extremadamente responsable y honesto... estoy en tratamiento con él y siento cuánto me está haciendo bien.',
+    service: 'Tratamiento Continuo',
+    badge: 'Opinión Verificada',
   },
   {
     id: 'rev-4',
-    author: 'Patricio Soto',
+    author: 'Eloy',
+    initials: 'EG',
     rating: 5,
-    date: 'Hace 3 meses',
-    text: 'El dolor ciático que arrastraba por meses desapareció. Muy acertado el diagnóstico y el tratamiento. Se nota el conocimiento profundo y el respeto por el paciente.',
-    service: 'Quiropraxia',
+    date: 'Hace 11 meses',
+    text: 'Muy buena atención, los profesionales son super atentos y mi dolor de espalda desapareció con una sola atención, de verdad me salvaron.',
+    service: 'Columna & Espalda',
+    badge: 'Local Guide · Google Maps',
+  },
+  {
+    id: 'rev-5',
+    author: 'Javier Ñanculef Alegría',
+    initials: 'JN',
+    rating: 5,
+    date: 'Hace 1 mes',
+    text: 'He asistido a una sesión con Eduardo y dos sesiones con Felipe. Increíble la diferencia que pueden hacer en una sesión. Recomendado para deportistas 👍🏾🙌🏾',
+    service: 'Kinesiología Deportiva',
+    badge: 'Opinión Verificada',
   },
 ];

@@ -28,36 +28,41 @@ const acupFeatured = servicesData.filter(s => s.discipline === 'acupuntura').sli
          ÁREA 1: FELIPE MÉNDEZ · QUIROPRAXIA & KINESIOLOGÍA
          Identidad: Azul Petróleo Clásico (#134E5E)
          ===================================================================== -->
-    <div id="quiro-section" class="scroll-mt-24">
+    <div id="quiro-section" class="scroll-mt-24 pt-12 sm:pt-16">
 
-      <!-- Cabecera Horizontal Editorial con Textura Sutil -->
-      <div class="relative rounded-2xl bg-gradient-to-r from-[#F0F6F8] via-[#E3EFF3] to-[#F2F7F9] border border-[#CDE1E8] p-6 sm:p-8 mb-8 overflow-hidden">
+      <!-- Cabecera Horizontal Editorial con Textura Sutil y cutout que desborda arriba y corta directo abajo -->
+      <div class="relative rounded-2xl border border-[#CDE1E8] p-6 sm:p-8 mb-8 [clip-path:inset(-160px_0px_0px_0px_round_1rem)]">
         
-        <!-- Textura Vectorial Sutil de Fondo -->
-        <svg class="absolute right-0 top-0 bottom-0 w-1/2 h-full pointer-events-none opacity-[0.08]" viewBox="0 0 600 200" fill="none" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">
-          <path d="M0,100 C150,20 300,180 450,80 C520,30 560,120 600,100" stroke="#134E5E" stroke-width="2" />
-          <path d="M0,130 C170,50 320,210 470,110 C540,60 580,150 600,130" stroke="#134E5E" stroke-width="2" stroke-dasharray="6 6" />
-          <circle cx="200" cy="60" r="8" fill="#134E5E" />
-          <circle cx="450" cy="80" r="10" stroke="#134E5E" stroke-width="2" />
-        </svg>
+        <!-- Fondo con esquinas redondeadas y Textura Vectorial Sutil -->
+        <div class="absolute inset-0 rounded-2xl bg-gradient-to-r from-[#F0F6F8] via-[#E3EFF3] to-[#F2F7F9] overflow-hidden pointer-events-none">
+          <svg class="absolute right-0 top-0 bottom-0 w-1/2 h-full opacity-[0.08]" viewBox="0 0 600 200" fill="none" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M0,100 C150,20 300,180 450,80 C520,30 560,120 600,100" stroke="#134E5E" stroke-width="2" />
+            <path d="M0,130 C170,50 320,210 470,110 C540,60 580,150 600,130" stroke="#134E5E" stroke-width="2" stroke-dasharray="6 6" />
+            <circle cx="200" cy="60" r="8" fill="#134E5E" />
+            <circle cx="450" cy="80" r="10" stroke="#134E5E" stroke-width="2" />
+          </svg>
+        </div>
 
         <div class="relative z-10 flex flex-col lg:flex-row lg:items-center justify-between gap-6">
-          <div class="flex items-start sm:items-center gap-4">
-            <img
-              src="/pix/felipe-kinesiologo-400.webp"
-              alt="Felipe Méndez"
-              class="w-14 h-14 sm:w-16 sm:h-16 rounded-xl object-cover object-top border-2 border-[#134E5E] shadow-sm shrink-0"
-              loading="lazy"
-            />
-            <div>
+          <div class="flex items-end gap-4 sm:gap-6">
+            <div class="shrink-0 relative w-24 sm:w-36 lg:w-48 self-stretch flex items-end">
+              <img
+                src="/pix/felipe-kinesiologo-400.webp"
+                srcset="/pix/felipe-kinesiologo-400.webp 1x, /pix/felipe-kinesiologo.webp 2x"
+                alt="Felipe Méndez - Kinesiólogo y Quiropráctico"
+                class="absolute -bottom-6 sm:-bottom-8 -left-14 sm:-left-16 lg:-left-24 w-auto h-40 sm:h-56 lg:h-72 max-w-none object-contain object-bottom drop-shadow-[0_16px_32px_rgba(19,78,94,0.28)] select-none pointer-events-none"
+                loading="lazy"
+              />
+            </div>
+            <div class="py-1">
               <span class="text-xs font-bold uppercase tracking-wider text-[#134E5E] block mb-0.5">
                 Área Biomecánica &amp; Columna
               </span>
-              <h3 class="font-serif text-2xl sm:text-3xl font-bold text-[#0B2B33]">
+              <h3 class="font-serif text-xl sm:text-2xl lg:text-3xl font-bold text-[#0B2B33]">
                 Quiropraxia &amp; Kinesiología
               </h3>
               <p class="text-xs sm:text-sm text-[#46656E] mt-0.5">
-                Felipe Méndez · Kinesiólogo &amp; Quiropráctico Clínico · Reg. SIS N° 458921
+                Felipe Méndez · Kinesiólogo &amp; Quiropráctico Clínico
               </p>
             </div>
           </div>
@@ -67,7 +72,7 @@ const acupFeatured = servicesData.filter(s => s.discipline === 'acupuntura').sli
               href="/quiropraxia"
               class="inline-flex items-center justify-center gap-2 px-5 py-3 rounded-xl bg-white hover:bg-[#EBF5F8] text-[#134E5E] border-2 border-[#134E5E] text-xs sm:text-sm font-bold shadow-sm transition-all shrink-0 cursor-pointer"
             >
-              <span>Ver Página de Quiropraxia (6 Tratamientos)</span>
+              <span>Revisa todos los tratamientos de Quiropraxia</span>
               <span>→</span>
             </a>
             <a
@@ -79,7 +84,7 @@ const acupFeatured = servicesData.filter(s => s.discipline === 'acupuntura').sli
               <svg class="w-4 h-4 text-cyan-200" viewBox="0 0 24 24" fill="currentColor">
                 <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413Z"/>
               </svg>
-              <span>Consultar a Felipe</span>
+              <span>Agendar</span>
             </a>
           </div>
         </div>
@@ -102,9 +107,6 @@ const acupFeatured = servicesData.filter(s => s.discipline === 'acupuntura').sli
                   loading="lazy"
                   class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
                 />
-                <span class="absolute bottom-2.5 right-2.5 px-2.5 py-1 rounded-md text-[11px] font-semibold bg-white/90 backdrop-blur-sm text-[#134E5E] shadow-sm">
-                  {svc.duration}
-                </span>
               </div>
 
               <div class="p-5 sm:p-6">
@@ -139,7 +141,7 @@ const acupFeatured = servicesData.filter(s => s.discipline === 'acupuntura').sli
           href="/quiropraxia"
           class="inline-flex items-center gap-2 text-sm font-bold text-[#134E5E] hover:text-[#0B2B33] hover:underline underline-offset-4 transition-colors"
         >
-          <span>Conoce los 6 tratamientos, técnica y detalles de Quiropraxia en Temuco</span>
+          <span>Conoce los tratamientos clínicos, técnica y detalles de Quiropraxia en Temuco</span>
           <span class="text-base">→</span>
         </a>
       </div>
@@ -151,36 +153,41 @@ const acupFeatured = servicesData.filter(s => s.discipline === 'acupuntura').sli
          ÁREA 2: EDUARDO LAGOS · ACUPUNTURA & MEDICINA TRADICIONAL CHINA
          Identidad: Verde Salvia Botánico (#2E4D38)
          ===================================================================== -->
-    <div id="acup-section" class="mt-20 sm:mt-24 scroll-mt-24">
+    <div id="acup-section" class="mt-20 sm:mt-24 scroll-mt-24 pt-12 sm:pt-16">
 
-      <!-- Cabecera Horizontal Editorial con Textura Sutil -->
-      <div class="relative rounded-2xl bg-gradient-to-r from-[#F0F6F2] via-[#E3EEE6] to-[#F3F7F4] border border-[#CCDED1] p-6 sm:p-8 mb-8 overflow-hidden">
+      <!-- Cabecera Horizontal Editorial con Textura Sutil y cutout que desborda arriba y corta directo abajo -->
+      <div class="relative rounded-2xl border border-[#CCDED1] p-6 sm:p-8 mb-8 [clip-path:inset(-160px_0px_0px_0px_round_1rem)]">
         
-        <!-- Textura Vectorial Sutil de Fondo -->
-        <svg class="absolute right-0 top-0 bottom-0 w-1/2 h-full pointer-events-none opacity-[0.08]" viewBox="0 0 600 200" fill="none" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">
-          <path d="M0,80 C150,170 300,10 450,120 C520,180 560,70 600,90" stroke="#2E4D38" stroke-width="2" />
-          <path d="M0,110 C170,200 320,40 470,150 C540,210 580,100 600,120" stroke="#2E4D38" stroke-width="2" stroke-dasharray="8 6" />
-          <circle cx="250" cy="110" r="8" fill="#2E4D38" />
-          <circle cx="480" cy="140" r="10" stroke="#2E4D38" stroke-width="2" />
-        </svg>
+        <!-- Fondo con esquinas redondeadas y Textura Vectorial Sutil -->
+        <div class="absolute inset-0 rounded-2xl bg-gradient-to-r from-[#F0F6F2] via-[#E3EEE6] to-[#F3F7F4] overflow-hidden pointer-events-none">
+          <svg class="absolute right-0 top-0 bottom-0 w-1/2 h-full opacity-[0.08]" viewBox="0 0 600 200" fill="none" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M0,80 C150,170 300,10 450,120 C520,180 560,70 600,90" stroke="#2E4D38" stroke-width="2" />
+            <path d="M0,110 C170,200 320,40 470,150 C540,210 580,100 600,120" stroke="#2E4D38" stroke-width="2" stroke-dasharray="8 6" />
+            <circle cx="250" cy="110" r="8" fill="#2E4D38" />
+            <circle cx="480" cy="140" r="10" stroke="#2E4D38" stroke-width="2" />
+          </svg>
+        </div>
 
         <div class="relative z-10 flex flex-col lg:flex-row lg:items-center justify-between gap-6">
-          <div class="flex items-start sm:items-center gap-4">
-            <img
-              src="/pix/eduardo-acupuntura-400.webp"
-              alt="Eduardo Lagos"
-              class="w-14 h-14 sm:w-16 sm:h-16 rounded-xl object-cover object-top border-2 border-[#2E4D38] shadow-sm shrink-0"
-              loading="lazy"
-            />
-            <div>
+          <div class="flex items-end gap-4 sm:gap-6">
+            <div class="shrink-0 relative w-24 sm:w-36 lg:w-48 self-stretch flex items-end">
+              <img
+                src="/pix/eduardo-acupuntura-400.webp"
+                srcset="/pix/eduardo-acupuntura-400.webp 1x, /pix/eduardo-acupuntura.webp 2x"
+                alt="Eduardo Lagos - Acupunturista Minsal"
+                class="absolute -bottom-6 sm:-bottom-8 -left-14 sm:-left-16 lg:-left-20 w-auto h-40 sm:h-56 lg:h-72 max-w-none object-contain object-bottom drop-shadow-[0_16px_32px_rgba(46,77,56,0.28)] select-none pointer-events-none"
+                loading="lazy"
+              />
+            </div>
+            <div class="py-1">
               <span class="text-xs font-bold uppercase tracking-wider text-[#2E4D38] block mb-0.5">
                 Área Acupuntura &amp; Medicina China
               </span>
-              <h3 class="font-serif text-2xl sm:text-3xl font-bold text-[#15281D]">
+              <h3 class="font-serif text-xl sm:text-2xl lg:text-3xl font-bold text-[#15281D]">
                 Acupuntura &amp; Medicina Tradicional China
               </h3>
               <p class="text-xs sm:text-sm text-[#4E6B56] mt-0.5">
-                Eduardo Lagos · Acupunturista Clínico Minsal · Reg. SIS N° 381042
+                Eduardo Lagos · Acupunturista Clínico Certificado Minsal
               </p>
             </div>
           </div>
@@ -190,7 +197,7 @@ const acupFeatured = servicesData.filter(s => s.discipline === 'acupuntura').sli
               href="/acupuntura"
               class="inline-flex items-center justify-center gap-2 px-5 py-3 rounded-xl bg-white hover:bg-[#EEF5F0] text-[#2E4D38] border-2 border-[#2E4D38] text-xs sm:text-sm font-bold shadow-sm transition-all shrink-0 cursor-pointer"
             >
-              <span>Ver Página de Acupuntura (6 Terapias MTC)</span>
+              <span>Revisa todos los tratamientos de Acupuntura</span>
               <span>→</span>
             </a>
             <a
@@ -202,7 +209,7 @@ const acupFeatured = servicesData.filter(s => s.discipline === 'acupuntura').sli
               <svg class="w-4 h-4 text-emerald-200" viewBox="0 0 24 24" fill="currentColor">
                 <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413Z"/>
               </svg>
-              <span>Consultar a Eduardo</span>
+              <span>Agendar</span>
             </a>
           </div>
         </div>
@@ -225,9 +232,6 @@ const acupFeatured = servicesData.filter(s => s.discipline === 'acupuntura').sli
                   loading="lazy"
                   class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
                 />
-                <span class="absolute bottom-2.5 right-2.5 px-2.5 py-1 rounded-md text-[11px] font-semibold bg-white/90 backdrop-blur-sm text-[#2E4D38] shadow-sm">
-                  {svc.duration}
-                </span>
               </div>
 
               <div class="p-5 sm:p-6">
@@ -262,7 +266,7 @@ const acupFeatured = servicesData.filter(s => s.discipline === 'acupuntura').sli
           href="/acupuntura"
           class="inline-flex items-center gap-2 text-sm font-bold text-[#2E4D38] hover:text-[#15281D] hover:underline underline-offset-4 transition-colors"
         >
-          <span>Conoce las 6 terapias de Medicina China, acreditación Minsal y detalles en Temuco</span>
+          <span>Conoce las terapias de Medicina China, acreditación Minsal y detalles en Temuco</span>
           <span class="text-base">→</span>
         </a>
       </div>

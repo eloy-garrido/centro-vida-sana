@@ -3,34 +3,66 @@ import { clinicInfo } from '../../data/clinic';
 import { professionals } from '../../data/professionals';
 ---
 
-<footer class="bg-[#121815] text-[#D8E0DA] pt-16 pb-12 border-t border-[#202924]">
+<footer id="contacto" class="bg-gradient-to-b from-[#007231] to-[#004d20] text-emerald-50 pt-16 pb-12 relative scroll-mt-10">
+  <!-- Pasto decorativo superior que conecta orgánicamente con la sección previa -->
+  <div class="footer-grass" aria-hidden="true"></div>
+
   <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-10 lg:gap-12 pb-12 border-b border-[#242F29]">
+
+    <!-- Grid Principal del Footer (4 Columnas) -->
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-10 lg:gap-10 pb-12 border-b border-white/15">
 
       <!-- Columna 1: Marca & Misión -->
       <div class="space-y-4">
-        <div class="flex items-center gap-3">
-          <div class="w-10 h-10 rounded-xl bg-[#1C2520] border border-[#2D3B33] flex items-center justify-center p-1.5">
-            <img
-              src="/pix/logo-sin-texto-96.webp"
-              alt="Logo Centro Vida Sana Austral"
-              width="32"
-              height="32"
-              class="w-full h-full object-contain"
-            />
-          </div>
-          <span class="font-serif font-bold text-xl text-white tracking-tight">
-            Vida Sana Austral
-          </span>
+        <div>
+          <a href="/" class="inline-block group" aria-label="Centro Vida Sana Austral - Inicio">
+            <div class="bg-white/95 hover:bg-white transition-all duration-300 px-4 py-2.5 rounded-2xl shadow-sm border border-emerald-100/30 inline-flex items-center">
+              <img
+                src="/pix/logo-horizontal2.png"
+                alt="Centro Vida Sana Austral - centrovidasana.cl"
+                width="620"
+                height="171"
+                class="h-11 sm:h-12 w-auto object-contain transition-transform duration-300 group-hover:scale-102"
+                loading="lazy"
+                decoding="async"
+              />
+            </div>
+          </a>
         </div>
-        <p class="text-sm text-[#9BB0A2] leading-relaxed">
-          Centro de salud integral en Temuco. Unimos el rigor biomecánico de la quiropraxia y kinesiología con la sabiduría milenaria de la acupuntura para tratar el origen de tu dolor.
+        <p class="text-sm text-emerald-100/90 leading-relaxed">
+          Centro de salud integral en Temuco. Unimos el rigor biomecánico de la quiropraxia y kinesiología con la sabiduría de la medicina tradicional china para tratar el origen de tu dolor.
         </p>
-        <div class="pt-1">
-          <span class="inline-flex items-center gap-2 px-3 py-1 rounded-full text-xs font-semibold bg-[#1C2822] text-[#A8C8B2] border border-[#2B3E34]">
-            <span class="w-2 h-2 rounded-full bg-[#497356]"></span>
-            Profesionales Certificados Minsal
-          </span>
+        <div class="pt-1 flex flex-col gap-2.5">
+          <div>
+            <span class="inline-flex items-center gap-2 px-3 py-1 rounded-full text-xs font-semibold bg-white/10 text-[#c9f26e] border border-white/15">
+              <span class="w-2 h-2 rounded-full bg-[#c9f26e]"></span>
+              Profesionales Certificados Minsal
+            </span>
+          </div>
+          <div class="pt-1 flex flex-wrap gap-2">
+            <a
+              href={clinicInfo.social.instagram}
+              target="_blank"
+              rel="noopener noreferrer"
+              aria-label="Instagram Centro Vida Sana Austral"
+              class="inline-flex items-center gap-2 px-3 py-1.5 rounded-xl bg-white/10 border border-white/20 hover:border-white text-xs font-semibold text-white transition-colors"
+            >
+              <svg class="w-4 h-4 fill-currentColor" viewBox="0 0 24 24">
+                <path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/>
+              </svg>
+              <span>@vidasanaaustral</span>
+            </a>
+            <a
+              href={clinicInfo.social.googleReviews}
+              target="_blank"
+              rel="noopener noreferrer"
+              aria-label="Ver opiniones 5.0 en Google"
+              class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-white/10 border border-white/20 hover:border-white text-xs font-semibold text-white transition-colors"
+            >
+              <span class="text-amber-300 text-xs">★★★★★</span>
+              <span>5.0 en Google</span>
+            </a>
+          </div>
         </div>
       </div>
 
@@ -39,109 +71,184 @@ import { professionals } from '../../data/professionals';
         <h3 class="font-serif text-base font-semibold text-white tracking-wide">
           Especialidades Clínicas
         </h3>
-        <ul class="space-y-2 text-sm text-[#AAB8AE]">
+        <ul class="space-y-2 text-sm text-emerald-100/85">
           <li>
             <a href="/quiropraxia" class="hover:text-white transition-colors flex items-center gap-2 font-semibold text-white">
-              <span class="w-1.5 h-1.5 rounded-full bg-petrol-accent"></span>
+              <span class="w-1.5 h-1.5 rounded-full bg-[#c9f26e]"></span>
               Quiropraxia &amp; Kinesiología →
             </a>
           </li>
           <li>
-            <a href="/quiropraxia#servicios-quiro" class="hover:text-white transition-colors flex items-center gap-2 pl-3 text-xs text-[#9BB0A2]">
+            <a href="/quiropraxia#servicios-quiro" class="hover:text-white transition-colors flex items-center gap-2 pl-3 text-xs text-emerald-200/75">
               Ajuste Vertebral, Fisioterapia y Plantillas
             </a>
           </li>
           <li class="pt-2">
             <a href="/acupuntura" class="hover:text-white transition-colors flex items-center gap-2 font-semibold text-white">
-              <span class="w-1.5 h-1.5 rounded-full bg-sage-accent"></span>
+              <span class="w-1.5 h-1.5 rounded-full bg-[#c9f26e]"></span>
               Acupuntura &amp; Medicina China →
             </a>
           </li>
           <li>
-            <a href="/acupuntura#servicios-acupuntura" class="hover:text-white transition-colors flex items-center gap-2 pl-3 text-xs text-[#9BB0A2]">
+            <a href="/acupuntura#servicios-acupuntura" class="hover:text-white transition-colors flex items-center gap-2 pl-3 text-xs text-emerald-200/75">
               Electroacupuntura, Ventosas y Moxibustión
+            </a>
+          </li>
+          <li class="pt-2">
+            <a href="/quiropraxia#domicilio" class="hover:text-white transition-colors flex items-center gap-2 pl-3 text-xs text-[#c9f26e]">
+              • Kinesiología a Domicilio en Temuco
             </a>
           </li>
         </ul>
       </div>
 
-      <!-- Columna 3: Contacto Directo -->
-      <div class="space-y-3">
+      <!-- Columna 3: Canales de Atención Directa (WhatsApp + Llamada) -->
+      <div class="space-y-4">
         <h3 class="font-serif text-base font-semibold text-white tracking-wide">
-          Atención y Contacto
+          Canales de Contacto Directo
         </h3>
-        <div class="space-y-2.5 text-sm text-[#AAB8AE]">
-          <div class="flex items-start gap-2.5">
-            <svg class="w-5 h-5 text-petrol-accent shrink-0 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2">
-              <path stroke-linecap="round" stroke-linejoin="round" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"></path>
-              <path stroke-linecap="round" stroke-linejoin="round" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"></path>
-            </svg>
-            <span>{clinicInfo.address.full}</span>
+        <div class="space-y-3 text-xs">
+
+          <!-- Felipe Méndez -->
+          <div class="p-3.5 rounded-xl bg-white/10 border border-white/15 space-y-2">
+            <div>
+              <p class="font-bold text-white text-xs">{professionals.felipe.name}</p>
+              <p class="text-[11px] text-emerald-200/80">{professionals.felipe.badgeLabel}</p>
+            </div>
+            <div class="grid grid-cols-2 gap-2 pt-1">
+              <a
+                href={`https://wa.me/56973700616?text=${encodeURIComponent(professionals.felipe.whatsappMessage)}`}
+                target="_blank"
+                rel="noopener noreferrer"
+                class="flex items-center justify-center gap-1.5 py-1.5 px-2 rounded-lg bg-[#25D366]/20 hover:bg-[#25D366] text-white border border-[#25D366]/40 hover:border-[#25D366] font-semibold text-[11px] transition-all"
+                aria-label="WhatsApp a Felipe Méndez"
+              >
+                <span>WhatsApp</span>
+              </a>
+              <a
+                href={`tel:${professionals.felipe.phone}`}
+                class="flex items-center justify-center gap-1.5 py-1.5 px-2 rounded-lg bg-white/10 hover:bg-white text-white hover:text-[#007231] border border-white/20 font-semibold text-[11px] transition-all"
+                aria-label="Llamar a Felipe Méndez"
+              >
+                <span>Llamar</span>
+              </a>
+            </div>
           </div>
-          <div class="flex items-center gap-2.5">
-            <svg class="w-5 h-5 text-sage-accent shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2">
-              <path stroke-linecap="round" stroke-linejoin="round" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path>
-            </svg>
-            <span>{clinicInfo.hours.days}: {clinicInfo.hours.time}</span>
+
+          <!-- Eduardo Lagos -->
+          <div class="p-3.5 rounded-xl bg-white/10 border border-white/15 space-y-2">
+            <div>
+              <p class="font-bold text-white text-xs">{professionals.eduardo.name}</p>
+              <p class="text-[11px] text-emerald-200/80">{professionals.eduardo.badgeLabel}</p>
+            </div>
+            <div class="grid grid-cols-2 gap-2 pt-1">
+              <a
+                href={`https://wa.me/56973888910?text=${encodeURIComponent(professionals.eduardo.whatsappMessage)}`}
+                target="_blank"
+                rel="noopener noreferrer"
+                class="flex items-center justify-center gap-1.5 py-1.5 px-2 rounded-lg bg-[#25D366]/20 hover:bg-[#25D366] text-white border border-[#25D366]/40 hover:border-[#25D366] font-semibold text-[11px] transition-all"
+                aria-label="WhatsApp a Eduardo Lagos"
+              >
+                <span>WhatsApp</span>
+              </a>
+              <a
+                href={`tel:${professionals.eduardo.phone}`}
+                class="flex items-center justify-center gap-1.5 py-1.5 px-2 rounded-lg bg-white/10 hover:bg-white text-white hover:text-[#007231] border border-white/20 font-semibold text-[11px] transition-all"
+                aria-label="Llamar a Eduardo Lagos"
+              >
+                <span>Llamar</span>
+              </a>
+            </div>
           </div>
-          <div class="pt-2 flex flex-col gap-1.5">
-            <a href={`tel:${professionals.felipe.phone}`} class="hover:text-white transition-colors text-xs flex items-center gap-2">
-              <span class="font-semibold text-petrol-light">Quiropraxia (Felipe):</span>
-              <span>{professionals.felipe.phoneFormatted}</span>
-            </a>
-            <a href={`tel:${professionals.eduardo.phone}`} class="hover:text-white transition-colors text-xs flex items-center gap-2">
-              <span class="font-semibold text-sage-light">Acupuntura (Eduardo):</span>
-              <span>{professionals.eduardo.phoneFormatted}</span>
-            </a>
-          </div>
+
+          <p class="text-[11px] text-emerald-200/70 text-center">
+            *Atención exclusiva con cita previa para tu comodidad.
+          </p>
         </div>
       </div>
 
-      <!-- Columna 4: Reconocimiento y Redes -->
+      <!-- Columna 4: Ubicación & Mapa -->
       <div class="space-y-3">
         <h3 class="font-serif text-base font-semibold text-white tracking-wide">
-          Confianza Verificada
+          Ubicación &amp; Horario
         </h3>
-        <a
-          href={clinicInfo.social.googleReviews}
-          target="_blank"
-          rel="noopener noreferrer"
-          class="block p-3.5 rounded-xl bg-[#18221D] border border-[#27382F] hover:border-[#3A5446] transition-all group cursor-pointer"
-        >
-          <div class="flex items-center gap-1.5 text-amber-400 mb-1">
-            <span>★★★★★</span>
-            <span class="text-xs font-bold text-white ml-1">5.0 / 5.0</span>
-          </div>
-          <p class="text-xs text-[#9BB0A2] group-hover:text-white transition-colors">
-            Basado en 156+ opiniones verificadas en Google Maps.
-          </p>
-        </a>
-
-        <div class="pt-2 flex items-center gap-3">
-          <a
-            href={clinicInfo.social.instagram}
-            target="_blank"
-            rel="noopener noreferrer"
-            aria-label="Instagram Centro Vida Sana Austral"
-            class="w-10 h-10 rounded-xl bg-[#1C2520] border border-[#2D3B33] hover:border-white text-white flex items-center justify-center transition-colors cursor-pointer"
-          >
-            <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
-              <path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/>
+        
+        <div class="space-y-2.5 text-xs text-emerald-100/90">
+          <div class="flex items-start gap-2">
+            <svg class="w-4 h-4 text-[#c9f26e] shrink-0 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"></path>
+              <path stroke-linecap="round" stroke-linejoin="round" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"></path>
             </svg>
-          </a>
+            <div>
+              <p class="font-semibold text-white">{clinicInfo.address.full}</p>
+              <a
+                href={clinicInfo.address.mapsUrl}
+                target="_blank"
+                rel="noopener noreferrer"
+                class="inline-flex items-center gap-1 text-[#c9f26e] hover:underline font-bold mt-0.5"
+              >
+                <span>Abrir en Google Maps</span>
+                <svg class="w-3 h-3" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6M15 3h6v6M10 14L21 3"/></svg>
+              </a>
+            </div>
+          </div>
+
+          <!-- Horario de Atención Integrado -->
+          <div class="flex items-start gap-2 pt-2 border-t border-white/10">
+            <svg class="w-4 h-4 text-[#c9f26e] shrink-0 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+            </svg>
+            <div>
+              <p class="font-semibold text-white">Horario de Atención</p>
+              <p class="text-emerald-100/80">{clinicInfo.hours.days}: {clinicInfo.hours.time}</p>
+            </div>
+          </div>
+
+          <!-- Mapa Embebido Compacto y Elegante -->
+          <div class="rounded-xl overflow-hidden border border-white/20 shadow-sm mt-1 h-32 relative bg-canvas-muted">
+            <iframe
+              src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3112.5691060936357!2d-72.59237492348574!3d-38.73809997175899!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x9614d52f31c74233%3A0x6f5521a17ee4f974!2sLos%20Armi%C3%B1os%201620%2C%20Temuco%2C%20Araucan%C3%ADa!5e0!3m2!1ses!2scl!4v1716000000000!5m2!1ses!2scl"
+              title="Ubicación de Centro Vida Sana Austral en Google Maps"
+              width="100%"
+              height="100%"
+              style="border:0;"
+              allowfullscreen=""
+              loading="lazy"
+              referrerpolicy="no-referrer-when-downgrade"
+              class="w-full h-full object-cover"
+            ></iframe>
+          </div>
         </div>
       </div>
 
     </div>
 
     <!-- Copyright y Créditos -->
-    <div class="pt-8 flex flex-col sm:flex-row items-center justify-between text-xs text-[#7A8E81] gap-4">
+    <div class="pt-8 flex flex-col sm:flex-row items-center justify-between text-xs text-emerald-200/70 gap-4">
       <p>© {new Date().getFullYear()} Centro Vida Sana Austral. Todos los derechos reservados. Temuco, Chile.</p>
-      <p class="flex items-center gap-2">
+      <div class="flex flex-wrap items-center gap-2">
         <span>Felipe Méndez &amp; Eduardo Lagos</span>
         <span>·</span>
         <span>Acreditados Minsal</span>
-      </p>
+        <span>·</span>
+        <span>Sitio web desarrollado por <a href="https://ideasinteractivas.cl" target="_blank" rel="noopener noreferrer" class="text-[#c9f26e] hover:underline font-semibold" title="Ideas Interactivas - Desarrollo Web">Ideas Interactivas</a></span>
+      </div>
     </div>
   </div>
 </footer>
+
+<style>
+  .footer-grass {
+    position: absolute;
+    bottom: calc(100% - 2px);
+    left: 0;
+    width: 100%;
+    height: clamp(65px, 8vw, 115px);
+    background-image: url('/pix/pasto.webp');
+    background-repeat: repeat-x;
+    background-position: bottom center;
+    background-size: auto 100%;
+    pointer-events: none;
+    z-index: 10;
+  }
+</style>

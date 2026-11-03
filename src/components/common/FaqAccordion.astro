@@ -1,0 +1,9 @@
+---
+import FaqAccordion from '../home/FaqAccordion.astro';
+import type { FaqItemProp } from '../home/FaqAccordion.astro';
+
+export type { FaqItemProp };
+interface Props extends Parameters<typeof FaqAccordion>[0] {}
+---
+
+<FaqAccordion {...Astro.props} />

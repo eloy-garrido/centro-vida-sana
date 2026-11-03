@@ -1,0 +1,863 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import Navbar from '../common/Navbar.astro';
+import Footer from '../common/Footer.astro';
+import FloatingWhatsApp from '../common/FloatingWhatsApp.astro';
+import { professionals, type Professional } from '../../data/professionals';
+import { clinicInfo } from '../../data/clinic';
+import { servicesData } from '../../data/services';
+
+interface Props {
+  proId: 'felipe' | 'eduardo';
+}
+
+const { proId } = Astro.props;
+const pro: Professional = professionals[proId];
+const isFelipe = proId === 'felipe';
+
+// Compañero para recomendación cruzada
+const partnerId = isFelipe ? 'eduardo' : 'felipe';
+const partner: Professional = professionals[partnerId];
+
+// Servicios asociados a este profesional
+const proServices = servicesData.filter(s => s.professionalId === proId);
+
+// Paleta y clases temáticas dinámicas
+const theme = isFelipe
+  ? {
+      primary: '#134E5E',
+      primaryDark: '#0B2B33',
+      primaryLight: '#EBF4F6',
+      borderSubtle: '#C9DFE6',
+      borderCard: '#BBD9E2',
+      badgeBg: 'bg-[#E3F0F4]',
+      badgeText: 'text-[#134E5E]',
+      badgeBorder: 'border-[#BBD9E2]',
+      glowColor: 'bg-[#134E5E]/[0.06]',
+      gradientCard: 'from-[#F4F9FA] to-[#E8F2F5]',
+      blobGrad1: '#256E81',
+      blobGrad2: '#124B5A',
+      shadowAccent: 'shadow-[0_10px_35px_rgba(19,78,94,0.12)]',
+      btnBg: 'bg-[#134E5E] hover:bg-[#0E3B47]',
+      btnBorder: 'border-[#134E5E]',
+      btnShadow: 'hover:shadow-[0_10px_30px_rgba(19,78,94,0.3)]',
+      serviceRoute: '/quiropraxia',
+      serviceLabel: 'Quiropraxia & Kinesiología',
+    }
+  : {
+      primary: '#2E4D38',
+      primaryDark: '#15281D',
+      primaryLight: '#EFF5F0',
+      borderSubtle: '#D3E3D6',
+      borderCard: '#CCE2D2',
+      badgeBg: 'bg-[#EEF5F0]',
+      badgeText: 'text-[#2E4D38]',
+      badgeBorder: 'border-[#CCE2D2]',
+      glowColor: 'bg-[#2E4D38]/[0.06]',
+      gradientCard: 'from-[#F6FAF7] to-[#EDF5F0]',
+      blobGrad1: '#3E724F',
+      blobGrad2: '#284E36',
+      shadowAccent: 'shadow-[0_10px_35px_rgba(46,77,56,0.12)]',
+      btnBg: 'bg-[#2E4D38] hover:bg-[#233C2C]',
+      btnBorder: 'border-[#2E4D38]',
+      btnShadow: 'hover:shadow-[0_10px_30px_rgba(46,77,56,0.3)]',
+      serviceRoute: '/acupuntura',
+      serviceLabel: 'Acupuntura & Medicina China',
+    };
+
+// Schema SEO enriquecido Person + MedicalClinic
+const personSchema = {
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "Person",
+      "@id": `https://centrovidasana.cl/profesionales/${pro.slug}#person`,
+      "name": pro.fullName,
+      "alternateName": pro.name,
+      "jobTitle": pro.title,
+      "description": pro.approachQuote,
+      "telephone": pro.phone,
+      "email": pro.email,
+      "image": `https://centrovidasana.cl${pro.photoHdUrl || pro.photoUrl}`,
+      "url": `https://centrovidasana.cl/profesionales/${pro.slug}`,
+      "worksFor": {
+        "@type": "MedicalClinic",
+        "name": clinicInfo.name,
+        "url": "https://centrovidasana.cl/",
+        "address": {
+          "@type": "PostalAddress",
+          "streetAddress": clinicInfo.address.street,
+          "addressLocality": clinicInfo.address.city,
+          "addressRegion": clinicInfo.address.region,
+          "addressCountry": "CL"
+        }
+      },
+      "alumniOf": pro.academicDegrees.map(deg => ({
+        "@type": "EducationalOrganization",
+        "name": deg.institution
+      })),
+      "hasCredential": [
+        pro.credential,
+        ...pro.postgraduates.map(p => p.title)
+      ]
+    },
+    {
+      "@type": "BreadcrumbList",
+      "@id": `https://centrovidasana.cl/profesionales/${pro.slug}#breadcrumb`,
+      "itemListElement": [
+        {
+          "@type": "ListItem",
+          "position": 1,
+          "name": "Inicio",
+          "item": "https://centrovidasana.cl/"
+        },
+        {
+          "@type": "ListItem",
+          "position": 2,
+          "name": "Profesionales",
+          "item": "https://centrovidasana.cl/#profesionales"
+        },
+        {
+          "@type": "ListItem",
+          "position": 3,
+          "name": pro.name,
+          "item": `https://centrovidasana.cl/profesionales/${pro.slug}`
+        }
+      ]
+    }
+  ]
+};
+
+const pageTitle = `${pro.name} | ${pro.title} en Temuco | Centro Vida Sana Austral`;
+const pageDescription = `${pro.fullName}: ${pro.title} en Temuco. Especialista en ${pro.specialties[0].toLowerCase()}. Consulta en box privado en Centro Vida Sana Austral. Reserva por WhatsApp.`;
+const canonicalUrl = `https://centrovidasana.cl/profesionales/${pro.slug}`;
+---
+
+<BaseLayout
+  title={pageTitle}
+  description={pageDescription}
+  canonicalUrl={canonicalUrl}
+  ogImage={`https://centrovidasana.cl${pro.photoHdUrl || pro.photoUrl}`}
+  customSchema={personSchema}
+>
+  <Navbar slot="navbar" activePage="profesionales" />
+
+  <!-- =========================================================================
+       1. HERO CLINICAL SHOWCASE (Double-Bezel & Organic Cutout Photo)
+       ========================================================================= -->
+  <section class="pt-28 pb-16 lg:pt-36 lg:pb-24 bg-gradient-to-b from-[#EDF5F8] via-[#F4F9FA] to-[#FBFDFB] text-[#152219] relative overflow-hidden border-b border-[#D8E6EB]">
+    
+    <!-- Halos de luz de fondo sutiles -->
+    <div class="absolute -top-32 -left-32 w-[600px] h-[600px] rounded-full blur-[140px] pointer-events-none" style={`background-color: ${theme.primary}12;`}></div>
+    <div class="absolute top-1/2 right-[-10%] w-[550px] h-[550px] rounded-full blur-[140px] pointer-events-none" style={`background-color: ${theme.primary}0D;`}></div>
+
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+
+      <!-- Breadcrumbs de navegación -->
+      <nav class="flex items-center gap-2 text-xs text-[#526F77] mb-6 font-medium" aria-label="Breadcrumb">
+        <a href="/" class="hover:text-[#134E5E] transition-colors">Inicio</a>
+        <span>/</span>
+        <a href="/#profesionales" class="hover:text-[#134E5E] transition-colors">Profesionales</a>
+        <span>/</span>
+        <span class="font-bold" style={`color: ${theme.primary};`}>{pro.name}</span>
+      </nav>
+
+      <div class="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-16 items-center">
+
+        <!-- LADO IZQUIERDO: Identidad, Títulos y CTAs -->
+        <div class="lg:col-span-7 space-y-6 text-left">
+          
+          <!-- Badge de Disciplina -->
+          <div class={`inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full ${theme.badgeBg} border ${theme.badgeBorder} ${theme.badgeText} text-xs font-bold uppercase tracking-wider shadow-sm`}>
+            <span class="w-2 h-2 rounded-full animate-pulse" style={`background-color: ${theme.primary};`}></span>
+            <span>{pro.badgeLabel}</span>
+          </div>
+
+          <!-- Nombre y Título Principal -->
+          <div>
+            <h1 class="font-serif text-3xl sm:text-4xl lg:text-5xl xl:text-6xl font-bold text-[#0B2B33] tracking-tight leading-[1.12] mb-3">
+              {pro.fullName}
+            </h1>
+            <p class="text-lg sm:text-xl font-bold" style={`color: ${theme.primary};`}>
+              {pro.title}
+            </p>
+            <p class="text-xs sm:text-sm text-[#526F77] font-medium pt-1 flex items-center gap-2">
+              <svg class="w-4 h-4 shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>
+                <path d="M9 12l2 2 4-4"/>
+              </svg>
+              <span>{pro.credential}</span>
+            </p>
+          </div>
+
+          <!-- Párrafo Destacado Breve -->
+          <p class="text-base sm:text-lg text-[#3D5C64] leading-relaxed max-w-2xl">
+            {pro.bio}
+          </p>
+
+          <!-- 4 Métricas de Confianza / Pilares Rápidos en Mini-Pills -->
+          <div class="grid grid-cols-2 sm:grid-cols-4 gap-2.5 pt-1">
+            <div class="p-3 rounded-xl bg-white/95 border border-[#D0E2E8] text-center shadow-xs">
+              <span class="block text-xs font-bold text-[#152219]">Doble Título</span>
+              <span class="block text-[11px] text-[#526F77]">Kine & Quiropraxia</span>
+            </div>
+            <div class="p-3 rounded-xl bg-white/95 border border-[#D0E2E8] text-center shadow-xs">
+              <span class="block text-xs font-bold text-[#152219]">Acreditado</span>
+              <span class="block text-[11px] text-[#526F77]">Salud Minsal</span>
+            </div>
+            <div class="p-3 rounded-xl bg-white/95 border border-[#D0E2E8] text-center shadow-xs">
+              <span class="block text-xs font-bold text-[#152219]">Neurociencias</span>
+              <span class="block text-[11px] text-[#526F77]">Modelo VFC/HRV</span>
+            </div>
+            <div class="p-3 rounded-xl bg-white/95 border border-[#D0E2E8] text-center shadow-xs">
+              <span class="block text-xs font-bold text-[#152219]">Box Privado</span>
+              <span class="block text-[11px] text-[#526F77]">Temuco & Domicilio</span>
+            </div>
+          </div>
+
+          <!-- CTAs Primarios (Nested Button-in-Button Pattern) -->
+          <div class="flex flex-col sm:flex-row items-stretch sm:items-center gap-3 pt-2">
+            
+            <!-- Botón WhatsApp Principal -->
+            <a
+              href={`https://wa.me/${pro.phone.replace(/[^0-9]/g, '')}?text=${encodeURIComponent(pro.whatsappMessage)}`}
+              target="_blank"
+              rel="noopener noreferrer"
+              class={`btn-press inline-flex items-center justify-between gap-3 px-6 py-4 rounded-xl ${theme.btnBg} text-white text-sm sm:text-base font-bold shadow-soft ${theme.btnShadow} transition-all cursor-pointer group`}
+            >
+              <div class="flex items-center gap-2.5">
+                <svg class="w-5 h-5 text-emerald-300" viewBox="0 0 24 24" fill="currentColor">
+                  <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413Z"/>
+                </svg>
+                <span>Consultar con {pro.name}</span>
+              </div>
+              <div class="w-8 h-8 rounded-full bg-white/15 flex items-center justify-center shrink-0 group-hover:translate-x-1 transition-transform">
+                <svg class="w-4 h-4 text-white" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+                  <path d="M5 12h14m-7-7 7 7-7 7"/>
+                </svg>
+              </div>
+            </a>
+
+            <!-- Botón Llamar -->
+            <a
+              href={`tel:${pro.phone}`}
+              class="inline-flex items-center justify-center gap-2 px-5 py-4 rounded-xl bg-white border border-[#D0E2E8] text-xs sm:text-sm font-bold text-[#152219] hover:bg-[#F4F9FA] transition-colors"
+            >
+              <svg class="w-4 h-4 text-[#526F77]" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/>
+              </svg>
+              <span>{pro.phoneFormatted}</span>
+            </a>
+
+            <!-- Botón Guardar Contacto VCard -->
+            <button
+              type="button"
+              class="vcard-btn inline-flex items-center justify-center gap-2 px-4 py-4 rounded-xl bg-white border border-[#D0E2E8] text-xs font-bold text-[#526F77] hover:text-[#152219] hover:bg-[#F4F9FA] transition-colors cursor-pointer"
+              data-pro={pro.id}
+              title={`Guardar contacto de ${pro.name} en tu teléfono`}
+            >
+              <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/>
+              </svg>
+              <span class="hidden sm:inline">Guardar</span>
+            </button>
+          </div>
+
+          <!-- Canales adicionales: Email y Ubicación -->
+          <div class="flex flex-wrap items-center gap-4 text-xs text-[#526F77] pt-1">
+            <span class="inline-flex items-center gap-1.5">
+              <svg class="w-3.5 h-3.5 text-[#526F77]" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect width="20" height="16" x="2" y="4" rx="2"/><path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"/></svg>
+              {pro.email}
+            </span>
+            <span class="inline-flex items-center gap-1.5">
+              <svg class="w-3.5 h-3.5 text-[#526F77]" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z"/><circle cx="12" cy="10" r="3"/></svg>
+              Los Armiños 1620, Temuco
+            </span>
+          </div>
+
+        </div>
+
+        <!-- LADO DERECHO: Retrato HD con Blob Orgánico y Tarjeta Flotante -->
+        <div class="lg:col-span-5 relative flex items-center justify-center">
+          <div class="relative w-full max-w-[420px] lg:max-w-[460px] flex items-end justify-center pt-4 pb-2">
+
+            <!-- 1. Halo luminoso de ambientación temático -->
+            <div
+              class="absolute w-[360px] sm:w-[420px] lg:w-[450px] h-[360px] sm:h-[420px] lg:h-[450px] rounded-full blur-3xl pointer-events-none animate-pulse [animation-duration:7s]"
+              style={`background: ${isFelipe ? 'radial-gradient(circle, rgba(62,173,199,0.45) 0%, rgba(22,86,104,0.25) 100%)' : 'radial-gradient(circle, rgba(101,183,126,0.45) 0%, rgba(56,118,75,0.25) 100%)'};`}
+            ></div>
+
+            <!-- 2. Anillo orbital rotatorio (Aura Temática) -->
+            <div
+              class={`absolute w-[350px] sm:w-[410px] lg:w-[440px] h-[350px] sm:h-[410px] lg:h-[440px] rounded-[52%_48%_60%_40%/48%_62%_38%_52%] border-2 border-dashed pointer-events-none ${isFelipe ? 'rotate-12 animate-[spin_55s_linear_infinite_reverse] border-[#134E5E]/35' : '-rotate-12 animate-[spin_60s_linear_infinite] border-[#2E4D38]/35'}`}
+            ></div>
+
+            <!-- 3. Blob Orgánico de Fondo con Gradiente Enriquecido -->
+            <div class="absolute inset-0 flex items-center justify-center pointer-events-none z-0">
+              <svg viewBox="0 0 500 500" class="w-[330px] sm:w-[400px] lg:w-[430px] h-[330px] sm:h-[400px] lg:h-[430px] filter drop-shadow-[0_20px_35px_rgba(0,0,0,0.18)]" xmlns="http://www.w3.org/2000/svg">
+                <defs>
+                  <linearGradient id={`blob-${pro.id}-hero`} x1="15%" y1="10%" x2="88%" y2="92%">
+                    <stop offset="0%" stop-color={isFelipe ? '#C2EBF5' : '#C5EDD0'} />
+                    <stop offset="35%" stop-color={isFelipe ? '#55ABC1' : '#6FBB85'} />
+                    <stop offset="75%" stop-color={theme.blobGrad1} />
+                    <stop offset="100%" stop-color={theme.blobGrad2} />
+                  </linearGradient>
+                </defs>
+                <path
+                  d="M425,310Q380,370,320,405Q260,440,195,415Q130,390,85,330Q40,270,75,205Q110,140,170,100Q230,60,305,80Q380,100,425,170Q470,240,425,310Z"
+                  fill={`url(#blob-${pro.id}-hero)`}
+                />
+              </svg>
+            </div>
+
+            <!-- Retrato Recortado HD con Sombra Realista -->
+            <div class="relative z-10 w-full flex justify-center group">
+              <img
+                src={pro.photoHdUrl || pro.photoUrl}
+                srcset={`${pro.photoHdUrl || pro.photoUrl} 2x, ${pro.photoUrl} 1x`}
+                alt={`${pro.fullName} - ${pro.title} en Temuco`}
+                class="w-auto max-h-[440px] sm:max-h-[500px] lg:max-h-[520px] object-contain drop-shadow-[0_22px_38px_rgba(15,45,55,0.24)] group-hover:scale-[1.015] transition-transform duration-700 ease-[cubic-bezier(0.16,1,0.3,1)] [mask-image:linear-gradient(to_bottom,black_90%,transparent_100%)]"
+                loading="eager"
+                fetchpriority="high"
+                width="881"
+                height="800"
+              />
+
+              <!-- Chip Flotante Inferior de Acreditación -->
+              <div class="absolute bottom-2 left-1/2 -translate-x-1/2 sm:left-2 sm:translate-x-0 p-3 rounded-2xl bg-white/95 border border-[#CCE2D2] backdrop-blur-md shadow-[0_10px_24px_rgba(0,0,0,0.08)] flex items-center gap-3 z-20 whitespace-nowrap">
+                <div class="w-10 h-10 rounded-xl flex items-center justify-center shrink-0 text-white shadow-xs" style={`background-color: ${theme.primary};`}>
+                  <svg class="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2">
+                    <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>
+                    <path d="M9 12l2 2 4-4"/>
+                  </svg>
+                </div>
+                <div class="text-left">
+                  <span class="text-xs font-bold text-[#152219] block leading-tight">Profesional Acreditado</span>
+                  <span class="text-[11px] text-[#526F77] block leading-tight">Atención 100% Personalizada</span>
+                </div>
+              </div>
+            </div>
+
+          </div>
+        </div>
+
+      </div>
+
+    </div>
+
+  </section>
+
+
+  <!-- =========================================================================
+       2. ENFOQUE CLÍNICO Y MODELO TERAPÉUTICO (Cita Editorial Principal)
+       ========================================================================= -->
+  <section class="py-16 sm:py-24 bg-[#FBFDFB] relative overflow-hidden">
+    
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+
+      <!-- Encabezado de Sección -->
+      <div class="text-center max-w-3xl mx-auto mb-12 sm:mb-16">
+        <div class={`inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full ${theme.badgeBg} border ${theme.badgeBorder} ${theme.badgeText} text-xs font-bold uppercase tracking-wider mb-3 shadow-xs`}>
+          <span>Fundamento Clínico y Neurociencias</span>
+        </div>
+        <h2 class="font-serif text-3xl sm:text-4xl lg:text-5xl font-bold text-[#152219] tracking-tight mb-4">
+          {pro.approachTitle}
+        </h2>
+        <p class="text-base sm:text-lg text-[#526F77] leading-relaxed">
+          {pro.approachSubtitle}
+        </p>
+      </div>
+
+      <!-- Tarjeta Editorial Doble Bezel con la Cita Exacta del Profesional -->
+      <div class="relative max-w-4xl mx-auto mb-16">
+        <div class="p-2 sm:p-2.5 rounded-[2rem] bg-gradient-to-br from-[#E2ECF0] via-white to-[#D2E4EA] ring-1 ring-[#BBD9E2]/60 shadow-[0_12px_40px_rgba(19,78,94,0.08)]">
+          <div class="p-8 sm:p-12 lg:p-14 rounded-[calc(2rem-0.625rem)] bg-white relative overflow-hidden">
+            
+            <!-- Comilla Decorativa de Fondo -->
+            <span class="absolute top-4 right-8 font-serif text-8xl sm:text-9xl text-[#134E5E]/[0.07] pointer-events-none select-none">“</span>
+
+            <div class="relative z-10 space-y-6">
+              
+              <div class="flex items-center gap-3">
+                <span class="w-8 h-1 rounded-full" style={`background-color: ${theme.primary};`}></span>
+                <span class="text-xs font-bold tracking-widest uppercase text-[#526F77]">Declaración de Enfoque Clínico</span>
+              </div>
+
+              <!-- Texto Proporcionado por el Usuario -->
+              <blockquote class="text-base sm:text-lg lg:text-xl text-[#243B42] leading-relaxed font-normal italic">
+                "{pro.approachQuote}"
+              </blockquote>
+
+              <div class="pt-4 border-t border-[#E8F0F3] flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+                <div>
+                  <span class="font-serif text-lg font-bold text-[#0B2B33] block">{pro.fullName}</span>
+                  <span class="text-xs text-[#526F77] block">{pro.title} · Centro Vida Sana Austral</span>
+                </div>
+                <div class="flex items-center gap-2">
+                  <span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-semibold bg-[#EBF4F6] text-[#134E5E] border border-[#C9DFE6]">
+                    <svg class="w-3.5 h-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+                    Atención en Box Privado
+                  </span>
+                </div>
+              </div>
+
+            </div>
+
+          </div>
+        </div>
+      </div>
+
+      <!-- Bento Grid de los 4 Pilares del Modelo Clínico -->
+      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+        {pro.clinicalPillars.map((pillar, idx) => (
+          <div class="group p-6 rounded-2xl bg-white border border-[#D0E2E8] hover:border-[#134E5E] transition-all duration-300 shadow-xs hover:shadow-[0_12px_28px_rgba(19,78,94,0.1)] flex flex-col justify-between">
+            <div class="space-y-3">
+              <div class="flex items-center justify-between">
+                <span class="w-8 h-8 rounded-xl bg-[#EBF4F6] text-[#134E5E] font-serif font-bold text-sm flex items-center justify-center group-hover:bg-[#134E5E] group-hover:text-white transition-colors">
+                  0{idx + 1}
+                </span>
+                {pillar.badge && (
+                  <span class="text-[10px] uppercase font-bold tracking-wider px-2 py-0.5 rounded-full bg-[#EBF4F6] text-[#134E5E]">
+                    {pillar.badge}
+                  </span>
+                )}
+              </div>
+              <h3 class="font-serif text-lg font-bold text-[#0B2B33] leading-snug group-hover:text-[#134E5E] transition-colors">
+                {pillar.title}
+              </h3>
+              <p class="text-xs sm:text-sm text-[#526F77] leading-relaxed">
+                {pillar.desc}
+              </p>
+            </div>
+          </div>
+        ))}
+      </div>
+
+    </div>
+
+  </section>
+
+
+  <!-- =========================================================================
+       3. FORMACIÓN UNIVERSITARIA Y TRAYECTORIA (Equilibrada y Estructurada)
+       ========================================================================= -->
+  <section class="py-16 sm:py-24 bg-gradient-to-b from-[#FBFDFB] via-[#F4F9FA] to-[#EDF5F8] border-y border-[#DCEBF0] relative overflow-hidden">
+    
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+
+      <div class="text-center max-w-3xl mx-auto mb-14">
+        <div class={`inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full ${theme.badgeBg} border ${theme.badgeBorder} ${theme.badgeText} text-xs font-bold uppercase tracking-wider mb-3 shadow-xs`}>
+          <span>Rigor Académico y Calidad Profesional</span>
+        </div>
+        <h2 class="font-serif text-3xl sm:text-4xl lg:text-5xl font-bold text-[#152219] tracking-tight mb-4">
+          Formación Universitaria y Trayectoria
+        </h2>
+        <p class="text-base sm:text-lg text-[#526F77] leading-relaxed">
+          Titulaciones de grado, postítulos especializados y experiencia clínica en el ámbito público y privado.
+        </p>
+      </div>
+
+      <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12 items-start">
+
+        <!-- COLUMNA 1: Títulos Universitarios y Postítulos (7 Cols) -->
+        <div class="lg:col-span-7 space-y-8">
+          
+          <!-- Bloque Títulos de Grado -->
+          <div class="p-6 sm:p-8 rounded-3xl bg-white border border-[#D0E2E8] shadow-xs space-y-5">
+            <div class="flex items-center gap-3 pb-3 border-b border-[#E8F0F3]">
+              <div class="w-10 h-10 rounded-xl bg-[#EBF4F6] text-[#134E5E] flex items-center justify-center shrink-0">
+                <svg class="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <path d="M22 10v6M2 10l10-5 10 5-10 5z"/>
+                  <path d="M6 12v5c3 3 9 3 12 0v-5"/>
+                </svg>
+              </div>
+              <div>
+                <h3 class="font-serif text-xl font-bold text-[#0B2B33]">Títulos Universitarios de Grado</h3>
+                <p class="text-xs text-[#526F77]">Formación troncal y habilitación profesional</p>
+              </div>
+            </div>
+
+            <div class="space-y-4">
+              {pro.academicDegrees.map(deg => (
+                <div class="p-4 rounded-2xl bg-[#F4F9FA] border border-[#DCEBF0] flex flex-col sm:flex-row sm:items-center justify-between gap-2">
+                  <div>
+                    <h4 class="font-bold text-sm sm:text-base text-[#0B2B33]">{deg.title}</h4>
+                    <p class="text-xs text-[#526F77]">{deg.institution}</p>
+                  </div>
+                  <span class="inline-flex px-3 py-1 rounded-full text-xs font-bold bg-white text-[#134E5E] border border-[#C9DFE6] self-start sm:self-auto shrink-0">
+                    {deg.period}
+                  </span>
+                </div>
+              ))}
+            </div>
+          </div>
+
+          <!-- Bloque Diplomados y Postítulos -->
+          <div class="p-6 sm:p-8 rounded-3xl bg-white border border-[#D0E2E8] shadow-xs space-y-5">
+            <div class="flex items-center gap-3 pb-3 border-b border-[#E8F0F3]">
+              <div class="w-10 h-10 rounded-xl bg-[#EBF4F6] text-[#134E5E] flex items-center justify-center shrink-0">
+                <svg class="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <circle cx="12" cy="8" r="6"/>
+                  <path d="M15.477 12.89 17 22l-5-3-5 3 1.523-9.11"/>
+                </svg>
+              </div>
+              <div>
+                <h3 class="font-serif text-xl font-bold text-[#0B2B33]">Diplomados y Postgrados Clínicos</h3>
+                <p class="text-xs text-[#526F77]">Especialización en áreas avanzadas de la salud</p>
+              </div>
+            </div>
+
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-3.5">
+              {pro.postgraduates.map(post => (
+                <div class="p-4 rounded-2xl bg-[#F4F9FA] border border-[#DCEBF0] space-y-1.5 flex flex-col justify-between">
+                  <div>
+                    <h4 class="font-bold text-xs sm:text-sm text-[#0B2B33] leading-snug">{post.title}</h4>
+                    <p class="text-[11px] text-[#526F77] pt-1">{post.institution}</p>
+                  </div>
+                  <div class="flex items-center justify-between pt-2 text-[10px] text-[#134E5E] font-semibold">
+                    <span>{post.detail}</span>
+                    {post.year && <span class="bg-white px-2 py-0.5 rounded border border-[#C9DFE6]">{post.year}</span>}
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
+
+          <!-- Certificaciones Relevantes Seleccionadas -->
+          <div class="p-6 rounded-2xl bg-white border border-[#D0E2E8] shadow-xs">
+            <h4 class="text-xs font-bold uppercase tracking-wider text-[#0B2B33] mb-3 flex items-center gap-2">
+              <svg class="w-4 h-4 text-[#134E5E]" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M9 12l2 2 4-4"/></svg>
+              <span>Certificaciones Clínicas Relevantes:</span>
+            </h4>
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-2 text-xs text-[#3D5C64]">
+              {pro.certifications.map(cert => (
+                <div class="p-2.5 rounded-xl bg-[#F4F9FA] border border-[#E2ECEF] flex items-start gap-2">
+                  <span class="w-1.5 h-1.5 rounded-full bg-[#134E5E] shrink-0 mt-1.5"></span>
+                  <div>
+                    <span class="font-semibold text-[#0B2B33] block">{cert.name}</span>
+                    <span class="text-[11px] text-[#526F77] block">{cert.institution}</span>
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
+
+        </div>
+
+        <!-- COLUMNA 2: Trayectoria Clínica y Práctica en Temuco (5 Cols) -->
+        <div class="lg:col-span-5 space-y-6">
+          
+          <div class="p-6 sm:p-8 rounded-3xl bg-white border border-[#D0E2E8] shadow-xs space-y-6">
+            <div class="flex items-center gap-3 pb-3 border-b border-[#E8F0F3]">
+              <div class="w-10 h-10 rounded-xl bg-[#EBF4F6] text-[#134E5E] flex items-center justify-center shrink-0">
+                <svg class="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <path d="M16 20V4a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"/>
+                  <rect width="20" height="14" x="2" y="6" rx="2"/>
+                </svg>
+              </div>
+              <div>
+                <h3 class="font-serif text-xl font-bold text-[#0B2B33]">Trayectoria y Experiencia</h3>
+                <p class="text-xs text-[#526F77]">Ejercicio clínico en centros y programas de salud</p>
+              </div>
+            </div>
+
+            <!-- Timeline de Experiencia -->
+            <div class="space-y-6 relative before:absolute before:inset-0 before:left-3 before:w-0.5 before:bg-[#DCEBF0]">
+              {pro.clinicalExperience.map((exp) => (
+                <div class="relative pl-8 space-y-1.5">
+                  <span class="absolute left-1.5 top-1.5 w-3.5 h-3.5 rounded-full bg-white border-2 border-[#134E5E]"></span>
+                  <span class="inline-block text-[11px] font-bold text-[#134E5E] px-2 py-0.5 rounded bg-[#EBF4F6]">
+                    {exp.period}
+                  </span>
+                  <h4 class="font-bold text-sm text-[#0B2B33]">{exp.role}</h4>
+                  <p class="text-xs font-semibold text-[#526F77]">{exp.center}</p>
+                  <p class="text-xs text-[#526F77] leading-relaxed pt-1">
+                    {exp.desc}
+                  </p>
+                </div>
+              ))}
+            </div>
+
+            <!-- Box Informativo de Atención -->
+            <div class="p-4 rounded-2xl bg-[#EBF4F6] border border-[#C9DFE6] space-y-2 text-xs text-[#134E5E]">
+              <div class="font-bold flex items-center gap-1.5">
+                <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg>
+                <span>Atención Actual en Temuco:</span>
+              </div>
+              <p class="text-[11px] text-[#3D5C64] leading-relaxed">
+                Consultas particulares directas en Centro Vida Sana Austral (Los Armiños 1620, Temuco) y coordinación de programas de kinesiología a domicilio para personas con movilidad reducida.
+              </p>
+            </div>
+
+          </div>
+
+        </div>
+
+      </div>
+
+    </div>
+
+  </section>
+
+
+  <!-- =========================================================================
+       4. ¿CÓMO ES UNA CONSULTA CON EL PROFESIONAL? (Paso a Paso)
+       ========================================================================= -->
+  <section class="py-16 sm:py-24 bg-[#FBFDFB] relative overflow-hidden">
+    
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+
+      <div class="text-center max-w-3xl mx-auto mb-14">
+        <div class={`inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full ${theme.badgeBg} border ${theme.badgeBorder} ${theme.badgeText} text-xs font-bold uppercase tracking-wider mb-3 shadow-xs`}>
+          <span>Tu Experiencia Clínica</span>
+        </div>
+        <h2 class="font-serif text-3xl sm:text-4xl lg:text-5xl font-bold text-[#152219] tracking-tight mb-4">
+          ¿Cómo es una Sesión con {pro.name}?
+        </h2>
+        <p class="text-base sm:text-lg text-[#526F77] leading-relaxed">
+          Un protocolo clínico estructurado, seguro y respetuoso con tu tiempo y tu anatomía.
+        </p>
+      </div>
+
+      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+        {pro.consultationSteps.map((s) => (
+          <div class="p-6 rounded-2xl bg-white border border-[#D0E2E8] shadow-xs space-y-3 relative overflow-hidden">
+            <span class="font-serif text-4xl font-bold text-[#134E5E]/15 block">
+              {s.step}
+            </span>
+            <h3 class="font-serif text-lg font-bold text-[#0B2B33]">
+              {s.title}
+            </h3>
+            <p class="text-xs sm:text-sm text-[#526F77] leading-relaxed">
+              {s.desc}
+            </p>
+          </div>
+        ))}
+      </div>
+
+    </div>
+
+  </section>
+
+
+  <!-- =========================================================================
+       5. TRATAMIENTOS A CARGO DE ESTE PROFESIONAL (Directorio Curado)
+       ========================================================================= -->
+  {proServices.length > 0 && (
+    <section class="py-16 sm:py-24 bg-[#F4F9FA] border-t border-[#DCEBF0] relative overflow-hidden">
+      
+      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+
+        <div class="flex flex-col md:flex-row md:items-end justify-between gap-6 mb-12">
+          <div>
+            <div class={`inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full ${theme.badgeBg} border ${theme.badgeBorder} ${theme.badgeText} text-xs font-bold uppercase tracking-wider mb-3 shadow-xs`}>
+              <span>Tratamientos Realizados en Clínica</span>
+            </div>
+            <h2 class="font-serif text-3xl sm:text-4xl font-bold text-[#0B2B33] tracking-tight">
+              Servicios Clínicos de {pro.name}
+            </h2>
+            <p class="text-sm sm:text-base text-[#526F77] pt-1">
+              Sesiones individualizadas de 45 a 60 minutos en box privado climatizado.
+            </p>
+          </div>
+
+          <a
+            href={theme.serviceRoute}
+            class="inline-flex items-center gap-2 px-5 py-3 rounded-xl bg-white border border-[#D0E2E8] text-xs font-bold text-[#134E5E] hover:bg-[#EBF4F6] transition-colors self-start md:self-auto shrink-0"
+          >
+            <span>Ver guía completa de {theme.serviceLabel}</span>
+            <span>→</span>
+          </a>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+          {proServices.slice(0, 6).map((srv) => (
+            <article class="p-6 rounded-2xl bg-white border border-[#D0E2E8] shadow-xs hover:shadow-md transition-all flex flex-col justify-between space-y-4">
+              <div class="space-y-2.5">
+                <div class="flex items-center justify-end text-xs text-[#526F77]">
+                  <span class="font-bold text-[#0B2B33] bg-[#F4F9FA] px-2.5 py-1 rounded border border-[#E2ECEF]">
+                    {srv.priceRef}
+                  </span>
+                </div>
+                <h3 class="font-serif text-lg font-bold text-[#0B2B33] leading-snug">
+                  {srv.name}
+                </h3>
+                <p class="text-xs sm:text-sm text-[#526F77] leading-relaxed">
+                  {srv.summary}
+                </p>
+              </div>
+
+              <div class="pt-3 border-t border-[#E8F0F3]">
+                <span class="text-[11px] font-semibold text-[#134E5E] block mb-2">Indicado para: {srv.indication}</span>
+                <a
+                  href={`https://wa.me/${pro.phone.replace(/[^0-9]/g, '')}?text=${encodeURIComponent(`Hola ${pro.name}, quisiera consultar por el tratamiento de ${srv.name}.`)}`}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  class="w-full inline-flex items-center justify-center gap-2 py-2.5 px-3 rounded-lg bg-[#EBF4F6] hover:bg-[#134E5E] text-[#134E5E] hover:text-white text-xs font-bold transition-colors"
+                >
+                  <span>Consultar por este tratamiento</span>
+                  <span>→</span>
+                </a>
+              </div>
+            </article>
+          ))}
+        </div>
+
+      </div>
+
+    </section>
+  )}
+
+
+  <!-- =========================================================================
+       6. RECOMENDACIÓN CRUZADA (Sinergia de Equipo con Eduardo)
+       ========================================================================= -->
+  <section class="py-16 sm:py-20 bg-[#FBFDFB] relative overflow-hidden">
+    
+    <div class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+      
+      <div class="p-8 sm:p-12 rounded-3xl bg-gradient-to-br from-[#F6FAF7] to-[#EDF5F0] border border-[#CCE2D2] shadow-sm flex flex-col md:flex-row items-center gap-8 justify-between">
+        
+        <div class="flex items-center gap-6">
+          <img
+            src={partner.photoUrl}
+            alt={partner.name}
+            class="w-20 h-20 sm:w-24 sm:h-24 rounded-2xl object-cover object-top border-2 border-[#2E4D38] shrink-0 shadow-xs"
+          />
+          <div class="space-y-1 text-left">
+            <span class="text-xs font-bold text-[#2E4D38] uppercase tracking-wider block">
+              Enfoque Interdisciplinario · Nuestro Equipo
+            </span>
+            <h3 class="font-serif text-xl sm:text-2xl font-bold text-[#152219]">
+              ¿Buscas Acupuntura & Medicina China?
+            </h3>
+            <p class="text-xs sm:text-sm text-[#44594A] max-w-lg leading-relaxed">
+              En Centro Vida Sana Austral trabajamos de manera colaborativa. Conoce a <strong>{partner.name}</strong> ({partner.title}), especialista acreditado Minsal en manejo del dolor crónico y equilibrio orgánico.
+            </p>
+          </div>
+        </div>
+
+        <div class="flex flex-col sm:flex-row gap-3 w-full md:w-auto shrink-0">
+          <a
+            href={`/profesionales/${partner.slug}`}
+            class="btn-press inline-flex items-center justify-center gap-2 px-5 py-3.5 rounded-xl bg-[#2E4D38] hover:bg-[#233C2C] text-white text-xs font-bold shadow-soft transition-colors text-center"
+          >
+            <span>Ver perfil de {partner.name}</span>
+            <span>→</span>
+          </a>
+        </div>
+
+      </div>
+
+    </div>
+
+  </section>
+
+
+  <!-- =========================================================================
+       7. CTA FINAL DE RESERVA CON FELIPE
+       ========================================================================= -->
+  <section class="py-16 sm:py-24 bg-gradient-to-b from-[#134E5E] to-[#0B2B33] text-white relative overflow-hidden">
+    
+    <div class="absolute inset-0 bg-[radial-gradient(circle_at_top_right,rgba(255,255,255,0.08),transparent_50%)] pointer-events-none"></div>
+
+    <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center relative z-10 space-y-6">
+      
+      <div class="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-white/10 text-cyan-200 border border-white/15 text-xs font-bold uppercase tracking-wider">
+        <span class="w-2 h-2 rounded-full bg-cyan-300 animate-pulse"></span>
+        <span>Atención Personalizada en Temuco</span>
+      </div>
+
+      <h2 class="font-serif text-3xl sm:text-4xl lg:text-5xl font-bold text-white tracking-tight leading-tight">
+        Comienza tu Recuperación con {pro.name}
+      </h2>
+
+      <p class="text-base sm:text-lg text-cyan-100/90 max-w-2xl mx-auto leading-relaxed">
+        Agenda tu evaluación quiropráctica o kinesiológica directamente. Sin esperas innecesarias y con el rigor de un modelo clínico basado en neurociencias.
+      </p>
+
+      <div class="flex flex-col sm:flex-row items-center justify-center gap-3.5 pt-4">
+        <a
+          href={`https://wa.me/${pro.phone.replace(/[^0-9]/g, '')}?text=${encodeURIComponent(pro.whatsappMessage)}`}
+          target="_blank"
+          rel="noopener noreferrer"
+          class="w-full sm:w-auto inline-flex items-center justify-center gap-2.5 px-8 py-4 rounded-xl bg-white hover:bg-cyan-50 text-[#0B2B33] text-sm sm:text-base font-bold shadow-[0_12px_30px_rgba(0,0,0,0.25)] transition-all cursor-pointer"
+        >
+          <svg class="w-5 h-5 text-emerald-600" viewBox="0 0 24 24" fill="currentColor">
+            <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413Z"/>
+          </svg>
+          <span>Agendar por WhatsApp (+569 7370 0616)</span>
+        </a>
+
+        <a
+          href="/"
+          class="w-full sm:w-auto inline-flex items-center justify-center gap-2 px-6 py-4 rounded-xl bg-white/10 hover:bg-white/20 text-white text-sm sm:text-base font-bold border border-white/20 transition-all"
+        >
+          <span>Volver al Inicio</span>
+        </a>
+      </div>
+
+      <div class="pt-6 flex flex-wrap items-center justify-center gap-6 text-xs text-cyan-200/80">
+        <span>✓ Box Climatizado Privado</span>
+        <span>✓ Los Armiños 1620, Temuco</span>
+        <span>✓ Lunes a Viernes 10:00 a 21:00</span>
+      </div>
+
+    </div>
+
+  </section>
+
+  <!-- Botón Flotante con Selección de Especialista -->
+  <FloatingWhatsApp />
+
+  <Footer slot="footer" />
+</BaseLayout>
+
+<script>
+  // Manejador vCard para descarga directa de contacto
+  const vcardButtons = document.querySelectorAll('.vcard-btn');
+  vcardButtons.forEach(btn => {
+    btn.addEventListener('click', () => {
+      const pro = btn.getAttribute('data-pro');
+      if (pro === 'felipe') {
+        const vcardContent = `BEGIN:VCARD
+VERSION:3.0
+N:Méndez Salgado;Felipe;Andrés;;
+FN:Felipe Méndez - Kinesiólogo y Quiropráctico
+ORG:Centro Vida Sana Austral
+TITLE:Licenciado en Kinesiología y Quiropráctico
+TEL;TYPE=CELL,VOICE:+56973700616
+EMAIL:quirofelme@gmail.com
+ADR;TYPE=WORK:;;Los Armiños 1620;Temuco;Araucanía;;Chile
+URL:https://centrovidasana.cl/profesionales/felipe-mendez
+NOTE:Atención Quiropráctica y Kinesiológica en Temuco. Box privado y domicilio.
+END:VCARD`;
+        downloadVCard(vcardContent, 'Felipe_Mendez_VidaSana.vcf');
+      } else if (pro === 'eduardo') {
+        const vcardContent = `BEGIN:VCARD
+VERSION:3.0
+N:Lagos;Eduardo;;;
+FN:Eduardo Lagos - Acupunturista Clínico Minsal
+ORG:Centro Vida Sana Austral
+TITLE:Acupunturista Certificado por Minsal
+TEL;TYPE=CELL,VOICE:+56973888910
+EMAIL:centrovidasanaaustral@gmail.com
+ADR;TYPE=WORK:;;Los Armiños 1620;Temuco;Araucanía;;Chile
+URL:https://centrovidasana.cl/profesionales/eduardo-lagos
+NOTE:Acupuntura y Medicina Tradicional China en Temuco. Acreditado por Minsal.
+END:VCARD`;
+        downloadVCard(vcardContent, 'Eduardo_Lagos_VidaSana.vcf');
+      }
+    });
+  });
+
+  function downloadVCard(content: string, filename: string) {
+    const blob = new Blob([content], { type: 'text/vcard;charset=utf-8;' });
+    const link = document.createElement('a');
+    link.href = URL.createObjectURL(blob);
+    link.setAttribute('download', filename);
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+  }
+</script>

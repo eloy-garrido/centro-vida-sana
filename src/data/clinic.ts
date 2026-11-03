@@ -22,6 +22,7 @@ export interface ClinicInfo {
   social: {
     instagram: string;
     googleReviews: string;
+    googleMapsPlace: string;
   };
 }
 
@@ -49,5 +50,6 @@ export const clinicInfo: ClinicInfo = {
   social: {
     instagram: 'https://www.instagram.com/vidasanaaustral/',
     googleReviews: 'https://search.google.com/local/writereview?placeid=ChIJM0LHMS_VFJYRdPlffqEIVW8',
+    googleMapsPlace: 'https://www.google.com/maps/place/?q=place_id:ChIJM0LHMS_VFJYRdPlffqEIVW8',
   },
 };
