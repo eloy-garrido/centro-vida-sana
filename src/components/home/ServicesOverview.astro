@@ -1,125 +1,39 @@
 ---
 import { professionals } from '../../data/professionals';
+import { servicesData } from '../../data/services';
 
-const quiroServices = [
-  {
-    name: 'Ajuste Quiropráctico de Columna',
-    subtitle: 'Alineación vertebral biomecánica y descompresión radicular para aliviar pinzamientos, lumbago y subluxaciones.',
-    duration: '45 min',
-    price: '$30.000',
-    img: '/pix/kine/quiro.webp',
-  },
-  {
-    name: 'Fisioterapia y Desinflamación',
-    subtitle: 'Ultrasonido, electroanalgesia TENS y termoterapia para desinflamar tejidos blandos, tendones y acelerar recuperación.',
-    duration: '50 min',
-    price: '$25.000',
-    img: '/pix/kine/fisio.webp',
-  },
-  {
-    name: 'Masoterapia Clínica Descontracturante',
-    subtitle: 'Liberación miofascial profunda y masaje clínico descontracturante para cuello, hombros y sobrecarga dorsal.',
-    duration: '45 min',
-    price: '$25.000',
-    img: '/pix/kine/maso.webp',
-  },
-  {
-    name: 'Kinesiología a Domicilio (Temuco)',
-    subtitle: 'Atención integral en tu hogar en Temuco y alrededores para post-operatorios, traumatología y adultos mayores.',
-    duration: '60 min',
-    price: '$35.000',
-    img: '/pix/kine/domicilio.webp',
-  },
-  {
-    name: 'Ejercicio Terapéutico y Core',
-    subtitle: 'Estabilización neuromuscular, fuerza postural y movilidad activa para prevenir recaídas de columna.',
-    duration: '50 min',
-    price: '$25.000',
-    img: '/pix/kine/ejercicio.webp',
-  },
-  {
-    name: 'Plantillas Ortopédicas Computarizadas',
-    subtitle: 'Evaluación biomecánica de la pisada y confección de plantillas correctivas personalizadas a medida.',
-    duration: '40 min',
-    price: '$30.000',
-    img: '/pix/kine/plantillas.webp',
-  },
-];
-
-const acupServices = [
-  {
-    name: 'Acupuntura Clínica Sistémica',
-    subtitle: 'Neuroacupuntura para alivio profundo de dolor crónico, fibromialgia, migrañas rebeldes, estrés y regulación de Qi.',
-    duration: '50 min',
-    price: '$30.000',
-    img: '/pix/mtc/acupuntura.webp',
-  },
-  {
-    name: 'Electroacupuntura Analgésica',
-    subtitle: 'Microcorrientes terapéuticas controladas para parálisis facial, neuralgias periféricas y dolor articular severo.',
-    duration: '50 min',
-    price: '$30.000',
-    img: '/pix/mtc/electro.webp',
-  },
-  {
-    name: 'Ventosaterapia Clínica (Cupping)',
-    subtitle: 'Terapia de vacío para soltar fascias rígidas, activar microcirculación y descomprimir tensión muscular dorsal.',
-    duration: '40 min',
-    price: '$25.000',
-    img: '/pix/mtc/ventosa.webp',
-  },
-  {
-    name: 'Moxibustión Térmica Terapéutica',
-    subtitle: 'Calor profundo de artemisa sobre puntos clave para artrosis, dolores por frío interno e inmunidad.',
-    duration: '40 min',
-    price: '$25.000',
-    img: '/pix/mtc/moxi.webp',
-  },
-  {
-    name: 'Auriculoterapia Clínica',
-    subtitle: 'Estimulación de puntos reflejos del pabellón auricular para control de ansiedad, insomnio y estrés.',
-    duration: '30 min',
-    price: '$20.000',
-    img: '/pix/mtc/auriculo.webp',
-  },
-  {
-    name: 'Terapia con Gua Sha Tradicional',
-    subtitle: 'Raspado terapéutico bioenergético para drenaje tisular, alivio miofascial y desintoxicación muscular.',
-    duration: '40 min',
-    price: '$25.000',
-    img: '/pix/mtc/GuaSha.webp',
-  },
-];
+const quiroFeatured = servicesData.filter(s => s.discipline === 'quiropraxia').slice(0, 3);
+const acupFeatured = servicesData.filter(s => s.discipline === 'acupuntura').slice(0, 3);
 ---
 
 <section id="servicios" class="py-20 lg:py-28 bg-[#FBFDFB] text-[#152219] relative">
 
   <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
 
-    <!-- Encabezado Editorial de Sección (Limpio, sin cajas) -->
+    <!-- Encabezado Editorial de Sección -->
     <div class="text-center max-w-3xl mx-auto mb-16 lg:mb-20">
       <span class="inline-block text-xs font-bold uppercase tracking-widest text-[#4A6B53] mb-3">
-        Catálogo Clínico · Boxes Individuales
+        Especialidades Clínicas · Boxes Individuales
       </span>
       <h2 class="font-serif text-3xl sm:text-4xl lg:text-5xl font-bold tracking-tight text-[#152219] mb-4">
         Servicios Profesionales de Salud
       </h2>
       <p class="text-base sm:text-lg text-[#556D5B] leading-relaxed">
-        Tratamientos personalizados orientados a resolver el origen de tu dolor. Conoce el área clínica de cada especialista y agenda tu sesión directamente.
+        Dos disciplinas complementarias orientadas a resolver la causa raíz de tu dolor en Temuco. Elige el área de tu interés para conocer los tratamientos y agendar tu sesión.
       </p>
     </div>
 
 
     <!-- =====================================================================
          ÁREA 1: FELIPE MÉNDEZ · QUIROPRAXIA & KINESIOLOGÍA
-         Identidad marcada: Azul Petróleo Clásico (#134E5E)
+         Identidad: Azul Petróleo Clásico (#134E5E)
          ===================================================================== -->
     <div id="quiro-section" class="scroll-mt-24">
 
       <!-- Cabecera Horizontal Editorial con Textura Sutil -->
       <div class="relative rounded-2xl bg-gradient-to-r from-[#F0F6F8] via-[#E3EFF3] to-[#F2F7F9] border border-[#CDE1E8] p-6 sm:p-8 mb-8 overflow-hidden">
         
-        <!-- Textura Vectorial Sutil de Fondo (Líneas biomecánicas suaves al 8% de opacidad) -->
+        <!-- Textura Vectorial Sutil de Fondo -->
         <svg class="absolute right-0 top-0 bottom-0 w-1/2 h-full pointer-events-none opacity-[0.08]" viewBox="0 0 600 200" fill="none" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">
           <path d="M0,100 C150,20 300,180 450,80 C520,30 560,120 600,100" stroke="#134E5E" stroke-width="2" />
           <path d="M0,130 C170,50 320,210 470,110 C540,60 580,150 600,130" stroke="#134E5E" stroke-width="2" stroke-dasharray="6 6" />
@@ -127,7 +41,7 @@ const acupServices = [
           <circle cx="450" cy="80" r="10" stroke="#134E5E" stroke-width="2" />
         </svg>
 
-        <div class="relative z-10 flex flex-col sm:flex-row sm:items-center justify-between gap-6">
+        <div class="relative z-10 flex flex-col lg:flex-row lg:items-center justify-between gap-6">
           <div class="flex items-start sm:items-center gap-4">
             <img
               src="/pix/felipe-kinesiologo-400.webp"
@@ -148,23 +62,32 @@ const acupServices = [
             </div>
           </div>
 
-          <a
-            href={`https://wa.me/56973700616?text=${encodeURIComponent('Hola Felipe, me interesa consultar por una evaluación de Quiropraxia y Kinesiología.')}`}
-            target="_blank"
-            rel="noopener noreferrer"
-            class="btn-press inline-flex items-center justify-center gap-2 px-5 py-3 rounded-xl bg-[#134E5E] hover:bg-[#0E3B47] text-white text-xs sm:text-sm font-bold shadow-sm transition-all shrink-0 cursor-pointer"
-          >
-            <svg class="w-4 h-4 text-cyan-200" viewBox="0 0 24 24" fill="currentColor">
-              <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413Z"/>
-            </svg>
-            <span>Consultar a Felipe</span>
-          </a>
+          <div class="flex flex-wrap items-center gap-3">
+            <a
+              href="/quiropraxia"
+              class="inline-flex items-center justify-center gap-2 px-5 py-3 rounded-xl bg-white hover:bg-[#EBF5F8] text-[#134E5E] border-2 border-[#134E5E] text-xs sm:text-sm font-bold shadow-sm transition-all shrink-0 cursor-pointer"
+            >
+              <span>Ver Página de Quiropraxia (6 Tratamientos)</span>
+              <span>→</span>
+            </a>
+            <a
+              href={`https://wa.me/56973700616?text=${encodeURIComponent('Hola Felipe, me interesa consultar por una evaluación de Quiropraxia y Kinesiología.')}`}
+              target="_blank"
+              rel="noopener noreferrer"
+              class="btn-press inline-flex items-center justify-center gap-2 px-5 py-3 rounded-xl bg-[#134E5E] hover:bg-[#0E3B47] text-white text-xs sm:text-sm font-bold shadow-sm transition-all shrink-0 cursor-pointer"
+            >
+              <svg class="w-4 h-4 text-cyan-200" viewBox="0 0 24 24" fill="currentColor">
+                <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413Z"/>
+              </svg>
+              <span>Consultar a Felipe</span>
+            </a>
+          </div>
         </div>
       </div>
 
-      <!-- Grid Rítmico de 6 Tarjetas (Sin cajas anidadas, limpias y aireadas) -->
-      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-7">
-        {quiroServices.map((svc) => (
+      <!-- Grid Destacado de 3 Tarjetas -->
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-6 sm:gap-7">
+        {quiroFeatured.map((svc) => (
           <a
             href={`https://wa.me/56973700616?text=${encodeURIComponent(`Hola Felipe, me interesa agendar una consulta de ${svc.name}`)}`}
             target="_blank"
@@ -172,10 +95,9 @@ const acupServices = [
             class="group bg-white rounded-2xl overflow-hidden border border-[#D8E6EB] hover:border-[#134E5E] hover:shadow-[0_12px_32px_rgba(19,78,94,0.10)] transition-all duration-300 flex flex-col justify-between cursor-pointer"
           >
             <div>
-              <!-- Imagen del Tratamiento -->
               <div class="relative aspect-[16/10] overflow-hidden bg-[#F0F6F8]">
                 <img
-                  src={svc.img}
+                  src={svc.imageUrl}
                   alt={svc.name}
                   loading="lazy"
                   class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
@@ -185,23 +107,21 @@ const acupServices = [
                 </span>
               </div>
 
-              <!-- Contenido de la Tarjeta -->
               <div class="p-5 sm:p-6">
                 <div class="flex items-baseline justify-between gap-2 mb-2">
                   <h4 class="font-serif text-lg font-bold text-[#0B2B33] group-hover:text-[#134E5E] transition-colors leading-snug">
                     {svc.name}
                   </h4>
                   <span class="text-base font-bold text-[#134E5E] shrink-0 font-sans">
-                    {svc.price}
+                    {svc.priceRef}
                   </span>
                 </div>
                 <p class="text-xs sm:text-sm text-[#526F77] leading-relaxed line-clamp-2">
-                  {svc.subtitle}
+                  {svc.summary}
                 </p>
               </div>
             </div>
 
-            <!-- Footer con CTA Directo -->
             <div class="px-5 sm:px-6 pb-5 pt-0 flex items-center justify-between text-xs font-semibold text-[#134E5E]">
               <span class="text-[#7A98A2] font-normal">Box Quiropraxia</span>
               <span class="inline-flex items-center gap-1 font-bold group-hover:translate-x-1 transition-transform">
@@ -213,19 +133,30 @@ const acupServices = [
         ))}
       </div>
 
+      <!-- Enlace a la sección completa -->
+      <div class="mt-6 text-center">
+        <a
+          href="/quiropraxia"
+          class="inline-flex items-center gap-2 text-sm font-bold text-[#134E5E] hover:text-[#0B2B33] hover:underline underline-offset-4 transition-colors"
+        >
+          <span>Conoce los 6 tratamientos, técnica y detalles de Quiropraxia en Temuco</span>
+          <span class="text-base">→</span>
+        </a>
+      </div>
+
     </div>
 
 
     <!-- =====================================================================
          ÁREA 2: EDUARDO LAGOS · ACUPUNTURA & MEDICINA TRADICIONAL CHINA
-         Identidad marcada: Verde Salvia Botánico (#2E4D38)
+         Identidad: Verde Salvia Botánico (#2E4D38)
          ===================================================================== -->
     <div id="acup-section" class="mt-20 sm:mt-24 scroll-mt-24">
 
       <!-- Cabecera Horizontal Editorial con Textura Sutil -->
       <div class="relative rounded-2xl bg-gradient-to-r from-[#F0F6F2] via-[#E3EEE6] to-[#F3F7F4] border border-[#CCDED1] p-6 sm:p-8 mb-8 overflow-hidden">
         
-        <!-- Textura Vectorial Sutil de Fondo (Ondas de energía Qi y motivos botánicos al 8% de opacidad) -->
+        <!-- Textura Vectorial Sutil de Fondo -->
         <svg class="absolute right-0 top-0 bottom-0 w-1/2 h-full pointer-events-none opacity-[0.08]" viewBox="0 0 600 200" fill="none" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">
           <path d="M0,80 C150,170 300,10 450,120 C520,180 560,70 600,90" stroke="#2E4D38" stroke-width="2" />
           <path d="M0,110 C170,200 320,40 470,150 C540,210 580,100 600,120" stroke="#2E4D38" stroke-width="2" stroke-dasharray="8 6" />
@@ -233,7 +164,7 @@ const acupServices = [
           <circle cx="480" cy="140" r="10" stroke="#2E4D38" stroke-width="2" />
         </svg>
 
-        <div class="relative z-10 flex flex-col sm:flex-row sm:items-center justify-between gap-6">
+        <div class="relative z-10 flex flex-col lg:flex-row lg:items-center justify-between gap-6">
           <div class="flex items-start sm:items-center gap-4">
             <img
               src="/pix/eduardo-acupuntura-400.webp"
@@ -254,23 +185,32 @@ const acupServices = [
             </div>
           </div>
 
-          <a
-            href={`https://wa.me/56973888910?text=${encodeURIComponent('Hola Eduardo, me interesa consultar por una sesión de Acupuntura y Medicina Tradicional China.')}`}
-            target="_blank"
-            rel="noopener noreferrer"
-            class="btn-press inline-flex items-center justify-center gap-2 px-5 py-3 rounded-xl bg-[#2E4D38] hover:bg-[#233C2C] text-white text-xs sm:text-sm font-bold shadow-sm transition-all shrink-0 cursor-pointer"
-          >
-            <svg class="w-4 h-4 text-emerald-200" viewBox="0 0 24 24" fill="currentColor">
-              <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413Z"/>
-            </svg>
-            <span>Consultar a Eduardo</span>
-          </a>
+          <div class="flex flex-wrap items-center gap-3">
+            <a
+              href="/acupuntura"
+              class="inline-flex items-center justify-center gap-2 px-5 py-3 rounded-xl bg-white hover:bg-[#EEF5F0] text-[#2E4D38] border-2 border-[#2E4D38] text-xs sm:text-sm font-bold shadow-sm transition-all shrink-0 cursor-pointer"
+            >
+              <span>Ver Página de Acupuntura (6 Terapias MTC)</span>
+              <span>→</span>
+            </a>
+            <a
+              href={`https://wa.me/56973888910?text=${encodeURIComponent('Hola Eduardo, me interesa consultar por una sesión de Acupuntura y Medicina Tradicional China.')}`}
+              target="_blank"
+              rel="noopener noreferrer"
+              class="btn-press inline-flex items-center justify-center gap-2 px-5 py-3 rounded-xl bg-[#2E4D38] hover:bg-[#233C2C] text-white text-xs sm:text-sm font-bold shadow-sm transition-all shrink-0 cursor-pointer"
+            >
+              <svg class="w-4 h-4 text-emerald-200" viewBox="0 0 24 24" fill="currentColor">
+                <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413Z"/>
+              </svg>
+              <span>Consultar a Eduardo</span>
+            </a>
+          </div>
         </div>
       </div>
 
-      <!-- Grid Rítmico de 6 Tarjetas (Sin cajas anidadas, limpias y aireadas) -->
-      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-7">
-        {acupServices.map((svc) => (
+      <!-- Grid Destacado de 3 Tarjetas -->
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-6 sm:gap-7">
+        {acupFeatured.map((svc) => (
           <a
             href={`https://wa.me/56973888910?text=${encodeURIComponent(`Hola Eduardo, me interesa agendar una sesión de ${svc.name}`)}`}
             target="_blank"
@@ -278,10 +218,9 @@ const acupServices = [
             class="group bg-white rounded-2xl overflow-hidden border border-[#D3E3D6] hover:border-[#2E4D38] hover:shadow-[0_12px_32px_rgba(46,77,56,0.10)] transition-all duration-300 flex flex-col justify-between cursor-pointer"
           >
             <div>
-              <!-- Imagen del Tratamiento -->
               <div class="relative aspect-[16/10] overflow-hidden bg-[#F2F7F3]">
                 <img
-                  src={svc.img}
+                  src={svc.imageUrl}
                   alt={svc.name}
                   loading="lazy"
                   class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
@@ -291,23 +230,21 @@ const acupServices = [
                 </span>
               </div>
 
-              <!-- Contenido de la Tarjeta -->
               <div class="p-5 sm:p-6">
                 <div class="flex items-baseline justify-between gap-2 mb-2">
                   <h4 class="font-serif text-lg font-bold text-[#15281D] group-hover:text-[#2E4D38] transition-colors leading-snug">
                     {svc.name}
                   </h4>
                   <span class="text-base font-bold text-[#2E4D38] shrink-0 font-sans">
-                    {svc.price}
+                    {svc.priceRef}
                   </span>
                 </div>
                 <p class="text-xs sm:text-sm text-[#556D55] leading-relaxed line-clamp-2">
-                  {svc.subtitle}
+                  {svc.summary}
                 </p>
               </div>
             </div>
 
-            <!-- Footer con CTA Directo -->
             <div class="px-5 sm:px-6 pb-5 pt-0 flex items-center justify-between text-xs font-semibold text-[#2E4D38]">
               <span class="text-[#7A9680] font-normal">Box Acupuntura</span>
               <span class="inline-flex items-center gap-1 font-bold group-hover:translate-x-1 transition-transform">
@@ -317,6 +254,17 @@ const acupServices = [
             </div>
           </a>
         ))}
+      </div>
+
+      <!-- Enlace a la sección completa -->
+      <div class="mt-6 text-center">
+        <a
+          href="/acupuntura"
+          class="inline-flex items-center gap-2 text-sm font-bold text-[#2E4D38] hover:text-[#15281D] hover:underline underline-offset-4 transition-colors"
+        >
+          <span>Conoce las 6 terapias de Medicina China, acreditación Minsal y detalles en Temuco</span>
+          <span class="text-base">→</span>
+        </a>
       </div>
 
     </div>

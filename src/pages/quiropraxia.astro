@@ -1,0 +1,540 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import Navbar from '../components/common/Navbar.astro';
+import Footer from '../components/common/Footer.astro';
+import FloatingWhatsApp from '../components/common/FloatingWhatsApp.astro';
+import { professionals } from '../data/professionals';
+import { clinicInfo } from '../data/clinic';
+import { servicesData } from '../data/services';
+import { faqsData } from '../data/faqs';
+
+const felipe = professionals.felipe;
+const quiroServices = servicesData.filter(s => s.discipline === 'quiropraxia');
+
+// FAQs específicas de Quiropraxia y Kinesiología
+const quiroFaqs = [
+  {
+    q: '¿El ajuste quiropráctico es doloroso?',
+    a: 'No. Los ajustes articulares son maniobras de alta velocidad y baja amplitud extremadamente controladas. El paciente suele sentir una liberación inmediata de tensión o presión en la zona tratada. Antes de cualquier maniobra, se realiza una evaluación previa y palpación muscular para garantizar que el procedimiento sea 100% seguro y cómodo.'
+  },
+  {
+    q: '¿Qué es ese "crujido" que se escucha al ajustar?',
+    a: 'Es un fenómeno físico inofensivo conocido como cavitación: al abrir suavemente la carilla articular, la presión dentro del líquido sinovial disminuye y se liberan microburbujas de gas (nitrógeno y dióxido de carbono). No es roce de huesos ni daño tisular.'
+  },
+  {
+    q: '¿Cuántas sesiones de quiropraxia necesitaré para recuperarme?',
+    a: 'En cuadros agudos como tortícolis o un lumbago reciente, la gran mayoría de nuestros pacientes experimenta un alivio notable entre la 1ª y 2ª sesión. En afecciones crónicas (discopatías de años, artrosis avanzada), se estructuran planes de 4 a 6 sesiones con pautas de ejercicio para evitar recaídas.'
+  },
+  {
+    q: '¿Puedo atenderme si tengo hernia discal o protusiones?',
+    a: 'Sí, absolutamente. La quiropraxia y la kinesiología moderna cuentan con técnicas descompresivas y maniobras sin rotación forzada que reducen la carga sobre el disco intervertebral, desinflaman la raíz nerviosa y ayudan a reabsorber el edema radicular.'
+  },
+  {
+    q: '¿Cuál es la diferencia entre quiropraxia y kinesiología?',
+    a: 'La Quiropraxia se especializa en la alineación articular de la columna y la liberación de interferencias del sistema nervioso. La Kinesiología se enfoca en la rehabilitación muscular, control motor y fortalecimiento. En Centro Vida Sana Austral, Felipe Méndez integra ambas en una misma sesión para un tratamiento verdaderamente completo.'
+  },
+  {
+    q: '¿Emiten boleta para reembolso en Isapre o Seguro Complementario?',
+    a: 'Sí. Emitimos boleta electrónica de atención kinesiológica y de salud para que puedas tramitar el reembolso correspondiente según las coberturas de tu plan de Isapre o seguro complementario.'
+  }
+];
+
+// Schema estructurado SEO específico para Quiropraxia
+const quiroSchema = {
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": ["MedicalClinic", "LocalBusiness"],
+      "@id": "https://centrovidasana.cl/quiropraxia#clinic",
+      "name": "Consulta de Quiropraxia y Kinesiología - Centro Vida Sana Austral",
+      "url": "https://centrovidasana.cl/quiropraxia",
+      "description": "Atención quiropráctica y kinesiológica clínica en Temuco con Felipe Méndez. Especialistas en columna, ajuste articular, lumbago, ciática y rehabilitación motora.",
+      "telephone": felipe.phone,
+      "address": {
+        "@type": "PostalAddress",
+        "streetAddress": clinicInfo.address.street,
+        "addressLocality": clinicInfo.address.city,
+        "addressRegion": clinicInfo.address.region,
+        "postalCode": clinicInfo.address.postalCode,
+        "addressCountry": "CL"
+      },
+      "geo": {
+        "@type": "GeoCoordinates",
+        "latitude": clinicInfo.coordinates.latitude,
+        "longitude": clinicInfo.coordinates.longitude
+      },
+      "priceRange": "$25.000 - $35.000 CLP"
+    },
+    {
+      "@type": "Person",
+      "@id": "https://centrovidasana.cl/#felipe",
+      "name": felipe.name,
+      "jobTitle": "Quiropráctico Clínico y Kinesiólogo",
+      "telephone": felipe.phone,
+      "description": "Kinesiólogo y Quiropráctico certificado en Temuco con registro en la Superintendencia de Salud (SIS N° 458921)."
+    },
+    {
+      "@type": "FAQPage",
+      "@id": "https://centrovidasana.cl/quiropraxia#faq",
+      "mainEntity": quiroFaqs.map(faq => ({
+        "@type": "Question",
+        "name": faq.q,
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": faq.a
+        }
+      }))
+    }
+  ]
+};
+---
+
+<BaseLayout
+  title="Quiropraxia y Kinesiología en Temuco | Felipe Méndez | Vida Sana Austral"
+  description="Consulta de Quiropraxia y Kinesiología Clínica en Temuco con Felipe Méndez (Reg. SIS N° 458921). Ajuste vertebral, lumbago, ciática, fisioterapia y plantillas ortopédicas. Box privado."
+  canonicalUrl="https://centrovidasana.cl/quiropraxia"
+  customSchema={quiroSchema}
+>
+  <Navbar slot="navbar" activePage="quiropraxia" />
+
+  <!-- =========================================================================
+       HERO DE QUIROPRAXIA
+       ========================================================================= -->
+  <section class="pt-28 pb-16 lg:pt-36 lg:pb-24 bg-gradient-to-b from-[#EDF5F8] via-[#F4F9FA] to-[#FBFDFB] text-[#152219] relative overflow-hidden border-b border-[#D8E6EB]">
+    
+    <!-- Glow y formas orgánicas de ambientación -->
+    <div class="absolute -top-32 -left-32 w-[550px] h-[550px] bg-[#134E5E]/[0.07] rounded-full blur-[140px] pointer-events-none"></div>
+    <div class="absolute top-1/2 right-[-10%] w-[500px] h-[500px] bg-[#2A6F82]/[0.05] rounded-full blur-[130px] pointer-events-none"></div>
+
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+
+      <!-- Breadcrumb -->
+      <nav class="flex items-center gap-2 text-xs text-[#526F77] mb-6 font-medium" aria-label="Breadcrumb">
+        <a href="/" class="hover:text-[#134E5E] transition-colors">Inicio</a>
+        <span>/</span>
+        <span class="text-[#134E5E] font-bold">Quiropraxia &amp; Kinesiología</span>
+      </nav>
+
+      <div class="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-16 items-center">
+
+        <!-- Lado Texto -->
+        <div class="lg:col-span-7 space-y-6 text-left">
+          
+          <div class="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-[#E3F0F4] border border-[#BBD9E2] text-[#134E5E] text-xs font-bold uppercase tracking-wider shadow-sm">
+            <span class="w-2 h-2 rounded-full bg-[#134E5E] animate-pulse"></span>
+            <span>Atención Clínica Biomecánica · Box Privado</span>
+          </div>
+
+          <h1 class="font-serif text-3xl sm:text-4xl lg:text-5xl xl:text-6xl font-bold text-[#0B2B33] tracking-tight leading-[1.12]">
+            Quiropraxia y Kinesiología Clínica en <span class="text-[#134E5E]">Temuco</span>
+          </h1>
+
+          <p class="text-base sm:text-lg text-[#3D5C64] leading-relaxed max-w-2xl">
+            Alineación vertebral biomecánica, descompresión articular y rehabilitación activa para aliviar el dolor de columna, lumbago, ciática y contracturas crónicas sin fármacos.
+          </p>
+
+          <!-- Tarjeta Rápida del Especialista -->
+          <div class="p-4 sm:p-5 rounded-2xl bg-white border border-[#D0E2E8] shadow-sm flex items-center gap-4">
+            <img
+              src="/pix/felipe-kinesiologo-400.webp"
+              alt="Felipe Méndez"
+              class="w-16 h-16 rounded-xl object-cover object-top border-2 border-[#134E5E] shrink-0"
+            />
+            <div>
+              <span class="text-xs font-bold text-[#134E5E] block uppercase tracking-wider">
+                Especialista a Cargo
+              </span>
+              <span class="font-serif text-lg font-bold text-[#0B2B33] block">
+                Felipe Méndez
+              </span>
+              <span class="text-xs text-[#526F77] block">
+                Kinesiólogo Clínico &amp; Quiropráctico · Registro SIS N° 458921
+              </span>
+            </div>
+          </div>
+
+          <!-- CTAs y Garantías -->
+          <div class="flex flex-col sm:flex-row items-stretch sm:items-center gap-3 pt-2">
+            <a
+              href={`https://wa.me/56973700616?text=${encodeURIComponent('Hola Felipe, me interesa agendar una consulta de Quiropraxia y Kinesiología en Temuco.')}`}
+              target="_blank"
+              rel="noopener noreferrer"
+              class="btn-press inline-flex items-center justify-center gap-2.5 px-6 py-4 rounded-xl bg-[#134E5E] hover:bg-[#0E3B47] text-white text-sm sm:text-base font-bold shadow-soft hover:shadow-[0_10px_30px_rgba(19,78,94,0.3)] transition-all cursor-pointer"
+            >
+              <svg class="w-5 h-5 text-cyan-200" viewBox="0 0 24 24" fill="currentColor">
+                <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413Z"/>
+              </svg>
+              <span>Agendar con Felipe (+569 7370 0616)</span>
+            </a>
+            <a
+              href="#servicios-quiro"
+              class="inline-flex items-center justify-center gap-2 px-5 py-4 rounded-xl bg-white border border-[#C2DFE8] text-xs sm:text-sm font-bold text-[#134E5E] hover:bg-[#EBF5F8] transition-colors"
+            >
+              <span>Ver 6 Tratamientos y Tarifas</span>
+              <span>↓</span>
+            </a>
+          </div>
+
+          <!-- Píldoras de Calidad -->
+          <div class="flex flex-wrap items-center gap-4 text-xs font-semibold text-[#46656E] pt-2">
+            <span class="inline-flex items-center gap-1.5">
+              <svg class="w-4 h-4 text-[#134E5E]" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg>
+              Sesiones de 45 a 50 min
+            </span>
+            <span class="inline-flex items-center gap-1.5">
+              <svg class="w-4 h-4 text-[#134E5E]" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 6L9 17l-5-5"/></svg>
+              Camilla quiropráctica drop profesional
+            </span>
+            <span class="inline-flex items-center gap-1.5">
+              <svg class="w-4 h-4 text-[#134E5E]" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+              Boleta reembolsable en Isapre
+            </span>
+          </div>
+
+        </div>
+
+        <!-- Lado Visual (Retrato con Blob) -->
+        <div class="lg:col-span-5 relative flex items-center justify-center">
+          <div class="relative w-full max-w-[420px] flex items-end justify-center pt-8 pb-4">
+            
+            <!-- Blob de Fondo -->
+            <div class="absolute inset-0 flex items-center justify-center pointer-events-none z-0">
+              <div class="w-[340px] sm:w-[400px] h-[340px] sm:h-[400px] bg-[#134E5E]/20 rounded-full blur-2xl"></div>
+              <svg viewBox="0 0 500 500" class="w-[320px] sm:w-[380px] h-[320px] sm:h-[380px] filter drop-shadow-[0_15px_30px_rgba(19,78,94,0.25)]" xmlns="http://www.w3.org/2000/svg">
+                <defs>
+                  <linearGradient id="blob-quiro-hero" x1="10%" y1="10%" x2="90%" y2="90%">
+                    <stop offset="0%" stop-color="#8ACAD9" />
+                    <stop offset="50%" stop-color="#347C90" />
+                    <stop offset="100%" stop-color="#134E5E" />
+                  </linearGradient>
+                </defs>
+                <path d="M433,310Q396,370,336,416Q276,462,207,433Q138,404,91,347Q44,290,66,219Q88,148,151,104Q214,60,289,75Q364,90,417,170Q470,250,433,310Z" fill="url(#blob-quiro-hero)" />
+              </svg>
+            </div>
+
+            <!-- Foto de Felipe HD -->
+            <img
+              src="/pix/felipe-kinesiologo-hd.webp"
+              srcset="/pix/felipe-kinesiologo-hd.webp 2x, /pix/felipe-kinesiologo.webp 1x"
+              alt="Felipe Méndez, Quiropráctico en Temuco"
+              class="relative z-10 w-auto max-h-[440px] sm:max-h-[500px] object-contain drop-shadow-[0_20px_35px_rgba(10,35,45,0.25)] [mask-image:linear-gradient(to_bottom,black_88%,transparent_100%)]"
+              width="881"
+              height="800"
+            />
+
+            <!-- Chip Registro -->
+            <div class="absolute bottom-2 left-2 p-2.5 rounded-xl bg-white/95 border border-[#BBD9E2] backdrop-blur-md shadow-md flex items-center gap-2.5 z-20">
+              <div class="w-8 h-8 rounded-lg bg-[#134E5E] text-white flex items-center justify-center font-bold text-xs">
+                SIS
+              </div>
+              <div class="text-left">
+                <span class="text-xs font-bold text-[#134E5E] block leading-tight">SIS N° 458921</span>
+                <span class="text-[10px] text-[#526F77] block">Superintendencia de Salud</span>
+              </div>
+            </div>
+
+          </div>
+        </div>
+
+      </div>
+
+    </div>
+  </section>
+
+
+  <!-- =========================================================================
+       PROTOCOLO CLÍNICO: ¿CÓMO ES UNA SESIÓN?
+       ========================================================================= -->
+  <section class="py-16 sm:py-20 bg-white border-b border-[#E8EFEA]">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      
+      <div class="text-center max-w-2xl mx-auto mb-14">
+        <span class="text-xs font-bold uppercase tracking-widest text-[#134E5E] block mb-2">
+          Protocolo Seguro y Personalizado
+        </span>
+        <h2 class="font-serif text-3xl sm:text-4xl font-bold text-[#0B2B33]">
+          ¿Cómo es tu Consulta en Centro Vida Sana?
+        </h2>
+        <p class="text-sm sm:text-base text-[#526F77] mt-3">
+          No aplicamos maniobras genéricas. Cada paciente recibe una evaluación biomecánica exhaustiva antes de cualquier intervención.
+        </p>
+      </div>
+
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+        
+        <div class="p-6 sm:p-7 rounded-2xl bg-[#F8FBFC] border border-[#DCE8EC] relative">
+          <div class="w-10 h-10 rounded-xl bg-[#134E5E] text-white font-serif font-bold text-lg flex items-center justify-center mb-4 shadow-sm">
+            1
+          </div>
+          <h3 class="font-serif text-xl font-bold text-[#0B2B33] mb-2">
+            Evaluación Postural &amp; Palpación
+          </h3>
+          <p class="text-xs sm:text-sm text-[#526F77] leading-relaxed">
+            Analizamos tu postura, marcha, rangos de movimiento y posibles hernias o discopatías mediante pruebas ortopédicas y palpación estática y dinámica.
+          </p>
+        </div>
+
+        <div class="p-6 sm:p-7 rounded-2xl bg-[#F8FBFC] border border-[#DCE8EC] relative">
+          <div class="w-10 h-10 rounded-xl bg-[#134E5E] text-white font-serif font-bold text-lg flex items-center justify-center mb-4 shadow-sm">
+            2
+          </div>
+          <h3 class="font-serif text-xl font-bold text-[#0B2B33] mb-2">
+            Ajuste Articular con Camilla Drop
+          </h3>
+          <p class="text-xs sm:text-sm text-[#526F77] leading-relaxed">
+            Realizamos ajustes espinales de alta precisión y baja fuerza empleando la camilla quiropráctica Thompson drop, despolarizando receptores de dolor y alineando vértebras bloqueadas.
+          </p>
+        </div>
+
+        <div class="p-6 sm:p-7 rounded-2xl bg-[#F8FBFC] border border-[#DCE8EC] relative">
+          <div class="w-10 h-10 rounded-xl bg-[#134E5E] text-white font-serif font-bold text-lg flex items-center justify-center mb-4 shadow-sm">
+            3
+          </div>
+          <h3 class="font-serif text-xl font-bold text-[#0B2B33] mb-2">
+            Fisioterapia &amp; Pauta Motora
+          </h3>
+          <p class="text-xs sm:text-sm text-[#526F77] leading-relaxed">
+            Complementamos con masoterapia miofascial profunda, electroanalgesia o pautas de ejercicio neuromuscular para estabilizar la mejoría en el tiempo.
+          </p>
+        </div>
+
+      </div>
+
+    </div>
+  </section>
+
+
+  <!-- =========================================================================
+       CATÁLOGO COMPLETO DE LOS 6 TRATAMIENTOS
+       ========================================================================= -->
+  <section id="servicios-quiro" class="py-20 lg:py-24 bg-[#F8FBFC] border-b border-[#D8E6EB]">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      
+      <div class="text-center max-w-3xl mx-auto mb-16">
+        <span class="inline-block text-xs font-bold uppercase tracking-widest text-[#134E5E] mb-2">
+          Catálogo Clínico
+        </span>
+        <h2 class="font-serif text-3xl sm:text-4xl lg:text-5xl font-bold text-[#0B2B33] tracking-tight mb-4">
+          Tratamientos Quiroprácticos y Kinesiológicos
+        </h2>
+        <p class="text-base text-[#526F77] leading-relaxed">
+          Valores transparentes y atención 100% individual en box privado. Consulta y agenda tu hora directamente por WhatsApp.
+        </p>
+      </div>
+
+      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-7">
+        {quiroServices.map((svc) => (
+          <div class="bg-white rounded-2xl overflow-hidden border border-[#D8E6EB] hover:border-[#134E5E] hover:shadow-[0_12px_32px_rgba(19,78,94,0.12)] transition-all duration-300 flex flex-col justify-between">
+            <div>
+              <div class="relative aspect-[16/10] overflow-hidden bg-[#F0F6F8]">
+                <img
+                  src={svc.imageUrl}
+                  alt={svc.name}
+                  loading="lazy"
+                  class="w-full h-full object-cover hover:scale-105 transition-transform duration-500"
+                />
+                <span class="absolute bottom-2.5 right-2.5 px-2.5 py-1 rounded-md text-[11px] font-semibold bg-white/95 backdrop-blur-sm text-[#134E5E] shadow-sm">
+                  {svc.duration}
+                </span>
+              </div>
+
+              <div class="p-6">
+                <div class="flex items-baseline justify-between gap-2 mb-2.5">
+                  <h3 class="font-serif text-xl font-bold text-[#0B2B33] leading-snug">
+                    {svc.name}
+                  </h3>
+                  <span class="text-lg font-bold text-[#134E5E] shrink-0 font-sans">
+                    {svc.priceRef}
+                  </span>
+                </div>
+                
+                <p class="text-xs sm:text-sm text-[#526F77] leading-relaxed mb-4">
+                  {svc.summary}
+                </p>
+
+                <div class="p-3 rounded-xl bg-[#F4F9FA] border border-[#E2EEF2] mb-3">
+                  <span class="text-[11px] font-bold text-[#134E5E] uppercase tracking-wider block mb-0.5">
+                    Indicado para:
+                  </span>
+                  <span class="text-xs text-[#3D5C64] leading-snug block">
+                    {svc.indication}
+                  </span>
+                </div>
+
+                <div class="flex flex-wrap gap-1.5 pt-1">
+                  {svc.tags.map(tag => (
+                    <span class="px-2 py-0.5 rounded-md text-[10px] font-bold bg-[#EBF5F8] text-[#134E5E] border border-[#D0E6ED]">
+                      {tag}
+                    </span>
+                  ))}
+                </div>
+              </div>
+            </div>
+
+            <div class="p-6 pt-0">
+              <a
+                href={`https://wa.me/56973700616?text=${encodeURIComponent(`Hola Felipe, me interesa agendar una sesión de ${svc.name}`)}`}
+                target="_blank"
+                rel="noopener noreferrer"
+                class="btn-press w-full inline-flex items-center justify-center gap-2 px-4 py-3 rounded-xl bg-[#134E5E] hover:bg-[#0E3B47] text-white text-xs sm:text-sm font-bold shadow-sm transition-all cursor-pointer"
+              >
+                <span>Agendar por WhatsApp</span>
+                <span>→</span>
+              </a>
+            </div>
+          </div>
+        ))}
+      </div>
+
+    </div>
+  </section>
+
+
+  <!-- =========================================================================
+       PATOLOGÍAS DE COLUMNA Y ARTICULACIONES
+       ========================================================================= -->
+  <section class="py-16 sm:py-20 bg-white border-b border-[#E8EFEA]">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      
+      <div class="text-center max-w-2xl mx-auto mb-14">
+        <span class="text-xs font-bold uppercase tracking-widest text-[#134E5E] block mb-2">
+          Condiciones Musculoesqueléticas
+        </span>
+        <h2 class="font-serif text-3xl sm:text-4xl font-bold text-[#0B2B33]">
+          ¿Qué Dolores Resolvemos con Quiropraxia?
+        </h2>
+        <p class="text-sm sm:text-base text-[#526F77] mt-3">
+          Si padeces alguno de estos síntomas, una evaluación biomecánica te permitirá identificar la causa real del bloqueo y recuperar la función.
+        </p>
+      </div>
+
+      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+        
+        <div class="p-6 rounded-2xl bg-[#F8FBFC] border border-[#DCE8EC]">
+          <h3 class="font-serif text-lg font-bold text-[#0B2B33] mb-2 flex items-center gap-2">
+            <span class="w-2.5 h-2.5 rounded-full bg-[#134E5E]"></span>
+            Lumbago y Dolor Lumbar Crónico
+          </h3>
+          <p class="text-xs sm:text-sm text-[#526F77] leading-relaxed">
+            Punzadas en la espalda baja, sensación de rigidez matinal o incapacidad para agacharse debido a bloqueos sacroilíacos o facetas lumbares comprimidas.
+          </p>
+        </div>
+
+        <div class="p-6 rounded-2xl bg-[#F8FBFC] border border-[#DCE8EC]">
+          <h3 class="font-serif text-lg font-bold text-[#0B2B33] mb-2 flex items-center gap-2">
+            <span class="w-2.5 h-2.5 rounded-full bg-[#134E5E]"></span>
+            Ciática y Dolor Irradiado
+          </h3>
+          <p class="text-xs sm:text-sm text-[#526F77] leading-relaxed">
+            Dolor punzante o quemazón que viaja desde el glúteo hacia la pierna o pie, provocado por compresión de las raíces nerviosas L4-L5-S1.
+          </p>
+        </div>
+
+        <div class="p-6 rounded-2xl bg-[#F8FBFC] border border-[#DCE8EC]">
+          <h3 class="font-serif text-lg font-bold text-[#0B2B33] mb-2 flex items-center gap-2">
+            <span class="w-2.5 h-2.5 rounded-full bg-[#134E5E]"></span>
+            Cervicalgia y Tortícolis
+          </h3>
+          <p class="text-xs sm:text-sm text-[#526F77] leading-relaxed">
+            Sobrecarga en cuello y trapecios, pérdida de rotación de la cabeza y cefaleas tensionales provocadas por desalineaciones cervicales y mala postura frente a pantallas.
+          </p>
+        </div>
+
+        <div class="p-6 rounded-2xl bg-[#F8FBFC] border border-[#DCE8EC]">
+          <h3 class="font-serif text-lg font-bold text-[#0B2B33] mb-2 flex items-center gap-2">
+            <span class="w-2.5 h-2.5 rounded-full bg-[#134E5E]"></span>
+            Hernias Discales y Protrusiones
+          </h3>
+          <p class="text-xs sm:text-sm text-[#526F77] leading-relaxed">
+            Técnicas de descompresión vertebral suave que alivian la presión mecánica sobre el disco sin cirugía ni maniobras violentas.
+          </p>
+        </div>
+
+        <div class="p-6 rounded-2xl bg-[#F8FBFC] border border-[#DCE8EC]">
+          <h3 class="font-serif text-lg font-bold text-[#0B2B33] mb-2 flex items-center gap-2">
+            <span class="w-2.5 h-2.5 rounded-full bg-[#134E5E]"></span>
+            Lesiones Deportivas y Esguinces
+          </h3>
+          <p class="text-xs sm:text-sm text-[#526F77] leading-relaxed">
+            Rehabilitación motora de tobillos, rodillas y hombros para atletas o personas activas que necesitan volver a entrenar sin molestias.
+          </p>
+        </div>
+
+        <div class="p-6 rounded-2xl bg-[#F8FBFC] border border-[#DCE8EC]">
+          <h3 class="font-serif text-lg font-bold text-[#0B2B33] mb-2 flex items-center gap-2">
+            <span class="w-2.5 h-2.5 rounded-full bg-[#134E5E]"></span>
+            Alteraciones Posturales y Escoliosis
+          </h3>
+          <p class="text-xs sm:text-sm text-[#526F77] leading-relaxed">
+            Reeducación neuromuscular y prescripción de plantillas ortopédicas biomecánicas a medida para balancear la carga sobre columna y caderas.
+          </p>
+        </div>
+
+      </div>
+
+    </div>
+  </section>
+
+
+  <!-- =========================================================================
+       PREGUNTAS FRECUENTES (FAQS) DE QUIROPRAXIA
+       ========================================================================= -->
+  <section class="py-16 sm:py-20 bg-[#FBFDFB] border-b border-[#D8E6EB]">
+    <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+      
+      <div class="text-center mb-12">
+        <span class="text-xs font-bold uppercase tracking-widest text-[#134E5E] block mb-2">
+          Preguntas Frecuentes
+        </span>
+        <h2 class="font-serif text-3xl sm:text-4xl font-bold text-[#0B2B33]">
+          Dudas Comunes sobre Quiropraxia y Kinesiología
+        </h2>
+      </div>
+
+      <div class="space-y-4">
+        {quiroFaqs.map((faq, idx) => (
+          <details class="group rounded-2xl bg-white border border-[#D0E2E8] p-5 sm:p-6 transition-all duration-200 open:shadow-md">
+            <summary class="font-serif text-lg font-bold text-[#0B2B33] cursor-pointer flex items-center justify-between gap-4 list-none group-hover:text-[#134E5E]">
+              <span>{faq.q}</span>
+              <span class="w-6 h-6 rounded-full bg-[#EBF5F8] text-[#134E5E] flex items-center justify-center shrink-0 transition-transform group-open:rotate-180">
+                ↓
+              </span>
+            </summary>
+            <p class="text-xs sm:text-sm text-[#526F77] leading-relaxed pt-3.5 border-t border-[#EEF4F6] mt-3">
+              {faq.a}
+            </p>
+          </details>
+        ))}
+      </div>
+
+    </div>
+  </section>
+
+
+  <!-- =========================================================================
+       BANNER DE CRUCE A MEDICINA CHINA & ACUPUNTURA
+       ========================================================================= -->
+  <section class="py-16 bg-[#F0F6F2] border-b border-[#CCDED1] text-center">
+    <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+      <span class="text-xs font-bold uppercase tracking-widest text-[#2E4D38] block mb-2">
+        ¿Dolor Crónico Rebelde, Fibromialgia o Estrés?
+      </span>
+      <h3 class="font-serif text-2xl sm:text-3xl font-bold text-[#15281D] mb-3">
+        Conoce el Área de Acupuntura &amp; Medicina China
+      </h3>
+      <p class="text-xs sm:text-sm text-[#4E6B56] max-w-xl mx-auto mb-6 leading-relaxed">
+        Eduardo Lagos, acupunturista acreditado por Minsal, combina neuroacupuntura, ventosas y moxibustión para regular el sistema nervioso y desinflamar profundamente.
+      </p>
+      <a
+        href="/acupuntura"
+        class="inline-flex items-center gap-2 px-6 py-3.5 rounded-xl bg-[#2E4D38] hover:bg-[#233C2C] text-white text-xs sm:text-sm font-bold shadow-sm transition-all"
+      >
+        <span>Ver Página de Acupuntura &amp; Medicina China</span>
+        <span>→</span>
+      </a>
+    </div>
+  </section>
+
+  <FloatingWhatsApp />
+  <Footer slot="footer" />
+</BaseLayout>

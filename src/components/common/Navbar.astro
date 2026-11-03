@@ -1,10 +1,16 @@
 ---
-// Navbar - Exact Original Design (Centro Vida Sana Austral)
+// Navbar - Centro Vida Sana Austral
+interface Props {
+  activePage?: 'home' | 'quiropraxia' | 'acupuntura';
+}
+
+const { activePage = 'home' } = Astro.props;
+const isHome = activePage === 'home';
 ---
 
 <nav class="navbar" id="navbar">
   <div class="nav-container">
-    <a href="#hero" class="nav-logo">
+    <a href={isHome ? "#hero" : "/"} class="nav-logo">
       <picture>
         <source srcset="/pix/logo-sin-texto-96.webp" type="image/webp" />
         <img src="/pix/logo-sin-texto-96.webp" alt="Logo Centro Vida Sana Austral" width="40" height="40" />
@@ -17,11 +23,12 @@
       <span></span>
     </button>
     <ul class="nav-menu" id="navMenu">
-      <li><a href="#hero" class="nav-link active">Inicio</a></li>
-      <li><a href="#profesionales" class="nav-link">Profesionales</a></li>
-      <li><a href="#servicios" class="nav-link">Servicios</a></li>
-      <li><a href="#patologias" class="nav-link">Patologías</a></li>
-      <li><a href="#contacto" class="nav-link nav-link-cta">Contacto</a></li>
+      <li><a href={isHome ? "#hero" : "/"} class={`nav-link ${isHome ? 'active' : ''}`}>Inicio</a></li>
+      <li><a href="/quiropraxia" class={`nav-link ${activePage === 'quiropraxia' ? 'active' : ''}`}>Quiropraxia</a></li>
+      <li><a href="/acupuntura" class={`nav-link ${activePage === 'acupuntura' ? 'active' : ''}`}>Acupuntura</a></li>
+      <li><a href={isHome ? "#profesionales" : "/#profesionales"} class="nav-link">Profesionales</a></li>
+      <li><a href={isHome ? "#patologias" : "/#patologias"} class="nav-link">Patologías</a></li>
+      <li><a href={isHome ? "#contacto" : "/#contacto"} class="nav-link nav-link-cta">Contacto</a></li>
     </ul>
   </div>
 </nav>

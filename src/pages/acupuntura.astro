@@ -1,0 +1,539 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import Navbar from '../components/common/Navbar.astro';
+import Footer from '../components/common/Footer.astro';
+import FloatingWhatsApp from '../components/common/FloatingWhatsApp.astro';
+import { professionals } from '../data/professionals';
+import { clinicInfo } from '../data/clinic';
+import { servicesData } from '../data/services';
+
+const eduardo = professionals.eduardo;
+const acupServices = servicesData.filter(s => s.discipline === 'acupuntura');
+
+// FAQs específicas de Acupuntura y Medicina Tradicional China
+const acupFaqs = [
+  {
+    q: '¿Es dolorosa la colocación de las agujas de acupuntura?',
+    a: 'En absoluto. Empleamos agujas de grado médico ultrafinas y flexibles (calibre 0.16 a 0.25 mm, comparables al grosor de un cabello), muy distintas a las agujas de inyección hipodérmica. El paciente siente apenas un contacto sutil inicial y luego una agradable sensación de peso, calor o relajación profunda (conocida como sensación De Qi).'
+  },
+  {
+    q: '¿Las agujas son estériles y desechables?',
+    a: 'Sí, 100%. Cada aguja viene sellada de fábrica en blíster individual estéril, se abre en presencia del paciente y tras su uso se descarta de inmediato en un contenedor biológico para punzocortantes, cumpliendo con la estricta normativa sanitaria del Minsal.'
+  },
+  {
+    q: '¿Cuántas sesiones se recomiendan para ver resultados?',
+    a: 'Para afecciones agudas (dolores musculares recientes, crisis de ansiedad o contracturas), el alivio se percibe frecuentemente desde la primera sesión. En condiciones crónicas como fibromialgia, migrañas rebeldes o artrosis, se suele estructurar un ciclo de 4 a 8 sesiones con espaciamiento progresivo según la evolución clínica.'
+  },
+  {
+    q: '¿Qué es y para qué sirve la electroacupuntura?',
+    a: 'Es una evolución moderna de la acupuntura tradicional en la que se conecta un microestimulador eléctrico de baja frecuencia a las agujas. Esta microcorriente controlada estimula la liberación masiva de endorfinas y bloquea las vías del dolor en la médula espinal, siendo especialmente efectiva para ciática severa, neuralgias y parálisis facial.'
+  },
+  {
+    q: '¿Puedo atenderme con acupuntura si estoy tomando medicamentos?',
+    a: 'Sí. La acupuntura no interfiere con fármacos ni produce interacciones químicas, ya que actúa estimulando los mecanismos propios de autorregulación del sistema neuroinmune. Es un excelente complemento a tratamientos médicos convencionales.'
+  },
+  {
+    q: '¿Eduardo Lagos cuenta con acreditación oficial del Minsal?',
+    a: 'Sí. Eduardo Lagos es Acupunturista Certificado por el Ministerio de Salud de Chile, inscrito en el Registro Nacional de Prestadores Individuales de Salud (Registro SIS N° 381042), lo que garantiza práctica clínica segura, respaldada y con los más altos estándares éticos.'
+  }
+];
+
+// Schema estructurado SEO específico para Acupuntura
+const acupSchema = {
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": ["MedicalClinic", "LocalBusiness"],
+      "@id": "https://centrovidasana.cl/acupuntura#clinic",
+      "name": "Consulta de Acupuntura y Medicina China - Centro Vida Sana Austral",
+      "url": "https://centrovidasana.cl/acupuntura",
+      "description": "Sesiones de Acupuntura Clínica y Medicina Tradicional China en Temuco con Eduardo Lagos (Certificado Minsal). Alivio de dolor crónico, fibromialgia, migrañas, estrés y ventosas.",
+      "telephone": eduardo.phone,
+      "address": {
+        "@type": "PostalAddress",
+        "streetAddress": clinicInfo.address.street,
+        "addressLocality": clinicInfo.address.city,
+        "addressRegion": clinicInfo.address.region,
+        "postalCode": clinicInfo.address.postalCode,
+        "addressCountry": "CL"
+      },
+      "geo": {
+        "@type": "GeoCoordinates",
+        "latitude": clinicInfo.coordinates.latitude,
+        "longitude": clinicInfo.coordinates.longitude
+      },
+      "priceRange": "$20.000 - $30.000 CLP"
+    },
+    {
+      "@type": "Person",
+      "@id": "https://centrovidasana.cl/#eduardo",
+      "name": eduardo.name,
+      "jobTitle": "Acupunturista Clínico Certificado por Minsal",
+      "telephone": eduardo.phone,
+      "description": "Acupunturista clínico acreditado por Minsal y docente de MTC con registro en la Superintendencia de Salud (SIS N° 381042)."
+    },
+    {
+      "@type": "FAQPage",
+      "@id": "https://centrovidasana.cl/acupuntura#faq",
+      "mainEntity": acupFaqs.map(faq => ({
+        "@type": "Question",
+        "name": faq.q,
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": faq.a
+        }
+      }))
+    }
+  ]
+};
+---
+
+<BaseLayout
+  title="Acupuntura y Medicina China en Temuco | Eduardo Lagos (Minsal) | Vida Sana"
+  description="Sesiones de Acupuntura y Medicina Tradicional China en Temuco con Eduardo Lagos (Acreditado Minsal, SIS N° 381042). Dolor crónico, fibromialgia, estrés, migrañas y ventosas en box privado."
+  canonicalUrl="https://centrovidasana.cl/acupuntura"
+  customSchema={acupSchema}
+>
+  <Navbar slot="navbar" activePage="acupuntura" />
+
+  <!-- =========================================================================
+       HERO DE ACUPUNTURA
+       ========================================================================= -->
+  <section class="pt-28 pb-16 lg:pt-36 lg:pb-24 bg-gradient-to-b from-[#EFF6F1] via-[#F6FAF7] to-[#FBFDFB] text-[#152219] relative overflow-hidden border-b border-[#CCDED1]">
+    
+    <!-- Glow y formas orgánicas botánicas -->
+    <div class="absolute -top-32 -left-32 w-[550px] h-[550px] bg-[#2E4D38]/[0.08] rounded-full blur-[140px] pointer-events-none"></div>
+    <div class="absolute top-1/2 right-[-10%] w-[500px] h-[500px] bg-[#497356]/[0.06] rounded-full blur-[130px] pointer-events-none"></div>
+
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+
+      <!-- Breadcrumb -->
+      <nav class="flex items-center gap-2 text-xs text-[#556D55] mb-6 font-medium" aria-label="Breadcrumb">
+        <a href="/" class="hover:text-[#2E4D38] transition-colors">Inicio</a>
+        <span>/</span>
+        <span class="text-[#2E4D38] font-bold">Acupuntura &amp; Medicina China</span>
+      </nav>
+
+      <div class="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-16 items-center">
+
+        <!-- Lado Texto -->
+        <div class="lg:col-span-7 space-y-6 text-left">
+          
+          <div class="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-[#E5F2E8] border border-[#BFDFCA] text-[#2E4D38] text-xs font-bold uppercase tracking-wider shadow-sm">
+            <span class="w-2 h-2 rounded-full bg-[#2E4D38] animate-pulse"></span>
+            <span>Acreditado Oficial Minsal · Box Climatizado</span>
+          </div>
+
+          <h1 class="font-serif text-3xl sm:text-4xl lg:text-5xl xl:text-6xl font-bold text-[#15281D] tracking-tight leading-[1.12]">
+            Acupuntura y Medicina China en <span class="text-[#2E4D38]">Temuco</span>
+          </h1>
+
+          <p class="text-base sm:text-lg text-[#3E523E] leading-relaxed max-w-2xl">
+            Regulación del sistema nervioso, alivio profundo del dolor crónico y equilibrio bioenergético a través de neuroacupuntura, ventosas clínicas y moxibustión tradicional.
+          </p>
+
+          <!-- Tarjeta Rápida del Especialista -->
+          <div class="p-4 sm:p-5 rounded-2xl bg-white border border-[#CCDED1] shadow-sm flex items-center gap-4">
+            <img
+              src="/pix/eduardo-acupuntura-400.webp"
+              alt="Eduardo Lagos"
+              class="w-16 h-16 rounded-xl object-cover object-top border-2 border-[#2E4D38] shrink-0"
+            />
+            <div>
+              <span class="text-xs font-bold text-[#2E4D38] block uppercase tracking-wider">
+                Especialista a Cargo
+              </span>
+              <span class="font-serif text-lg font-bold text-[#15281D] block">
+                Eduardo Lagos
+              </span>
+              <span class="text-xs text-[#556D55] block">
+                Acupunturista Certificado Minsal · Registro SIS N° 381042 · Docente MTC
+              </span>
+            </div>
+          </div>
+
+          <!-- CTAs y Garantías -->
+          <div class="flex flex-col sm:flex-row items-stretch sm:items-center gap-3 pt-2">
+            <a
+              href={`https://wa.me/56973888910?text=${encodeURIComponent('Hola Eduardo, me interesa agendar una sesión de Acupuntura y Medicina China en Temuco.')}`}
+              target="_blank"
+              rel="noopener noreferrer"
+              class="btn-press inline-flex items-center justify-center gap-2.5 px-6 py-4 rounded-xl bg-[#2E4D38] hover:bg-[#233C2C] text-white text-sm sm:text-base font-bold shadow-soft hover:shadow-[0_10px_30px_rgba(46,77,56,0.3)] transition-all cursor-pointer"
+            >
+              <svg class="w-5 h-5 text-emerald-200" viewBox="0 0 24 24" fill="currentColor">
+                <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413Z"/>
+              </svg>
+              <span>Agendar con Eduardo (+569 7388 8910)</span>
+            </a>
+            <a
+              href="#servicios-acupuntura"
+              class="inline-flex items-center justify-center gap-2 px-5 py-4 rounded-xl bg-white border border-[#BFDFCA] text-xs sm:text-sm font-bold text-[#2E4D38] hover:bg-[#EEF5F0] transition-colors"
+            >
+              <span>Ver 6 Terapias y Tarifas</span>
+              <span>↓</span>
+            </a>
+          </div>
+
+          <!-- Píldoras de Calidad -->
+          <div class="flex flex-wrap items-center gap-4 text-xs font-semibold text-[#44594A] pt-2">
+            <span class="inline-flex items-center gap-1.5">
+              <svg class="w-4 h-4 text-[#2E4D38]" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg>
+              Sesiones de 50 minutos 1 a 1
+            </span>
+            <span class="inline-flex items-center gap-1.5">
+              <svg class="w-4 h-4 text-[#2E4D38]" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 6L9 17l-5-5"/></svg>
+              Agujas estériles desechables
+            </span>
+            <span class="inline-flex items-center gap-1.5">
+              <svg class="w-4 h-4 text-[#2E4D38]" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+              Registro oficial Minsal
+            </span>
+          </div>
+
+        </div>
+
+        <!-- Lado Visual (Retrato con Blob) -->
+        <div class="lg:col-span-5 relative flex items-center justify-center">
+          <div class="relative w-full max-w-[420px] flex items-end justify-center pt-8 pb-4">
+            
+            <!-- Blob de Fondo Botánico -->
+            <div class="absolute inset-0 flex items-center justify-center pointer-events-none z-0">
+              <div class="w-[340px] sm:w-[400px] h-[340px] sm:h-[400px] bg-[#2E4D38]/20 rounded-full blur-2xl"></div>
+              <svg viewBox="0 0 500 500" class="w-[320px] sm:w-[380px] h-[320px] sm:h-[380px] filter drop-shadow-[0_15px_30px_rgba(46,77,56,0.25)]" xmlns="http://www.w3.org/2000/svg">
+                <defs>
+                  <linearGradient id="blob-acup-hero" x1="10%" y1="10%" x2="90%" y2="90%">
+                    <stop offset="0%" stop-color="#BEE0C7" />
+                    <stop offset="50%" stop-color="#76B084" />
+                    <stop offset="100%" stop-color="#2E4D38" />
+                  </linearGradient>
+                </defs>
+                <path d="M410,305Q370,360,314,405Q258,450,199,416Q140,382,95,326Q50,270,82,203Q114,136,174,93Q234,50,306,75Q378,100,414,175Q450,250,410,305Z" fill="url(#blob-acup-hero)" />
+              </svg>
+            </div>
+
+            <!-- Foto de Eduardo HD -->
+            <img
+              src="/pix/eduardo-acupuntura-hd.webp"
+              srcset="/pix/eduardo-acupuntura-hd.webp 2x, /pix/eduardo-acupuntura.webp 1x"
+              alt="Eduardo Lagos, Acupunturista en Temuco"
+              class="relative z-10 w-auto max-h-[440px] sm:max-h-[500px] object-contain drop-shadow-[0_20px_35px_rgba(15,35,20,0.25)] [mask-image:linear-gradient(to_bottom,black_88%,transparent_100%)]"
+              width="881"
+              height="800"
+            />
+
+            <!-- Chip Registro Minsal -->
+            <div class="absolute bottom-2 left-2 p-2.5 rounded-xl bg-white/95 border border-[#BFDFCA] backdrop-blur-md shadow-md flex items-center gap-2.5 z-20">
+              <div class="w-8 h-8 rounded-lg bg-[#2E4D38] text-white flex items-center justify-center font-bold text-xs">
+                Minsal
+              </div>
+              <div class="text-left">
+                <span class="text-xs font-bold text-[#2E4D38] block leading-tight">SIS N° 381042</span>
+                <span class="text-[10px] text-[#556D55] block">Acupunturista Acreditado</span>
+              </div>
+            </div>
+
+          </div>
+        </div>
+
+      </div>
+
+    </div>
+  </section>
+
+
+  <!-- =========================================================================
+       PROTOCOLO CLÍNICO: ¿CÓMO ES UNA SESIÓN DE ACUPUNTURA?
+       ========================================================================= -->
+  <section class="py-16 sm:py-20 bg-white border-b border-[#E8EFEA]">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      
+      <div class="text-center max-w-2xl mx-auto mb-14">
+        <span class="text-xs font-bold uppercase tracking-widest text-[#2E4D38] block mb-2">
+          Experiencia Clínica Relajante
+        </span>
+        <h2 class="font-serif text-3xl sm:text-4xl font-bold text-[#15281D]">
+          ¿Qué Esperar en tu Primera Sesión?
+        </h2>
+        <p class="text-sm sm:text-base text-[#556D55] mt-3">
+          Un espacio íntimo, cálido y sin prisas. La acupuntura regula tu sistema nervioso desde la primera consulta.
+        </p>
+      </div>
+
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+        
+        <div class="p-6 sm:p-7 rounded-2xl bg-[#F6FAF7] border border-[#DCEADE] relative">
+          <div class="w-10 h-10 rounded-xl bg-[#2E4D38] text-white font-serif font-bold text-lg flex items-center justify-center mb-4 shadow-sm">
+            1
+          </div>
+          <h3 class="font-serif text-xl font-bold text-[#15281D] mb-2">
+            Diagnóstico MTC &amp; Historial
+          </h3>
+          <p class="text-xs sm:text-sm text-[#4E6B56] leading-relaxed">
+            Revisamos el historial completo de tus síntomas, evaluamos el pulso radial y la topografía lingual para comprender los desequilibrios energéticos y orgánicos de fondo.
+          </p>
+        </div>
+
+        <div class="p-6 sm:p-7 rounded-2xl bg-[#F6FAF7] border border-[#DCEADE] relative">
+          <div class="w-10 h-10 rounded-xl bg-[#2E4D38] text-white font-serif font-bold text-lg flex items-center justify-center mb-4 shadow-sm">
+            2
+          </div>
+          <h3 class="font-serif text-xl font-bold text-[#15281D] mb-2">
+            Aplicación Indolora de Agujas
+          </h3>
+          <p class="text-xs sm:text-sm text-[#4E6B56] leading-relaxed">
+            Inserción suave de agujas estériles descartables en puntos y meridianos específicos. Si el cuadro de dolor lo amerita, combinamos con electroacupuntura o ventosas.
+          </p>
+        </div>
+
+        <div class="p-6 sm:p-7 rounded-2xl bg-[#F6FAF7] border border-[#DCEADE] relative">
+          <div class="w-10 h-10 rounded-xl bg-[#2E4D38] text-white font-serif font-bold text-lg flex items-center justify-center mb-4 shadow-sm">
+            3
+          </div>
+          <h3 class="font-serif text-xl font-bold text-[#15281D] mb-2">
+            Reposo Profundo y Relajación
+          </h3>
+          <p class="text-xs sm:text-sm text-[#4E6B56] leading-relaxed">
+            Permaneces 25 a 30 minutos en box climatizado con música relajante mientras las agujas estimulan la liberación de endorfinas, serotonina y modulación neural.
+          </p>
+        </div>
+
+      </div>
+
+    </div>
+  </section>
+
+
+  <!-- =========================================================================
+       CATÁLOGO COMPLETO DE LAS 6 TERAPIAS MTC
+       ========================================================================= -->
+  <section id="servicios-acupuntura" class="py-20 lg:py-24 bg-[#F6FAF7] border-b border-[#CCDED1]">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      
+      <div class="text-center max-w-3xl mx-auto mb-16">
+        <span class="inline-block text-xs font-bold uppercase tracking-widest text-[#2E4D38] mb-2">
+          Terapias de Medicina China
+        </span>
+        <h2 class="font-serif text-3xl sm:text-4xl lg:text-5xl font-bold text-[#15281D] tracking-tight mb-4">
+          Catálogo Clínico de Acupuntura y MTC
+        </h2>
+        <p class="text-base text-[#556D55] leading-relaxed">
+          Atención personalizada en box privado por Eduardo Lagos, Acupunturista Minsal. Consulta y agenda tu sesión directamente por WhatsApp.
+        </p>
+      </div>
+
+      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-7">
+        {acupServices.map((svc) => (
+          <div class="bg-white rounded-2xl overflow-hidden border border-[#D3E3D6] hover:border-[#2E4D38] hover:shadow-[0_12px_32px_rgba(46,77,56,0.12)] transition-all duration-300 flex flex-col justify-between">
+            <div>
+              <div class="relative aspect-[16/10] overflow-hidden bg-[#F2F7F3]">
+                <img
+                  src={svc.imageUrl}
+                  alt={svc.name}
+                  loading="lazy"
+                  class="w-full h-full object-cover hover:scale-105 transition-transform duration-500"
+                />
+                <span class="absolute bottom-2.5 right-2.5 px-2.5 py-1 rounded-md text-[11px] font-semibold bg-white/95 backdrop-blur-sm text-[#2E4D38] shadow-sm">
+                  {svc.duration}
+                </span>
+              </div>
+
+              <div class="p-6">
+                <div class="flex items-baseline justify-between gap-2 mb-2.5">
+                  <h3 class="font-serif text-xl font-bold text-[#15281D] leading-snug">
+                    {svc.name}
+                  </h3>
+                  <span class="text-lg font-bold text-[#2E4D38] shrink-0 font-sans">
+                    {svc.priceRef}
+                  </span>
+                </div>
+                
+                <p class="text-xs sm:text-sm text-[#556D55] leading-relaxed mb-4">
+                  {svc.summary}
+                </p>
+
+                <div class="p-3 rounded-xl bg-[#F6FAF7] border border-[#E2ECE5] mb-3">
+                  <span class="text-[11px] font-bold text-[#2E4D38] uppercase tracking-wider block mb-0.5">
+                    Indicado para:
+                  </span>
+                  <span class="text-xs text-[#3E523E] leading-snug block">
+                    {svc.indication}
+                  </span>
+                </div>
+
+                <div class="flex flex-wrap gap-1.5 pt-1">
+                  {svc.tags.map(tag => (
+                    <span class="px-2 py-0.5 rounded-md text-[10px] font-bold bg-[#EEF5F0] text-[#2E4D38] border border-[#CCE2D2]">
+                      {tag}
+                    </span>
+                  ))}
+                </div>
+              </div>
+            </div>
+
+            <div class="p-6 pt-0">
+              <a
+                href={`https://wa.me/56973888910?text=${encodeURIComponent(`Hola Eduardo, me interesa agendar una sesión de ${svc.name}`)}`}
+                target="_blank"
+                rel="noopener noreferrer"
+                class="btn-press w-full inline-flex items-center justify-center gap-2 px-4 py-3 rounded-xl bg-[#2E4D38] hover:bg-[#233C2C] text-white text-xs sm:text-sm font-bold shadow-sm transition-all cursor-pointer"
+              >
+                <span>Agendar por WhatsApp</span>
+                <span>→</span>
+              </a>
+            </div>
+          </div>
+        ))}
+      </div>
+
+    </div>
+  </section>
+
+
+  <!-- =========================================================================
+       PATOLOGÍAS QUE TRATAMOS CON MEDICINA CHINA
+       ========================================================================= -->
+  <section class="py-16 sm:py-20 bg-white border-b border-[#E8EFEA]">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      
+      <div class="text-center max-w-2xl mx-auto mb-14">
+        <span class="text-xs font-bold uppercase tracking-widest text-[#2E4D38] block mb-2">
+          Condiciones Clínicas
+        </span>
+        <h2 class="font-serif text-3xl sm:text-4xl font-bold text-[#15281D]">
+          ¿Qué Afecciones Trata la Acupuntura con Mayor Eficacia?
+        </h2>
+        <p class="text-sm sm:text-base text-[#556D55] mt-3">
+          La Medicina Tradicional China está avalada por la Organización Mundial de la Salud (OMS) para el tratamiento de numerosas dolencias crónicas y funcionales.
+        </p>
+      </div>
+
+      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+        
+        <div class="p-6 rounded-2xl bg-[#F6FAF7] border border-[#DCEADE]">
+          <h3 class="font-serif text-lg font-bold text-[#15281D] mb-2 flex items-center gap-2">
+            <span class="w-2.5 h-2.5 rounded-full bg-[#2E4D38]"></span>
+            Fibromialgia y Dolor Crónico Generalizado
+          </h3>
+          <p class="text-xs sm:text-sm text-[#4E6B56] leading-relaxed">
+            Modulación del umbral del dolor y reducción de la hipersensibilidad del sistema nervioso central, aliviando la fatiga crónica y los puntos dolorosos.
+          </p>
+        </div>
+
+        <div class="p-6 rounded-2xl bg-[#F6FAF7] border border-[#DCEADE]">
+          <h3 class="font-serif text-lg font-bold text-[#15281D] mb-2 flex items-center gap-2">
+            <span class="w-2.5 h-2.5 rounded-full bg-[#2E4D38]"></span>
+            Migrañas y Cefaleas Rebeldes
+          </h3>
+          <p class="text-xs sm:text-sm text-[#4E6B56] leading-relaxed">
+            Descompresión vascular y regulación del Qi hepático para reducir drásticamente la frecuencia, intensidad y necesidad de analgésicos en jaquecas crónicas.
+          </p>
+        </div>
+
+        <div class="p-6 rounded-2xl bg-[#F6FAF7] border border-[#DCEADE]">
+          <h3 class="font-serif text-lg font-bold text-[#15281D] mb-2 flex items-center gap-2">
+            <span class="w-2.5 h-2.5 rounded-full bg-[#2E4D38]"></span>
+            Estrés Agudo, Ansiedad e Insomnio
+          </h3>
+          <p class="text-xs sm:text-sm text-[#4E6B56] leading-relaxed">
+            Estimulación del sistema parasimpático para reducir el cortisol circulante, inducir sueño reparador y devolver la calma mental.
+          </p>
+        </div>
+
+        <div class="p-6 rounded-2xl bg-[#F6FAF7] border border-[#DCEADE]">
+          <h3 class="font-serif text-lg font-bold text-[#15281D] mb-2 flex items-center gap-2">
+            <span class="w-2.5 h-2.5 rounded-full bg-[#2E4D38]"></span>
+            Ciática y Lumbago con Electroacupuntura
+          </h3>
+          <p class="text-xs sm:text-sm text-[#4E6B56] leading-relaxed">
+            Microcorrientes terapéuticas aplicadas a través de agujas que desinflaman el trayecto nervioso y alivian el hormigueo y quemazón.
+          </p>
+        </div>
+
+        <div class="p-6 rounded-2xl bg-[#F6FAF7] border border-[#DCEADE]">
+          <h3 class="font-serif text-lg font-bold text-[#15281D] mb-2 flex items-center gap-2">
+            <span class="w-2.5 h-2.5 rounded-full bg-[#2E4D38]"></span>
+            Artrosis y Dolor por Frío con Moxibustión
+          </h3>
+          <p class="text-xs sm:text-sm text-[#4E6B56] leading-relaxed">
+            Terapia térmica con artemisa medicinal para activar la circulación local, disipar la humedad articular y aliviar rigideces en rodillas y manos.
+          </p>
+        </div>
+
+        <div class="p-6 rounded-2xl bg-[#F6FAF7] border border-[#DCEADE]">
+          <h3 class="font-serif text-lg font-bold text-[#15281D] mb-2 flex items-center gap-2">
+            <span class="w-2.5 h-2.5 rounded-full bg-[#2E4D38]"></span>
+            Bruxismo y Tensión Mandibular (ATM)
+          </h3>
+          <p class="text-xs sm:text-sm text-[#4E6B56] leading-relaxed">
+            Relajación profunda de los músculos maseteros y pterigoideos, disminuyendo el dolor facial y el desgaste dental nocturno.
+          </p>
+        </div>
+
+      </div>
+
+    </div>
+  </section>
+
+
+  <!-- =========================================================================
+       PREGUNTAS FRECUENTES (FAQS) DE ACUPUNTURA
+       ========================================================================= -->
+  <section class="py-16 sm:py-20 bg-[#FBFDFB] border-b border-[#CCDED1]">
+    <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+      
+      <div class="text-center mb-12">
+        <span class="text-xs font-bold uppercase tracking-widest text-[#2E4D38] block mb-2">
+          Preguntas Frecuentes
+        </span>
+        <h2 class="font-serif text-3xl sm:text-4xl font-bold text-[#15281D]">
+          Dudas Comunes sobre Acupuntura y MTC
+        </h2>
+      </div>
+
+      <div class="space-y-4">
+        {acupFaqs.map((faq) => (
+          <details class="group rounded-2xl bg-white border border-[#CCDED1] p-5 sm:p-6 transition-all duration-200 open:shadow-md">
+            <summary class="font-serif text-lg font-bold text-[#15281D] cursor-pointer flex items-center justify-between gap-4 list-none group-hover:text-[#2E4D38]">
+              <span>{faq.q}</span>
+              <span class="w-6 h-6 rounded-full bg-[#EEF5F0] text-[#2E4D38] flex items-center justify-center shrink-0 transition-transform group-open:rotate-180">
+                ↓
+              </span>
+            </summary>
+            <p class="text-xs sm:text-sm text-[#4E6B56] leading-relaxed pt-3.5 border-t border-[#EEF5F0] mt-3">
+              {faq.a}
+            </p>
+          </details>
+        ))}
+      </div>
+
+    </div>
+  </section>
+
+
+  <!-- =========================================================================
+       BANNER DE CRUCE A QUIROPRAXIA & KINESIOLOGÍA
+       ========================================================================= -->
+  <section class="py-16 bg-[#EDF5F8] border-b border-[#D8E6EB] text-center">
+    <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+      <span class="text-xs font-bold uppercase tracking-widest text-[#134E5E] block mb-2">
+        ¿Bloqueos Articulares, Lumbago o Problemas Posturales?
+      </span>
+      <h3 class="font-serif text-2xl sm:text-3xl font-bold text-[#0B2B33] mb-3">
+        Conoce el Área de Quiropraxia &amp; Kinesiología
+      </h3>
+      <p class="text-xs sm:text-sm text-[#3D5C64] max-w-xl mx-auto mb-6 leading-relaxed">
+        Felipe Méndez integra ajuste vertebral de columna con camilla drop, descompresión radicular y fisioterapia para restablecer tu movilidad mecánica.
+      </p>
+      <a
+        href="/quiropraxia"
+        class="inline-flex items-center gap-2 px-6 py-3.5 rounded-xl bg-[#134E5E] hover:bg-[#0E3B47] text-white text-xs sm:text-sm font-bold shadow-sm transition-all"
+      >
+        <span>Ver Página de Quiropraxia &amp; Kinesiología</span>
+        <span>→</span>
+      </a>
+    </div>
+  </section>
+
+  <FloatingWhatsApp />
+  <Footer slot="footer" />
+</BaseLayout>

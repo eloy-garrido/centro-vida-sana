@@ -9,6 +9,7 @@ interface Props {
   description?: string;
   canonicalUrl?: string;
   ogImage?: string;
+  customSchema?: Record<string, any>;
 }
 
 const {
@@ -16,10 +17,11 @@ const {
   description = 'Centro Vida Sana Austral en Temuco: Quiropraxia, Acupuntura y Kinesiología Clínica. Profesionales certificados Minsal para alivio de lumbago, ciática y dolor crónico.',
   canonicalUrl = 'https://centrovidasana.cl/',
   ogImage = 'https://centrovidasana.cl/pix/hero-og.webp',
+  customSchema,
 } = Astro.props;
 
-// JSON-LD Schema estructurado oficial y accesible
-const schemaData = {
+// JSON-LD Schema estructurado oficial y accesible por defecto
+const defaultSchemaData = {
   "@context": "https://schema.org",
   "@graph": [
     {
@@ -95,6 +97,8 @@ const schemaData = {
     }
   ]
 };
+
+const finalSchema = customSchema || defaultSchemaData;
 ---
 
 <!DOCTYPE html>
@@ -135,7 +139,7 @@ const schemaData = {
   <meta name="twitter:image" content={ogImage} />
 
   <!-- Marcado Estructurado JSON-LD Consolidado -->
-  <script type="application/ld+json" set:html={JSON.stringify(schemaData)} />
+  <script type="application/ld+json" set:html={JSON.stringify(finalSchema)} />
 </head>
 <body class="bg-canvas text-ink-primary font-sans antialiased selection:bg-petrol-light selection:text-petrol-900">
   <!-- Skip Link para Accesibilidad -->

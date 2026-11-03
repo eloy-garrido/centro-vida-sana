@@ -73,6 +73,18 @@ export const servicesData: ServiceItem[] = [
     imageUrl: '/pix/kine/400-maso.webp',
     tags: ['Descontracturante', 'Miofascial', 'Relax Muscular'],
   },
+  {
+    id: 'plantillas-ortopedicas',
+    name: 'Plantillas Ortopédicas Computarizadas',
+    discipline: 'quiropraxia',
+    professionalId: 'felipe',
+    summary: 'Evaluación biomecánica de la pisada y confección de plantillas correctivas personalizadas a medida para alinear la marcha y descargar articulaciones.',
+    indication: 'Fascitis plantar, pie plano/cavo, espolón calcáneo y sobrecarga en rodillas y caderas.',
+    duration: '40 min',
+    priceRef: '$30.000',
+    imageUrl: '/pix/kine/400-plantillas.webp',
+    tags: ['Pisada', 'Biomecánica', 'Postura'],
+  },
 
   // Acupuntura & Medicina China
   {
@@ -134,5 +146,17 @@ export const servicesData: ServiceItem[] = [
     priceRef: '$20.000',
     imageUrl: '/pix/mtc/400-auriculo.webp',
     tags: ['Puntos Reflejos', 'Ansiedad', 'Efecto Continuo'],
+  },
+  {
+    id: 'guasha-terapeutico',
+    name: 'Terapia con Gua Sha Tradicional',
+    discipline: 'acupuntura',
+    professionalId: 'eduardo',
+    summary: 'Raspado terapéutico bioenergético con instrumentos de jade o cuerno medicinal para liberar estancamiento de sangre, drenar toxinas tisulares y soltar adherencias miofasciales.',
+    indication: 'Rigidez cervical y dorsal profunda, resfríos incipientes, sobrecarga física y dolor miofascial.',
+    duration: '40 min',
+    priceRef: '$25.000',
+    imageUrl: '/pix/mtc/400-GuaSha.webp',
+    tags: ['Drenaje', 'Miofascial', 'Tradición'],
   },
 ];

@@ -4,7 +4,7 @@
     <!-- Página principal -->
     <url>
         <loc>https://centrovidasana.cl/</loc>
-        <lastmod>2026-07-01</lastmod>
+        <lastmod>2026-11-03</lastmod>
         <changefreq>weekly</changefreq>
         <priority>1.0</priority>
         <image:image>
@@ -15,9 +15,27 @@
             <image:loc>https://centrovidasana.cl/pix/logo-sin-texto.webp</image:loc>
             <image:title>Símbolo Yin Yang Centro Vida Sana Austral</image:title>
         </image:image>
+    </url>
+    <!-- Subpágina Quiropraxia y Kinesiología -->
+    <url>
+        <loc>https://centrovidasana.cl/quiropraxia</loc>
+        <lastmod>2026-11-03</lastmod>
+        <changefreq>monthly</changefreq>
+        <priority>0.9</priority>
         <image:image>
-            <image:loc>https://centrovidasana.cl/pix/yinyang.webp</image:loc>
-            <image:title>Yin Yang Equilibrio Centro Vida Sana Austral</image:title>
+            <image:loc>https://centrovidasana.cl/pix/felipe-kinesiologo-hd.webp</image:loc>
+            <image:title>Felipe Méndez, Quiropráctico y Kinesiólogo en Temuco</image:title>
+        </image:image>
+    </url>
+    <!-- Subpágina Acupuntura y Medicina China -->
+    <url>
+        <loc>https://centrovidasana.cl/acupuntura</loc>
+        <lastmod>2026-11-03</lastmod>
+        <changefreq>monthly</changefreq>
+        <priority>0.9</priority>
+        <image:image>
+            <image:loc>https://centrovidasana.cl/pix/eduardo-acupuntura-hd.webp</image:loc>
+            <image:title>Eduardo Lagos, Acupunturista Certificado Minsal en Temuco</image:title>
         </image:image>
     </url>
 </urlset>
