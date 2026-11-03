@@ -3,304 +3,200 @@ import { clinicInfo } from '../../data/clinic';
 import { professionals } from '../../data/professionals';
 ---
 
-<section id="hero" class="relative pt-8 pb-20 md:pt-14 md:pb-28 overflow-hidden">
-  <!-- Sutil fondo con resplandor ambiental orgánico -->
+<section id="hero" class="relative min-h-[92vh] flex items-center justify-center overflow-hidden bg-[#0A100D] text-white pt-8 pb-16 lg:pt-14 lg:pb-24">
+
+  <!-- ==============================================
+       BACKGROUND: Ethereal Dual Art & Volumetric Auras
+       ============================================== -->
   <div class="absolute inset-0 pointer-events-none -z-10 overflow-hidden">
-    <div class="absolute -top-40 left-1/4 w-[500px] h-[500px] bg-petrol-light/50 rounded-full blur-3xl opacity-60"></div>
-    <div class="absolute -top-20 right-1/4 w-[500px] h-[500px] bg-sage-light/60 rounded-full blur-3xl opacity-60"></div>
+    <!-- Generated Dual Art Plate blended with dark canvas -->
+    <img
+      src="/pix/hero-art-dual.jpg"
+      alt="Fusión de Biomecánica y Medicina Tradicional China"
+      class="w-full h-full object-cover opacity-25 mix-blend-screen scale-105 filter blur-[1px]"
+    />
+
+    <!-- Volumetric Glows: Petrol on Left / Sage on Right -->
+    <div class="absolute -top-32 left-[-10%] w-[650px] h-[650px] bg-[#134E5E]/40 rounded-full blur-[140px] pointer-events-none"></div>
+    <div class="absolute -bottom-20 right-[-10%] w-[700px] h-[700px] bg-[#2E4D38]/45 rounded-full blur-[140px] pointer-events-none"></div>
+    <div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[900px] h-[500px] bg-[#0A100D]/80 rounded-full blur-2xl pointer-events-none"></div>
   </div>
 
-  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full relative z-10">
+    <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12 items-center min-h-[75vh]">
 
-    <!-- Eyebrow & Badges de Autoridad -->
-    <div class="text-center max-w-3xl mx-auto mb-6">
-      <div class="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-surface border border-surface-border shadow-soft-sm text-xs font-semibold text-ink-secondary mb-6">
-        <span class="flex h-2 w-2 rounded-full bg-emerald-500 animate-pulse"></span>
-        <span>Atención en Temuco · Profesionales Acreditados por el Minsal</span>
-      </div>
+      <!-- ==============================================
+           LEFT COLUMN: Editorial Copy, Badges & Actions
+           ============================================== -->
+      <div class="lg:col-span-7 space-y-6 sm:space-y-8 text-center lg:text-left pt-6 sm:pt-0">
 
-      <!-- Título Principal H1 Editorial -->
-      <h1 class="font-serif text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-semibold text-ink-primary tracking-tight leading-[1.18] mb-6">
-        Salud Integral y Alivio del Dolor: <br class="hidden sm:inline" />
-        <span class="text-petrol relative inline-block">
-          Quiropraxia
-          <svg class="absolute -bottom-1.5 left-0 w-full h-2 text-petrol-border" viewBox="0 0 100 12" preserveAspectRatio="none" fill="currentColor">
-            <path d="M0,8 Q50,0 100,8 L100,12 L0,12 Z"></path>
-          </svg>
-        </span>
-        <span class="text-ink-muted font-normal text-2xl sm:text-3xl md:text-4xl mx-1">&amp;</span>
-        <span class="text-sage relative inline-block">
-          Acupuntura
-          <svg class="absolute -bottom-1.5 left-0 w-full h-2 text-sage-border" viewBox="0 0 100 12" preserveAspectRatio="none" fill="currentColor">
-            <path d="M0,8 Q50,0 100,8 L100,12 L0,12 Z"></path>
-          </svg>
-        </span>
-      </h1>
-
-      <p class="text-base sm:text-lg text-ink-secondary leading-relaxed max-w-2xl mx-auto">
-        Tratamos el origen mecánico y sistémico de tus dolencias. Dos disciplinas de excelencia clínica trabajando en conjunto para recuperar tu movilidad, calma y calidad de vida.
-      </p>
-    </div>
-
-    <!-- Interactive Segmented Discipline Switcher (Emil Kowalski style) -->
-    <div class="flex justify-center mb-10">
-      <div class="inline-flex p-1.5 rounded-2xl bg-surface border border-surface-border shadow-soft" role="tablist" aria-label="Filtrar por disciplina">
-        <button
-          type="button"
-          class="hero-tab-btn active px-4 sm:px-6 py-2.5 rounded-xl text-xs sm:text-sm font-semibold transition-all duration-200 cursor-pointer flex items-center gap-2 bg-ink-primary text-white shadow-soft-sm"
-          data-target="both"
-        >
-          <span>Enfoque Dual Integral</span>
-        </button>
-        <button
-          type="button"
-          class="hero-tab-btn px-4 sm:px-6 py-2.5 rounded-xl text-xs sm:text-sm font-semibold text-ink-secondary hover:text-petrol transition-all duration-200 cursor-pointer flex items-center gap-2"
-          data-target="quiro"
-        >
-          <span class="w-2 h-2 rounded-full bg-petrol"></span>
-          <span>Solo Quiropraxia</span>
-        </button>
-        <button
-          type="button"
-          class="hero-tab-btn px-4 sm:px-6 py-2.5 rounded-xl text-xs sm:text-sm font-semibold text-ink-secondary hover:text-sage transition-all duration-200 cursor-pointer flex items-center gap-2"
-          data-target="acup"
-        >
-          <span class="w-2 h-2 rounded-full bg-sage"></span>
-          <span>Solo Acupuntura</span>
-        </button>
-      </div>
-    </div>
-
-    <!-- Dual Split Hub Showcase Cards -->
-    <div class="grid grid-cols-1 md:grid-cols-2 gap-6 lg:gap-8 max-w-5xl mx-auto" id="hero-cards-container">
-
-      <!-- Panel Quiropraxia & Kinesiología (Azul Petróleo Clásico) -->
-      <article
-        id="hero-card-quiro"
-        class="hero-card relative rounded-3xl bg-surface border-2 border-petrol-border/80 p-6 sm:p-8 shadow-soft hover:shadow-petrol-glow transition-all duration-300 flex flex-col justify-between group overflow-hidden"
-      >
-        <div class="absolute top-0 right-0 w-36 h-36 bg-petrol-light/40 rounded-full blur-2xl -mr-10 -mt-10 pointer-events-none"></div>
-
-        <div>
-          <div class="flex items-center justify-between gap-3 mb-5">
-            <span class="px-3.5 py-1.5 rounded-full text-xs font-bold uppercase tracking-wider text-petrol bg-petrol-light border border-petrol-border/80">
-              Columna &amp; Biomecánica
-            </span>
-            <span class="text-xs font-medium text-ink-muted">
-              Reg. Minsal N° 458921
-            </span>
-          </div>
-
-          <div class="flex items-center gap-4 mb-6">
-            <div class="relative w-16 h-16 rounded-2xl overflow-hidden border-2 border-petrol/20 shadow-soft-sm shrink-0">
-              <img
-                src={professionals.felipe.photoUrl}
-                alt={professionals.felipe.name}
-                class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
-              />
-            </div>
-            <div>
-              <h2 class="font-serif text-2xl font-bold text-ink-primary">
-                Felipe Méndez
-              </h2>
-              <p class="text-xs sm:text-sm font-semibold text-petrol">
-                {professionals.felipe.title}
-              </p>
-            </div>
-          </div>
-
-          <p class="text-sm text-ink-secondary mb-6 leading-relaxed">
-            Diagnóstico clínico y ajustes articulares indoloros para descomprimir discos vertebrales, corregir pinzamientos y devolver la estabilidad muscular.
-          </p>
-
-          <div class="space-y-2.5 mb-8">
-            <div class="flex items-center gap-2.5 text-xs sm:text-sm text-ink-secondary">
-              <div class="w-5 h-5 rounded-md bg-petrol-light text-petrol flex items-center justify-center shrink-0">
-                <svg class="w-3.5 h-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M20 6L9 17l-5-5"/></svg>
-              </div>
-              <span>Lumbago agudo, discopatías y dolor ciático</span>
-            </div>
-            <div class="flex items-center gap-2.5 text-xs sm:text-sm text-ink-secondary">
-              <div class="w-5 h-5 rounded-md bg-petrol-light text-petrol flex items-center justify-center shrink-0">
-                <svg class="w-3.5 h-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M20 6L9 17l-5-5"/></svg>
-              </div>
-              <span>Cervicalgia, tortícolis y mareos por tensión</span>
-            </div>
-            <div class="flex items-center gap-2.5 text-xs sm:text-sm text-ink-secondary">
-              <div class="w-5 h-5 rounded-md bg-petrol-light text-petrol flex items-center justify-center shrink-0">
-                <svg class="w-3.5 h-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M20 6L9 17l-5-5"/></svg>
-              </div>
-              <span>Kinesiología integral y atención a domicilio</span>
-            </div>
-          </div>
+        <!-- Authority Eyebrow Badge -->
+        <div class="inline-flex items-center gap-2.5 px-4 py-2 rounded-full bg-white/5 border border-white/10 backdrop-blur-md shadow-soft-sm">
+          <span class="flex h-2.5 w-2.5 rounded-full bg-emerald-400 animate-pulse"></span>
+          <span class="text-xs font-semibold text-[#D2DFD6] tracking-wide">
+            Centro de Salud Integral en Temuco · Acreditados Minsal
+          </span>
         </div>
 
-        <div class="pt-4 border-t border-surface-border flex flex-col sm:flex-row gap-3">
-          <a
-            href="https://wa.me/56973700616?text=Hola%20Felipe,%20quisiera%20agendar%20una%20consulta%20de%20Quiropraxia%20/%20Kinesiolog%C3%ADa"
-            target="_blank"
-            rel="noopener noreferrer"
-            class="btn-press flex-1 inline-flex items-center justify-center gap-2 px-5 py-3 rounded-xl bg-petrol text-white text-sm font-semibold shadow-soft hover:bg-petrol-hover transition-colors cursor-pointer"
-          >
-            <span>Consultar con Felipe</span>
-            <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
-          </a>
+        <!-- Hero Title (Editorial Playfair Display + Dual Gradient Text) -->
+        <h1 class="font-serif text-4xl sm:text-5xl lg:text-6xl xl:text-7xl font-bold tracking-tight text-white leading-[1.08]">
+          La Precisión de la <br class="hidden sm:inline" />
+          <span class="text-[#38B2CE] relative inline-block">
+            Quiropraxia.
+          </span>
+          <br />
+          La Sabiduría de la <br class="hidden sm:inline" />
+          <span class="text-[#65A775] relative inline-block">
+            Acupuntura.
+          </span>
+        </h1>
+
+        <!-- Subtitle -->
+        <p class="text-base sm:text-lg lg:text-xl text-[#A6BAAD] leading-relaxed max-w-xl mx-auto lg:mx-0 font-normal">
+          Unimos la corrección biomecánica de columna y la medicina tradicional china para eliminar la causa de tu dolor y restaurar tu vitalidad en Temuco.
+        </p>
+
+        <!-- Dual Discipline Quick Tags -->
+        <div class="flex flex-wrap items-center justify-center lg:justify-start gap-3 pt-1">
           <a
             href="#quiro-section"
-            class="btn-press px-4 py-3 rounded-xl bg-petrol-light text-petrol border border-petrol-border/80 text-sm font-semibold hover:bg-white text-center transition-colors cursor-pointer"
+            class="btn-press inline-flex items-center gap-2 px-4 py-2 rounded-xl bg-[#134E5E]/40 border border-[#236B80] hover:bg-[#134E5E] text-[#E0F3F7] text-xs font-semibold transition-all shadow-petrol-glow cursor-pointer"
           >
-            Ver Terapias
-          </a>
-        </div>
-      </article>
-
-      <!-- Panel Acupuntura & Medicina China (Verde Salvia Botánico) -->
-      <article
-        id="hero-card-acup"
-        class="hero-card relative rounded-3xl bg-surface border-2 border-sage-border/80 p-6 sm:p-8 shadow-soft hover:shadow-sage-glow transition-all duration-300 flex flex-col justify-between group overflow-hidden"
-      >
-        <div class="absolute top-0 right-0 w-36 h-36 bg-sage-light/40 rounded-full blur-2xl -mr-10 -mt-10 pointer-events-none"></div>
-
-        <div>
-          <div class="flex items-center justify-between gap-3 mb-5">
-            <span class="px-3.5 py-1.5 rounded-full text-xs font-bold uppercase tracking-wider text-sage bg-sage-light border border-sage-border/80">
-              Equilibrio &amp; Neuroacupuntura
-            </span>
-            <span class="text-xs font-medium text-ink-muted">
-              Reg. Minsal N° 381042
-            </span>
-          </div>
-
-          <div class="flex items-center gap-4 mb-6">
-            <div class="relative w-16 h-16 rounded-2xl overflow-hidden border-2 border-sage/20 shadow-soft-sm shrink-0">
-              <img
-                src={professionals.eduardo.photoUrl}
-                alt={professionals.eduardo.name}
-                class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
-              />
-            </div>
-            <div>
-              <h2 class="font-serif text-2xl font-bold text-ink-primary">
-                Eduardo Lagos
-              </h2>
-              <p class="text-xs sm:text-sm font-semibold text-sage">
-                {professionals.eduardo.title}
-              </p>
-            </div>
-          </div>
-
-          <p class="text-sm text-ink-secondary mb-6 leading-relaxed">
-            Regulación del sistema nervioso y liberación de analgésicos naturales mediante agujas ultrafinas estériles, electroacupuntura y moxibustión milenaria.
-          </p>
-
-          <div class="space-y-2.5 mb-8">
-            <div class="flex items-center gap-2.5 text-xs sm:text-sm text-ink-secondary">
-              <div class="w-5 h-5 rounded-md bg-sage-light text-sage flex items-center justify-center shrink-0">
-                <svg class="w-3.5 h-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M20 6L9 17l-5-5"/></svg>
-              </div>
-              <span>Dolor crónico resistente, artrosis y fibromialgia</span>
-            </div>
-            <div class="flex items-center gap-2.5 text-xs sm:text-sm text-ink-secondary">
-              <div class="w-5 h-5 rounded-md bg-sage-light text-sage flex items-center justify-center shrink-0">
-                <svg class="w-3.5 h-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M20 6L9 17l-5-5"/></svg>
-              </div>
-              <span>Cefaleas, migrañas y parálisis facial</span>
-            </div>
-            <div class="flex items-center gap-2.5 text-xs sm:text-sm text-ink-secondary">
-              <div class="w-5 h-5 rounded-md bg-sage-light text-sage flex items-center justify-center shrink-0">
-                <svg class="w-3.5 h-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M20 6L9 17l-5-5"/></svg>
-              </div>
-              <span>Estrés agudo, insomnio y ventosaterapia (Cupping)</span>
-            </div>
-          </div>
-        </div>
-
-        <div class="pt-4 border-t border-surface-border flex flex-col sm:flex-row gap-3">
-          <a
-            href="https://wa.me/56973888910?text=Hola%20Eduardo,%20quisiera%20agendar%20una%20consulta%20de%20Acupuntura%20/%20Medicina%20China"
-            target="_blank"
-            rel="noopener noreferrer"
-            class="btn-press flex-1 inline-flex items-center justify-center gap-2 px-5 py-3 rounded-xl bg-sage text-white text-sm font-semibold shadow-soft hover:bg-sage-hover transition-colors cursor-pointer"
-          >
-            <span>Consultar con Eduardo</span>
-            <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+            <span class="w-2 h-2 rounded-full bg-[#38B2CE]"></span>
+            <span>Quiropraxia &amp; Kinesiología (Felipe)</span>
           </a>
           <a
             href="#acup-section"
-            class="btn-press px-4 py-3 rounded-xl bg-sage-light text-sage border border-sage-border/80 text-sm font-semibold hover:bg-white text-center transition-colors cursor-pointer"
+            class="btn-press inline-flex items-center gap-2 px-4 py-2 rounded-xl bg-[#2E4D38]/40 border border-[#497356] hover:bg-[#2E4D38] text-[#E5F5E9] text-xs font-semibold transition-all shadow-sage-glow cursor-pointer"
           >
-            Ver Terapias
+            <span class="w-2 h-2 rounded-full bg-[#65A775]"></span>
+            <span>Acupuntura &amp; Med. China (Eduardo)</span>
           </a>
         </div>
-      </article>
+
+        <!-- Action Buttons -->
+        <div class="flex flex-col sm:flex-row items-center justify-center lg:justify-start gap-4 pt-2">
+          <a
+            href="#contacto"
+            class="btn-press w-full sm:w-auto inline-flex items-center justify-center gap-3 px-8 py-4 rounded-xl bg-gradient-to-r from-[#1B6578] to-[#2E4D38] hover:from-[#237D96] hover:to-[#3A6348] text-white text-base font-bold shadow-soft-lg transition-all cursor-pointer border border-white/20"
+          >
+            <svg class="w-5 h-5 text-emerald-300" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2">
+              <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path>
+            </svg>
+            <span>Agendar Consulta</span>
+          </a>
+          <a
+            href="#servicios"
+            class="btn-press w-full sm:w-auto inline-flex items-center justify-center gap-2 px-6 py-4 rounded-xl bg-white/10 hover:bg-white/15 text-white text-sm font-semibold border border-white/15 transition-all cursor-pointer"
+          >
+            <span>Ver Terapias y Valores</span>
+            <svg class="w-4 h-4 text-[#A6BAAD]" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+          </a>
+        </div>
+
+        <!-- Floating Glass Contact Cards (Inspiradas en el original, con máxima sobriedad) -->
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 pt-4 max-w-xl mx-auto lg:mx-0">
+
+          <!-- Card 1: Dirección y Maps -->
+          <a
+            href={clinicInfo.address.mapsUrl}
+            target="_blank"
+            rel="noopener noreferrer"
+            class="btn-press p-4 rounded-2xl bg-white/[0.06] border border-white/10 hover:border-[#38B2CE]/50 backdrop-blur-xl flex items-center gap-3.5 transition-all group text-left cursor-pointer"
+          >
+            <div class="w-11 h-11 rounded-xl bg-[#134E5E] text-[#38B2CE] flex items-center justify-center shrink-0 shadow-soft">
+              <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"></path>
+                <path stroke-linecap="round" stroke-linejoin="round" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"></path>
+              </svg>
+            </div>
+            <div>
+              <span class="text-[11px] font-bold uppercase tracking-wider text-[#38B2CE] block">
+                Ubicación Clínica
+              </span>
+              <span class="text-xs font-semibold text-white group-hover:text-[#38B2CE] transition-colors block">
+                Los Armiños 1620, Temuco
+              </span>
+              <span class="text-[10px] text-[#A6BAAD]">
+                Ver mapa y cómo llegar →
+              </span>
+            </div>
+          </a>
+
+          <!-- Card 2: Opiniones Google -->
+          <a
+            href={clinicInfo.social.googleReviews}
+            target="_blank"
+            rel="noopener noreferrer"
+            class="btn-press p-4 rounded-2xl bg-white/[0.06] border border-white/10 hover:border-[#65A775]/50 backdrop-blur-xl flex items-center gap-3.5 transition-all group text-left cursor-pointer"
+          >
+            <div class="w-11 h-11 rounded-xl bg-[#2E4D38] text-[#65A775] flex items-center justify-center shrink-0 shadow-soft">
+              <svg class="w-5 h-5" viewBox="0 0 24 24" fill="currentColor">
+                <path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"/>
+              </svg>
+            </div>
+            <div>
+              <div class="flex items-center gap-1 text-amber-400 text-xs">
+                <span>★★★★★</span>
+                <span class="font-bold text-white ml-1">5.0</span>
+              </div>
+              <span class="text-xs font-semibold text-white group-hover:text-[#65A775] transition-colors block">
+                156+ Reseñas Verificadas
+              </span>
+              <span class="text-[10px] text-[#A6BAAD]">
+                Leer opiniones de pacientes →
+              </span>
+            </div>
+          </a>
+
+        </div>
+
+      </div>
+
+      <!-- ==============================================
+           RIGHT COLUMN: Iconic Duo Cutout with Aura Lighting
+           ============================================== -->
+      <div class="lg:col-span-5 relative flex items-end justify-center lg:justify-end min-h-[460px] sm:min-h-[560px] lg:min-h-[680px]">
+
+        <!-- Colored Aura Lights behind Duo -->
+        <div class="absolute bottom-0 left-1/4 w-72 h-72 rounded-full bg-[#134E5E]/60 blur-3xl -z-10 pointer-events-none"></div>
+        <div class="absolute bottom-10 right-1/4 w-72 h-72 rounded-full bg-[#2E4D38]/60 blur-3xl -z-10 pointer-events-none"></div>
+
+        <!-- High-res Cutout of Felipe and Eduardo -->
+        <div class="relative w-full max-w-[540px] lg:max-w-none flex items-end justify-center lg:justify-end">
+          <picture>
+            <source srcset="/pix/duo-hd.webp" type="image/webp" />
+            <img
+              src="/pix/duo-hd.png"
+              alt="Felipe Méndez y Eduardo Lagos - Centro Vida Sana Austral"
+              class="w-auto h-[480px] sm:h-[580px] lg:h-[700px] xl:h-[760px] object-contain drop-shadow-[0_25px_50px_rgba(0,0,0,0.85)] filter contrast-[1.03] select-none pointer-events-none"
+              loading="eager"
+              fetchpriority="high"
+            />
+          </picture>
+
+          <!-- Floating Badge over Duo -->
+          <div class="absolute bottom-6 left-4 sm:left-10 px-4 py-2.5 rounded-2xl bg-[#0F1713]/85 backdrop-blur-xl border border-white/20 shadow-soft-lg hidden sm:flex items-center gap-3">
+            <div class="flex -space-x-2">
+              <span class="w-3 h-3 rounded-full bg-[#38B2CE] border-2 border-[#0F1713]"></span>
+              <span class="w-3 h-3 rounded-full bg-[#65A775] border-2 border-[#0F1713]"></span>
+            </div>
+            <div class="text-[11px] leading-tight">
+              <span class="font-bold text-white block">Atención Simultánea o Individual</span>
+              <span class="text-[#A6BAAD]">Quiropraxia &amp; Acupuntura</span>
+            </div>
+          </div>
+        </div>
+
+      </div>
 
     </div>
+  </div>
 
-    <!-- Barra Inferior de Métricas de Confianza -->
-    <div class="mt-14 max-w-4xl mx-auto pt-8 border-t border-surface-border grid grid-cols-2 md:grid-cols-4 gap-6 text-center">
-      <div class="flex flex-col items-center">
-        <span class="font-serif font-bold text-2xl lg:text-3xl text-ink-primary">156+</span>
-        <span class="text-xs text-ink-muted font-medium mt-0.5">Reseñas 5.0 en Google</span>
-      </div>
-      <div class="flex flex-col items-center">
-        <span class="font-serif font-bold text-2xl lg:text-3xl text-petrol">Minsal</span>
-        <span class="text-xs text-ink-muted font-medium mt-0.5">Registro Nacional de Salud</span>
-      </div>
-      <div class="flex flex-col items-center">
-        <span class="font-serif font-bold text-2xl lg:text-3xl text-sage">10+ Años</span>
-        <span class="text-xs text-ink-muted font-medium mt-0.5">Experiencia Clínica</span>
-      </div>
-      <div class="flex flex-col items-center">
-        <span class="font-serif font-bold text-2xl lg:text-3xl text-ink-primary">100%</span>
-        <span class="text-xs text-ink-muted font-medium mt-0.5">Atención Personalizada</span>
-      </div>
-    </div>
-
+  <!-- Bottom Wave Transition to Body Canvas -->
+  <div class="absolute bottom-0 left-0 w-full overflow-hidden leading-none z-20 pointer-events-none">
+    <svg class="relative block w-full h-8 sm:h-12 text-canvas" viewBox="0 0 1200 120" preserveAspectRatio="none" fill="currentColor">
+      <path d="M0,0 C150,90 350,-40 500,45 C650,130 900,10 1200,50 L1200,120 L0,120 Z"></path>
+    </svg>
   </div>
 </section>
-
-<script>
-  // Hero Interactive Discipline Switcher (Spring transition)
-  const tabButtons = document.querySelectorAll('.hero-tab-btn');
-  const cardQuiro = document.getElementById('hero-card-quiro');
-  const cardAcup = document.getElementById('hero-card-acup');
-
-  tabButtons.forEach(btn => {
-    btn.addEventListener('click', () => {
-      tabButtons.forEach(b => {
-        b.classList.remove('active', 'bg-ink-primary', 'text-white', 'shadow-soft-sm');
-        b.classList.add('text-ink-secondary');
-      });
-
-      btn.classList.add('active', 'bg-ink-primary', 'text-white', 'shadow-soft-sm');
-      btn.classList.remove('text-ink-secondary');
-
-      const target = btn.getAttribute('data-target');
-
-      if (target === 'quiro') {
-        if (cardQuiro && cardAcup) {
-          cardQuiro.style.display = 'flex';
-          cardQuiro.style.transform = 'scale(1.02)';
-          cardQuiro.classList.add('border-petrol');
-          cardAcup.style.display = 'none';
-        }
-      } else if (target === 'acup') {
-        if (cardQuiro && cardAcup) {
-          cardQuiro.style.display = 'none';
-          cardAcup.style.display = 'flex';
-          cardAcup.style.transform = 'scale(1.02)';
-          cardAcup.classList.add('border-sage');
-        }
-      } else {
-        if (cardQuiro && cardAcup) {
-          cardQuiro.style.display = 'flex';
-          cardQuiro.style.transform = 'scale(1)';
-          cardQuiro.classList.remove('border-petrol');
-          cardAcup.style.display = 'flex';
-          cardAcup.style.transform = 'scale(1)';
-          cardAcup.classList.remove('border-sage');
-        }
-      }
-    });
-  });
-</script>

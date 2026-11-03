@@ -1,165 +1,276 @@
 ---
-import { servicesData } from '../../data/services';
 import { professionals } from '../../data/professionals';
+
+const quiroServices = [
+  {
+    name: 'Ajuste Quiropráctico de Columna',
+    subtitle: 'Alineación vertebral, descompresión radicular y corrección articular específica.',
+    duration: '45 min',
+    price: '$30.000',
+    img: '/pix/kine/quiro.webp',
+    featured: true,
+  },
+  {
+    name: 'Fisioterapia y Desinflamación',
+    subtitle: 'Ultrasonido, TENS y agentes físicos para desinflamar tejidos blandos.',
+    duration: '50 min',
+    price: '$25.000',
+    img: '/pix/kine/fisio.webp',
+  },
+  {
+    name: 'Masoterapia Clínica Descontracturante',
+    subtitle: 'Liberación miofascial profunda y descontracturante para cuello y espalda.',
+    duration: '45 min',
+    price: '$25.000',
+    img: '/pix/kine/maso.webp',
+  },
+  {
+    name: 'Kinesiología a Domicilio (Temuco)',
+    subtitle: 'Rehabilitación en tu hogar para post-operatorios y adultos mayores.',
+    duration: '60 min',
+    price: '$35.000',
+    img: '/pix/kine/domicilio.webp',
+  },
+  {
+    name: 'Ejercicio Terapéutico y Core',
+    subtitle: 'Fortalecimiento postural y estabilidad neuromuscular para evitar recaídas.',
+    duration: '50 min',
+    price: '$25.000',
+    img: '/pix/kine/ejercicio.webp',
+  },
+  {
+    name: 'Plantillas Ortopédicas Computarizadas',
+    subtitle: 'Evaluación de pisada y plantillas biomecánicas a medida.',
+    duration: '40 min',
+    price: '$30.000',
+    img: '/pix/kine/plantillas.webp',
+  },
+];
+
+const acupServices = [
+  {
+    name: 'Acupuntura Clínica Sistémica',
+    subtitle: 'Neuroacupuntura para dolor crónico, migrañas, estrés, ansiedad y regulación del Qi.',
+    duration: '50 min',
+    price: '$30.000',
+    img: '/pix/mtc/acupuntura.webp',
+    featured: true,
+  },
+  {
+    name: 'Electroacupuntura para Dolor Crónico',
+    subtitle: 'Microcorrientes terapéuticas analgésicas para parálisis facial y neuralgias.',
+    duration: '50 min',
+    price: '$30.000',
+    img: '/pix/mtc/electro.webp',
+  },
+  {
+    name: 'Ventosaterapia (Cupping Therapy)',
+    subtitle: 'Succión para soltar fascias rígidas, dolor dorsal y activar microcirculación.',
+    duration: '40 min',
+    price: '$25.000',
+    img: '/pix/mtc/ventosa.webp',
+  },
+  {
+    name: 'Moxibustión Térmica Terapéutica',
+    subtitle: 'Calor profundo de artemisa para dolores artríticos, frío interno e inmunidad.',
+    duration: '40 min',
+    price: '$25.000',
+    img: '/pix/mtc/moxi.webp',
+  },
+  {
+    name: 'Auriculoterapia Clínica',
+    subtitle: 'Puntos reflejos auriculares para control de ansiedad, sueño y control de peso.',
+    duration: '30 min',
+    price: '$20.000',
+    img: '/pix/mtc/auriculo.webp',
+  },
+  {
+    name: 'Terapia con Gua Sha Tradicional',
+    subtitle: 'Raspado terapéutico bioenergético para drenaje y desintoxicación muscular.',
+    duration: '40 min',
+    price: '$25.000',
+    img: '/pix/mtc/GuaSha.webp',
+  },
+];
 ---
 
-<section id="servicios" class="py-20 lg:py-28 relative">
-  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+<section id="servicios" class="py-20 lg:py-28 bg-[#0C1410] text-white relative overflow-hidden">
+
+  <!-- Background decorative light -->
+  <div class="absolute inset-0 pointer-events-none overflow-hidden">
+    <div class="absolute top-1/4 left-0 w-96 h-96 bg-[#134E5E]/20 rounded-full blur-[140px]"></div>
+    <div class="absolute bottom-1/4 right-0 w-96 h-96 bg-[#2E4D38]/25 rounded-full blur-[140px]"></div>
+  </div>
+
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
 
     <!-- Section Header -->
-    <div class="text-center max-w-2xl mx-auto mb-12 lg:mb-16">
-      <span class="inline-block text-xs font-bold uppercase tracking-widest text-ink-muted mb-3">
-        Catálogo Terapéutico
+    <div class="text-center max-w-2xl mx-auto mb-16 lg:mb-20">
+      <span class="inline-block text-xs font-bold uppercase tracking-widest text-[#9EB2A5] mb-3">
+        Mosaico Visual de Terapias
       </span>
-      <h2 class="font-serif text-3xl sm:text-4xl lg:text-5xl font-semibold text-ink-primary tracking-tight mb-4">
-        Terapias Clínicas y Tratamientos
+      <h2 class="font-serif text-3xl sm:text-4xl lg:text-5xl font-bold tracking-tight text-white mb-4">
+        Servicios Profesionales de Salud
       </h2>
-      <p class="text-base sm:text-lg text-ink-secondary leading-relaxed">
-        Precios transparentes, duración estimada e indicaciones claras para cada uno de nuestros tratamientos.
+      <p class="text-base text-[#BAC8BF] leading-relaxed">
+        Explora nuestros tratamientos. Cada sesión está orientada a resolver el origen de tu dolor con fotografía clínica real y precios transparentes.
       </p>
     </div>
 
-    <!-- Interactive Tab Selector -->
-    <div class="flex justify-center mb-12">
-      <div class="inline-flex p-1.5 rounded-2xl bg-surface border border-surface-border shadow-soft flex-wrap gap-1" role="tablist">
-        <button
-          type="button"
-          class="svc-tab-btn active px-4 sm:px-5 py-2.5 rounded-xl text-xs sm:text-sm font-semibold transition-all duration-200 cursor-pointer bg-ink-primary text-white shadow-soft-sm"
-          data-filter="all"
+    <!-- ==============================================
+         GRUPO 1: QUIROPRAXIA & KINESIOLOGÍA (PETRÓLEO)
+         ============================================== -->
+    <div class="mb-20" id="quiro-section">
+      <div class="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 mb-8 pb-4 border-b border-white/10">
+        <div class="flex items-center gap-3">
+          <div class="w-10 h-10 rounded-xl bg-[#134E5E] text-[#38B2CE] flex items-center justify-center font-bold text-lg shadow-petrol-glow">
+            🦴
+          </div>
+          <div>
+            <h3 class="font-serif text-2xl font-bold text-white">
+              Quiropraxia &amp; Kinesiología
+            </h3>
+            <p class="text-xs text-[#38B2CE] font-semibold">
+              Felipe Méndez · Ajuste de columna, biomecánica y rehabilitación
+            </p>
+          </div>
+        </div>
+
+        <a
+          href="https://wa.me/56973700616?text=Hola%20Felipe,%20quisiera%20consultar%20por%20servicios%20de%20Quiropraxia"
+          target="_blank"
+          rel="noopener noreferrer"
+          class="btn-press inline-flex items-center gap-2 px-4 py-2 rounded-xl bg-[#134E5E]/40 border border-[#38B2CE]/40 text-[#E0F3F7] text-xs font-semibold hover:bg-[#134E5E] transition-all cursor-pointer"
         >
-          <span>Todas las Terapias ({servicesData.length})</span>
-        </button>
-        <button
-          type="button"
-          class="svc-tab-btn px-4 sm:px-5 py-2.5 rounded-xl text-xs sm:text-sm font-semibold text-ink-secondary hover:text-petrol transition-all duration-200 cursor-pointer flex items-center gap-1.5"
-          data-filter="quiropraxia"
-        >
-          <span class="w-2 h-2 rounded-full bg-petrol"></span>
-          <span>Quiropraxia &amp; Kine</span>
-        </button>
-        <button
-          type="button"
-          class="svc-tab-btn px-4 sm:px-5 py-2.5 rounded-xl text-xs sm:text-sm font-semibold text-ink-secondary hover:text-sage transition-all duration-200 cursor-pointer flex items-center gap-1.5"
-          data-filter="acupuntura"
-        >
-          <span class="w-2 h-2 rounded-full bg-sage"></span>
-          <span>Acupuntura &amp; MTC</span>
-        </button>
+          <span>Agendar con Felipe</span>
+          <svg class="w-3.5 h-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+        </a>
       </div>
-    </div>
 
-    <!-- Services Grid -->
-    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 lg:gap-8" id="services-grid">
-      {servicesData.map(service => {
-        const isQuiro = service.discipline === 'quiropraxia';
-        const pro = isQuiro ? professionals.felipe : professionals.eduardo;
-        const borderClass = isQuiro ? 'hover:border-petrol/60' : 'hover:border-sage/60';
-        const badgeColorClass = isQuiro ? 'text-petrol bg-petrol-light border-petrol-border' : 'text-sage bg-sage-light border-sage-border';
-        const priceColorClass = isQuiro ? 'text-petrol' : 'text-sage';
-        const btnBgClass = isQuiro ? 'bg-petrol hover:bg-petrol-hover' : 'bg-sage hover:bg-sage-hover';
-
-        return (
+      <!-- Mosaico Asimétrico Quiro -->
+      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">
+        {quiroServices.map((svc) => (
           <article
-            class={`svc-item-card rounded-2xl bg-surface border border-surface-border p-6 shadow-soft ${borderClass} transition-all duration-300 flex flex-col justify-between group`}
-            data-discipline={service.discipline}
+            class={`relative rounded-2xl overflow-hidden border border-[#1E3B44] bg-[#0A181D] group cursor-pointer transition-all duration-300 hover:-translate-y-1.5 hover:border-[#38B2CE] hover:shadow-[0_12px_36px_rgba(19,78,94,0.4)] ${svc.featured ? 'sm:col-span-2 sm:row-span-2 min-h-[360px]' : 'min-h-[240px]'}`}
           >
-            <div>
-              <!-- Image Preview Header -->
-              <div class="relative w-full h-44 rounded-xl overflow-hidden mb-5 bg-canvas-muted">
-                <img
-                  src={service.imageUrl}
-                  alt={service.name}
-                  loading="lazy"
-                  class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
-                />
-                <div class="absolute top-3 left-3 flex gap-1.5 flex-wrap">
-                  <span class={`px-2.5 py-1 rounded-md text-[11px] font-bold uppercase tracking-wider border shadow-soft-sm ${badgeColorClass}`}>
-                    {isQuiro ? 'Quiro & Kine' : 'Acupuntura'}
-                  </span>
-                </div>
-                <div class="absolute bottom-3 right-3 px-2.5 py-1 rounded-md text-xs font-bold bg-white/95 text-ink-primary shadow-soft-sm">
-                  {service.duration}
-                </div>
-              </div>
+            <!-- Full bleed photo -->
+            <img
+              src={svc.img}
+              alt={svc.name}
+              loading="lazy"
+              class="absolute inset-0 w-full h-full object-cover group-hover:scale-108 transition-transform duration-700 filter brightness-[0.85] contrast-[1.05]"
+            />
 
-              <!-- Content -->
-              <div class="flex items-start justify-between gap-3 mb-2">
-                <h3 class="font-serif text-xl font-bold text-ink-primary leading-snug group-hover:text-ink-primary transition-colors">
-                  {service.name}
-                </h3>
-                <span class={`text-base font-bold shrink-0 ${priceColorClass}`}>
-                  {service.priceRef}
+            <!-- Dark gradient scrim -->
+            <div class="absolute inset-0 bg-gradient-to-t from-[#061216] via-[#0A181D]/70 to-transparent"></div>
+
+            <!-- Content overlay -->
+            <div class="relative h-full flex flex-col justify-between p-6 z-10">
+              <div class="flex items-center justify-between gap-2">
+                <span class="px-3 py-1 rounded-full text-[11px] font-bold uppercase tracking-wider bg-[#134E5E]/80 backdrop-blur-md text-[#38B2CE] border border-[#38B2CE]/40">
+                  Quiropraxia
+                </span>
+                <span class="px-2.5 py-1 rounded-md text-xs font-bold bg-white/15 backdrop-blur-md text-white">
+                  {svc.duration}
                 </span>
               </div>
 
-              <p class="text-xs text-ink-secondary mb-4 leading-relaxed">
-                {service.summary}
-              </p>
-
-              <!-- Indicación clínica -->
-              <div class="p-3 rounded-xl bg-canvas border border-surface-border/80 text-xs mb-5">
-                <span class="font-semibold text-ink-primary block mb-0.5">Indicado para:</span>
-                <span class="text-ink-secondary">{service.indication}</span>
+              <div>
+                <div class="flex items-baseline justify-between gap-2 mb-1.5">
+                  <h4 class={`font-serif font-bold text-white group-hover:text-[#38B2CE] transition-colors ${svc.featured ? 'text-2xl sm:text-3xl' : 'text-lg'}`}>
+                    {svc.name}
+                  </h4>
+                  <span class={`font-bold text-[#38B2CE] shrink-0 ${svc.featured ? 'text-xl' : 'text-base'}`}>
+                    {svc.price}
+                  </span>
+                </div>
+                <p class={`text-[#C0D2CC] leading-relaxed ${svc.featured ? 'text-sm max-w-lg' : 'text-xs'}`}>
+                  {svc.subtitle}
+                </p>
               </div>
             </div>
+          </article>
+        ))}
+      </div>
+    </div>
 
-            <!-- Footer & WhatsApp Booking -->
-            <div class="pt-4 border-t border-surface-border flex items-center justify-between gap-3">
-              <span class="text-xs text-ink-muted flex items-center gap-1.5">
-                <span class="w-1.5 h-1.5 rounded-full" style={`background-color: ${pro.accentColor}`}></span>
-                <span>{pro.name}</span>
-              </span>
 
-              <a
-                href={`https://wa.me/${pro.phone.replace('+', '')}?text=${encodeURIComponent(`Hola ${pro.name}, quisiera consultar por el tratamiento de ${service.name} en Centro Vida Sana Austral.`)}`}
-                target="_blank"
-                rel="noopener noreferrer"
-                class={`btn-press inline-flex items-center gap-1.5 px-3.5 py-2 rounded-lg text-xs font-semibold text-white ${btnBgClass} shadow-soft-sm transition-colors cursor-pointer`}
-              >
-                <span>Consultar</span>
-                <svg class="w-3.5 h-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
-              </a>
+    <!-- ==============================================
+         GRUPO 2: ACUPUNTURA & MED. CHINA (SALVIA)
+         ============================================== -->
+    <div class="pt-6" id="acup-section">
+      <div class="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 mb-8 pb-4 border-b border-white/10">
+        <div class="flex items-center gap-3">
+          <div class="w-10 h-10 rounded-xl bg-[#2E4D38] text-[#65A775] flex items-center justify-center font-bold text-lg shadow-sage-glow">
+            🌿
+          </div>
+          <div>
+            <h3 class="font-serif text-2xl font-bold text-white">
+              Acupuntura &amp; Medicina Tradicional China
+            </h3>
+            <p class="text-xs text-[#65A775] font-semibold">
+              Eduardo Lagos · Manejo de dolor crónico, sistema nervioso y equilibrio orgánico
+            </p>
+          </div>
+        </div>
+
+        <a
+          href="https://wa.me/56973888910?text=Hola%20Eduardo,%20quisiera%20consultar%20por%20servicios%20de%20Acupuntura"
+          target="_blank"
+          rel="noopener noreferrer"
+          class="btn-press inline-flex items-center gap-2 px-4 py-2 rounded-xl bg-[#2E4D38]/40 border border-[#65A775]/40 text-[#E5F5E9] text-xs font-semibold hover:bg-[#2E4D38] transition-all cursor-pointer"
+        >
+          <span>Agendar con Eduardo</span>
+          <svg class="w-3.5 h-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+        </a>
+      </div>
+
+      <!-- Mosaico Asimétrico Acupuntura -->
+      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">
+        {acupServices.map((svc) => (
+          <article
+            class={`relative rounded-2xl overflow-hidden border border-[#23422E] bg-[#0E1F16] group cursor-pointer transition-all duration-300 hover:-translate-y-1.5 hover:border-[#65A775] hover:shadow-[0_12px_36px_rgba(46,77,56,0.45)] ${svc.featured ? 'sm:col-span-2 sm:row-span-2 min-h-[360px]' : 'min-h-[240px]'}`}
+          >
+            <!-- Full bleed photo -->
+            <img
+              src={svc.img}
+              alt={svc.name}
+              loading="lazy"
+              class="absolute inset-0 w-full h-full object-cover group-hover:scale-108 transition-transform duration-700 filter brightness-[0.85] contrast-[1.05]"
+            />
+
+            <!-- Dark gradient scrim -->
+            <div class="absolute inset-0 bg-gradient-to-t from-[#07130D] via-[#0E1F16]/70 to-transparent"></div>
+
+            <!-- Content overlay -->
+            <div class="relative h-full flex flex-col justify-between p-6 z-10">
+              <div class="flex items-center justify-between gap-2">
+                <span class="px-3 py-1 rounded-full text-[11px] font-bold uppercase tracking-wider bg-[#2E4D38]/80 backdrop-blur-md text-[#65A775] border border-[#65A775]/40">
+                  Acupuntura &amp; MTC
+                </span>
+                <span class="px-2.5 py-1 rounded-md text-xs font-bold bg-white/15 backdrop-blur-md text-white">
+                  {svc.duration}
+                </span>
+              </div>
+
+              <div>
+                <div class="flex items-baseline justify-between gap-2 mb-1.5">
+                  <h4 class={`font-serif font-bold text-white group-hover:text-[#65A775] transition-colors ${svc.featured ? 'text-2xl sm:text-3xl' : 'text-lg'}`}>
+                    {svc.name}
+                  </h4>
+                  <span class={`font-bold text-[#65A775] shrink-0 ${svc.featured ? 'text-xl' : 'text-base'}`}>
+                    {svc.price}
+                  </span>
+                </div>
+                <p class={`text-[#C2D6C8] leading-relaxed ${svc.featured ? 'text-sm max-w-lg' : 'text-xs'}`}>
+                  {svc.subtitle}
+                </p>
+              </div>
             </div>
           </article>
-        );
-      })}
+        ))}
+      </div>
     </div>
 
   </div>
 </section>
-
-<script>
-  // Services Dynamic Filter Tab Logic
-  const filterBtns = document.querySelectorAll('.svc-tab-btn');
-  const cards = document.querySelectorAll<HTMLElement>('.svc-item-card');
-
-  filterBtns.forEach(btn => {
-    btn.addEventListener('click', () => {
-      filterBtns.forEach(b => {
-        b.classList.remove('active', 'bg-ink-primary', 'text-white', 'shadow-soft-sm');
-        b.classList.add('text-ink-secondary');
-      });
-
-      btn.classList.add('active', 'bg-ink-primary', 'text-white', 'shadow-soft-sm');
-      btn.classList.remove('text-ink-secondary');
-
-      const filter = btn.getAttribute('data-filter');
-
-      cards.forEach(card => {
-        const disc = card.getAttribute('data-discipline');
-        if (filter === 'all' || disc === filter) {
-          card.style.display = 'flex';
-          card.style.opacity = '0';
-          card.style.transform = 'scale(0.97)';
-          requestAnimationFrame(() => {
-            card.style.transition = 'opacity 0.25s ease-out, transform 0.25s cubic-bezier(0.16, 1, 0.3, 1)';
-            card.style.opacity = '1';
-            card.style.transform = 'scale(1)';
-          });
-        } else {
-          card.style.display = 'none';
-        }
-      });
-    });
-  });
-</script>
