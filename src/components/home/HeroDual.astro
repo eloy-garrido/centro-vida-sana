@@ -3,165 +3,186 @@ import { clinicInfo } from '../../data/clinic';
 import { professionals } from '../../data/professionals';
 ---
 
-<section id="hero" class="relative min-h-[92vh] xl:min-h-[95vh] flex items-center justify-center overflow-hidden bg-[#F8FAF7] text-[#152219] pt-6 pb-12 lg:pt-10 lg:pb-0 border-b border-[#E5EAE6]">
+<section id="hero" class="hero-original-elevated relative min-h-[100dvh] flex items-center justify-center overflow-hidden bg-[#FAEDDA] text-[#2D3E2D] pt-24 pb-28 lg:pt-28 lg:pb-24">
 
   <!-- ==============================================
-       100% FULL-BLEED BACKGROUND: Sunlit Clinic Sanctuary
+       ATMOSPHERE & NATURAL DECORATIONS (Original Soul, Modern Craft)
        ============================================== -->
-  <div class="absolute inset-0 pointer-events-none -z-10 overflow-hidden">
-    <!-- Full-bleed background image covering 100% of the Hero -->
-    <img
-      src="/pix/clinic-interior-bright.jpg"
-      alt="Centro Vida Sana Austral - Instalaciones y Box Clínico en Temuco"
-      class="w-full h-full object-cover object-[center_right] sm:object-right lg:object-center filter brightness-[1.02] contrast-[1.02]"
-      loading="eager"
-      fetchpriority="high"
-    />
+  <div class="absolute inset-0 pointer-events-none overflow-hidden select-none -z-0">
 
-    <!-- Luminous gradient veil: Solid on left for pristine readability, fading out to reveal the clinic on the right -->
-    <div class="absolute inset-0 bg-gradient-to-r from-[#F8FAF7] via-[#F8FAF7]/95 via-45% lg:via-[#F8FAF7]/85 to-transparent"></div>
+    <!-- 1. Top Foliage Garland Banner -->
+    <div class="absolute top-0 left-0 w-full h-[180px] sm:h-[220px] lg:h-[250px] bg-[url('/pix/patron-follage.webp')] bg-repeat-x bg-top bg-contain pointer-events-none opacity-90 z-10"></div>
 
-    <!-- Soft bottom blend transitioning cleanly to the next section -->
-    <div class="absolute inset-x-0 bottom-0 h-24 bg-gradient-to-t from-[#F8FAF7] via-[#F8FAF7]/60 to-transparent"></div>
+    <!-- 2. Giant Yin-Yang Watermark in Center-Right -->
+    <div class="absolute right-[-100px] lg:right-[-40px] top-1/2 -translate-y-1/2 w-[550px] sm:w-[700px] lg:w-[850px] h-[550px] sm:h-[700px] lg:h-[850px] opacity-[0.045] pointer-events-none z-1 animate-slow-rotate">
+      <img
+        src="/pix/yinyang.webp"
+        alt="Símbolo Yin Yang - Equilibrio y Armonía"
+        class="w-full h-full object-contain"
+        loading="lazy"
+        width="850"
+        height="850"
+      />
+    </div>
 
-    <!-- Soft top blend under navbar -->
-    <div class="absolute inset-x-0 top-0 h-16 bg-gradient-to-b from-[#F8FAF7]/80 to-transparent"></div>
+    <!-- 3. Animated Falling Leaves (6 Staggered Natural Leaves) -->
+    <div class="leaves-container absolute inset-0 pointer-events-none z-2">
+      <img src="/pix/leaf-1-2x.webp" alt="" class="leaf-float leaf-1" width="60" height="60" aria-hidden="true" />
+      <img src="/pix/leaf-2-2x.webp" alt="" class="leaf-float leaf-2" width="50" height="50" aria-hidden="true" />
+      <img src="/pix/leaf-3-2x.webp" alt="" class="leaf-float leaf-3" width="55" height="55" aria-hidden="true" />
+      <img src="/pix/leaf-1-2x.webp" alt="" class="leaf-float leaf-4" width="45" height="45" aria-hidden="true" />
+      <img src="/pix/leaf-2-2x.webp" alt="" class="leaf-float leaf-5" width="58" height="58" aria-hidden="true" />
+      <img src="/pix/leaf-3-2x.webp" alt="" class="leaf-float leaf-6" width="52" height="52" aria-hidden="true" />
+    </div>
 
-    <!-- Subtle dual color radiance -->
-    <div class="absolute -top-20 -left-20 w-[450px] h-[450px] bg-[#134E5E]/[0.05] rounded-full blur-[120px]"></div>
-    <div class="absolute bottom-0 right-1/4 w-[500px] h-[500px] bg-[#2E4D38]/[0.06] rounded-full blur-[130px]"></div>
+    <!-- 4. Subtle Radial Color Auras (Petrol on left, Sage on right) -->
+    <div class="absolute -top-20 -left-20 w-[500px] h-[500px] bg-[#134E5E]/[0.04] rounded-full blur-[140px]"></div>
+    <div class="absolute bottom-10 right-1/4 w-[550px] h-[550px] bg-[#2E4D38]/[0.05] rounded-full blur-[140px]"></div>
+
   </div>
 
-  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full relative z-10">
-    <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-4 items-end min-h-[78vh] lg:min-h-[82vh]">
+  <!-- 5. Bottom Pasto (Grass) Border grounding the whole section -->
+  <div class="hero-grass-border absolute bottom-0 left-0 w-full h-[120px] sm:h-[150px] lg:h-[170px] bg-[url('/pix/pasto.webp')] bg-repeat-x bg-bottom bg-contain pointer-events-none z-20"></div>
+
+  <!-- ==============================================
+       MAIN CONTENT CONTAINER
+       ============================================== -->
+  <div class="max-w-[1600px] mx-auto px-4 sm:px-6 lg:px-12 w-full relative z-30">
+    <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-6 items-center min-h-[75vh]">
 
       <!-- ==============================================
-           LEFT COLUMN: Editorial Copy, Badges & Actions (7 Cols)
+           LEFT COLUMN: Editorial Copy & Modern Actions (7 Cols)
            ============================================== -->
-      <div class="lg:col-span-7 space-y-5 sm:space-y-6 text-center lg:text-left pt-6 pb-6 lg:pb-16 lg:pt-8">
+      <div class="lg:col-span-7 xl:col-span-7 space-y-6 sm:space-y-7 text-center lg:text-left pt-6 pb-12 lg:pb-8">
 
-        <!-- Authority Eyebrow Badge -->
-        <div class="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-white/90 border border-[#DCE5DF] shadow-[0_2px_8px_rgba(21,34,25,0.04)] backdrop-blur-md">
-          <span class="flex h-2 w-2 rounded-full bg-emerald-500 animate-pulse"></span>
-          <span class="text-xs font-semibold text-[#3D5646] tracking-wide">
+        <!-- Authority Eyebrow Pill -->
+        <div class="inline-flex items-center gap-2.5 px-4 py-2 rounded-full bg-white/85 border border-[#8FA885]/30 shadow-[0_2px_12px_rgba(45,62,45,0.06)] backdrop-blur-md">
+          <span class="flex h-2.5 w-2.5 rounded-full bg-[#3A7D44] animate-pulse"></span>
+          <span class="text-xs font-bold text-[#2D3E2D] tracking-wide uppercase">
             Centro de Salud Integral en Temuco · Acreditados Minsal
           </span>
         </div>
 
-        <!-- Master Editorial Headline -->
-        <h1 class="font-serif text-4xl sm:text-5xl lg:text-6xl xl:text-[4.25rem] font-bold tracking-tight text-[#152219] leading-[1.08]">
-          La Precisión de la <br class="hidden sm:inline" />
-          <span class="text-petrol relative inline-block">
-            Quiropraxia.
-          </span>
-          <br />
-          La Sabiduría de la <br class="hidden sm:inline" />
-          <span class="text-sage relative inline-block">
-            Acupuntura.
-          </span>
+        <!-- Master Title (Original Structure + Dual Identity Modern Polish) -->
+        <h1 class="font-serif text-4xl sm:text-5xl lg:text-6xl xl:text-[4.25rem] font-bold tracking-tight text-[#2D3E2D] leading-[1.08]">
+          Acupuntura, Quiropraxia y Kinesiología en <span class="hero-highlight">Temuco</span>
         </h1>
 
-        <!-- Subtitle -->
-        <p class="text-base sm:text-lg lg:text-xl text-[#3F5345] leading-relaxed max-w-xl mx-auto lg:mx-0 font-normal">
-          Felipe Méndez y Eduardo Lagos unen corrección biomecánica de columna y medicina tradicional china para eliminar la causa raíz de tu dolor y restaurar tu movilidad en Temuco.
-        </p>
+        <!-- Subtitle & Clinical Proposition -->
+        <div class="space-y-3 max-w-2xl mx-auto lg:mx-0">
+          <p class="font-serif text-2xl sm:text-3xl font-medium text-[#4D6D47] italic">
+            Recupera tu bienestar de forma natural
+          </p>
+          <p class="text-base sm:text-lg text-[#3E523E] leading-relaxed font-normal">
+            Centro especializado en biomecánica vertebral y medicina tradicional china. Tratamientos integrales 1 a 1 para eliminar la causa del dolor de espalda, cuello, ciática y restaurar tu vitalidad.
+          </p>
+        </div>
 
-        <!-- Dual Discipline Quick Tags -->
-        <div class="flex flex-wrap items-center justify-center lg:justify-start gap-2.5 pt-1">
+        <!-- Dual Discipline Badges with Direct WhatsApp Link -->
+        <div class="flex flex-wrap items-center justify-center lg:justify-start gap-3 pt-1">
+          <!-- Felipe Badge (Azul Petróleo Clásico) -->
           <a
-            href="#quiro-section"
-            class="btn-press inline-flex items-center gap-2 px-3.5 py-2 rounded-xl bg-white/90 border border-[#C2DFE8] hover:bg-[#EBF5F8] text-petrol text-xs font-bold transition-all shadow-sm backdrop-blur-sm cursor-pointer"
+            href={`https://wa.me/56973700616?text=${encodeURIComponent(professionals.felipe.whatsappMessage)}`}
+            target="_blank"
+            rel="noopener noreferrer"
+            class="btn-press inline-flex items-center gap-2.5 px-4 py-2 rounded-xl bg-white/90 border-2 border-[#134E5E]/40 hover:border-[#134E5E] text-[#134E5E] text-xs font-bold shadow-soft transition-all cursor-pointer backdrop-blur-sm"
           >
-            <span class="w-2.5 h-2.5 rounded-full bg-petrol"></span>
-            <span>Quiropraxia &amp; Kinesiología (Felipe)</span>
+            <span class="w-2.5 h-2.5 rounded-full bg-[#134E5E]"></span>
+            <span>Quiropraxia &amp; Kine · Felipe Méndez</span>
+            <span class="text-[10px] text-[#134E5E]/70 font-semibold">(+569 7370 0616)</span>
           </a>
+
+          <!-- Eduardo Badge (Verde Salvia Botánico) -->
           <a
-            href="#acup-section"
-            class="btn-press inline-flex items-center gap-2 px-3.5 py-2 rounded-xl bg-white/90 border border-[#CCE2D2] hover:bg-[#EEF5F0] text-sage text-xs font-bold transition-all shadow-sm backdrop-blur-sm cursor-pointer"
+            href={`https://wa.me/56973888910?text=${encodeURIComponent(professionals.eduardo.whatsappMessage)}`}
+            target="_blank"
+            rel="noopener noreferrer"
+            class="btn-press inline-flex items-center gap-2.5 px-4 py-2 rounded-xl bg-white/90 border-2 border-[#2E4D38]/40 hover:border-[#2E4D38] text-[#2E4D38] text-xs font-bold shadow-soft transition-all cursor-pointer backdrop-blur-sm"
           >
-            <span class="w-2.5 h-2.5 rounded-full bg-sage"></span>
-            <span>Acupuntura &amp; Med. China (Eduardo)</span>
+            <span class="w-2.5 h-2.5 rounded-full bg-[#2E4D38]"></span>
+            <span>Acupuntura Minsal · Eduardo Lagos</span>
+            <span class="text-[10px] text-[#2E4D38]/70 font-semibold">(+569 7388 8910)</span>
           </a>
         </div>
 
-        <!-- Primary Action Island -->
-        <div class="flex flex-col sm:flex-row items-center justify-center lg:justify-start gap-3.5 pt-2">
-          <!-- Button-in-Button Primary Consultation CTA -->
+        <!-- Modern Action Island (Button-in-Button Emil Kowalski Feedback) -->
+        <div class="flex flex-col sm:flex-row items-center justify-center lg:justify-start gap-4 pt-2">
+          <!-- Primary CTA Button -->
           <a
             href="#contacto"
-            class="group btn-press w-full sm:w-auto inline-flex items-center justify-between sm:justify-center gap-3.5 px-7 py-3.5 rounded-full bg-gradient-to-r from-petrol to-sage hover:from-[#175F73] hover:to-[#385F44] text-white text-base font-bold shadow-[0_8px_24px_rgba(19,78,94,0.22)] transition-all cursor-pointer"
+            class="group btn-press w-full sm:w-auto inline-flex items-center justify-between sm:justify-center gap-4 px-8 py-4 rounded-full bg-gradient-to-r from-[#134E5E] to-[#2E4D38] hover:from-[#195E70] hover:to-[#385E44] text-white text-base font-bold shadow-[0_10px_30px_rgba(46,77,56,0.3)] transition-all cursor-pointer border border-white/20"
           >
-            <span>Agendar Evaluación</span>
-            <div class="w-7 h-7 rounded-full bg-white/20 flex items-center justify-center transition-transform duration-300 group-hover:translate-x-1 group-hover:-translate-y-[1px]">
-              <svg class="w-3.5 h-3.5 text-white" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+            <span>Agendar Cita Médica</span>
+            <div class="w-8 h-8 rounded-full bg-white/20 flex items-center justify-center transition-transform duration-300 group-hover:translate-x-1 group-hover:-translate-y-[1px]">
+              <svg class="w-4 h-4 text-emerald-200" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
                 <path d="M5 12h14M12 5l7 7-7 7"/>
               </svg>
             </div>
           </a>
 
-          <!-- Secondary Services CTA -->
+          <!-- Secondary CTA Button -->
           <a
             href="#servicios"
-            class="group btn-press w-full sm:w-auto inline-flex items-center justify-center gap-2 px-6 py-3.5 rounded-full bg-white/90 hover:bg-white text-[#2D3E32] text-sm font-semibold border border-[#D5E0D8] shadow-sm backdrop-blur-sm transition-all cursor-pointer"
+            class="group btn-press w-full sm:w-auto inline-flex items-center justify-center gap-2.5 px-7 py-4 rounded-full bg-white/85 hover:bg-white text-[#2D3E2D] text-sm font-bold border border-[#8FA885]/40 shadow-soft backdrop-blur-md transition-all cursor-pointer"
           >
             <span>Ver Terapias y Valores</span>
-            <svg class="w-4 h-4 text-[#6E8576] transition-transform duration-300 group-hover:translate-x-1" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <svg class="w-4 h-4 text-[#4D6D47] transition-transform duration-300 group-hover:translate-x-1" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
               <path d="M9 5l7 7-7 7"/>
             </svg>
           </a>
         </div>
 
-        <!-- Floating Glass Contact Cards -->
-        <div class="grid grid-cols-1 sm:grid-cols-2 gap-3.5 pt-2 max-w-xl mx-auto lg:mx-0">
+        <!-- Elevated Glassmorphism Contact & Proof Cards -->
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 pt-3 max-w-xl mx-auto lg:mx-0">
 
-          <!-- Card 1: Dirección y Maps -->
+          <!-- Card 1: Ubicación -->
           <a
             href={clinicInfo.address.mapsUrl}
             target="_blank"
             rel="noopener noreferrer"
-            class="btn-press p-3.5 rounded-2xl bg-white/90 border border-[#DCE5DF] hover:border-petrol/60 shadow-[0_4px_16px_rgba(21,34,25,0.04)] backdrop-blur-md flex items-center gap-3 transition-all group text-left cursor-pointer"
+            class="btn-press p-4 rounded-2xl bg-white/80 border border-[#8FA885]/35 hover:border-[#134E5E] shadow-[0_4px_20px_rgba(45,62,45,0.06)] backdrop-blur-md flex items-center gap-3.5 transition-all group text-left cursor-pointer"
           >
-            <div class="w-10 h-10 rounded-xl bg-[#EBF5F8] text-petrol flex items-center justify-center shrink-0 border border-[#C6DFE8]">
-              <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2">
+            <div class="w-12 h-12 rounded-xl bg-gradient-to-br from-[#134E5E] to-[#2E4D38] text-white flex items-center justify-center shrink-0 shadow-soft">
+              <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2">
                 <path stroke-linecap="round" stroke-linejoin="round" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"></path>
                 <path stroke-linecap="round" stroke-linejoin="round" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"></path>
               </svg>
             </div>
             <div>
-              <span class="text-[10px] font-bold uppercase tracking-wider text-petrol block">
+              <span class="text-[11px] font-bold uppercase tracking-wider text-[#134E5E] block">
                 Ubicación Clínica
               </span>
-              <span class="text-xs font-bold text-[#152219] group-hover:text-petrol transition-colors block">
+              <span class="text-sm font-bold text-[#2D3E2D] group-hover:text-[#134E5E] transition-colors block">
                 Los Armiños 1620, Temuco
               </span>
-              <span class="text-[10px] text-[#6E8576]">
+              <span class="text-[11px] text-[#556D55]">
                 Con estacionamiento privado →
               </span>
             </div>
           </a>
 
-          <!-- Card 2: Opiniones Google -->
+          <!-- Card 2: Google Reviews -->
           <a
             href={clinicInfo.social.googleReviews}
             target="_blank"
             rel="noopener noreferrer"
-            class="btn-press p-3.5 rounded-2xl bg-white/90 border border-[#DCE5DF] hover:border-sage/60 shadow-[0_4px_16px_rgba(21,34,25,0.04)] backdrop-blur-md flex items-center gap-3 transition-all group text-left cursor-pointer"
+            class="btn-press p-4 rounded-2xl bg-white/80 border border-[#8FA885]/35 hover:border-[#2E4D38] shadow-[0_4px_20px_rgba(45,62,45,0.06)] backdrop-blur-md flex items-center gap-3.5 transition-all group text-left cursor-pointer"
           >
-            <div class="w-10 h-10 rounded-xl bg-[#EEF5F0] text-sage flex items-center justify-center shrink-0 border border-[#CCE2D2]">
-              <svg class="w-5 h-5 text-amber-500" viewBox="0 0 24 24" fill="currentColor">
+            <div class="w-12 h-12 rounded-xl bg-gradient-to-br from-[#2E4D38] to-[#437A51] text-amber-300 flex items-center justify-center shrink-0 shadow-soft">
+              <svg class="w-6 h-6 fill-current" viewBox="0 0 24 24">
                 <path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"/>
               </svg>
             </div>
             <div>
               <div class="flex items-center gap-1 text-amber-500 text-xs">
                 <span>★★★★★</span>
-                <span class="font-bold text-[#152219] ml-1">5.0</span>
+                <span class="font-bold text-[#2D3E2D] ml-1">5.0</span>
               </div>
-              <span class="text-xs font-bold text-[#152219] group-hover:text-sage transition-colors block">
+              <span class="text-sm font-bold text-[#2D3E2D] group-hover:text-[#2E4D38] transition-colors block">
                 156+ Reseñas Verificadas
               </span>
-              <span class="text-[10px] text-[#6E8576]">
-                Leer comentarios de pacientes →
+              <span class="text-[11px] text-[#556D55]">
+                Leer opiniones de pacientes →
               </span>
             </div>
           </a>
@@ -171,80 +192,78 @@ import { professionals } from '../../data/professionals';
       </div>
 
       <!-- ==============================================
-           RIGHT COLUMN: FREE-STANDING CLINICIANS (5 Cols)
-           No boxes, no cages. Grounded freely in the clinic space!
+           RIGHT COLUMN: FREE-STANDING HERO DUO GROUNDED IN GRASS
            ============================================== -->
-      <div class="lg:col-span-5 relative flex items-end justify-center lg:justify-end w-full">
+      <div class="lg:col-span-5 xl:col-span-5 relative flex items-end justify-center lg:justify-end w-full min-h-[460px] sm:min-h-[580px] lg:min-h-[720px] pointer-events-none">
 
-        <!-- Top Floating Credential Badge -->
-        <div class="absolute top-2 right-4 sm:right-8 lg:right-4 z-20 hidden sm:flex items-center gap-2 px-3.5 py-2 rounded-2xl bg-white/95 border border-[#D5E0D8] backdrop-blur-xl shadow-soft">
+        <!-- Top Floating Box Status Badge -->
+        <div class="absolute top-4 right-4 sm:right-8 lg:right-6 z-25 hidden sm:flex items-center gap-2.5 px-4 py-2 rounded-2xl bg-white/90 border border-[#8FA885]/40 backdrop-blur-xl shadow-soft pointer-events-auto">
           <span class="w-2.5 h-2.5 rounded-full bg-emerald-500 animate-pulse"></span>
           <div class="text-[11px] leading-tight text-left">
-            <span class="font-bold text-[#152219] block">Atención Personalizada 1 a 1</span>
-            <span class="text-[#556D60]">Boxes privados climatizados</span>
+            <span class="font-bold text-[#2D3E2D] block">Boxes Privados 1 a 1</span>
+            <span class="text-[#556D55]">Atención clínica sin esperas</span>
           </div>
         </div>
 
-        <!-- The Real Cutout of Felipe and Eduardo - Standing Tall and Free -->
-        <div class="relative z-10 w-full max-w-[500px] lg:max-w-none flex items-end justify-center lg:justify-end">
+        <!-- The Real Cutout of Felipe and Eduardo - Standing Tall on Grass -->
+        <div class="relative z-15 w-full flex items-end justify-center lg:justify-end">
           <picture>
             <source srcset="/pix/duo-hd.webp" type="image/webp" />
             <img
               src="/pix/duo-hd.png"
               alt="Felipe Méndez y Eduardo Lagos - Centro Vida Sana Austral"
-              class="w-auto h-[440px] sm:h-[540px] lg:h-[620px] xl:h-[680px] object-contain drop-shadow-[0_20px_40px_rgba(21,34,25,0.22)] filter contrast-[1.03] select-none pointer-events-none"
+              class="hero-duo-image w-auto h-[440px] sm:h-[580px] lg:h-[720px] xl:h-[800px] object-contain drop-shadow-[0_20px_35px_rgba(45,62,45,0.25)] filter contrast-[1.03] select-none pointer-events-none"
               loading="eager"
               fetchpriority="high"
             />
           </picture>
 
-          <!-- Floating Interactive Chips Container for Mobile & Desktop (No Overlap) -->
-          <div class="absolute bottom-4 inset-x-2 sm:inset-x-4 z-20 flex items-center justify-between gap-2 sm:gap-3">
+          <!-- Interactive Chips next to each specialist -->
+          <div class="absolute bottom-16 sm:bottom-20 inset-x-2 sm:inset-x-4 z-30 flex items-center justify-between gap-3 pointer-events-auto">
 
-            <!-- Chip Felipe -->
+            <!-- Chip Felipe Méndez -->
             <a
               href={`https://wa.me/56973700616?text=${encodeURIComponent(professionals.felipe.whatsappMessage)}`}
               target="_blank"
               rel="noopener noreferrer"
-              class="btn-press flex-1 min-w-0 p-1.5 sm:p-2.5 pr-2.5 sm:pr-3.5 rounded-2xl bg-white/95 border border-[#C6DFE8] hover:border-petrol shadow-[0_8px_24px_rgba(19,78,94,0.15)] backdrop-blur-xl flex items-center gap-2 sm:gap-2.5 text-left transition-all group cursor-pointer"
+              class="btn-press flex-1 min-w-0 p-2 sm:p-2.5 pr-3 sm:pr-3.5 rounded-2xl bg-white/95 border-2 border-[#134E5E]/40 hover:border-[#134E5E] shadow-[0_8px_24px_rgba(19,78,94,0.18)] backdrop-blur-xl flex items-center gap-2.5 text-left transition-all group cursor-pointer"
             >
               <img
                 src={professionals.felipe.photoUrl}
                 alt={professionals.felipe.name}
-                class="w-8 h-8 sm:w-10 sm:h-10 rounded-xl object-cover border border-[#C6DFE8] group-hover:scale-105 transition-transform shrink-0"
+                class="w-9 h-9 sm:w-10 sm:h-10 rounded-xl object-cover border border-[#134E5E]/30 group-hover:scale-105 transition-transform shrink-0"
               />
               <div class="min-w-0">
                 <div class="flex items-center gap-1">
-                  <span class="text-[11px] sm:text-xs font-bold text-petrol block leading-tight truncate">{professionals.felipe.name}</span>
-                  <span class="hidden sm:inline px-1 py-0.2 rounded text-[8px] font-bold bg-[#EBF5F8] text-petrol">Minsal</span>
+                  <span class="text-[11px] sm:text-xs font-bold text-[#134E5E] block leading-tight truncate">{professionals.felipe.name}</span>
+                  <span class="hidden sm:inline px-1 py-0.2 rounded text-[8px] font-bold bg-[#EBF5F8] text-[#134E5E]">Minsal</span>
                 </div>
-                <span class="text-[9px] sm:text-[10px] text-[#556D60] block leading-tight truncate">Quiropráctico &amp; Kine</span>
+                <span class="text-[9px] sm:text-[10px] text-[#556D55] block leading-tight truncate">Quiropráctico &amp; Kine</span>
               </div>
             </a>
 
-            <!-- Chip Eduardo -->
+            <!-- Chip Eduardo Lagos -->
             <a
               href={`https://wa.me/56973888910?text=${encodeURIComponent(professionals.eduardo.whatsappMessage)}`}
               target="_blank"
               rel="noopener noreferrer"
-              class="btn-press flex-1 min-w-0 p-1.5 sm:p-2.5 pr-2.5 sm:pr-3.5 rounded-2xl bg-white/95 border border-[#CCE2D2] hover:border-sage shadow-[0_8px_24px_rgba(46,77,56,0.15)] backdrop-blur-xl flex items-center gap-2 sm:gap-2.5 text-left transition-all group cursor-pointer"
+              class="btn-press flex-1 min-w-0 p-2 sm:p-2.5 pr-3 sm:pr-3.5 rounded-2xl bg-white/95 border-2 border-[#2E4D38]/40 hover:border-[#2E4D38] shadow-[0_8px_24px_rgba(46,77,56,0.18)] backdrop-blur-xl flex items-center gap-2.5 text-left transition-all group cursor-pointer"
             >
               <img
                 src={professionals.eduardo.photoUrl}
                 alt={professionals.eduardo.name}
-                class="w-8 h-8 sm:w-10 sm:h-10 rounded-xl object-cover border border-[#CCE2D2] group-hover:scale-105 transition-transform shrink-0"
+                class="w-9 h-9 sm:w-10 sm:h-10 rounded-xl object-cover border border-[#2E4D38]/30 group-hover:scale-105 transition-transform shrink-0"
               />
               <div class="min-w-0">
                 <div class="flex items-center gap-1">
-                  <span class="text-[11px] sm:text-xs font-bold text-sage block leading-tight truncate">{professionals.eduardo.name}</span>
-                  <span class="hidden sm:inline px-1 py-0.2 rounded text-[8px] font-bold bg-[#EEF5F0] text-sage">Minsal</span>
+                  <span class="text-[11px] sm:text-xs font-bold text-[#2E4D38] block leading-tight truncate">{professionals.eduardo.name}</span>
+                  <span class="hidden sm:inline px-1 py-0.2 rounded text-[8px] font-bold bg-[#EEF5F0] text-[#2E4D38]">Minsal</span>
                 </div>
-                <span class="text-[9px] sm:text-[10px] text-[#556D60] block leading-tight truncate">Acupuntura Minsal</span>
+                <span class="text-[9px] sm:text-[10px] text-[#556D55] block leading-tight truncate">Acupuntura Minsal</span>
               </div>
             </a>
 
           </div>
-
         </div>
 
       </div>
@@ -252,4 +271,135 @@ import { professionals } from '../../data/professionals';
     </div>
   </div>
 
+  <!-- Scroll Down Indicator (Bouncing Pill) -->
+  <a
+    href="#servicios"
+    class="scroll-indicator-pill absolute bottom-4 sm:bottom-6 left-1/2 -translate-x-1/2 z-25 hidden md:flex items-center gap-2 px-4 py-2 rounded-full bg-white/90 border border-[#8FA885]/40 shadow-soft backdrop-blur-md text-xs font-bold text-[#2D3E2D] hover:bg-white transition-all cursor-pointer"
+  >
+    <span>Conoce nuestras terapias</span>
+    <svg class="w-4 h-4 text-[#3A7D44] animate-bounce" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2.5">
+      <path stroke-linecap="round" stroke-linejoin="round" d="M19 14l-7 7m0 0l-7-7m7 7V3"></path>
+    </svg>
+  </a>
+
 </section>
+
+<!-- ==============================================
+     ANIMATIONS & BOTANICAL KEYFRAMES (Scoped CSS)
+     ============================================== -->
+<style>
+  /* Gradient text highlight for Temuco */
+  .hero-highlight {
+    background: linear-gradient(90deg, #134E5E 0%, #2E4D38 50%, #134E5E 100%);
+    background-size: 200% auto;
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+    font-style: italic;
+    padding-right: 0.1em;
+    animation: gradientFlow 6s ease-in-out infinite;
+  }
+
+  @keyframes gradientFlow {
+    0%   { background-position: 0% center; }
+    50%  { background-position: 100% center; }
+    100% { background-position: 0% center; }
+  }
+
+  /* Slow subtle watermark rotation */
+  @keyframes slowRotate {
+    from { transform: translateY(-50%) rotate(0deg); }
+    to   { transform: translateY(-50%) rotate(360deg); }
+  }
+  .animate-slow-rotate {
+    animation: slowRotate 180s linear infinite;
+  }
+
+  /* Floating Leaves Physics */
+  .leaf-float {
+    position: absolute;
+    opacity: 0.55;
+    filter: drop-shadow(0 4px 6px rgba(122, 152, 114, 0.35));
+    pointer-events: none;
+  }
+
+  .leaf-1 {
+    top: -8%;
+    left: 8%;
+    animation: leafFall 22s linear infinite;
+    animation-delay: 0s;
+  }
+
+  .leaf-2 {
+    top: -8%;
+    left: 45%;
+    width: 48px;
+    animation: leafFall 26s linear infinite;
+    animation-delay: -7s;
+  }
+
+  .leaf-3 {
+    top: -8%;
+    left: 78%;
+    width: 52px;
+    animation: leafFall 24s linear infinite;
+    animation-delay: -14s;
+  }
+
+  .leaf-4 {
+    top: -8%;
+    left: 22%;
+    width: 42px;
+    animation: leafFall 29s linear infinite;
+    animation-delay: -4s;
+  }
+
+  .leaf-5 {
+    top: -8%;
+    left: 62%;
+    width: 56px;
+    animation: leafFall 25s linear infinite;
+    animation-delay: -11s;
+  }
+
+  .leaf-6 {
+    top: -8%;
+    left: 36%;
+    width: 50px;
+    animation: leafFall 27s linear infinite;
+    animation-delay: -17s;
+  }
+
+  @keyframes leafFall {
+    0% {
+      transform: translateY(0) translateX(0) rotate(0deg);
+      opacity: 0;
+    }
+    10% {
+      opacity: 0.65;
+    }
+    20% {
+      transform: translateY(20vh) translateX(30px) rotate(90deg);
+    }
+    40% {
+      transform: translateY(40vh) translateX(-20px) rotate(180deg);
+    }
+    60% {
+      transform: translateY(60vh) translateX(40px) rotate(270deg);
+    }
+    80% {
+      transform: translateY(80vh) translateX(-10px) rotate(360deg);
+      opacity: 0.65;
+    }
+    100% {
+      transform: translateY(110vh) translateX(25px) rotate(450deg);
+      opacity: 0;
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .leaf-float, .animate-slow-rotate, .hero-highlight {
+      animation: none !important;
+    }
+  }
+</style>
