@@ -3,240 +3,335 @@ import { professionals } from '../../data/professionals';
 import { clinicInfo } from '../../data/clinic';
 ---
 
-<section id="profesionales" class="py-20 lg:py-28 bg-canvas-muted/40 relative">
-  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+<div id="profesionales">
 
-    <!-- Section Header -->
-    <div class="text-center max-w-2xl mx-auto mb-14 lg:mb-20">
-      <span class="inline-block text-xs font-bold uppercase tracking-widest text-ink-muted mb-3">
-        Equipo Clínico Acreditado
-      </span>
-      <h2 class="font-serif text-3xl sm:text-4xl lg:text-5xl font-semibold text-ink-primary tracking-tight mb-4">
+  <!-- ==============================================
+       SECTION HEADER: Equipo Clínico Acreditado
+       ============================================== -->
+  <section class="py-16 sm:py-20 bg-[#FBFDFB] border-b border-[#E8EFEA] text-center">
+    <div class="max-w-4xl mx-auto px-4 sm:px-6">
+      <div class="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-[#EEF5F0] border border-[#CCE2D2] text-[#2E4D38] text-xs font-bold uppercase tracking-wider mb-4 shadow-sm">
+        <span class="w-2 h-2 rounded-full bg-[#2E4D38] animate-pulse"></span>
+        <span>Acreditación de Salud Oficial</span>
+      </div>
+      <h2 class="font-serif text-3xl sm:text-4xl lg:text-5xl font-bold text-[#152219] tracking-tight mb-4">
         Profesionales a tu Cuidado
       </h2>
-      <p class="text-base sm:text-lg text-ink-secondary leading-relaxed">
-        Cada paciente recibe atención directa y personalizada de profesionales certificados por el Minsal, combinando ciencia anatómica con sabiduría terapéutica.
+      <p class="text-base sm:text-lg text-[#44594A] leading-relaxed max-w-2xl mx-auto">
+        Atención directa, personalizada y exclusiva en boxes privados. Conoce a los especialistas dedicados a tu recuperación en Centro Vida Sana Austral.
       </p>
     </div>
+  </section>
 
-    <!-- Professionals Grid with 3D Tilt -->
-    <div class="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-12 max-w-6xl mx-auto">
+  <!-- ==============================================
+       1. SECCIÓN DEDICADA: EDUARDO LAGOS (Acupuntura)
+       Foto en grande a la IZQUIERDA · Información a la DERECHA
+       Color temático: Verde Salvia Botánico (#2E4D38)
+       ============================================== -->
+  <section id="acup-section" class="py-20 lg:py-28 bg-[#F6FAF7] border-b border-[#E2ECE5] relative overflow-hidden">
 
-      <!-- ==============================================
-           Felipe Méndez — Quiropraxia & Kinesiología
-           ============================================== -->
-      <article
-        class="pro-tilt-card relative rounded-3xl bg-surface border-2 border-petrol-border p-8 lg:p-10 shadow-soft hover:shadow-petrol-glow transition-all duration-300 flex flex-col justify-between overflow-hidden group"
-        data-discipline="quiro"
-      >
-        <!-- Top discipline bar -->
-        <div class="flex items-start justify-between gap-4 mb-6 pb-6 border-b border-surface-border">
+    <!-- Formas orgánicas / irregulares decorativas de fondo -->
+    <div class="absolute -top-32 -left-32 w-[600px] h-[600px] bg-[#2E4D38]/[0.06] rounded-full blur-[140px] pointer-events-none"></div>
+    <div class="absolute -bottom-32 right-[-10%] w-[500px] h-[500px] bg-[#497356]/[0.05] rounded-full blur-[130px] pointer-events-none"></div>
+
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+      <div class="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-16 items-center">
+
+        <!-- LADO IZQUIERDO: Foto en Grande de Eduardo con Formas Irregulares -->
+        <div class="lg:col-span-5 relative flex items-center justify-center">
+
+          <!-- Forma irregular / blob botánico atrás de la foto -->
+          <div class="absolute w-[340px] sm:w-[420px] lg:w-[460px] h-[340px] sm:h-[420px] lg:h-[460px] bg-gradient-to-tr from-[#2E4D38]/25 via-[#497356]/20 to-[#65A775]/25 rounded-[63%_37%_54%_46%/44%_58%_42%_56%] blur-xl animate-pulse pointer-events-none -z-10"></div>
+          <div class="absolute w-[360px] sm:w-[440px] lg:w-[480px] h-[360px] sm:h-[440px] lg:h-[480px] bg-[#EEF5F0] rounded-[48%_52%_35%_65%/60%_40%_60%_40%] -rotate-6 pointer-events-none -z-10 border-2 border-[#CCE2D2]"></div>
+
+          <!-- Contenedor de la Foto Principal -->
+          <div class="relative w-full max-w-[380px] sm:max-w-[420px] lg:max-w-[440px] rounded-[2.5rem] overflow-hidden shadow-[0_20px_50px_rgba(46,77,56,0.2)] border-4 border-white bg-white group">
+            <img
+              src="/pix/eduardo-acupuntura-800.webp"
+              alt="Eduardo Lagos - Acupunturista Clínico Certificado Minsal"
+              class="w-full h-[440px] sm:h-[500px] lg:h-[530px] object-cover object-top group-hover:scale-105 transition-transform duration-700 ease-[cubic-bezier(0.16,1,0.3,1)]"
+              loading="lazy"
+            />
+
+            <!-- Chip Flotante de Registro Minsal -->
+            <div class="absolute bottom-4 inset-x-4 p-3 rounded-2xl bg-white/95 border border-[#CCE2D2] backdrop-blur-md shadow-soft flex items-center gap-3">
+              <div class="w-10 h-10 rounded-xl bg-[#2E4D38] text-white flex items-center justify-center shrink-0 shadow-sm font-serif font-bold text-sm">
+                SIS
+              </div>
+              <div class="min-w-0">
+                <span class="text-xs font-bold text-[#2E4D38] block truncate">Registro SIS N° 381042</span>
+                <span class="text-[11px] text-[#556D55] block truncate">Acreditado Minsal · Acupuntura</span>
+              </div>
+            </div>
+          </div>
+
+        </div>
+
+        <!-- LADO DERECHO: Toda su Información Profesional -->
+        <div class="lg:col-span-7 space-y-6 text-left">
+
+          <!-- Badge Disciplina -->
+          <div class="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-[#EEF5F0] border border-[#CCE2D2] text-[#2E4D38] text-xs font-bold uppercase tracking-wider">
+            <span class="w-2.5 h-2.5 rounded-full bg-[#2E4D38]"></span>
+            <span>Acupuntura Clínica &amp; Medicina Tradicional China</span>
+          </div>
+
+          <!-- Nombre y Título -->
           <div>
-            <span class="inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-full text-xs font-bold uppercase tracking-wider text-petrol bg-petrol-light border border-petrol-border">
-              <span class="w-2 h-2 rounded-full bg-petrol"></span>
-              {professionals.felipe.badgeLabel}
+            <h3 class="font-serif text-3xl sm:text-4xl lg:text-5xl font-bold text-[#152219] tracking-tight leading-tight mb-2">
+              Eduardo Lagos
+            </h3>
+            <p class="text-base sm:text-lg font-bold text-[#2E4D38]">
+              Acupunturista Clínico Certificado por Minsal · Docente de MTC
+            </p>
+            <p class="text-xs text-[#556D55] font-medium pt-1">
+              Superintendencia de Salud · Registro SIS N° 381042 · Temuco
+            </p>
+          </div>
+
+          <!-- Biografía Amplia -->
+          <p class="text-base text-[#3E523E] leading-relaxed">
+            Especialista en Medicina Tradicional China con más de una década de práctica clínica en Temuco. Eduardo combina técnicas milenarias con neuroacupuntura moderna para el alivio profundo del dolor crónico, fibromialgia, migrañas y trastornos del estrés, regulando el flujo energético y promoviendo la autorrecuperación del organismo de forma natural y sin efectos adversos.
+          </p>
+
+          <!-- Especialidades Clínicas en Grid -->
+          <div class="p-6 rounded-3xl bg-white border border-[#D3E3D6] shadow-[0_4px_20px_rgba(46,77,56,0.06)]">
+            <h4 class="text-xs font-bold uppercase tracking-wider text-[#152219] mb-4 flex items-center gap-2">
+              <svg class="w-4 h-4 text-[#2E4D38]" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+                <path d="M9 12l2 2 4-4"/>
+              </svg>
+              <span>Tratamientos y Especialidades de Eduardo:</span>
+            </h4>
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 text-xs sm:text-sm font-semibold text-[#2D3E2D]">
+              <div class="flex items-center gap-2.5 p-2.5 rounded-xl bg-[#F6FAF7] border border-[#E2ECE5]">
+                <span class="w-2 h-2 rounded-full bg-[#2E4D38] shrink-0"></span>
+                <span>Acupuntura Sistémica &amp; Neuroacupuntura</span>
+              </div>
+              <div class="flex items-center gap-2.5 p-2.5 rounded-xl bg-[#F6FAF7] border border-[#E2ECE5]">
+                <span class="w-2 h-2 rounded-full bg-[#2E4D38] shrink-0"></span>
+                <span>Electroacupuntura para Dolor Rebelde</span>
+              </div>
+              <div class="flex items-center gap-2.5 p-2.5 rounded-xl bg-[#F6FAF7] border border-[#E2ECE5]">
+                <span class="w-2 h-2 rounded-full bg-[#2E4D38] shrink-0"></span>
+                <span>Ventosaterapia Clínica (Cupping)</span>
+              </div>
+              <div class="flex items-center gap-2.5 p-2.5 rounded-xl bg-[#F6FAF7] border border-[#E2ECE5]">
+                <span class="w-2 h-2 rounded-full bg-[#2E4D38] shrink-0"></span>
+                <span>Moxibustión Térmica &amp; Fitoterapia</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Píldora de Calidad Clínica -->
+          <div class="flex flex-wrap items-center gap-4 text-xs font-semibold text-[#44594A]">
+            <span class="inline-flex items-center gap-1.5">
+              <svg class="w-4 h-4 text-[#2E4D38]" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg>
+              Sesiones de 50 minutos 1 a 1
+            </span>
+            <span class="inline-flex items-center gap-1.5">
+              <svg class="w-4 h-4 text-[#2E4D38]" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+              Agujas filiformes estériles desechables
+            </span>
+            <span class="inline-flex items-center gap-1.5">
+              <svg class="w-4 h-4 text-[#2E4D38]" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 6L9 17l-5-5"/></svg>
+              Box privado climatizado
             </span>
           </div>
-          <div class="text-right">
-            <span class="text-xs font-bold text-petrol block">{professionals.felipe.registrationNumber}</span>
-            <span class="text-[11px] text-ink-muted">Superintendencia de Salud</span>
+
+          <!-- Botones de Acción de Eduardo -->
+          <div class="flex flex-col sm:flex-row gap-3.5 pt-2">
+            <a
+              href={`https://wa.me/56973888910?text=${encodeURIComponent(professionals.eduardo.whatsappMessage)}`}
+              target="_blank"
+              rel="noopener noreferrer"
+              class="btn-press flex-1 inline-flex items-center justify-center gap-2.5 px-6 py-3.5 rounded-xl bg-[#2E4D38] hover:bg-[#233C2C] text-white text-sm font-bold shadow-soft hover:shadow-[0_8px_25px_rgba(46,77,56,0.3)] transition-all cursor-pointer"
+            >
+              <svg class="w-5 h-5 text-emerald-300" viewBox="0 0 24 24" fill="currentColor">
+                <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413Z"/>
+              </svg>
+              <span>Consultar a Eduardo (+569 7388 8910)</span>
+            </a>
+
+            <button
+              type="button"
+              class="vcard-btn btn-press inline-flex items-center justify-center gap-2 px-5 py-3.5 rounded-xl bg-white border-2 border-[#CCE2D2] text-xs font-bold text-[#2E4D38] hover:bg-[#EEF5F0] transition-colors cursor-pointer"
+              data-pro="eduardo"
+              title="Guardar contacto de Eduardo Lagos en tu teléfono"
+            >
+              <svg class="w-4 h-4 text-[#2E4D38]" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/>
+              </svg>
+              <span>Guardar (.vcf)</span>
+            </button>
           </div>
+
         </div>
 
-        <!-- Bio & Profile Header -->
-        <div class="flex flex-col sm:flex-row items-center sm:items-start gap-6 mb-8 text-center sm:text-left">
-          <div class="relative w-28 h-28 sm:w-32 sm:h-32 rounded-2xl overflow-hidden border-2 border-petrol/20 shadow-soft shrink-0">
-            <img
-              src={professionals.felipe.photoUrl}
-              alt={professionals.felipe.name}
-              class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
-            />
-          </div>
-          <div class="space-y-1.5">
-            <h3 class="font-serif text-2xl sm:text-3xl font-bold text-ink-primary">
-              {professionals.felipe.name}
-            </h3>
-            <p class="text-sm font-bold text-petrol">
-              {professionals.felipe.title}
-            </p>
-            <p class="text-xs text-ink-muted font-medium">
-              {professionals.felipe.credential}
-            </p>
-            <p class="text-sm text-ink-secondary pt-2 leading-relaxed">
-              {professionals.felipe.bio}
-            </p>
-          </div>
-        </div>
-
-        <!-- Specialties list -->
-        <div class="mb-8 p-5 rounded-2xl bg-canvas border border-surface-border">
-          <h4 class="text-xs font-bold uppercase tracking-wider text-ink-primary mb-3 flex items-center gap-2">
-            <svg class="w-4 h-4 text-petrol" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M9 12l2 2 4-4"/></svg>
-            Áreas de Especialidad:
-          </h4>
-          <ul class="grid grid-cols-1 sm:grid-cols-2 gap-2 text-xs font-medium text-ink-secondary">
-            {professionals.felipe.specialties.map(spec => (
-              <li class="flex items-center gap-2">
-                <span class="w-1.5 h-1.5 rounded-full bg-petrol shrink-0"></span>
-                <span>{spec}</span>
-              </li>
-            ))}
-          </ul>
-        </div>
-
-        <!-- Action CTAs & vCard -->
-        <div class="pt-4 border-t border-surface-border flex flex-col sm:flex-row gap-3">
-          <a
-            href={`https://wa.me/56973700616?text=${encodeURIComponent(professionals.felipe.whatsappMessage)}`}
-            target="_blank"
-            rel="noopener noreferrer"
-            class="btn-press flex-1 inline-flex items-center justify-center gap-2 px-5 py-3 rounded-xl bg-petrol text-white text-sm font-semibold shadow-soft hover:bg-petrol-hover transition-colors cursor-pointer"
-          >
-            <span>Consultar con Felipe</span>
-            <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
-          </a>
-          <button
-            type="button"
-            class="vcard-btn btn-press inline-flex items-center justify-center gap-2 px-4 py-3 rounded-xl bg-white border border-petrol-border text-xs font-semibold text-petrol hover:bg-petrol-light transition-colors cursor-pointer"
-            data-pro="felipe"
-            title="Guardar contacto de Felipe Méndez en tu teléfono"
-          >
-            <svg class="w-4 h-4 text-petrol" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
-            <span>Guardar Contacto (.vcf)</span>
-          </button>
-        </div>
-      </article>
-
-      <!-- ==============================================
-           Eduardo Lagos — Acupuntura & Med. China
-           ============================================== -->
-      <article
-        class="pro-tilt-card relative rounded-3xl bg-surface border-2 border-sage-border p-8 lg:p-10 shadow-soft hover:shadow-sage-glow transition-all duration-300 flex flex-col justify-between overflow-hidden group"
-        data-discipline="acup"
-      >
-        <!-- Top discipline bar -->
-        <div class="flex items-start justify-between gap-4 mb-6 pb-6 border-b border-surface-border">
-          <div>
-            <span class="inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-full text-xs font-bold uppercase tracking-wider text-sage bg-sage-light border border-sage-border">
-              <span class="w-2 h-2 rounded-full bg-sage"></span>
-              {professionals.eduardo.badgeLabel}
-            </span>
-          </div>
-          <div class="text-right">
-            <span class="text-xs font-bold text-sage block">{professionals.eduardo.registrationNumber}</span>
-            <span class="text-[11px] text-ink-muted">Acreditado Minsal</span>
-          </div>
-        </div>
-
-        <!-- Bio & Profile Header -->
-        <div class="flex flex-col sm:flex-row items-center sm:items-start gap-6 mb-8 text-center sm:text-left">
-          <div class="relative w-28 h-28 sm:w-32 sm:h-32 rounded-2xl overflow-hidden border-2 border-sage/20 shadow-soft shrink-0">
-            <img
-              src={professionals.eduardo.photoUrl}
-              alt={professionals.eduardo.name}
-              class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
-            />
-          </div>
-          <div class="space-y-1.5">
-            <h3 class="font-serif text-2xl sm:text-3xl font-bold text-ink-primary">
-              {professionals.eduardo.name}
-            </h3>
-            <p class="text-sm font-bold text-sage">
-              {professionals.eduardo.title}
-            </p>
-            <p class="text-xs text-ink-muted font-medium">
-              {professionals.eduardo.credential}
-            </p>
-            <p class="text-sm text-ink-secondary pt-2 leading-relaxed">
-              {professionals.eduardo.bio}
-            </p>
-          </div>
-        </div>
-
-        <!-- Specialties list -->
-        <div class="mb-8 p-5 rounded-2xl bg-canvas border border-surface-border">
-          <h4 class="text-xs font-bold uppercase tracking-wider text-ink-primary mb-3 flex items-center gap-2">
-            <svg class="w-4 h-4 text-sage" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M9 12l2 2 4-4"/></svg>
-            Áreas de Especialidad:
-          </h4>
-          <ul class="grid grid-cols-1 sm:grid-cols-2 gap-2 text-xs font-medium text-ink-secondary">
-            {professionals.eduardo.specialties.map(spec => (
-              <li class="flex items-center gap-2">
-                <span class="w-1.5 h-1.5 rounded-full bg-sage shrink-0"></span>
-                <span>{spec}</span>
-              </li>
-            ))}
-          </ul>
-        </div>
-
-        <!-- Action CTAs & vCard -->
-        <div class="pt-4 border-t border-surface-border flex flex-col sm:flex-row gap-3">
-          <a
-            href={`https://wa.me/56973888910?text=${encodeURIComponent(professionals.eduardo.whatsappMessage)}`}
-            target="_blank"
-            rel="noopener noreferrer"
-            class="btn-press flex-1 inline-flex items-center justify-center gap-2 px-5 py-3 rounded-xl bg-sage text-white text-sm font-semibold shadow-soft hover:bg-sage-hover transition-colors cursor-pointer"
-          >
-            <span>Consultar con Eduardo</span>
-            <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
-          </a>
-          <button
-            type="button"
-            class="vcard-btn btn-press inline-flex items-center justify-center gap-2 px-4 py-3 rounded-xl bg-white border border-sage-border text-xs font-semibold text-sage hover:bg-sage-light transition-colors cursor-pointer"
-            data-pro="eduardo"
-            title="Guardar contacto de Eduardo Lagos en tu teléfono"
-          >
-            <svg class="w-4 h-4 text-sage" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
-            <span>Guardar Contacto (.vcf)</span>
-          </button>
-        </div>
-      </article>
-
+      </div>
     </div>
+  </section>
 
-  </div>
-</section>
+  <!-- ==============================================
+       2. SECCIÓN DEDICADA: FELIPE MÉNDEZ (Quiropraxia)
+       Información a la IZQUIERDA · Foto en grande a la DERECHA
+       Color temático: Azul Petróleo Clásico (#134E5E)
+       ============================================== -->
+  <section id="quiro-section" class="py-20 lg:py-28 bg-[#F4F9FA] border-b border-[#D8E6EB] relative overflow-hidden">
+
+    <!-- Formas orgánicas / irregulares decorativas de fondo -->
+    <div class="absolute -top-32 right-[-10%] w-[600px] h-[600px] bg-[#134E5E]/[0.06] rounded-full blur-[140px] pointer-events-none"></div>
+    <div class="absolute -bottom-32 -left-32 w-[500px] h-[500px] bg-[#236B80]/[0.05] rounded-full blur-[130px] pointer-events-none"></div>
+
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+      <div class="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-16 items-center">
+
+        <!-- LADO IZQUIERDO: Toda su Información Profesional (en desktop va a la izquierda) -->
+        <div class="lg:col-span-7 space-y-6 text-left order-2 lg:order-1">
+
+          <!-- Badge Disciplina -->
+          <div class="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-[#EBF5F8] border border-[#C2DFE8] text-[#134E5E] text-xs font-bold uppercase tracking-wider">
+            <span class="w-2.5 h-2.5 rounded-full bg-[#134E5E]"></span>
+            <span>Quiropraxia Biomecánica &amp; Kinesiología</span>
+          </div>
+
+          <!-- Nombre y Título -->
+          <div>
+            <h3 class="font-serif text-3xl sm:text-4xl lg:text-5xl font-bold text-[#152219] tracking-tight leading-tight mb-2">
+              Felipe Méndez
+            </h3>
+            <p class="text-base sm:text-lg font-bold text-[#134E5E]">
+              Quiropráctico &amp; Kinesiólogo Clínico · Especialista en Columna
+            </p>
+            <p class="text-xs text-[#526F77] font-medium pt-1">
+              Superintendencia de Salud · Registro SIS N° 458921 · Temuco
+            </p>
+          </div>
+
+          <!-- Biografía Amplia -->
+          <p class="text-base text-[#3A5057] leading-relaxed">
+            Especialista en evaluación biomecánica vertebral y rehabilitación motora integral. Felipe aplica ajustes quiroprácticos específicos de alta precisión y descompresión radicular para corregir subluxaciones, eliminar la compresión de nervios y resolver la causa de hernias lumbares, ciática, dolor cervical y disfunciones articulares sin fármacos ni cirugías.
+          </p>
+
+          <!-- Especialidades Clínicas en Grid -->
+          <div class="p-6 rounded-3xl bg-white border border-[#C9DFE6] shadow-[0_4px_20px_rgba(19,78,94,0.06)]">
+            <h4 class="text-xs font-bold uppercase tracking-wider text-[#152219] mb-4 flex items-center gap-2">
+              <svg class="w-4 h-4 text-[#134E5E]" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+                <path d="M9 12l2 2 4-4"/>
+              </svg>
+              <span>Tratamientos y Especialidades de Felipe:</span>
+            </h4>
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 text-xs sm:text-sm font-semibold text-[#1C2C30]">
+              <div class="flex items-center gap-2.5 p-2.5 rounded-xl bg-[#F4F9FA] border border-[#DCEBF0]">
+                <span class="w-2 h-2 rounded-full bg-[#134E5E] shrink-0"></span>
+                <span>Ajustes Vertebrales Específicos (Columna)</span>
+              </div>
+              <div class="flex items-center gap-2.5 p-2.5 rounded-xl bg-[#F4F9FA] border border-[#DCEBF0]">
+                <span class="w-2 h-2 rounded-full bg-[#134E5E] shrink-0"></span>
+                <span>Descompresión Lumbar, Hernias &amp; Ciática</span>
+              </div>
+              <div class="flex items-center gap-2.5 p-2.5 rounded-xl bg-[#F4F9FA] border border-[#DCEBF0]">
+                <span class="w-2 h-2 rounded-full bg-[#134E5E] shrink-0"></span>
+                <span>Rehabilitación Deportiva &amp; Traumatológica</span>
+              </div>
+              <div class="flex items-center gap-2.5 p-2.5 rounded-xl bg-[#F4F9FA] border border-[#DCEBF0]">
+                <span class="w-2 h-2 rounded-full bg-[#134E5E] shrink-0"></span>
+                <span>Kinesiología Motora (Box y a Domicilio)</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Píldora de Calidad Clínica -->
+          <div class="flex flex-wrap items-center gap-4 text-xs font-semibold text-[#4A646D]">
+            <span class="inline-flex items-center gap-1.5">
+              <svg class="w-4 h-4 text-[#134E5E]" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg>
+              Sesiones de 45 a 60 minutos 1 a 1
+            </span>
+            <span class="inline-flex items-center gap-1.5">
+              <svg class="w-4 h-4 text-[#134E5E]" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+              Técnicas quiroprácticas seguras e indoloras
+            </span>
+            <span class="inline-flex items-center gap-1.5">
+              <svg class="w-4 h-4 text-[#134E5E]" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 6L9 17l-5-5"/></svg>
+              Boletas reembolsables en Isapre
+            </span>
+          </div>
+
+          <!-- Botones de Acción de Felipe -->
+          <div class="flex flex-col sm:flex-row gap-3.5 pt-2">
+            <a
+              href={`https://wa.me/56973700616?text=${encodeURIComponent(professionals.felipe.whatsappMessage)}`}
+              target="_blank"
+              rel="noopener noreferrer"
+              class="btn-press flex-1 inline-flex items-center justify-center gap-2.5 px-6 py-3.5 rounded-xl bg-[#134E5E] hover:bg-[#0F3E4B] text-white text-sm font-bold shadow-soft hover:shadow-[0_8px_25px_rgba(19,78,94,0.3)] transition-all cursor-pointer"
+            >
+              <svg class="w-5 h-5 text-cyan-200" viewBox="0 0 24 24" fill="currentColor">
+                <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413Z"/>
+              </svg>
+              <span>Consultar a Felipe (+569 7370 0616)</span>
+            </a>
+
+            <button
+              type="button"
+              class="vcard-btn btn-press inline-flex items-center justify-center gap-2 px-5 py-3.5 rounded-xl bg-white border-2 border-[#C2DFE8] text-xs font-bold text-[#134E5E] hover:bg-[#EBF5F8] transition-colors cursor-pointer"
+              data-pro="felipe"
+              title="Guardar contacto de Felipe Méndez en tu teléfono"
+            >
+              <svg class="w-4 h-4 text-[#134E5E]" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/>
+              </svg>
+              <span>Guardar (.vcf)</span>
+            </button>
+          </div>
+
+        </div>
+
+        <!-- LADO DERECHO: Foto en Grande de Felipe con Formas Irregulares (en desktop va a la derecha) -->
+        <div class="lg:col-span-5 relative flex items-center justify-center order-1 lg:order-2">
+
+          <!-- Forma irregular / blob biomecánico atrás de la foto -->
+          <div class="absolute w-[340px] sm:w-[420px] lg:w-[460px] h-[340px] sm:h-[420px] lg:h-[460px] bg-gradient-to-tr from-[#134E5E]/25 via-[#236B80]/20 to-[#38B2CE]/25 rounded-[42%_58%_65%_35%/55%_45%_55%_45%] blur-xl animate-pulse pointer-events-none -z-10"></div>
+          <div class="absolute w-[360px] sm:w-[440px] lg:w-[480px] h-[360px] sm:h-[440px] lg:h-[480px] bg-[#EBF5F8] rounded-[55%_45%_60%_40%/45%_55%_45%_55%] rotate-6 pointer-events-none -z-10 border-2 border-[#C2DFE8]"></div>
+
+          <!-- Contenedor de la Foto Principal -->
+          <div class="relative w-full max-w-[380px] sm:max-w-[420px] lg:max-w-[440px] rounded-[2.5rem] overflow-hidden shadow-[0_20px_50px_rgba(19,78,94,0.2)] border-4 border-white bg-white group">
+            <img
+              src="/pix/felipe-kinesiologo-800.webp"
+              alt="Felipe Méndez - Quiropráctico & Kinesiólogo Certificado Minsal"
+              class="w-full h-[440px] sm:h-[500px] lg:h-[530px] object-cover object-top group-hover:scale-105 transition-transform duration-700 ease-[cubic-bezier(0.16,1,0.3,1)]"
+              loading="lazy"
+            />
+
+            <!-- Chip Flotante de Registro Minsal -->
+            <div class="absolute bottom-4 inset-x-4 p-3 rounded-2xl bg-white/95 border border-[#C2DFE8] backdrop-blur-md shadow-soft flex items-center gap-3">
+              <div class="w-10 h-10 rounded-xl bg-[#134E5E] text-white flex items-center justify-center shrink-0 shadow-sm font-serif font-bold text-sm">
+                SIS
+              </div>
+              <div class="min-w-0">
+                <span class="text-xs font-bold text-[#134E5E] block truncate">Registro SIS N° 458921</span>
+                <span class="text-[11px] text-[#526F77] block truncate">Acreditado Minsal · Quiropraxia</span>
+              </div>
+            </div>
+          </div>
+
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+</div>
 
 <script>
-  // 3D Tilt Physics (Emil Kowalski style: clamped, smooth, specular highlight)
-  const isTouchDevice = 'ontouchstart' in window || navigator.maxTouchPoints > 0;
-  const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-
-  if (!isTouchDevice && !prefersReducedMotion) {
-    const cards = document.querySelectorAll<HTMLElement>('.pro-tilt-card');
-
-    cards.forEach(card => {
-      card.addEventListener('mousemove', (e: MouseEvent) => {
-        const rect = card.getBoundingClientRect();
-        const x = e.clientX - rect.left;
-        const y = e.clientY - rect.top;
-        const centerX = rect.width / 2;
-        const centerY = rect.height / 2;
-
-        // Max rotation clamped to ±5 degrees for subtlety and elegance
-        const rotateX = ((y - centerY) / centerY) * -5;
-        const rotateY = ((x - centerX) / centerX) * 5;
-
-        card.style.transform = `perspective(1000px) rotateX(${rotateX}deg) rotateY(${rotateY}deg) translateY(-4px)`;
-        card.style.transition = 'transform 0.1s ease-out';
-      });
-
-      card.addEventListener('mouseleave', () => {
-        card.style.transform = 'perspective(1000px) rotateX(0deg) rotateY(0deg) translateY(0px)';
-        card.style.transition = 'transform 0.5s cubic-bezier(0.16, 1, 0.3, 1)';
-      });
-    });
-  }
-
   // vCard Generation & Download
-  document.querySelectorAll('.vcard-btn').forEach(btn => {
-    btn.addEventListener('click', (e) => {
-      const target = (e.currentTarget as HTMLElement).getAttribute('data-pro');
-      let vCardData = '';
-      let filename = '';
+  function initVCardDownload() {
+    document.querySelectorAll('.vcard-btn').forEach(btn => {
+      btn.addEventListener('click', (e) => {
+        const target = (e.currentTarget as HTMLElement).getAttribute('data-pro');
+        let vCardData = '';
+        let filename = '';
 
-      if (target === 'felipe') {
-        vCardData = `BEGIN:VCARD
+        if (target === 'felipe') {
+          vCardData = `BEGIN:VCARD
 VERSION:3.0
 FN:Felipe Méndez
 ORG:Centro Vida Sana Austral
@@ -245,9 +340,9 @@ TEL;TYPE=CELL,VOICE:+56973700616
 ADR;TYPE=WORK:;;Los Armiños 1620;Temuco;La Araucanía;4810000;Chile
 URL:https://centrovidasana.cl/
 END:VCARD`;
-        filename = 'Felipe_Mendez_VidaSana.vcf';
-      } else {
-        vCardData = `BEGIN:VCARD
+          filename = 'Felipe_Mendez_VidaSana.vcf';
+        } else {
+          vCardData = `BEGIN:VCARD
 VERSION:3.0
 FN:Eduardo Lagos
 ORG:Centro Vida Sana Austral
@@ -256,18 +351,22 @@ TEL;TYPE=CELL,VOICE:+56973888910
 ADR;TYPE=WORK:;;Los Armiños 1620;Temuco;La Araucanía;4810000;Chile
 URL:https://centrovidasana.cl/
 END:VCARD`;
-        filename = 'Eduardo_Lagos_VidaSana.vcf';
-      }
+          filename = 'Eduardo_Lagos_VidaSana.vcf';
+        }
 
-      const blob = new Blob([vCardData], { type: 'text/vcard;charset=utf-8' });
-      const url = URL.createObjectURL(blob);
-      const link = document.createElement('a');
-      link.href = url;
-      link.download = filename;
-      document.body.appendChild(link);
-      link.click();
-      document.body.removeChild(link);
-      URL.revokeObjectURL(url);
+        const blob = new Blob([vCardData], { type: 'text/vcard;charset=utf-8' });
+        const url = URL.createObjectURL(blob);
+        const link = document.createElement('a');
+        link.href = url;
+        link.download = filename;
+        document.body.appendChild(link);
+        link.click();
+        document.body.removeChild(link);
+        URL.revokeObjectURL(url);
+      });
     });
-  });
+  }
+
+  initVCardDownload();
+  document.addEventListener('astro:page-load', initVCardDownload);
 </script>
