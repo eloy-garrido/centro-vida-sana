@@ -4,6 +4,12 @@
 
 <section class="hero" id="hero">
   <div class="hero-background">
+    <!-- Capa de imagen ambiental clara y luminosa -->
+    <div class="hero-bg-image" aria-hidden="true">
+      <img src="/pix/hero-bg-bright.webp" alt="" class="hero-bg-img" loading="eager" />
+      <div class="hero-bg-overlay"></div>
+    </div>
+
     <!-- Fondo decorativo superior -->
     <div class="hero-top-decoration"></div>
 
@@ -47,6 +53,44 @@
         <a href="#contacto" class="btn btn-primary">Agendar Cita</a>
       </div>
     </div>
+  </div>
+
+  <!-- Detalle y Forma Orgánica Dual detrás de los Profesionales -->
+  <div class="hero-duo-backdrop" aria-hidden="true">
+    <!-- Halo suave expansivo dual -->
+    <div class="duo-ambient-glow"></div>
+    <!-- Anillo orbital decorativo sutil -->
+    <div class="duo-orbital-ring"></div>
+    <!-- Forma orgánica fluida dual (Verde Salvia + Azul Petróleo) -->
+    <svg viewBox="0 0 600 600" class="duo-organic-blob" xmlns="http://www.w3.org/2000/svg">
+      <defs>
+        <linearGradient id="blob-duo-gradient" x1="10%" y1="20%" x2="90%" y2="80%">
+          <!-- Lado izquierdo (Eduardo): Verde Salvia Botánico -->
+          <stop offset="0%" stop-color="#C5E5CD" />
+          <stop offset="35%" stop-color="#8FB185" />
+          <!-- Transición armónica central -->
+          <stop offset="55%" stop-color="#5FA797" />
+          <!-- Lado derecho (Felipe): Azul Petróleo Biomecánico -->
+          <stop offset="85%" stop-color="#4693A6" />
+          <stop offset="100%" stop-color="#236B80" />
+        </linearGradient>
+        <linearGradient id="blob-duo-contour" x1="0%" y1="100%" x2="100%" y2="0%">
+          <stop offset="0%" stop-color="#2E4D38" stop-opacity="0.35" />
+          <stop offset="100%" stop-color="#134E5E" stop-opacity="0.35" />
+        </linearGradient>
+      </defs>
+      <!-- Forma exterior con ligera escala -->
+      <path
+        d="M490,320Q450,420,360,470Q270,520,180,470Q90,420,70,320Q50,220,120,140Q190,60,300,70Q410,80,470,160Q530,240,490,320Z"
+        fill="url(#blob-duo-contour)"
+        transform="scale(1.06) translate(-16, -16)"
+      />
+      <!-- Blob orgánico dual principal -->
+      <path
+        d="M480,310Q440,400,350,450Q260,500,180,450Q100,400,80,310Q60,220,130,150Q200,80,300,90Q400,100,455,175Q510,250,480,310Z"
+        fill="url(#blob-duo-gradient)"
+      />
+    </svg>
   </div>
 
   <img
@@ -347,6 +391,83 @@
     color: #fff;
   }
 
+  /* Imagen y Textura Ambiental de Fondo */
+  .hero-bg-image {
+    position: absolute;
+    inset: 0;
+    z-index: 1;
+    overflow: hidden;
+    pointer-events: none;
+  }
+
+  .hero-bg-img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: center right;
+    opacity: 0.38;
+    filter: saturate(0.9) brightness(1.03);
+  }
+
+  .hero-bg-overlay {
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(
+      90deg,
+      #faedda 0%,
+      rgba(250, 237, 218, 0.94) 38%,
+      rgba(250, 237, 218, 0.72) 65%,
+      rgba(250, 237, 218, 0.35) 100%
+    );
+  }
+
+  /* Forma y Detalle Orgánico Detrás de los Profesionales */
+  .hero-duo-backdrop {
+    position: absolute;
+    right: clamp(-15px, 1.5vw, 50px);
+    bottom: clamp(40px, 8vh, 110px);
+    width: clamp(540px, 56vw, 920px);
+    height: clamp(540px, 56vw, 920px);
+    pointer-events: none;
+    z-index: 3;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .duo-ambient-glow {
+    position: absolute;
+    width: 85%;
+    height: 85%;
+    border-radius: 50%;
+    background: radial-gradient(circle, rgba(143, 177, 133, 0.35) 0%, rgba(56, 136, 156, 0.25) 50%, transparent 70%);
+    filter: blur(50px);
+  }
+
+  .duo-orbital-ring {
+    position: absolute;
+    width: 90%;
+    height: 90%;
+    border-radius: 52% 48% 62% 38% / 45% 55% 45% 55%;
+    border: 2px dashed rgba(46, 77, 56, 0.28);
+    animation: orbitalSpin 60s linear infinite;
+  }
+
+  @keyframes orbitalSpin {
+    from {
+      transform: rotate(0deg);
+    }
+    to {
+      transform: rotate(360deg);
+    }
+  }
+
+  .duo-organic-blob {
+    width: 88%;
+    height: 88%;
+    filter: drop-shadow(0 20px 40px rgba(46, 77, 56, 0.16));
+  }
+
   .hero-duo {
     position: absolute;
     bottom: 0;
@@ -495,6 +616,15 @@
       height: clamp(260px, 40vh, 360px);
       width: auto;
       z-index: 4;
+    }
+
+    .hero-duo-backdrop {
+      right: auto;
+      left: 50%;
+      transform: translateX(-50%);
+      bottom: 20px;
+      width: clamp(280px, 75vw, 360px);
+      height: clamp(280px, 75vw, 360px);
     }
 
     .hero > .container .hero-content {
