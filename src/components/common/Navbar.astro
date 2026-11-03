@@ -1,0 +1,192 @@
+---
+import { clinicInfo } from '../../data/clinic';
+import { professionals } from '../../data/professionals';
+---
+
+<header class="sticky top-0 z-40 w-full glass-nav border-b border-surface-border/80 transition-all duration-200">
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <div class="flex items-center justify-between h-20">
+
+      <!-- Logo & Marca -->
+      <a href="#hero" class="flex items-center gap-3.5 group cursor-pointer focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-petrol rounded-xl p-1">
+        <div class="relative w-11 h-11 rounded-xl bg-surface border border-surface-border flex items-center justify-center p-1.5 shadow-soft-sm group-hover:shadow-soft transition-shadow">
+          <img
+            src="/pix/logo-sin-texto-96.webp"
+            alt="Logo Centro Vida Sana Austral"
+            width="36"
+            height="36"
+            class="w-full h-full object-contain group-hover:scale-105 transition-transform duration-300"
+          />
+        </div>
+        <div class="flex flex-col">
+          <span class="font-serif font-bold text-lg text-ink-primary tracking-tight leading-tight group-hover:text-petrol transition-colors">
+            Vida Sana Austral
+          </span>
+          <span class="text-[11px] font-medium uppercase tracking-wider text-ink-muted">
+            Centro de Salud Integral
+          </span>
+        </div>
+      </a>
+
+      <!-- Desktop Nav & Dual Hub Switcher -->
+      <nav class="hidden md:flex items-center gap-1.5 lg:gap-2">
+        <!-- Dual Pills -->
+        <div class="flex items-center bg-surface p-1 rounded-full border border-surface-border shadow-soft-sm mr-2">
+          <a
+            href="#quiro-section"
+            class="px-3.5 py-1.5 rounded-full text-xs font-semibold text-petrol-800 hover:text-white hover:bg-petrol transition-all duration-200 flex items-center gap-1.5 cursor-pointer"
+          >
+            <span class="w-2 h-2 rounded-full bg-petrol"></span>
+            Quiropraxia
+          </a>
+          <a
+            href="#acup-section"
+            class="px-3.5 py-1.5 rounded-full text-xs font-semibold text-sage-800 hover:text-white hover:bg-sage transition-all duration-200 flex items-center gap-1.5 cursor-pointer"
+          >
+            <span class="w-2 h-2 rounded-full bg-sage"></span>
+            Acupuntura
+          </a>
+        </div>
+
+        <a href="#profesionales" class="px-3 py-2 text-sm font-medium text-ink-secondary hover:text-ink-primary transition-colors cursor-pointer">
+          Profesionales
+        </a>
+        <a href="#servicios" class="px-3 py-2 text-sm font-medium text-ink-secondary hover:text-ink-primary transition-colors cursor-pointer">
+          Terapias
+        </a>
+        <a href="#patologias" class="px-3 py-2 text-sm font-medium text-ink-secondary hover:text-ink-primary transition-colors cursor-pointer">
+          ¿Qué Tratamos?
+        </a>
+        <a href="#faqs" class="px-3 py-2 text-sm font-medium text-ink-secondary hover:text-ink-primary transition-colors cursor-pointer">
+          Preguntas
+        </a>
+        <a href="#contacto" class="px-3 py-2 text-sm font-medium text-ink-secondary hover:text-ink-primary transition-colors cursor-pointer">
+          Ubicación
+        </a>
+      </nav>
+
+      <!-- CTA Desktop -->
+      <div class="hidden md:flex items-center gap-3">
+        <a
+          href="#contacto"
+          class="btn-press inline-flex items-center justify-center gap-2 px-5 py-2.5 rounded-xl bg-petrol text-white text-sm font-semibold shadow-soft hover:bg-petrol-hover transition-colors cursor-pointer"
+        >
+          <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path>
+          </svg>
+          <span>Agendar Hora</span>
+        </a>
+      </div>
+
+      <!-- Mobile Menu Toggle Button (44x44px target) -->
+      <button
+        id="mobile-nav-toggle"
+        type="button"
+        aria-label="Abrir menú de navegación"
+        aria-expanded="false"
+        class="md:hidden w-11 h-11 flex items-center justify-center rounded-xl bg-surface border border-surface-border text-ink-primary hover:bg-canvas transition-colors cursor-pointer"
+      >
+        <svg id="hamburger-icon" class="w-5 h-5 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2.2">
+          <path stroke-linecap="round" stroke-linejoin="round" d="M4 6h16M4 12h16M4 18h16"></path>
+        </svg>
+        <svg id="close-icon" class="w-5 h-5 hidden transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2.2">
+          <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12"></path>
+        </svg>
+      </button>
+
+    </div>
+  </div>
+
+  <!-- Mobile Drawer -->
+  <div id="mobile-nav-menu" class="hidden md:hidden border-t border-surface-border bg-canvas/95 backdrop-blur-xl px-4 pt-3 pb-6 transition-all animate-fadeIn">
+    <div class="flex flex-col gap-2 pt-2">
+      <!-- Dual Mobile Selector -->
+      <div class="grid grid-cols-2 gap-2 mb-3 p-1.5 bg-surface rounded-xl border border-surface-border">
+        <a
+          href="#quiro-section"
+          class="mobile-nav-link text-center py-2.5 px-3 rounded-lg text-xs font-semibold text-petrol bg-petrol-light border border-petrol-border flex items-center justify-center gap-1.5"
+        >
+          <span class="w-2 h-2 rounded-full bg-petrol"></span>
+          Quiropraxia
+        </a>
+        <a
+          href="#acup-section"
+          class="mobile-nav-link text-center py-2.5 px-3 rounded-lg text-xs font-semibold text-sage bg-sage-light border border-sage-border flex items-center justify-center gap-1.5"
+        >
+          <span class="w-2 h-2 rounded-full bg-sage"></span>
+          Acupuntura
+        </a>
+      </div>
+
+      <a href="#profesionales" class="mobile-nav-link px-4 py-2.5 text-base font-medium text-ink-primary hover:bg-surface rounded-lg transition-colors">
+        Profesionales Clínicos
+      </a>
+      <a href="#servicios" class="mobile-nav-link px-4 py-2.5 text-base font-medium text-ink-primary hover:bg-surface rounded-lg transition-colors">
+        Servicios y Terapias
+      </a>
+      <a href="#patologias" class="mobile-nav-link px-4 py-2.5 text-base font-medium text-ink-primary hover:bg-surface rounded-lg transition-colors">
+        Condiciones que Tratamos
+      </a>
+      <a href="#faqs" class="mobile-nav-link px-4 py-2.5 text-base font-medium text-ink-primary hover:bg-surface rounded-lg transition-colors">
+        Preguntas Frecuentes
+      </a>
+      <a href="#contacto" class="mobile-nav-link px-4 py-2.5 text-base font-medium text-ink-primary hover:bg-surface rounded-lg transition-colors">
+        Ubicación y Horarios
+      </a>
+
+      <div class="mt-4 pt-3 border-t border-surface-border flex flex-col gap-2">
+        <a
+          href="https://wa.me/56973700616?text=Hola%20Felipe,%20quisiera%20agendar%20hora%20de%20Quiropraxia"
+          target="_blank"
+          rel="noopener noreferrer"
+          class="btn-press flex items-center justify-center gap-2 py-3 px-4 rounded-xl bg-petrol text-white font-semibold text-sm shadow-soft"
+        >
+          <span>WhatsApp Quiropraxia (Felipe)</span>
+        </a>
+        <a
+          href="https://wa.me/56973888910?text=Hola%20Eduardo,%20quisiera%20agendar%20hora%20de%20Acupuntura"
+          target="_blank"
+          rel="noopener noreferrer"
+          class="btn-press flex items-center justify-center gap-2 py-3 px-4 rounded-xl bg-sage text-white font-semibold text-sm shadow-soft"
+        >
+          <span>WhatsApp Acupuntura (Eduardo)</span>
+        </a>
+      </div>
+    </div>
+  </div>
+</header>
+
+<script>
+  // Mobile Nav Toggle Logic
+  const toggleBtn = document.getElementById('mobile-nav-toggle');
+  const menu = document.getElementById('mobile-nav-menu');
+  const hamburger = document.getElementById('hamburger-icon');
+  const closeIcon = document.getElementById('close-icon');
+
+  if (toggleBtn && menu && hamburger && closeIcon) {
+    toggleBtn.addEventListener('click', () => {
+      const isOpen = !menu.classList.contains('hidden');
+      if (isOpen) {
+        menu.classList.add('hidden');
+        hamburger.classList.remove('hidden');
+        closeIcon.classList.add('hidden');
+        toggleBtn.setAttribute('aria-expanded', 'false');
+      } else {
+        menu.classList.remove('hidden');
+        hamburger.classList.add('hidden');
+        closeIcon.classList.remove('hidden');
+        toggleBtn.setAttribute('aria-expanded', 'true');
+      }
+    });
+
+    // Close menu when clicking link
+    document.querySelectorAll('.mobile-nav-link').forEach(link => {
+      link.addEventListener('click', () => {
+        menu.classList.add('hidden');
+        hamburger.classList.remove('hidden');
+        closeIcon.classList.add('hidden');
+        toggleBtn.setAttribute('aria-expanded', 'false');
+      });
+    });
+  }
+</script>

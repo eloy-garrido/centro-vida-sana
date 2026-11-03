@@ -1,0 +1,157 @@
+---
+import '../styles/global.css';
+import { clinicInfo } from '../data/clinic';
+import { professionals } from '../data/professionals';
+import { faqsData } from '../data/faqs';
+
+interface Props {
+  title?: string;
+  description?: string;
+  canonicalUrl?: string;
+  ogImage?: string;
+}
+
+const {
+  title = `${clinicInfo.name} | Quiropraxia, Acupuntura y Kinesiología en Temuco`,
+  description = 'Centro Vida Sana Austral en Temuco: Quiropraxia, Acupuntura y Kinesiología Clínica. Profesionales certificados Minsal para alivio de lumbago, ciática y dolor crónico.',
+  canonicalUrl = 'https://centrovidasana.cl/',
+  ogImage = 'https://centrovidasana.cl/pix/hero-og.webp',
+} = Astro.props;
+
+// JSON-LD Schema estructurado oficial y accesible
+const schemaData = {
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": ["MedicalClinic", "LocalBusiness", "HealthAndBeautyBusiness"],
+      "@id": "https://centrovidasana.cl/#clinic",
+      "name": clinicInfo.name,
+      "alternateName": clinicInfo.shortName,
+      "url": "https://centrovidasana.cl/",
+      "logo": "https://centrovidasana.cl/pix/logo-texto.webp",
+      "image": "https://centrovidasana.cl/pix/hero-og.webp",
+      "description": description,
+      "telephone": professionals.felipe.phone,
+      "address": {
+        "@type": "PostalAddress",
+        "streetAddress": clinicInfo.address.street,
+        "addressLocality": clinicInfo.address.city,
+        "addressRegion": clinicInfo.address.region,
+        "postalCode": clinicInfo.address.postalCode,
+        "addressCountry": "CL"
+      },
+      "geo": {
+        "@type": "GeoCoordinates",
+        "latitude": clinicInfo.coordinates.latitude,
+        "longitude": clinicInfo.coordinates.longitude
+      },
+      "openingHoursSpecification": [
+        {
+          "@type": "OpeningHoursSpecification",
+          "dayOfWeek": ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday"],
+          "opens": "10:00",
+          "closes": "21:00"
+        }
+      ],
+      "aggregateRating": {
+        "@type": "AggregateRating",
+        "ratingValue": "5.0",
+        "bestRating": "5",
+        "ratingCount": "156"
+      },
+      "areaServed": ["Temuco", "Padre Las Casas", "La Araucanía"],
+      "sameAs": [
+        clinicInfo.social.instagram,
+        clinicInfo.social.googleReviews
+      ]
+    },
+    {
+      "@type": "Person",
+      "@id": "https://centrovidasana.cl/#felipe",
+      "name": professionals.felipe.name,
+      "jobTitle": professionals.felipe.title,
+      "telephone": professionals.felipe.phone,
+      "worksFor": { "@id": "https://centrovidasana.cl/#clinic" }
+    },
+    {
+      "@type": "Person",
+      "@id": "https://centrovidasana.cl/#eduardo",
+      "name": professionals.eduardo.name,
+      "jobTitle": professionals.eduardo.title,
+      "telephone": professionals.eduardo.phone,
+      "worksFor": { "@id": "https://centrovidasana.cl/#clinic" }
+    },
+    {
+      "@type": "FAQPage",
+      "@id": "https://centrovidasana.cl/#faq",
+      "mainEntity": faqsData.map(faq => ({
+        "@type": "Question",
+        "name": faq.question,
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": faq.answer
+        }
+      }))
+    }
+  ]
+};
+---
+
+<!DOCTYPE html>
+<html lang="es" class="scroll-smooth">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="color-scheme" content="light" />
+  <title>{title}</title>
+  <meta name="description" content={description} />
+  <link rel="canonical" href={canonicalUrl} />
+  <link rel="alternate" hreflang="es-CL" href={canonicalUrl} />
+  <link rel="alternate" hreflang="es" href={canonicalUrl} />
+
+  <!-- Preloads de Tipografía WOFF2 Local -->
+  <link rel="preload" href="/fonts/dm-sans-latin.woff2" as="font" type="font/woff2" crossorigin />
+  <link rel="preload" href="/fonts/playfair-display-latin.woff2" as="font" type="font/woff2" crossorigin />
+
+  <!-- Favicons y Manifest -->
+  <link rel="icon" type="image/x-icon" href="/favicon.ico" />
+  <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+  <link rel="apple-touch-icon" href="/apple-touch-icon.webp" />
+  <link rel="manifest" href="/site.webmanifest" />
+
+  <!-- Open Graph / Redes Sociales -->
+  <meta property="og:type" content="website" />
+  <meta property="og:url" content={canonicalUrl} />
+  <meta property="og:title" content={title} />
+  <meta property="og:description" content={description} />
+  <meta property="og:image" content={ogImage} />
+  <meta property="og:locale" content="es_CL" />
+  <meta property="og:site_name" content={clinicInfo.name} />
+
+  <!-- Twitter Card -->
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content={title} />
+  <meta name="twitter:description" content={description} />
+  <meta name="twitter:image" content={ogImage} />
+
+  <!-- Marcado Estructurado JSON-LD Consolidado -->
+  <script type="application/ld+json" set:html={JSON.stringify(schemaData)} />
+</head>
+<body class="bg-canvas text-ink-primary font-sans antialiased selection:bg-petrol-light selection:text-petrol-900">
+  <!-- Skip Link para Accesibilidad -->
+  <a
+    href="#main-content"
+    class="sr-only focus:not-sr-only focus:fixed focus:top-4 focus:left-4 focus:z-50 focus:px-4 focus:py-2 focus:bg-white focus:text-petrol focus:font-semibold focus:shadow-soft-lg focus:rounded-lg focus:border focus:border-petrol"
+  >
+    Saltar al contenido principal
+  </a>
+
+  <slot name="navbar" />
+
+  <main id="main-content">
+    <slot />
+  </main>
+
+  <slot name="footer" />
+</body>
+</html>
