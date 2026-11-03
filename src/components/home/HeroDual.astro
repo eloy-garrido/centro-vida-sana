@@ -35,10 +35,14 @@
 
   <div class="container">
     <div class="hero-content">
-      <h1 class="hero-title">Acupuntura, Quiropraxia y Kinesiología en <span class="hero-highlight">Temuco</span></h1>
+      <h1 class="hero-title">
+        <span class="hero-word-sage">Acupuntura</span>, <span class="hero-word-petrol">Quiropraxia</span> y Kinesiología en <span class="hero-highlight">Temuco</span>
+      </h1>
       <p class="hero-subtitle">Recupera tu bienestar de forma natural</p>
       <div class="hero-divider"></div>
-      <p class="hero-description">Centro especializado en Acupuntura, Kinesiología, Quiropraxia y Medicina China. Tratamientos integrales personalizados en Temuco para tu bienestar.</p>
+      <p class="hero-description">
+        Centro especializado en <strong class="desc-sage">Acupuntura</strong>, <strong class="desc-petrol">Quiropraxia</strong>, Kinesiología y Medicina Tradicional China. Tratamientos integrales personalizados en Temuco para tu bienestar.
+      </p>
       <div class="hero-actions">
         <a href="#contacto" class="btn btn-primary">Agendar Cita</a>
       </div>
@@ -223,6 +227,16 @@
     letter-spacing: -0.5px;
   }
 
+  .hero-word-sage {
+    color: #2E4D38;
+    display: inline-block;
+  }
+
+  .hero-word-petrol {
+    color: #134E5E;
+    display: inline-block;
+  }
+
   .hero-highlight {
     background: linear-gradient(90deg, #3a7d44, #6aab5e, #3a7d44);
     background-size: 200% auto;
@@ -236,19 +250,39 @@
   }
 
   .hero-subtitle {
+    font-family: 'Playfair Display', Georgia, serif;
     font-size: clamp(22px, 3vw, 32px);
     font-weight: 500;
-    color: var(--accent-green);
+    font-style: italic;
+    color: #4D6D47;
     margin-bottom: 15px;
     display: block;
   }
 
+  .hero-divider {
+    width: 75px;
+    height: 3px;
+    background: linear-gradient(90deg, #134E5E 0%, #2E4D38 100%);
+    border-radius: 3px;
+    margin: 18px 0 25px;
+  }
+
   .hero-description {
     font-size: 18px;
-    color: var(--dark-green);
+    color: var(--text-dark);
     margin-bottom: 40px;
     max-width: 520px;
-    line-height: 1.6;
+    line-height: 1.65;
+  }
+
+  .desc-sage {
+    color: #2E4D38;
+    font-weight: 700;
+  }
+
+  .desc-petrol {
+    color: #134E5E;
+    font-weight: 700;
   }
 
   .hero-actions {
