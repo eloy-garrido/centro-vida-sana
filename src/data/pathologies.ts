@@ -1,93 +1,106 @@
+export interface TreatmentTag {
+  label: string;
+  type: 'kine' | 'quiro' | 'acu';
+}
+
 export interface PathologyItem {
   id: string;
   name: string;
-  subtitle: string;
-  discipline: 'quiropraxia' | 'acupuntura' | 'dual';
-  recommendedProfessional: 'felipe' | 'eduardo' | 'ambos';
-  badgeLabel: string;
   description: string;
+  treatments: TreatmentTag[];
   whatsappMessage: string;
+  phone: string;
 }
 
 export const pathologiesData: PathologyItem[] = [
   {
-    id: 'lumbago-hernias',
-    name: 'Dolor Lumbar y Hernias Discales',
-    subtitle: 'Lumbago agudo, discopatías y rigidez baja',
-    discipline: 'quiropraxia',
-    recommendedProfessional: 'felipe',
-    badgeLabel: 'Quiropraxia & Kine',
-    description: 'Alineación de pelvis y columna lumbar, descompresión radicular y fortalecimiento estabilizador para eliminar el dolor al agacharse o levantarse.',
-    whatsappMessage: 'Hola, quisiera consultar por tratamiento para dolor lumbar / lumbago en Centro Vida Sana Austral.',
-  },
-  {
-    id: 'cervicalgia-torticolis',
-    name: 'Dolor Cervical y Tortícolis',
-    subtitle: 'Sobrecarga de cuello, trapecios y mareos cervicales',
-    discipline: 'quiropraxia',
-    recommendedProfessional: 'felipe',
-    badgeLabel: 'Quiropraxia',
-    description: 'Ajuste suave de vértebras cervicales y liberación de la musculatura suboccipital para devolver el rango de giro sin dolor ni mareo.',
-    whatsappMessage: 'Hola, quisiera consultar por tratamiento para dolor cervical / tortícolis.',
-  },
-  {
-    id: 'ciatica-aguda',
-    name: 'Ciática y Pinzamiento del Nervio',
-    subtitle: 'Dolor punzante que baja hacia glúteo y pierna',
-    discipline: 'dual',
-    recommendedProfessional: 'ambos',
-    badgeLabel: 'Terapia Combinada Dual',
-    description: 'El tratamiento más solicitado del centro: Quiropraxia para liberar la compresión articular + Acupuntura y Electroterapia para desinflamar el nervio ciático velozmente.',
-    whatsappMessage: 'Hola, tengo dolor de ciática y quisiera consultar por el tratamiento combinado de Quiropraxia y Acupuntura.',
-  },
-  {
-    id: 'cefaleas-migranas',
-    name: 'Cefaleas y Migrañas Crónicas',
-    subtitle: 'Dolor de cabeza tensional y pulsátil',
-    discipline: 'acupuntura',
-    recommendedProfessional: 'eduardo',
-    badgeLabel: 'Acupuntura Clínica',
-    description: 'Regulación del sistema nervioso autónomo y liberación de sustancias analgésicas endógenas para disminuir la intensidad y frecuencia de los episodios.',
-    whatsappMessage: 'Hola, quisiera consultar por tratamiento de acupuntura para cefaleas / migrañas.',
-  },
-  {
-    id: 'estres-ansiedad-insomnio',
-    name: 'Estrés, Ansiedad y Trastornos del Sueño',
-    subtitle: 'Sobrecarga emocional, insomnio y bruxismo',
-    discipline: 'acupuntura',
-    recommendedProfessional: 'eduardo',
-    badgeLabel: 'Medicina Tradicional China',
-    description: 'Sedación del Shen (mente) mediante puntos acupunturales y auriculoterapia para inducir un estado de relajación profunda y restaurar el descanso reparador.',
-    whatsappMessage: 'Hola, quisiera consultar por acupuntura para el manejo de estrés / insomnio.',
+    id: 'dolor-lumbar-cervical',
+    name: 'Dolor Lumbar y Cervical',
+    description: 'Hernias discales, lumbalgias crónicas y cervicalgias que limitan tu movilidad y calidad de vida diaria.',
+    treatments: [
+      { label: 'Kinesiología', type: 'kine' },
+      { label: 'Quiropraxia', type: 'quiro' },
+      { label: 'Acupuntura', type: 'acu' },
+    ],
+    whatsappMessage: 'Hola, quisiera consultar por tratamiento para Dolor Lumbar y Cervical en Centro Vida Sana Austral.',
+    phone: '+56973700616', // Felipe (Kine/Quiro) & recepción
   },
   {
     id: 'lesiones-deportivas',
-    name: 'Tendinitis y Lesiones Deportivas',
-    subtitle: 'Hombro doloroso, codo de tenista, esguinces y desgarros',
-    discipline: 'quiropraxia',
-    recommendedProfessional: 'felipe',
-    badgeLabel: 'Kinesiología Deportiva',
-    description: 'Fisioterapia para cicatrización óptima, liberación miofascial y reacondicionamiento funcional para regresar a tu actividad deportiva sin dolor.',
-    whatsappMessage: 'Hola, quisiera consultar por rehabilitación para una lesión deportiva / tendinitis.',
+    name: 'Lesiones Deportivas',
+    description: 'Esguinces, tendinitis y contracturas musculares para una recuperación rápida y efectiva que te devuelva al deporte.',
+    treatments: [
+      { label: 'Kinesiología', type: 'kine' },
+      { label: 'Quiropraxia', type: 'quiro' },
+    ],
+    whatsappMessage: 'Hola, quisiera consultar por rehabilitación de una Lesión Deportiva / Tendinitis en Centro Vida Sana Austral.',
+    phone: '+56973700616', // Felipe
   },
   {
-    id: 'fibromialgia-dolor-cronico',
-    name: 'Fibromialgia y Dolor Generalizado',
-    subtitle: 'Puntos sensibles, fatiga constante y rigidez matutina',
-    discipline: 'dual',
-    recommendedProfessional: 'ambos',
-    badgeLabel: 'Terapia Combinada Dual',
-    description: 'Abordaje integral no invasivo: Acupuntura para calmar la hipersensibilidad del sistema nervioso central + Kinesiología suave para recuperar movilidad sin gatillar crisis.',
-    whatsappMessage: 'Hola, quisiera consultar por tratamiento integral para fibromialgia.',
+    id: 'problemas-posturales',
+    name: 'Problemas Posturales',
+    description: 'Escoliosis, cifosis y lordosis que generan dolor crónico y alteran tu postura, equilibrio y bienestar general.',
+    treatments: [
+      { label: 'Kinesiología', type: 'kine' },
+      { label: 'Quiropraxia', type: 'quiro' },
+    ],
+    whatsappMessage: 'Hola, quisiera consultar por evaluación postural y tratamiento quiropráctico.',
+    phone: '+56973700616', // Felipe
+  },
+  {
+    id: 'cefaleas-migranas',
+    name: 'Cefaleas y Migrañas',
+    description: 'Dolores de cabeza crónicos de origen cervical o tensional que afectan tu concentración y calidad de vida.',
+    treatments: [
+      { label: 'Acupuntura', type: 'acu' },
+      { label: 'Quiropraxia', type: 'quiro' },
+    ],
+    whatsappMessage: 'Hola, quisiera consultar por tratamiento para Cefaleas y Migrañas en Centro Vida Sana Austral.',
+    phone: '+56973888910', // Eduardo (Acupuntura)
+  },
+  {
+    id: 'tunel-carpiano',
+    name: 'Síndrome del Túnel Carpiano',
+    description: 'Compresión nerviosa en la muñeca que produce dolor, hormigueo y debilidad en la mano y el brazo.',
+    treatments: [
+      { label: 'Acupuntura', type: 'acu' },
+      { label: 'Kinesiología', type: 'kine' },
+    ],
+    whatsappMessage: 'Hola, quisiera consultar por tratamiento para el Síndrome del Túnel Carpiano.',
+    phone: '+56973888910', // Eduardo
   },
   {
     id: 'artrosis-artritis',
-    name: 'Artrosis y Desgaste Articular',
-    subtitle: 'Rodillas, caderas, manos y columna vertebral',
-    discipline: 'dual',
-    recommendedProfessional: 'ambos',
-    badgeLabel: 'Terapia Combinada Dual',
-    description: 'Moxibustión con calor terapéutico para dispersar la rigidez matutina y ejercicio guiado de bajo impacto para nutrir el cartílago articular.',
-    whatsappMessage: 'Hola, quisiera consultar por tratamiento para artrosis / dolor articular.',
+    name: 'Artrosis y Artritis',
+    description: 'Desgaste articular e inflamación que limita el movimiento en rodillas, cadera, manos y otras articulaciones.',
+    treatments: [
+      { label: 'Acupuntura', type: 'acu' },
+      { label: 'Kinesiología', type: 'kine' },
+    ],
+    whatsappMessage: 'Hola, quisiera consultar por tratamiento para Artrosis y dolor articular.',
+    phone: '+56973888910', // Eduardo
+  },
+  {
+    id: 'ciatica',
+    name: 'Ciática',
+    description: 'Dolor irradiado desde la zona lumbar hacia la pierna por compresión del nervio ciático y radiculopatías.',
+    treatments: [
+      { label: 'Kinesiología', type: 'kine' },
+      { label: 'Quiropraxia', type: 'quiro' },
+      { label: 'Acupuntura', type: 'acu' },
+    ],
+    whatsappMessage: 'Hola, tengo dolor de ciática y quisiera consultar por evaluación y tratamiento en Centro Vida Sana.',
+    phone: '+56973700616', // Felipe & Eduardo
+  },
+  {
+    id: 'fibromialgia',
+    name: 'Fibromialgia',
+    description: 'Dolor muscular difuso y crónico acompañado de fatiga, insomnio y sensibilidad generalizada en todo el cuerpo.',
+    treatments: [
+      { label: 'Acupuntura', type: 'acu' },
+      { label: 'Kinesiología', type: 'kine' },
+    ],
+    whatsappMessage: 'Hola, quisiera consultar por tratamiento de Acupuntura y Kinesiología para Fibromialgia.',
+    phone: '+56973888910', // Eduardo
   },
 ];
