@@ -1,373 +1,372 @@
 ---
-import { clinicInfo } from '../../data/clinic';
-import { professionals } from '../../data/professionals';
+// Hero Section - Exact Original Design (Centro Vida Sana Austral)
 ---
 
-<section id="hero" class="hero-original-elevated relative min-h-[100dvh] flex items-center justify-center overflow-hidden bg-[#FAEDDA] text-[#2D3E2D] pt-24 pb-28 lg:pt-28 lg:pb-24">
+<section class="hero" id="hero">
+  <div class="hero-background">
+    <!-- Fondo decorativo superior -->
+    <div class="hero-top-decoration"></div>
 
-  <!-- ==============================================
-       ATMOSPHERE & NATURAL DECORATIONS (Original Soul, Modern Craft)
-       ============================================== -->
-  <div class="absolute inset-0 pointer-events-none overflow-hidden select-none -z-0">
-
-    <!-- 1. Top Foliage Garland Banner -->
-    <div class="absolute top-0 left-0 w-full h-[180px] sm:h-[220px] lg:h-[250px] bg-[url('/pix/patron-follage.webp')] bg-repeat-x bg-top bg-contain pointer-events-none opacity-90 z-10"></div>
-
-    <!-- 2. Giant Yin-Yang Watermark in Center-Right -->
-    <div class="absolute right-[-100px] lg:right-[-40px] top-1/2 -translate-y-1/2 w-[550px] sm:w-[700px] lg:w-[850px] h-[550px] sm:h-[700px] lg:h-[850px] opacity-[0.045] pointer-events-none z-1 animate-slow-rotate">
-      <img
-        src="/pix/yinyang.webp"
-        alt="Símbolo Yin Yang - Equilibrio y Armonía"
-        class="w-full h-full object-contain"
-        loading="lazy"
-        width="850"
-        height="850"
-      />
-    </div>
-
-    <!-- 3. Animated Falling Leaves (6 Staggered Natural Leaves) -->
-    <div class="leaves-container absolute inset-0 pointer-events-none z-2">
-      <img src="/pix/leaf-1-2x.webp" alt="" class="leaf-float leaf-1" width="60" height="60" aria-hidden="true" />
-      <img src="/pix/leaf-2-2x.webp" alt="" class="leaf-float leaf-2" width="50" height="50" aria-hidden="true" />
-      <img src="/pix/leaf-3-2x.webp" alt="" class="leaf-float leaf-3" width="55" height="55" aria-hidden="true" />
-      <img src="/pix/leaf-1-2x.webp" alt="" class="leaf-float leaf-4" width="45" height="45" aria-hidden="true" />
-      <img src="/pix/leaf-2-2x.webp" alt="" class="leaf-float leaf-5" width="58" height="58" aria-hidden="true" />
-      <img src="/pix/leaf-3-2x.webp" alt="" class="leaf-float leaf-6" width="52" height="52" aria-hidden="true" />
-    </div>
-
-    <!-- 4. Subtle Radial Color Auras (Petrol on left, Sage on right) -->
-    <div class="absolute -top-20 -left-20 w-[500px] h-[500px] bg-[#134E5E]/[0.04] rounded-full blur-[140px]"></div>
-    <div class="absolute bottom-10 right-1/4 w-[550px] h-[550px] bg-[#2E4D38]/[0.05] rounded-full blur-[140px]"></div>
-
+    <picture class="leaf-picture">
+      <source srcset="/pix/leaf-1-2x.webp" type="image/webp" />
+      <img src="/pix/leaf-1-2x.webp" alt="Decoración de hoja" class="leaf-float leaf-1" loading="lazy" width="80" height="80" />
+    </picture>
+    <picture class="leaf-picture">
+      <source srcset="/pix/leaf-2-2x.webp" type="image/webp" />
+      <img src="/pix/leaf-2-2x.webp" alt="Decoración de hoja" class="leaf-float leaf-2" loading="lazy" width="80" height="80" />
+    </picture>
+    <picture class="leaf-picture">
+      <source srcset="/pix/leaf-3-2x.webp" type="image/webp" />
+      <img src="/pix/leaf-3-2x.webp" alt="Decoración de hoja" class="leaf-float leaf-3" loading="lazy" width="80" height="80" />
+    </picture>
+    <picture class="leaf-picture">
+      <source srcset="/pix/leaf-1-2x.webp" type="image/webp" />
+      <img src="/pix/leaf-1-2x.webp" alt="Decoración de hoja" class="leaf-float leaf-4" loading="lazy" width="80" height="80" />
+    </picture>
+    <picture class="leaf-picture">
+      <source srcset="/pix/leaf-2-2x.webp" type="image/webp" />
+      <img src="/pix/leaf-2-2x.webp" alt="Decoración de hoja" class="leaf-float leaf-5" loading="lazy" width="80" height="80" />
+    </picture>
+    <picture class="leaf-picture">
+      <source srcset="/pix/leaf-3-2x.webp" type="image/webp" />
+      <img src="/pix/leaf-3-2x.webp" alt="Decoración de hoja" class="leaf-float leaf-6" loading="lazy" width="80" height="80" />
+    </picture>
   </div>
 
-  <!-- 5. Bottom Pasto (Grass) Border grounding the whole section -->
-  <div class="hero-grass-border absolute bottom-0 left-0 w-full h-[120px] sm:h-[150px] lg:h-[170px] bg-[url('/pix/pasto.webp')] bg-repeat-x bg-bottom bg-contain pointer-events-none z-20"></div>
-
-  <!-- ==============================================
-       MAIN CONTENT CONTAINER
-       ============================================== -->
-  <div class="max-w-[1600px] mx-auto px-4 sm:px-6 lg:px-12 w-full relative z-30">
-    <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-6 items-center min-h-[75vh]">
-
-      <!-- ==============================================
-           LEFT COLUMN: Editorial Copy & Modern Actions (7 Cols)
-           ============================================== -->
-      <div class="lg:col-span-7 xl:col-span-7 space-y-6 sm:space-y-7 text-center lg:text-left pt-6 pb-12 lg:pb-8">
-
-        <!-- Authority Eyebrow Pill -->
-        <div class="inline-flex items-center gap-2.5 px-4 py-2 rounded-full bg-white/85 border border-[#8FA885]/30 shadow-[0_2px_12px_rgba(45,62,45,0.06)] backdrop-blur-md">
-          <span class="flex h-2.5 w-2.5 rounded-full bg-[#3A7D44] animate-pulse"></span>
-          <span class="text-xs font-bold text-[#2D3E2D] tracking-wide uppercase">
-            Centro de Salud Integral en Temuco · Acreditados Minsal
-          </span>
-        </div>
-
-        <!-- Master Title (Original Structure + Dual Identity Modern Polish) -->
-        <h1 class="font-serif text-4xl sm:text-5xl lg:text-6xl xl:text-[4.25rem] font-bold tracking-tight text-[#2D3E2D] leading-[1.08]">
-          Acupuntura, Quiropraxia y Kinesiología en <span class="hero-highlight">Temuco</span>
-        </h1>
-
-        <!-- Subtitle & Clinical Proposition -->
-        <div class="space-y-3 max-w-2xl mx-auto lg:mx-0">
-          <p class="font-serif text-2xl sm:text-3xl font-medium text-[#4D6D47] italic">
-            Recupera tu bienestar de forma natural
-          </p>
-          <p class="text-base sm:text-lg text-[#3E523E] leading-relaxed font-normal">
-            Centro especializado en biomecánica vertebral y medicina tradicional china. Tratamientos integrales 1 a 1 para eliminar la causa del dolor de espalda, cuello, ciática y restaurar tu vitalidad.
-          </p>
-        </div>
-
-        <!-- Dual Discipline Badges with Direct WhatsApp Link -->
-        <div class="flex flex-wrap items-center justify-center lg:justify-start gap-3 pt-1">
-          <!-- Felipe Badge (Azul Petróleo Clásico) -->
-          <a
-            href={`https://wa.me/56973700616?text=${encodeURIComponent(professionals.felipe.whatsappMessage)}`}
-            target="_blank"
-            rel="noopener noreferrer"
-            class="btn-press inline-flex items-center gap-2.5 px-4 py-2 rounded-xl bg-white/90 border-2 border-[#134E5E]/40 hover:border-[#134E5E] text-[#134E5E] text-xs font-bold shadow-soft transition-all cursor-pointer backdrop-blur-sm"
-          >
-            <span class="w-2.5 h-2.5 rounded-full bg-[#134E5E]"></span>
-            <span>Quiropraxia &amp; Kine · Felipe Méndez</span>
-            <span class="text-[10px] text-[#134E5E]/70 font-semibold">(+569 7370 0616)</span>
-          </a>
-
-          <!-- Eduardo Badge (Verde Salvia Botánico) -->
-          <a
-            href={`https://wa.me/56973888910?text=${encodeURIComponent(professionals.eduardo.whatsappMessage)}`}
-            target="_blank"
-            rel="noopener noreferrer"
-            class="btn-press inline-flex items-center gap-2.5 px-4 py-2 rounded-xl bg-white/90 border-2 border-[#2E4D38]/40 hover:border-[#2E4D38] text-[#2E4D38] text-xs font-bold shadow-soft transition-all cursor-pointer backdrop-blur-sm"
-          >
-            <span class="w-2.5 h-2.5 rounded-full bg-[#2E4D38]"></span>
-            <span>Acupuntura Minsal · Eduardo Lagos</span>
-            <span class="text-[10px] text-[#2E4D38]/70 font-semibold">(+569 7388 8910)</span>
-          </a>
-        </div>
-
-        <!-- Modern Action Island (Button-in-Button Emil Kowalski Feedback) -->
-        <div class="flex flex-col sm:flex-row items-center justify-center lg:justify-start gap-4 pt-2">
-          <!-- Primary CTA Button -->
-          <a
-            href="#contacto"
-            class="group btn-press w-full sm:w-auto inline-flex items-center justify-between sm:justify-center gap-4 px-8 py-4 rounded-full bg-gradient-to-r from-[#134E5E] to-[#2E4D38] hover:from-[#195E70] hover:to-[#385E44] text-white text-base font-bold shadow-[0_10px_30px_rgba(46,77,56,0.3)] transition-all cursor-pointer border border-white/20"
-          >
-            <span>Agendar Cita Médica</span>
-            <div class="w-8 h-8 rounded-full bg-white/20 flex items-center justify-center transition-transform duration-300 group-hover:translate-x-1 group-hover:-translate-y-[1px]">
-              <svg class="w-4 h-4 text-emerald-200" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
-                <path d="M5 12h14M12 5l7 7-7 7"/>
-              </svg>
-            </div>
-          </a>
-
-          <!-- Secondary CTA Button -->
-          <a
-            href="#servicios"
-            class="group btn-press w-full sm:w-auto inline-flex items-center justify-center gap-2.5 px-7 py-4 rounded-full bg-white/85 hover:bg-white text-[#2D3E2D] text-sm font-bold border border-[#8FA885]/40 shadow-soft backdrop-blur-md transition-all cursor-pointer"
-          >
-            <span>Ver Terapias y Valores</span>
-            <svg class="w-4 h-4 text-[#4D6D47] transition-transform duration-300 group-hover:translate-x-1" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-              <path d="M9 5l7 7-7 7"/>
-            </svg>
-          </a>
-        </div>
-
-        <!-- Elevated Glassmorphism Contact & Proof Cards -->
-        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 pt-3 max-w-xl mx-auto lg:mx-0">
-
-          <!-- Card 1: Ubicación -->
-          <a
-            href={clinicInfo.address.mapsUrl}
-            target="_blank"
-            rel="noopener noreferrer"
-            class="btn-press p-4 rounded-2xl bg-white/80 border border-[#8FA885]/35 hover:border-[#134E5E] shadow-[0_4px_20px_rgba(45,62,45,0.06)] backdrop-blur-md flex items-center gap-3.5 transition-all group text-left cursor-pointer"
-          >
-            <div class="w-12 h-12 rounded-xl bg-gradient-to-br from-[#134E5E] to-[#2E4D38] text-white flex items-center justify-center shrink-0 shadow-soft">
-              <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2">
-                <path stroke-linecap="round" stroke-linejoin="round" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"></path>
-                <path stroke-linecap="round" stroke-linejoin="round" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"></path>
-              </svg>
-            </div>
-            <div>
-              <span class="text-[11px] font-bold uppercase tracking-wider text-[#134E5E] block">
-                Ubicación Clínica
-              </span>
-              <span class="text-sm font-bold text-[#2D3E2D] group-hover:text-[#134E5E] transition-colors block">
-                Los Armiños 1620, Temuco
-              </span>
-              <span class="text-[11px] text-[#556D55]">
-                Con estacionamiento privado →
-              </span>
-            </div>
-          </a>
-
-          <!-- Card 2: Google Reviews -->
-          <a
-            href={clinicInfo.social.googleReviews}
-            target="_blank"
-            rel="noopener noreferrer"
-            class="btn-press p-4 rounded-2xl bg-white/80 border border-[#8FA885]/35 hover:border-[#2E4D38] shadow-[0_4px_20px_rgba(45,62,45,0.06)] backdrop-blur-md flex items-center gap-3.5 transition-all group text-left cursor-pointer"
-          >
-            <div class="w-12 h-12 rounded-xl bg-gradient-to-br from-[#2E4D38] to-[#437A51] text-amber-300 flex items-center justify-center shrink-0 shadow-soft">
-              <svg class="w-6 h-6 fill-current" viewBox="0 0 24 24">
-                <path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"/>
-              </svg>
-            </div>
-            <div>
-              <div class="flex items-center gap-1 text-amber-500 text-xs">
-                <span>★★★★★</span>
-                <span class="font-bold text-[#2D3E2D] ml-1">5.0</span>
-              </div>
-              <span class="text-sm font-bold text-[#2D3E2D] group-hover:text-[#2E4D38] transition-colors block">
-                156+ Reseñas Verificadas
-              </span>
-              <span class="text-[11px] text-[#556D55]">
-                Leer opiniones de pacientes →
-              </span>
-            </div>
-          </a>
-
-        </div>
-
+  <div class="container">
+    <div class="hero-content">
+      <h1 class="hero-title">Acupuntura, Quiropraxia y Kinesiología en <span class="hero-highlight">Temuco</span></h1>
+      <p class="hero-subtitle">Recupera tu bienestar de forma natural</p>
+      <div class="hero-divider"></div>
+      <p class="hero-description">Centro especializado en Acupuntura, Kinesiología, Quiropraxia y Medicina China. Tratamientos integrales personalizados en Temuco para tu bienestar.</p>
+      <div class="hero-actions">
+        <a href="#contacto" class="btn btn-primary">Agendar Cita</a>
       </div>
-
-      <!-- ==============================================
-           RIGHT COLUMN: FREE-STANDING HERO DUO GROUNDED IN GRASS
-           ============================================== -->
-      <div class="lg:col-span-5 xl:col-span-5 relative flex items-end justify-center lg:justify-end w-full min-h-[460px] sm:min-h-[580px] lg:min-h-[720px] pointer-events-none">
-
-        <!-- Top Floating Box Status Badge -->
-        <div class="absolute top-4 right-4 sm:right-8 lg:right-6 z-25 hidden sm:flex items-center gap-2.5 px-4 py-2 rounded-2xl bg-white/90 border border-[#8FA885]/40 backdrop-blur-xl shadow-soft pointer-events-auto">
-          <span class="w-2.5 h-2.5 rounded-full bg-emerald-500 animate-pulse"></span>
-          <div class="text-[11px] leading-tight text-left">
-            <span class="font-bold text-[#2D3E2D] block">Boxes Privados 1 a 1</span>
-            <span class="text-[#556D55]">Atención clínica sin esperas</span>
-          </div>
-        </div>
-
-        <!-- The Real Cutout of Felipe and Eduardo - Standing Tall on Grass -->
-        <div class="relative z-15 w-full flex items-end justify-center lg:justify-end">
-          <picture>
-            <source srcset="/pix/duo-hd.webp" type="image/webp" />
-            <img
-              src="/pix/duo-hd.png"
-              alt="Felipe Méndez y Eduardo Lagos - Centro Vida Sana Austral"
-              class="hero-duo-image w-auto h-[440px] sm:h-[580px] lg:h-[720px] xl:h-[800px] object-contain drop-shadow-[0_20px_35px_rgba(45,62,45,0.25)] filter contrast-[1.03] select-none pointer-events-none"
-              loading="eager"
-              fetchpriority="high"
-            />
-          </picture>
-
-          <!-- Interactive Chips next to each specialist -->
-          <div class="absolute bottom-16 sm:bottom-20 inset-x-2 sm:inset-x-4 z-30 flex items-center justify-between gap-3 pointer-events-auto">
-
-            <!-- Chip Felipe Méndez -->
-            <a
-              href={`https://wa.me/56973700616?text=${encodeURIComponent(professionals.felipe.whatsappMessage)}`}
-              target="_blank"
-              rel="noopener noreferrer"
-              class="btn-press flex-1 min-w-0 p-2 sm:p-2.5 pr-3 sm:pr-3.5 rounded-2xl bg-white/95 border-2 border-[#134E5E]/40 hover:border-[#134E5E] shadow-[0_8px_24px_rgba(19,78,94,0.18)] backdrop-blur-xl flex items-center gap-2.5 text-left transition-all group cursor-pointer"
-            >
-              <img
-                src={professionals.felipe.photoUrl}
-                alt={professionals.felipe.name}
-                class="w-9 h-9 sm:w-10 sm:h-10 rounded-xl object-cover border border-[#134E5E]/30 group-hover:scale-105 transition-transform shrink-0"
-              />
-              <div class="min-w-0">
-                <div class="flex items-center gap-1">
-                  <span class="text-[11px] sm:text-xs font-bold text-[#134E5E] block leading-tight truncate">{professionals.felipe.name}</span>
-                  <span class="hidden sm:inline px-1 py-0.2 rounded text-[8px] font-bold bg-[#EBF5F8] text-[#134E5E]">Minsal</span>
-                </div>
-                <span class="text-[9px] sm:text-[10px] text-[#556D55] block leading-tight truncate">Quiropráctico &amp; Kine</span>
-              </div>
-            </a>
-
-            <!-- Chip Eduardo Lagos -->
-            <a
-              href={`https://wa.me/56973888910?text=${encodeURIComponent(professionals.eduardo.whatsappMessage)}`}
-              target="_blank"
-              rel="noopener noreferrer"
-              class="btn-press flex-1 min-w-0 p-2 sm:p-2.5 pr-3 sm:pr-3.5 rounded-2xl bg-white/95 border-2 border-[#2E4D38]/40 hover:border-[#2E4D38] shadow-[0_8px_24px_rgba(46,77,56,0.18)] backdrop-blur-xl flex items-center gap-2.5 text-left transition-all group cursor-pointer"
-            >
-              <img
-                src={professionals.eduardo.photoUrl}
-                alt={professionals.eduardo.name}
-                class="w-9 h-9 sm:w-10 sm:h-10 rounded-xl object-cover border border-[#2E4D38]/30 group-hover:scale-105 transition-transform shrink-0"
-              />
-              <div class="min-w-0">
-                <div class="flex items-center gap-1">
-                  <span class="text-[11px] sm:text-xs font-bold text-[#2E4D38] block leading-tight truncate">{professionals.eduardo.name}</span>
-                  <span class="hidden sm:inline px-1 py-0.2 rounded text-[8px] font-bold bg-[#EEF5F0] text-[#2E4D38]">Minsal</span>
-                </div>
-                <span class="text-[9px] sm:text-[10px] text-[#556D55] block leading-tight truncate">Acupuntura Minsal</span>
-              </div>
-            </a>
-
-          </div>
-        </div>
-
-      </div>
-
     </div>
   </div>
 
-  <!-- Scroll Down Indicator (Bouncing Pill) -->
-  <a
-    href="#servicios"
-    class="scroll-indicator-pill absolute bottom-4 sm:bottom-6 left-1/2 -translate-x-1/2 z-25 hidden md:flex items-center gap-2 px-4 py-2 rounded-full bg-white/90 border border-[#8FA885]/40 shadow-soft backdrop-blur-md text-xs font-bold text-[#2D3E2D] hover:bg-white transition-all cursor-pointer"
-  >
-    <span>Conoce nuestras terapias</span>
-    <svg class="w-4 h-4 text-[#3A7D44] animate-bounce" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2.5">
-      <path stroke-linecap="round" stroke-linejoin="round" d="M19 14l-7 7m0 0l-7-7m7 7V3"></path>
+  <img
+    src="/pix/duo-680.webp"
+    srcset="/pix/duo-560.webp 560w, /pix/duo-680.webp 680w, /pix/duo-800.webp 800w, /pix/duo.webp 1200w, /pix/duo-hd.webp 2152w"
+    sizes="(min-width: 1441px) 1400px, (min-width: 1024px) 1000px, 380px"
+    alt="Felipe y Eduardo, profesionales de Centro Vida Sana"
+    class="hero-duo"
+    loading="eager"
+    fetchpriority="high"
+    width="680"
+    height="617"
+  />
+
+  <div class="scroll-indicator">
+    <span>Desliza para conocer más</span>
+    <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+      <path d="M7.41 8.59L12 13.17l4.59-4.58L18 10l-6 6-6-6 1.41-1.41z" />
     </svg>
-  </a>
+  </div>
 
+  <!-- Botón Agendar Cita: solo visible en móvil, reemplaza el scroll indicator -->
+  <a href="#contacto" class="hero-mobile-cta btn btn-primary" aria-label="Agendar cita">Agendar Cita</a>
 </section>
 
-<!-- ==============================================
-     ANIMATIONS & BOTANICAL KEYFRAMES (Scoped CSS)
-     ============================================== -->
-<style>
-  /* Gradient text highlight for Temuco */
+<style is:global>
+  /* Variables Originales */
+  :root {
+    --primary-green: #a8c5a0;
+    --light-green: #c9d9c3;
+    --dark-green: #7a9872;
+    --accent-green: #8fb185;
+    --text-dark: #2d3e2d;
+    --text-light: #f5f5f0;
+    --bg-light: #f8faf8;
+    --shadow: rgba(122, 152, 114, 0.15);
+    --shadow-hover: rgba(122, 152, 114, 0.25);
+  }
+
+  /* ============================================
+     HERO SECTION - Estilos Originales Exactos
+     ============================================ */
+
+  .hero {
+    min-height: 100vh;
+    min-height: 100svh;
+    min-height: 100dvh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    background: #faedda;
+    overflow: hidden;
+    padding: clamp(120px, 15vh, 200px) 0 clamp(100px, 12vh, 140px);
+    box-sizing: border-box;
+  }
+
+  .hero > .container {
+    display: flex;
+    align-items: center;
+    width: 100%;
+    max-width: 1600px;
+    padding: 0 clamp(20px, 5vw, 80px);
+    margin: 0 auto;
+    position: relative;
+    z-index: 10;
+  }
+
+  .hero > .container .hero-content {
+    flex: 0 0 60%;
+    max-width: 60%;
+    text-align: left;
+    position: relative;
+    z-index: 10;
+    animation: fadeInUp 0.8s ease-out;
+    margin-top: 60px;
+  }
+
+  .hero::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    height: 150px;
+    background: url('/pix/pasto.webp') repeat-x bottom;
+    background-size: auto 100%;
+    pointer-events: none;
+    z-index: 5;
+  }
+
+  .hero-background {
+    position: absolute;
+    inset: 0;
+    overflow: hidden;
+    pointer-events: none;
+  }
+
+  /* Fondo Decorativo Superior */
+  .hero-top-decoration {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: clamp(180px, 20vh, 250px);
+    background-image: url('/pix/patron-follage.webp');
+    background-repeat: repeat-x;
+    background-position: top center;
+    background-size: auto 100%;
+    pointer-events: none;
+    z-index: 3;
+  }
+
+  .leaf-float {
+    position: absolute;
+    width: 60px;
+    height: auto;
+    opacity: 0.5;
+    filter: drop-shadow(0 2px 4px rgba(122, 152, 114, 0.3));
+    z-index: 2;
+    pointer-events: none;
+  }
+
+  .leaf-1 {
+    top: -10%;
+    left: 10%;
+    animation: leafFall 20s linear infinite;
+    animation-delay: 0s;
+  }
+
+  .leaf-2 {
+    top: -10%;
+    left: 50%;
+    width: 50px;
+    animation: leafFall 25s linear infinite;
+    animation-delay: -8s;
+  }
+
+  .leaf-3 {
+    top: -10%;
+    left: 80%;
+    width: 55px;
+    animation: leafFall 22s linear infinite;
+    animation-delay: -15s;
+  }
+
+  .leaf-4 {
+    top: -10%;
+    left: 25%;
+    width: 45px;
+    animation: leafFall 28s linear infinite;
+    animation-delay: -5s;
+  }
+
+  .leaf-5 {
+    top: -10%;
+    left: 65%;
+    width: 58px;
+    animation: leafFall 24s linear infinite;
+    animation-delay: -12s;
+  }
+
+  .leaf-6 {
+    top: -10%;
+    left: 40%;
+    width: 52px;
+    animation: leafFall 26s linear infinite;
+    animation-delay: -18s;
+  }
+
+  .hero-title {
+    font-family: 'Playfair Display', Georgia, serif;
+    font-size: clamp(44px, 4.5vw, 72px);
+    font-weight: 800;
+    color: var(--text-dark);
+    margin-bottom: 18px;
+    line-height: 1.08;
+    letter-spacing: -0.5px;
+  }
+
   .hero-highlight {
-    background: linear-gradient(90deg, #134E5E 0%, #2E4D38 50%, #134E5E 100%);
+    background: linear-gradient(90deg, #3a7d44, #6aab5e, #3a7d44);
     background-size: 200% auto;
     -webkit-background-clip: text;
     background-clip: text;
     -webkit-text-fill-color: transparent;
     font-style: italic;
-    padding-right: 0.1em;
-    animation: gradientFlow 6s ease-in-out infinite;
+    padding-right: 0.12em;
+    animation: gradientFlow 5s ease-in-out infinite;
+    text-shadow: none;
   }
 
-  @keyframes gradientFlow {
-    0%   { background-position: 0% center; }
-    50%  { background-position: 100% center; }
-    100% { background-position: 0% center; }
+  .hero-subtitle {
+    font-size: clamp(22px, 3vw, 32px);
+    font-weight: 500;
+    color: var(--accent-green);
+    margin-bottom: 15px;
+    display: block;
   }
 
-  /* Slow subtle watermark rotation */
-  @keyframes slowRotate {
-    from { transform: translateY(-50%) rotate(0deg); }
-    to   { transform: translateY(-50%) rotate(360deg); }
-  }
-  .animate-slow-rotate {
-    animation: slowRotate 180s linear infinite;
+  .hero-description {
+    font-size: 18px;
+    color: var(--dark-green);
+    margin-bottom: 40px;
+    max-width: 520px;
+    line-height: 1.6;
   }
 
-  /* Floating Leaves Physics */
-  .leaf-float {
+  .hero-actions {
+    display: flex;
+    gap: 20px;
+    justify-content: flex-start;
+    align-items: flex-start;
+    flex-direction: row;
+    margin-bottom: 50px;
+    flex-wrap: wrap;
+  }
+
+  .hero-actions .btn {
+    width: auto;
+  }
+
+  /* Botones Originales */
+  .btn {
+    border-radius: 50px;
+    font-size: 18px;
+    font-weight: 600;
+    overflow: hidden;
+    padding: 16px 40px;
+    position: relative;
+    text-decoration: none;
+    transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+    display: inline-block;
+  }
+
+  .btn-primary {
+    background: linear-gradient(135deg, #004d20, #007231 40%, #3a7d44 60%, #5a9c55);
+    background-size: 300% 300%;
+    box-shadow: 0 8px 25px rgba(0, 90, 38, 0.4), inset 0 1px 0 rgba(255, 255, 255, 0.15);
+    color: #fff;
+    position: relative;
+    overflow: hidden;
+    transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+    animation: btnGradient 3s ease infinite;
+  }
+
+  @keyframes btnGradient {
+    0%, 100% { background-position: 0% 50%; }
+    50% { background-position: 100% 50%; }
+  }
+
+  .btn-primary::before {
+    content: '';
     position: absolute;
-    opacity: 0.55;
-    filter: drop-shadow(0 4px 6px rgba(122, 152, 114, 0.35));
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: linear-gradient(180deg, rgba(255, 255, 255, 0.15) 0%, transparent 50%);
     pointer-events: none;
   }
 
-  .leaf-1 {
-    top: -8%;
-    left: 8%;
-    animation: leafFall 22s linear infinite;
-    animation-delay: 0s;
+  .btn-primary:hover {
+    box-shadow: 0 15px 45px rgba(0, 114, 49, 0.5), 0 0 30px rgba(0, 114, 49, 0.2);
+    transform: translateY(-4px) scale(1.02);
+    animation: none;
+    background-position: 100% 50%;
+    color: #fff;
   }
 
-  .leaf-2 {
-    top: -8%;
-    left: 45%;
-    width: 48px;
-    animation: leafFall 26s linear infinite;
-    animation-delay: -7s;
+  .hero-duo {
+    position: absolute;
+    bottom: 0;
+    right: 0;
+    height: clamp(460px, 80vh, 1100px);
+    width: auto;
+    z-index: 4;
+    pointer-events: none;
   }
 
-  .leaf-3 {
-    top: -8%;
-    left: 78%;
-    width: 52px;
-    animation: leafFall 24s linear infinite;
-    animation-delay: -14s;
+  .scroll-indicator {
+    align-items: center;
+    animation: bounce 2s infinite;
+    backdrop-filter: blur(5px);
+    background: hsla(0, 0%, 100%, 0.6);
+    border-radius: 30px;
+    bottom: 30px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    left: 50%;
+    padding: 10px 20px;
+    position: absolute;
+    transform: translateX(-50%);
+    z-index: 10;
   }
 
-  .leaf-4 {
-    top: -8%;
-    left: 22%;
-    width: 42px;
-    animation: leafFall 29s linear infinite;
-    animation-delay: -4s;
+  .scroll-indicator span {
+    color: var(--text-dark);
+    font-size: 13px;
+    font-weight: 600;
   }
 
-  .leaf-5 {
-    top: -8%;
-    left: 62%;
-    width: 56px;
-    animation: leafFall 25s linear infinite;
-    animation-delay: -11s;
+  .scroll-indicator svg {
+    color: var(--dark-green);
+    height: 22px;
+    width: 22px;
   }
 
-  .leaf-6 {
-    top: -8%;
-    left: 36%;
-    width: 50px;
-    animation: leafFall 27s linear infinite;
-    animation-delay: -17s;
+  .hero-mobile-cta {
+    display: none;
+  }
+
+  /* Animaciones Exactas */
+  @keyframes fadeInUp {
+    from {
+      opacity: 0;
+      transform: translateY(40px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
   }
 
   @keyframes leafFall {
@@ -376,7 +375,7 @@ import { professionals } from '../../data/professionals';
       opacity: 0;
     }
     10% {
-      opacity: 0.65;
+      opacity: 0.6;
     }
     20% {
       transform: translateY(20vh) translateX(30px) rotate(90deg);
@@ -389,17 +388,134 @@ import { professionals } from '../../data/professionals';
     }
     80% {
       transform: translateY(80vh) translateX(-10px) rotate(360deg);
-      opacity: 0.65;
+      opacity: 0.6;
     }
     100% {
-      transform: translateY(110vh) translateX(25px) rotate(450deg);
+      transform: translateY(110vh) translateX(20px) rotate(450deg);
       opacity: 0;
     }
   }
 
-  @media (prefers-reduced-motion: reduce) {
-    .leaf-float, .animate-slow-rotate, .hero-highlight {
-      animation: none !important;
+  @keyframes bounce {
+    0%, 100% {
+      transform: translateX(-50%) translateY(0);
+    }
+    50% {
+      transform: translateX(-50%) translateY(-10px);
+    }
+  }
+
+  @keyframes gradientFlow {
+    0%   { background-position: 0% center; }
+    50%  { background-position: 100% center; }
+    100% { background-position: 0% center; }
+  }
+
+  /* Breakpoints Exactos */
+  @media (min-width: 1400px) {
+    .hero > .container .hero-content {
+      flex: 0 0 44%;
+      max-width: 44%;
+    }
+
+    .hero-duo {
+      height: clamp(780px, 88vh, 1300px);
+    }
+
+    .hero > .container {
+      max-width: 1800px;
+    }
+
+    .hero-top-decoration {
+      height: clamp(200px, 18vh, 280px);
+    }
+  }
+
+  @media (min-width: 2000px) {
+    .hero > .container {
+      max-width: 2200px;
+    }
+
+    .hero-duo {
+      height: clamp(900px, 90vh, 1600px);
+    }
+
+    .hero-top-decoration {
+      height: clamp(200px, 16vh, 280px);
+    }
+  }
+
+  @media (max-width: 768px) {
+    .hero {
+      padding: 60px 0 140px;
+      align-items: flex-start;
+    }
+
+    .hero-duo {
+      display: block;
+      position: absolute;
+      bottom: 0;
+      left: 50%;
+      transform: translateX(-50%);
+      right: auto;
+      height: clamp(260px, 40vh, 360px);
+      width: auto;
+      z-index: 4;
+    }
+
+    .hero > .container .hero-content {
+      flex: none;
+      width: 100%;
+      max-width: 100%;
+      text-align: center;
+      padding-right: 0;
+      margin-top: 0;
+    }
+
+    .hero-divider {
+      margin-left: auto;
+      margin-right: auto;
+    }
+
+    /* Ocultar botón dentro del contenido — se muestra abajo via hero-mobile-cta */
+    .hero-actions {
+      display: none;
+    }
+
+    .hero-title {
+      font-size: 50px;
+    }
+
+    .hero-subtitle {
+      font-size: 30px;
+    }
+
+    .scroll-indicator {
+      display: none !important;
+    }
+
+    .hero-mobile-cta {
+      display: block;
+      position: fixed;
+      bottom: 20px;
+      left: 50%;
+      transform: translateX(-50%);
+      z-index: 100;
+      width: calc(100% - 40px);
+      max-width: 320px;
+      text-align: center;
+    }
+  }
+
+  @media (max-width: 480px) {
+    .hero-title {
+      font-size: clamp(28px, 18vw, 42px);
+      margin-bottom: 10px;
+    }
+
+    .hero-subtitle {
+      font-size: clamp(16px, 20vw, 22px);
+      margin-bottom: 10px;
     }
   }
 </style>
