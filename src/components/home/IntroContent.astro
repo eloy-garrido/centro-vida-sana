@@ -1,9 +1,9 @@
 ---
-// IntroContent.astro - Sección de Introducción continua con fondo verde
+// IntroContent.astro - Sección de Introducción con transición de onda orgánica suave
 ---
 
-<section class="intro-content py-16 sm:py-20 bg-[#007231] text-white relative z-10" id="introduccion">
-  <div class="max-w-5xl mx-auto px-4 sm:px-6 text-center space-y-6">
+<section class="intro-content pt-16 sm:pt-20 bg-[#007231] text-white relative z-10" id="introduccion">
+  <div class="max-w-5xl mx-auto px-4 sm:px-6 text-center space-y-6 pb-12 sm:pb-16">
     <h2 class="font-serif text-2xl sm:text-3xl md:text-4xl font-bold tracking-tight text-white">
       <span class="text-[#c9f26e]">Acupuntura, Quiropraxia y Kinesiología</span> en <span class="text-[#c9f26e]">Temuco</span> — Centro Vida Sana Austral
     </h2>
@@ -13,6 +13,29 @@
     <p class="text-base sm:text-lg text-white/95 leading-relaxed font-normal max-w-4xl mx-auto">
       Ubicados en <strong class="text-[#c9f26e] font-bold">Los Armiños 1620, Temuco</strong>, contamos con <strong class="text-[#c9f26e] font-bold">Felipe Méndez</strong>, especialista en quiropraxia y kinesiología —incluida kinesiología a domicilio en Temuco y La Araucanía—, y <strong class="text-[#c9f26e] font-bold">Eduardo Lagos</strong>, acupunturista certificado en medicina tradicional china. Ofrecemos consultas de acupuntura, ajustes quiroprácticos, electroacupuntura, masoterapia y fisioterapia. ¡Agenda tu consulta de salud integral hoy!
     </p>
+  </div>
+
+  <!-- Transición de onda suave hacia la sección de Profesionales -->
+  <div class="w-full overflow-hidden leading-none relative z-10 -mb-[1px] select-none pointer-events-none">
+    <svg
+      class="w-full h-12 sm:h-16 md:h-20 lg:h-24 block"
+      viewBox="0 0 1440 90"
+      fill="none"
+      preserveAspectRatio="none"
+      xmlns="http://www.w3.org/2000/svg"
+    >
+      <!-- Capa de onda posterior (35% opacidad para profundidad orgánica) -->
+      <path
+        d="M0,32 C240,68 440,12 720,42 C1000,72 1200,18 1440,36 L1440,90 L0,90 Z"
+        fill="#FBFDFB"
+        fill-opacity="0.35"
+      />
+      <!-- Capa de onda frontal sólida (conecta sin costuras con #profesionales) -->
+      <path
+        d="M0,52 C300,18 520,78 780,40 C1040,2 1240,62 1440,30 L1440,90 L0,90 Z"
+        fill="#FBFDFB"
+      />
+    </svg>
   </div>
 </section>
 
