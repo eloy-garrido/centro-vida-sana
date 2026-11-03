@@ -1,0 +1,22 @@
+/.vscode
+/.claude
+.claude
+
+# Dependencies
+node_modules/
+
+# Astro & Build output
+dist/
+.astro/
+
+# Build tools (local only)
+*.js.bak
+minify-js.js
+convert-to-webp.js
+minify-css.js
+
+# Imágenes fuente (solo locales; la web usa las variantes .webp)
+pix/leaf-1.png
+pix/leaf-2.png
+pix/leaf-3.png
+pix/eduardo-instructor.png

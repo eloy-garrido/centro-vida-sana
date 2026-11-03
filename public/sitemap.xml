@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
+        xmlns:image="http://www.google.com/schemas/sitemap-image/1.1">
+    <!-- Página principal -->
+    <url>
+        <loc>https://centrovidasana.cl/</loc>
+        <lastmod>2026-07-01</lastmod>
+        <changefreq>weekly</changefreq>
+        <priority>1.0</priority>
+        <image:image>
+            <image:loc>https://centrovidasana.cl/pix/logo-texto.webp</image:loc>
+            <image:title>Logo Centro Vida Sana Austral - Acupuntura, Kinesiología y Quiropraxia en Temuco</image:title>
+        </image:image>
+        <image:image>
+            <image:loc>https://centrovidasana.cl/pix/logo-sin-texto.webp</image:loc>
+            <image:title>Símbolo Yin Yang Centro Vida Sana Austral</image:title>
+        </image:image>
+        <image:image>
+            <image:loc>https://centrovidasana.cl/pix/yinyang.webp</image:loc>
+            <image:title>Yin Yang Equilibrio Centro Vida Sana Austral</image:title>
+        </image:image>
+    </url>
+</urlset>

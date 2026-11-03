@@ -1,0 +1,40 @@
+:root {
+  /* Lienzo Común & Neutros */
+  --canvas-bg: #F8F9F6;
+  --surface-white: #FFFFFF;
+  --surface-border: #E5E8E2;
+  --surface-border-subtle: #EEF0EA;
+
+  --text-primary: #151C17;
+  --text-secondary: #4A564D;
+  --text-muted: #7A877E;
+
+  /* Disciplina 1: Quiropraxia & Kinesiología (Azul Petróleo Clásico) */
+  --petrol-900: #0B2B33;
+  --petrol-800: #103E4A;
+  --petrol-primary: #134E5E;
+  --petrol-accent: #236B80;
+  --petrol-hover: #1B5B6D;
+  --petrol-light: #EBF4F6;
+  --petrol-border: #C9DFE6;
+
+  /* Disciplina 2: Acupuntura & Medicina Tradicional China (Verde Salvia Botánico) */
+  --sage-900: #15281D;
+  --sage-800: #213C2B;
+  --sage-primary: #2E4D38;
+  --sage-accent: #497356;
+  --sage-hover: #3A5E45;
+  --sage-light: #EFF5F0;
+  --sage-border: #D3E3D6;
+
+  /* Tipografías */
+  --font-editorial: 'Playfair Display', Georgia, serif;
+  --font-body: 'DM Sans', -apple-system, BlinkMacSystemFont, sans-serif;
+
+  /* Cinemática Emil Kowalski */
+  --ease-spring: cubic-bezier(0.16, 1, 0.3, 1);
+  --ease-smooth: cubic-bezier(0.25, 0.1, 0.25, 1);
+  --duration-fast: 160ms;
+  --duration-normal: 280ms;
+  --duration-slow: 450ms;
+}
