@@ -28,7 +28,7 @@ import { clinicInfo } from '../../data/clinic';
        Foto en grande a la IZQUIERDA · Información a la DERECHA
        Color temático: Verde Salvia Botánico (#2E4D38)
        ============================================== -->
-  <section id="acup-section" class="py-20 lg:py-28 bg-[#F6FAF7] border-b border-[#E2ECE5] relative overflow-hidden">
+  <section id="pro-eduardo" class="py-20 lg:py-28 bg-[#F6FAF7] border-b border-[#E2ECE5] relative overflow-hidden">
 
     <!-- Formas orgánicas / irregulares decorativas de fondo -->
     <div class="absolute -top-32 -left-32 w-[600px] h-[600px] bg-[#2E4D38]/[0.06] rounded-full blur-[140px] pointer-events-none"></div>
@@ -37,32 +37,68 @@ import { clinicInfo } from '../../data/clinic';
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
       <div class="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-16 items-center">
 
-        <!-- LADO IZQUIERDO: Foto en Grande de Eduardo con Formas Irregulares -->
-        <div class="lg:col-span-5 relative flex items-center justify-center">
+        <!-- LADO IZQUIERDO: Foto en Grande de Eduardo con Formas Irregulares (Sin recuadro blanco, fondo transparente) -->
+        <div id="eduardo-photo-container" class="lg:col-span-5 relative flex items-center justify-center">
 
-          <!-- Forma irregular / blob botánico atrás de la foto -->
-          <div class="absolute w-[340px] sm:w-[420px] lg:w-[460px] h-[340px] sm:h-[420px] lg:h-[460px] bg-gradient-to-tr from-[#2E4D38]/25 via-[#497356]/20 to-[#65A775]/25 rounded-[63%_37%_54%_46%/44%_58%_42%_56%] blur-xl animate-pulse pointer-events-none -z-10"></div>
-          <div class="absolute w-[360px] sm:w-[440px] lg:w-[480px] h-[360px] sm:h-[440px] lg:h-[480px] bg-[#EEF5F0] rounded-[48%_52%_35%_65%/60%_40%_60%_40%] -rotate-6 pointer-events-none -z-10 border-2 border-[#CCE2D2]"></div>
+          <!-- Contenedor relativo para la composición orgánica + cutout -->
+          <div class="relative w-full max-w-[440px] sm:max-w-[480px] lg:max-w-[500px] flex items-end justify-center pt-10 pb-4">
 
-          <!-- Contenedor de la Foto Principal -->
-          <div class="relative w-full max-w-[380px] sm:max-w-[420px] lg:max-w-[440px] rounded-[2.5rem] overflow-hidden shadow-[0_20px_50px_rgba(46,77,56,0.2)] border-4 border-white bg-white group">
-            <img
-              src="/pix/eduardo-acupuntura-800.webp"
-              alt="Eduardo Lagos - Acupunturista Clínico Certificado Minsal"
-              class="w-full h-[440px] sm:h-[500px] lg:h-[530px] object-cover object-top group-hover:scale-105 transition-transform duration-700 ease-[cubic-bezier(0.16,1,0.3,1)]"
-              loading="lazy"
-            />
+            <!-- 1. Formas Orgánicas / Blobs Botánicos de Eduardo (Claramente visibles de fondo) -->
+            <div class="absolute inset-0 flex items-center justify-center pointer-events-none z-0">
+              <!-- Glow suave botánico de ambientación -->
+              <div class="absolute w-[380px] sm:w-[460px] h-[380px] sm:h-[460px] bg-[#6FA67C]/35 rounded-full blur-3xl"></div>
 
-            <!-- Chip Flotante de Registro Minsal -->
-            <div class="absolute bottom-4 inset-x-4 p-3 rounded-2xl bg-white/95 border border-[#CCE2D2] backdrop-blur-md shadow-soft flex items-center gap-3">
-              <div class="w-10 h-10 rounded-xl bg-[#2E4D38] text-white flex items-center justify-center shrink-0 shadow-sm font-serif font-bold text-sm">
-                SIS
-              </div>
-              <div class="min-w-0">
-                <span class="text-xs font-bold text-[#2E4D38] block truncate">Registro SIS N° 381042</span>
-                <span class="text-[11px] text-[#556D55] block truncate">Acreditado Minsal · Acupuntura</span>
+              <!-- Anillo decorativo rotado / aura botánica -->
+              <div class="absolute w-[370px] sm:w-[450px] lg:w-[480px] h-[370px] sm:h-[450px] lg:h-[480px] rounded-[58%_42%_65%_35%/48%_62%_38%_52%] border-2 border-dashed border-[#2E4D38]/30 -rotate-12 animate-[spin_60s_linear_infinite]"></div>
+
+              <!-- Forma Orgánica Principal de Eduardo (Verde Salvia Botánico Rico & Visible) -->
+              <svg viewBox="0 0 500 500" class="w-[360px] sm:w-[440px] lg:w-[470px] h-[360px] sm:h-[440px] lg:h-[470px] filter drop-shadow-[0_20px_35px_rgba(46,77,56,0.22)]" xmlns="http://www.w3.org/2000/svg">
+                <defs>
+                  <linearGradient id="blob-eduardo-main" x1="15%" y1="10%" x2="90%" y2="95%">
+                    <stop offset="0%" stop-color="#BEE0C7" />
+                    <stop offset="45%" stop-color="#76B084" />
+                    <stop offset="100%" stop-color="#366E45" />
+                  </linearGradient>
+                  <linearGradient id="blob-eduardo-contour" x1="0%" y1="100%" x2="100%" y2="0%">
+                    <stop offset="0%" stop-color="#2E4D38" stop-opacity="0.4" />
+                    <stop offset="100%" stop-color="#2E4D38" stop-opacity="0.1" />
+                  </linearGradient>
+                </defs>
+                <!-- Forma de contorno exterior con ligera escala -->
+                <path
+                  d="M421,313Q384,376,321,412Q258,448,197,414Q136,380,88,325Q40,270,74,204Q108,138,169,96Q230,54,302,78Q374,102,416,176Q458,250,421,313Z"
+                  fill="url(#blob-eduardo-contour)"
+                  transform="scale(1.08) translate(-18, -18)"
+                />
+                <!-- Blob orgánico sólido con gradiente verde profundo -->
+                <path
+                  d="M410,305Q370,360,314,405Q258,450,199,416Q140,382,95,326Q50,270,82,203Q114,136,174,93Q234,50,306,75Q378,100,414,175Q450,250,410,305Z"
+                  fill="url(#blob-eduardo-main)"
+                />
+              </svg>
+            </div>
+
+            <!-- 2. Foto Recortada Transparente de Eduardo (Sin caja blanca, fondo 100% transparente) -->
+            <div class="relative z-10 w-full flex justify-center group">
+              <img
+                src="/pix/eduardo-acupuntura-800.webp"
+                alt="Eduardo Lagos - Acupunturista Clínico Certificado Minsal"
+                class="w-auto max-h-[490px] sm:max-h-[550px] lg:max-h-[570px] object-contain drop-shadow-[0_22px_38px_rgba(20,40,25,0.25)] group-hover:scale-[1.02] transition-transform duration-700 ease-[cubic-bezier(0.16,1,0.3,1)] [mask-image:linear-gradient(to_bottom,black_88%,transparent_100%)]"
+                loading="lazy"
+              />
+
+              <!-- Chip Flotante de Registro Minsal (Estilo Glassmorphism Limpio) -->
+              <div class="absolute bottom-4 left-1/2 -translate-x-1/2 sm:left-4 sm:translate-x-0 p-3 rounded-2xl bg-white/95 border border-[#CCE2D2] backdrop-blur-md shadow-[0_12px_28px_rgba(46,77,56,0.18)] flex items-center gap-3 z-20 whitespace-nowrap">
+                <div class="w-10 h-10 rounded-xl bg-[#2E4D38] text-white flex items-center justify-center shrink-0 shadow-sm font-serif font-bold text-sm">
+                  SIS
+                </div>
+                <div class="text-left">
+                  <span class="text-xs font-bold text-[#2E4D38] block">Registro SIS N° 381042</span>
+                  <span class="text-[11px] text-[#556D55] block">Acreditado Minsal · Acupuntura</span>
+                </div>
               </div>
             </div>
+
           </div>
 
         </div>
@@ -176,7 +212,7 @@ import { clinicInfo } from '../../data/clinic';
        Información a la IZQUIERDA · Foto en grande a la DERECHA
        Color temático: Azul Petróleo Clásico (#134E5E)
        ============================================== -->
-  <section id="quiro-section" class="py-20 lg:py-28 bg-[#F4F9FA] border-b border-[#D8E6EB] relative overflow-hidden">
+  <section id="pro-felipe" class="py-20 lg:py-28 bg-[#F4F9FA] border-b border-[#D8E6EB] relative overflow-hidden">
 
     <!-- Formas orgánicas / irregulares decorativas de fondo -->
     <div class="absolute -top-32 right-[-10%] w-[600px] h-[600px] bg-[#134E5E]/[0.06] rounded-full blur-[140px] pointer-events-none"></div>
@@ -285,32 +321,68 @@ import { clinicInfo } from '../../data/clinic';
 
         </div>
 
-        <!-- LADO DERECHO: Foto en Grande de Felipe con Formas Irregulares (en desktop va a la derecha) -->
-        <div class="lg:col-span-5 relative flex items-center justify-center order-1 lg:order-2">
+        <!-- LADO DERECHO: Foto en Grande de Felipe con Formas Irregulares (Sin recuadro blanco, fondo transparente) -->
+        <div id="felipe-photo-container" class="lg:col-span-5 relative flex items-center justify-center order-1 lg:order-2">
 
-          <!-- Forma irregular / blob biomecánico atrás de la foto -->
-          <div class="absolute w-[340px] sm:w-[420px] lg:w-[460px] h-[340px] sm:h-[420px] lg:h-[460px] bg-gradient-to-tr from-[#134E5E]/25 via-[#236B80]/20 to-[#38B2CE]/25 rounded-[42%_58%_65%_35%/55%_45%_55%_45%] blur-xl animate-pulse pointer-events-none -z-10"></div>
-          <div class="absolute w-[360px] sm:w-[440px] lg:w-[480px] h-[360px] sm:h-[440px] lg:h-[480px] bg-[#EBF5F8] rounded-[55%_45%_60%_40%/45%_55%_45%_55%] rotate-6 pointer-events-none -z-10 border-2 border-[#C2DFE8]"></div>
+          <!-- Contenedor relativo para la composición orgánica + cutout -->
+          <div class="relative w-full max-w-[440px] sm:max-w-[480px] lg:max-w-[500px] flex items-end justify-center pt-10 pb-4">
 
-          <!-- Contenedor de la Foto Principal -->
-          <div class="relative w-full max-w-[380px] sm:max-w-[420px] lg:max-w-[440px] rounded-[2.5rem] overflow-hidden shadow-[0_20px_50px_rgba(19,78,94,0.2)] border-4 border-white bg-white group">
-            <img
-              src="/pix/felipe-kinesiologo-800.webp"
-              alt="Felipe Méndez - Quiropráctico & Kinesiólogo Certificado Minsal"
-              class="w-full h-[440px] sm:h-[500px] lg:h-[530px] object-cover object-top group-hover:scale-105 transition-transform duration-700 ease-[cubic-bezier(0.16,1,0.3,1)]"
-              loading="lazy"
-            />
+            <!-- 1. Formas Orgánicas / Blobs Biomecánicos de Felipe (Claramente visibles de fondo) -->
+            <div class="absolute inset-0 flex items-center justify-center pointer-events-none z-0">
+              <!-- Glow suave biomecánico de ambientación -->
+              <div class="absolute w-[380px] sm:w-[460px] h-[380px] sm:h-[460px] bg-[#4B9CB3]/35 rounded-full blur-3xl"></div>
 
-            <!-- Chip Flotante de Registro Minsal -->
-            <div class="absolute bottom-4 inset-x-4 p-3 rounded-2xl bg-white/95 border border-[#C2DFE8] backdrop-blur-md shadow-soft flex items-center gap-3">
-              <div class="w-10 h-10 rounded-xl bg-[#134E5E] text-white flex items-center justify-center shrink-0 shadow-sm font-serif font-bold text-sm">
-                SIS
-              </div>
-              <div class="min-w-0">
-                <span class="text-xs font-bold text-[#134E5E] block truncate">Registro SIS N° 458921</span>
-                <span class="text-[11px] text-[#526F77] block truncate">Acreditado Minsal · Quiropraxia</span>
+              <!-- Anillo decorativo rotado / aura biomecánica -->
+              <div class="absolute w-[370px] sm:w-[450px] lg:w-[480px] h-[370px] sm:h-[450px] lg:h-[480px] rounded-[48%_52%_38%_62%/58%_42%_65%_35%] border-2 border-dashed border-[#134E5E]/30 rotate-12 animate-[spin_55s_linear_infinite_reverse]"></div>
+
+              <!-- Forma Orgánica Principal de Felipe (Azul Petróleo Biomecánico Rico & Visible) -->
+              <svg viewBox="0 0 500 500" class="w-[360px] sm:w-[440px] lg:w-[470px] h-[360px] sm:h-[440px] lg:h-[470px] filter drop-shadow-[0_20px_35px_rgba(19,78,94,0.22)]" xmlns="http://www.w3.org/2000/svg">
+                <defs>
+                  <linearGradient id="blob-felipe-main" x1="15%" y1="10%" x2="90%" y2="95%">
+                    <stop offset="0%" stop-color="#BDE3ED" />
+                    <stop offset="45%" stop-color="#55A8BE" />
+                    <stop offset="100%" stop-color="#1B6377" />
+                  </linearGradient>
+                  <linearGradient id="blob-felipe-contour" x1="100%" y1="0%" x2="0%" y2="100%">
+                    <stop offset="0%" stop-color="#134E5E" stop-opacity="0.4" />
+                    <stop offset="100%" stop-color="#134E5E" stop-opacity="0.1" />
+                  </linearGradient>
+                </defs>
+                <!-- Forma de contorno exterior con ligera escala -->
+                <path
+                  d="M435,320Q390,390,325,420Q260,450,195,425Q130,400,85,340Q40,280,70,210Q100,140,165,95Q230,50,305,70Q380,90,430,160Q480,230,435,320Z"
+                  fill="url(#blob-felipe-contour)"
+                  transform="scale(1.08) translate(-18, -18)"
+                />
+                <!-- Blob orgánico sólido con gradiente petróleo profundo -->
+                <path
+                  d="M425,310Q380,370,320,405Q260,440,195,415Q130,390,85,330Q40,270,75,205Q110,140,170,100Q230,60,305,80Q380,100,425,170Q470,240,425,310Z"
+                  fill="url(#blob-felipe-main)"
+                />
+              </svg>
+            </div>
+
+            <!-- 2. Foto Recortada Transparente de Felipe (Sin caja blanca, fondo 100% transparente) -->
+            <div class="relative z-10 w-full flex justify-center group">
+              <img
+                src="/pix/felipe-kinesiologo-800.webp"
+                alt="Felipe Méndez - Quiropráctico & Kinesiólogo Certificado Minsal"
+                class="w-auto max-h-[490px] sm:max-h-[550px] lg:max-h-[570px] object-contain drop-shadow-[0_22px_38px_rgba(15,45,55,0.25)] group-hover:scale-[1.02] transition-transform duration-700 ease-[cubic-bezier(0.16,1,0.3,1)] [mask-image:linear-gradient(to_bottom,black_88%,transparent_100%)]"
+                loading="lazy"
+              />
+
+              <!-- Chip Flotante de Registro Minsal (Estilo Glassmorphism Limpio) -->
+              <div class="absolute bottom-4 left-1/2 -translate-x-1/2 sm:right-4 sm:left-auto sm:translate-x-0 p-3 rounded-2xl bg-white/95 border border-[#C2DFE8] backdrop-blur-md shadow-[0_12px_28px_rgba(19,78,94,0.18)] flex items-center gap-3 z-20 whitespace-nowrap">
+                <div class="w-10 h-10 rounded-xl bg-[#134E5E] text-white flex items-center justify-center shrink-0 shadow-sm font-serif font-bold text-sm">
+                  SIS
+                </div>
+                <div class="text-left">
+                  <span class="text-xs font-bold text-[#134E5E] block">Registro SIS N° 458921</span>
+                  <span class="text-[11px] text-[#526F77] block">Acreditado Minsal · Quiropraxia</span>
+                </div>
               </div>
             </div>
+
           </div>
 
         </div>
