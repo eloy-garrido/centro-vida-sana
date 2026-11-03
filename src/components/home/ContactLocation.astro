@@ -1,0 +1,133 @@
+---
+import { clinicInfo } from '../../data/clinic';
+import { professionals } from '../../data/professionals';
+---
+
+<section id="contacto" class="py-20 lg:py-28 relative">
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+
+    <!-- Section Header -->
+    <div class="text-center max-w-2xl mx-auto mb-14 lg:mb-18">
+      <span class="inline-block text-xs font-bold uppercase tracking-widest text-ink-muted mb-3">
+        Visítanos en Temuco
+      </span>
+      <h2 class="font-serif text-3xl sm:text-4xl lg:text-5xl font-semibold text-ink-primary tracking-tight mb-4">
+        Ubicación y Canales de Atención
+      </h2>
+      <p class="text-base text-ink-secondary leading-relaxed">
+        Estamos en un sector seguro, cómodo y con fácil estacionamiento para tu tranquilidad.
+      </p>
+    </div>
+
+    <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12 items-stretch max-w-6xl mx-auto">
+
+      <!-- Columna Izquierda: Información de Contacto -->
+      <div class="lg:col-span-5 space-y-6 flex flex-col justify-between">
+
+        <div class="space-y-4">
+          <!-- Tarjeta Dirección -->
+          <div class="p-6 rounded-2xl bg-surface border border-surface-border shadow-soft">
+            <div class="flex items-start gap-4">
+              <div class="w-10 h-10 rounded-xl bg-petrol-light text-petrol flex items-center justify-center shrink-0">
+                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2">
+                  <path stroke-linecap="round" stroke-linejoin="round" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"></path>
+                  <path stroke-linecap="round" stroke-linejoin="round" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"></path>
+                </svg>
+              </div>
+              <div>
+                <h3 class="font-serif text-lg font-bold text-ink-primary mb-1">
+                  Dirección
+                </h3>
+                <p class="text-sm text-ink-secondary mb-3 leading-relaxed">
+                  {clinicInfo.address.full}
+                </p>
+                <a
+                  href={clinicInfo.address.mapsUrl}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  class="inline-flex items-center gap-1.5 text-xs font-bold text-petrol hover:underline"
+                >
+                  <span>Abrir en Google Maps</span>
+                  <svg class="w-3.5 h-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6M15 3h6v6M10 14L21 3"/></svg>
+                </a>
+              </div>
+            </div>
+          </div>
+
+          <!-- Tarjeta Horarios -->
+          <div class="p-6 rounded-2xl bg-surface border border-surface-border shadow-soft">
+            <div class="flex items-start gap-4">
+              <div class="w-10 h-10 rounded-xl bg-sage-light text-sage flex items-center justify-center shrink-0">
+                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2">
+                  <path stroke-linecap="round" stroke-linejoin="round" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                </svg>
+              </div>
+              <div>
+                <h3 class="font-serif text-lg font-bold text-ink-primary mb-1">
+                  Horarios de Atención
+                </h3>
+                <p class="text-sm font-semibold text-ink-primary">
+                  {clinicInfo.hours.days}
+                </p>
+                <p class="text-xs text-ink-secondary">
+                  {clinicInfo.hours.time}
+                </p>
+                <p class="text-[11px] text-ink-muted mt-2">
+                  *Atención exclusiva con cita previa para garantizar tu espacio.
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Botones Directos por Especialidad -->
+        <div class="p-6 rounded-2xl bg-surface border border-surface-border shadow-soft space-y-3">
+          <span class="text-xs font-bold uppercase tracking-wider text-ink-muted block mb-1">Contacto Directo Inmediato</span>
+          <a
+            href="https://wa.me/56973700616?text=Hola%20Felipe,%20quisiera%20agendar%20una%20hora%20de%20Quiropraxia"
+            target="_blank"
+            rel="noopener noreferrer"
+            class="btn-press flex items-center justify-between p-3.5 rounded-xl bg-petrol-light/60 hover:bg-petrol-light border border-petrol-border text-petrol font-semibold text-xs transition-colors"
+          >
+            <div class="flex items-center gap-2.5">
+              <span class="w-2 h-2 rounded-full bg-petrol"></span>
+              <span>WhatsApp Quiropraxia (Felipe)</span>
+            </div>
+            <span class="text-[11px] font-mono">{professionals.felipe.phoneFormatted}</span>
+          </a>
+
+          <a
+            href="https://wa.me/56973888910?text=Hola%20Eduardo,%20quisiera%20agendar%20una%20hora%20de%20Acupuntura"
+            target="_blank"
+            rel="noopener noreferrer"
+            class="btn-press flex items-center justify-between p-3.5 rounded-xl bg-sage-light/60 hover:bg-sage-light border border-sage-border text-sage font-semibold text-xs transition-colors"
+          >
+            <div class="flex items-center gap-2.5">
+              <span class="w-2 h-2 rounded-full bg-sage"></span>
+              <span>WhatsApp Acupuntura (Eduardo)</span>
+            </div>
+            <span class="text-[11px] font-mono">{professionals.eduardo.phoneFormatted}</span>
+          </a>
+        </div>
+
+      </div>
+
+      <!-- Columna Derecha: Mapa Embed Responsive (Lazy Load) -->
+      <div class="lg:col-span-7 rounded-3xl overflow-hidden border border-surface-border shadow-soft min-h-[420px] relative bg-canvas-muted">
+        <iframe
+          src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3112.5691060936357!2d-72.59237492348574!3d-38.73809997175899!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x9614d52f31c74233%3A0x6f5521a17ee4f974!2sLos%20Armi%C3%B1os%201620%2C%20Temuco%2C%20Araucan%C3%ADa!5e0!3m2!1ses!2scl!4v1716000000000!5m2!1ses!2scl"
+          title="Ubicación de Centro Vida Sana Austral en Google Maps"
+          width="100%"
+          height="100%"
+          style="border:0; min-height: 420px;"
+          allowfullscreen=""
+          loading="lazy"
+          referrerpolicy="no-referrer-when-downgrade"
+          class="w-full h-full object-cover"
+        ></iframe>
+      </div>
+
+    </div>
+
+  </div>
+</section>

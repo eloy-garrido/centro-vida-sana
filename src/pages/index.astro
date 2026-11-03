@@ -1,0 +1,51 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import Navbar from '../components/common/Navbar.astro';
+import Footer from '../components/common/Footer.astro';
+import FloatingWhatsApp from '../components/common/FloatingWhatsApp.astro';
+import HeroDual from '../components/home/HeroDual.astro';
+import DualProfessionals from '../components/home/DualProfessionals.astro';
+import ServicesOverview from '../components/home/ServicesOverview.astro';
+import PathologiesGuide from '../components/home/PathologiesGuide.astro';
+import FaqAccordion from '../components/home/FaqAccordion.astro';
+import ReviewsSection from '../components/home/ReviewsSection.astro';
+import StudyBanner from '../components/home/StudyBanner.astro';
+import ContactLocation from '../components/home/ContactLocation.astro';
+---
+
+<BaseLayout>
+  <Navbar slot="navbar" />
+
+  <!-- Hero Principal con Selector Dual -->
+  <HeroDual />
+
+  <!-- Tarjetas Clínicas de Profesionales con 3D Tilt -->
+  <DualProfessionals />
+
+  <!-- Anchor targets para navegación directa -->
+  <div id="quiro-section" class="sr-only">Sección de Quiropraxia y Kinesiología</div>
+  <div id="acup-section" class="sr-only">Sección de Acupuntura y Medicina China</div>
+
+  <!-- Directorio de Servicios con Filtrado por Pestañas -->
+  <ServicesOverview />
+
+  <!-- Guía de Dolencias y Síntomas -->
+  <PathologiesGuide />
+
+  <!-- Preguntas Frecuentes Visibles (Sincronizadas con SEO Schema) -->
+  <FaqAccordion />
+
+  <!-- Academia y Formación de Medicina China -->
+  <StudyBanner />
+
+  <!-- Reseñas y Prueba Social Verificada de Google -->
+  <ReviewsSection />
+
+  <!-- Ubicación, Mapa y Horarios -->
+  <ContactLocation />
+
+  <!-- Botón Flotante con Selección de Especialista -->
+  <FloatingWhatsApp />
+
+  <Footer slot="footer" />
+</BaseLayout>
