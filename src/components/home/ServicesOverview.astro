@@ -4,7 +4,7 @@ import { professionals } from '../../data/professionals';
 const quiroServices = [
   {
     name: 'Ajuste Quiropráctico de Columna',
-    subtitle: 'Alineación vertebral, descompresión radicular y corrección articular específica.',
+    subtitle: 'Alineación vertebral biomecánica, descompresión radicular y corrección articular específica para eliminar pinzamientos y subluxaciones.',
     duration: '45 min',
     price: '$30.000',
     img: '/pix/kine/quiro.webp',
@@ -12,35 +12,35 @@ const quiroServices = [
   },
   {
     name: 'Fisioterapia y Desinflamación',
-    subtitle: 'Ultrasonido, TENS y agentes físicos para desinflamar tejidos blandos.',
+    subtitle: 'Ultrasonido, electroanalgesia TENS y termoterapia para desinflamar tejidos blandos y tendones.',
     duration: '50 min',
     price: '$25.000',
     img: '/pix/kine/fisio.webp',
   },
   {
     name: 'Masoterapia Clínica Descontracturante',
-    subtitle: 'Liberación miofascial profunda y descontracturante para cuello y espalda.',
+    subtitle: 'Liberación miofascial profunda y masaje clínico descontracturante para cuello, hombros y espalda.',
     duration: '45 min',
     price: '$25.000',
     img: '/pix/kine/maso.webp',
   },
   {
     name: 'Kinesiología a Domicilio (Temuco)',
-    subtitle: 'Rehabilitación en tu hogar para post-operatorios y adultos mayores.',
+    subtitle: 'Atención kinesiológica completa en el hogar para post-operatorios, traumatología y adultos mayores.',
     duration: '60 min',
     price: '$35.000',
     img: '/pix/kine/domicilio.webp',
   },
   {
     name: 'Ejercicio Terapéutico y Core',
-    subtitle: 'Fortalecimiento postural y estabilidad neuromuscular para evitar recaídas.',
+    subtitle: 'Estabilización neuromuscular, fuerza postural y movilidad activa para prevenir recaídas de columna.',
     duration: '50 min',
     price: '$25.000',
     img: '/pix/kine/ejercicio.webp',
   },
   {
     name: 'Plantillas Ortopédicas Computarizadas',
-    subtitle: 'Evaluación de pisada y plantillas biomecánicas a medida.',
+    subtitle: 'Evaluación biomecánica de la pisada y confección de plantillas correctivas personalizadas.',
     duration: '40 min',
     price: '$30.000',
     img: '/pix/kine/plantillas.webp',
@@ -50,7 +50,7 @@ const quiroServices = [
 const acupServices = [
   {
     name: 'Acupuntura Clínica Sistémica',
-    subtitle: 'Neuroacupuntura para dolor crónico, migrañas, estrés, ansiedad y regulación del Qi.',
+    subtitle: 'Neuroacupuntura médica para dolor crónico, fibromialgia, migrañas rebeldes, estrés severo y regulación del Qi orgánico.',
     duration: '50 min',
     price: '$30.000',
     img: '/pix/mtc/acupuntura.webp',
@@ -58,35 +58,35 @@ const acupServices = [
   },
   {
     name: 'Electroacupuntura para Dolor Crónico',
-    subtitle: 'Microcorrientes terapéuticas analgésicas para parálisis facial y neuralgias.',
+    subtitle: 'Microcorrientes terapéuticas analgésicas para parálisis facial, neuralgias periféricas y ciática severa.',
     duration: '50 min',
     price: '$30.000',
     img: '/pix/mtc/electro.webp',
   },
   {
-    name: 'Ventosaterapia (Cupping Therapy)',
-    subtitle: 'Succión para soltar fascias rígidas, dolor dorsal y activar microcirculación.',
+    name: 'Ventosaterapia Clínica (Cupping)',
+    subtitle: 'Terapia de vacío para soltar fascias rígidas, activar microcirculación y aliviar sobrecarga dorsal.',
     duration: '40 min',
     price: '$25.000',
     img: '/pix/mtc/ventosa.webp',
   },
   {
     name: 'Moxibustión Térmica Terapéutica',
-    subtitle: 'Calor profundo de artemisa para dolores artríticos, frío interno e inmunidad.',
+    subtitle: 'Calor profundo de artemisa sobre puntos clave para artrosis, dolores por frío interno e inmunidad.',
     duration: '40 min',
     price: '$25.000',
     img: '/pix/mtc/moxi.webp',
   },
   {
     name: 'Auriculoterapia Clínica',
-    subtitle: 'Puntos reflejos auriculares para control de ansiedad, sueño y control de peso.',
+    subtitle: 'Estimulación de puntos reflejos del pabellón auricular para control de ansiedad, insomnio y estrés.',
     duration: '30 min',
     price: '$20.000',
     img: '/pix/mtc/auriculo.webp',
   },
   {
     name: 'Terapia con Gua Sha Tradicional',
-    subtitle: 'Raspado terapéutico bioenergético para drenaje y desintoxicación muscular.',
+    subtitle: 'Raspado terapéutico bioenergético para drenaje tisular, alivio miofascial y desintoxicación muscular.',
     duration: '40 min',
     price: '$25.000',
     img: '/pix/mtc/GuaSha.webp',
@@ -94,182 +94,343 @@ const acupServices = [
 ];
 ---
 
-<section id="servicios" class="py-20 lg:py-28 bg-[#0C1410] text-white relative overflow-hidden">
+<section id="servicios" class="py-20 lg:py-28 bg-[#FBFDFB] text-[#152219] relative overflow-hidden border-b border-[#E5EBE6]">
 
-  <!-- Background decorative light -->
+  <!-- Ambient light glowing auras (sin fondos oscuros) -->
   <div class="absolute inset-0 pointer-events-none overflow-hidden">
-    <div class="absolute top-1/4 left-0 w-96 h-96 bg-[#134E5E]/20 rounded-full blur-[140px]"></div>
-    <div class="absolute bottom-1/4 right-0 w-96 h-96 bg-[#2E4D38]/25 rounded-full blur-[140px]"></div>
+    <div class="absolute -top-32 -left-32 w-[600px] h-[600px] bg-[#134E5E]/[0.04] rounded-full blur-[140px]"></div>
+    <div class="absolute top-1/2 -right-32 w-[650px] h-[650px] bg-[#2E4D38]/[0.05] rounded-full blur-[150px]"></div>
+    <div class="absolute -bottom-32 left-1/4 w-[500px] h-[500px] bg-[#EBF5F8]/60 rounded-full blur-[120px]"></div>
   </div>
 
   <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
 
-    <!-- Section Header -->
-    <div class="text-center max-w-2xl mx-auto mb-16 lg:mb-20">
-      <span class="inline-block text-xs font-bold uppercase tracking-widest text-[#9EB2A5] mb-3">
-        Mosaico Visual de Terapias
-      </span>
-      <h2 class="font-serif text-3xl sm:text-4xl lg:text-5xl font-bold tracking-tight text-white mb-4">
+    <!-- Section Header Principal -->
+    <div class="text-center max-w-3xl mx-auto mb-16 lg:mb-20">
+      <div class="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-[#EEF5F0] border border-[#CCE2D2] text-[#2E4D38] text-xs font-bold uppercase tracking-wider mb-4 shadow-sm">
+        <span class="w-2 h-2 rounded-full bg-[#2E4D38] animate-pulse"></span>
+        <span>Catálogo Clínico Integral · Boxes Privados</span>
+      </div>
+      <h2 class="font-serif text-3xl sm:text-4xl lg:text-5xl font-bold tracking-tight text-[#152219] mb-4">
         Servicios Profesionales de Salud
       </h2>
-      <p class="text-base text-[#BAC8BF] leading-relaxed">
-        Explora nuestros tratamientos. Cada sesión está orientada a resolver el origen de tu dolor con fotografía clínica real y precios transparentes.
+      <p class="text-base sm:text-lg text-[#44594A] leading-relaxed">
+        Cada disciplina cuenta con su propio box equipado, especialista certificado y aranceles transparentes. Selecciona el tratamiento que necesitas para agendar tu hora directamente.
       </p>
     </div>
 
-    <!-- ==============================================
-         GRUPO 1: QUIROPRAXIA & KINESIOLOGÍA (PETRÓLEO)
-         ============================================== -->
-    <div class="mb-20" id="quiro-section">
-      <div class="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 mb-8 pb-4 border-b border-white/10">
-        <div class="flex items-center gap-3">
-          <div class="w-10 h-10 rounded-xl bg-[#134E5E] text-[#38B2CE] flex items-center justify-center font-bold text-lg shadow-petrol-glow">
-            🦴
-          </div>
-          <div>
-            <h3 class="font-serif text-2xl font-bold text-white">
-              Quiropraxia &amp; Kinesiología
-            </h3>
-            <p class="text-xs text-[#38B2CE] font-semibold">
-              Felipe Méndez · Ajuste de columna, biomecánica y rehabilitación
-            </p>
-          </div>
-        </div>
 
-        <a
-          href="https://wa.me/56973700616?text=Hola%20Felipe,%20quisiera%20consultar%20por%20servicios%20de%20Quiropraxia"
-          target="_blank"
-          rel="noopener noreferrer"
-          class="btn-press inline-flex items-center gap-2 px-4 py-2 rounded-xl bg-[#134E5E]/40 border border-[#38B2CE]/40 text-[#E0F3F7] text-xs font-semibold hover:bg-[#134E5E] transition-all cursor-pointer"
-        >
-          <span>Agendar con Felipe</span>
-          <svg class="w-3.5 h-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
-        </a>
-      </div>
+    <!-- =====================================================================
+         ÁREA 1: FELIPE MÉNDEZ · QUIROPRAXIA & KINESIOLOGÍA
+         Color temático marcado: Azul Petróleo Clásico (#134E5E / #0B2B33)
+         ===================================================================== -->
+    <div id="quiro-section" class="mb-24 rounded-3xl p-6 sm:p-8 lg:p-10 bg-white border-2 border-[#C9DFE6] shadow-[0_12px_40px_rgba(19,78,94,0.07)] relative overflow-hidden">
 
-      <!-- Mosaico Asimétrico Quiro -->
-      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">
-        {quiroServices.map((svc) => (
-          <article
-            class={`relative rounded-2xl overflow-hidden border border-[#1E3B44] bg-[#0A181D] group cursor-pointer transition-all duration-300 hover:-translate-y-1.5 hover:border-[#38B2CE] hover:shadow-[0_12px_36px_rgba(19,78,94,0.4)] ${svc.featured ? 'sm:col-span-2 sm:row-span-2 min-h-[360px]' : 'min-h-[240px]'}`}
-          >
-            <!-- Full bleed photo -->
-            <img
-              src={svc.img}
-              alt={svc.name}
-              loading="lazy"
-              class="absolute inset-0 w-full h-full object-cover group-hover:scale-108 transition-transform duration-700 filter brightness-[0.85] contrast-[1.05]"
-            />
+      <!-- BANNER HORIZONTAL SUTIL: Quiropraxia & Kinesiología -->
+      <div class="relative rounded-2xl bg-gradient-to-r from-[#EBF5F8] via-[#DCEEF4] to-[#EBF5F8] border-2 border-[#B8DCE6] p-6 sm:p-8 mb-8 overflow-hidden">
 
-            <!-- Dark gradient scrim -->
-            <div class="absolute inset-0 bg-gradient-to-t from-[#061216] via-[#0A181D]/70 to-transparent"></div>
+        <!-- Textura Vectorial Horizontal Sutil (Curvas biomecánicas y alineación espinal sin ruido visual) -->
+        <svg class="absolute inset-0 w-full h-full pointer-events-none opacity-[0.16]" viewBox="0 0 1200 240" fill="none" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">
+          <path d="M-100,110 C200,30 400,190 700,80 C1000,-30 1100,150 1300,100" stroke="#134E5E" stroke-width="2" stroke-dasharray="6 6" />
+          <path d="M-100,140 C220,60 420,220 720,110 C1020,0 1120,180 1300,130" stroke="#134E5E" stroke-width="2.5" />
+          <path d="M-100,170 C240,90 440,250 740,140 C1040,30 1140,210 1300,160" stroke="#134E5E" stroke-width="1.5" />
+          <circle cx="200" cy="70" r="14" stroke="#134E5E" stroke-width="1.5" fill="none" />
+          <circle cx="200" cy="70" r="4" fill="#134E5E" />
+          <circle cx="450" cy="170" r="18" stroke="#134E5E" stroke-width="1.5" fill="none" />
+          <circle cx="450" cy="170" r="5" fill="#134E5E" />
+          <circle cx="700" cy="80" r="16" stroke="#134E5E" stroke-width="1.5" fill="none" />
+          <circle cx="700" cy="80" r="5" fill="#134E5E" />
+          <circle cx="960" cy="35" r="16" stroke="#134E5E" stroke-width="1.5" fill="none" />
+          <circle cx="960" cy="35" r="5" fill="#134E5E" />
+        </svg>
 
-            <!-- Content overlay -->
-            <div class="relative h-full flex flex-col justify-between p-6 z-10">
-              <div class="flex items-center justify-between gap-2">
-                <span class="px-3 py-1 rounded-full text-[11px] font-bold uppercase tracking-wider bg-[#134E5E]/80 backdrop-blur-md text-[#38B2CE] border border-[#38B2CE]/40">
-                  Quiropraxia
+        <!-- Contenido del Banner Horizontal -->
+        <div class="relative z-10 flex flex-col lg:flex-row lg:items-center justify-between gap-6">
+
+          <!-- Identidad Profesional: Felipe Méndez -->
+          <div class="flex items-start sm:items-center gap-4">
+            <div class="relative shrink-0">
+              <img
+                src="/pix/felipe-kinesiologo-400.webp"
+                alt="Felipe Méndez - Quiropráctico y Kinesiólogo"
+                class="w-16 h-16 sm:w-20 sm:h-20 rounded-2xl object-cover object-top border-2 border-[#134E5E] shadow-md bg-[#DCEEF4]"
+                loading="lazy"
+              />
+              <span class="absolute -bottom-1 -right-1 w-5 h-5 rounded-full bg-[#134E5E] text-white flex items-center justify-center text-[10px] shadow-sm font-bold">
+                ✓
+              </span>
+            </div>
+
+            <div>
+              <div class="flex flex-wrap items-center gap-2 mb-1.5">
+                <span class="px-3 py-0.5 rounded-full text-[11px] font-bold uppercase tracking-wider bg-[#134E5E] text-white shadow-sm">
+                  Área de Biomecánica &amp; Columna
                 </span>
-                <span class="px-2.5 py-1 rounded-md text-xs font-bold bg-white/15 backdrop-blur-md text-white">
-                  {svc.duration}
+                <span class="px-2.5 py-0.5 rounded-full text-[11px] font-bold bg-white text-[#134E5E] border border-[#B8DCE6] shadow-sm">
+                  Reg. SIS N° 458921
                 </span>
               </div>
+              <h3 class="font-serif text-2xl sm:text-3xl font-bold text-[#0B2B33] leading-tight">
+                Quiropraxia &amp; Kinesiología
+              </h3>
+              <p class="text-xs sm:text-sm font-semibold text-[#134E5E] mt-0.5">
+                Felipe Méndez · Ajuste vertebral de precisión, descompresión radicular y rehabilitación
+              </p>
+            </div>
+          </div>
 
+          <!-- Acciones Rápidas del Banner -->
+          <div class="flex flex-col sm:flex-row items-stretch sm:items-center gap-3 shrink-0">
+            <div class="hidden xl:flex flex-col text-right pr-2">
+              <span class="text-xs font-bold text-[#0B2B33]">Box de Quiropraxia</span>
+              <span class="text-[11px] text-[#526F77]">6 tratamientos activos</span>
+            </div>
+            <a
+              href={`https://wa.me/56973700616?text=${encodeURIComponent('Hola Felipe, me interesa consultar por una evaluación de Quiropraxia y Kinesiología.')}`}
+              target="_blank"
+              rel="noopener noreferrer"
+              class="btn-press inline-flex items-center justify-center gap-2.5 px-6 py-3.5 rounded-xl bg-[#134E5E] hover:bg-[#0E3B47] text-white text-xs sm:text-sm font-bold shadow-[0_6px_20px_rgba(19,78,94,0.25)] hover:shadow-[0_8px_25px_rgba(19,78,94,0.35)] transition-all cursor-pointer whitespace-nowrap"
+            >
+              <svg class="w-4 h-4 text-cyan-200" viewBox="0 0 24 24" fill="currentColor">
+                <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413Z"/>
+              </svg>
+              <span>Consultar a Felipe</span>
+            </a>
+          </div>
+
+        </div>
+
+      </div>
+
+      <!-- GRID DE TARJETAS CLÍNICAS LUMINOSAS: Felipe Méndez -->
+      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+        {quiroServices.map((svc) => (
+          <a
+            href={`https://wa.me/56973700616?text=${encodeURIComponent(`Hola Felipe, me interesa agendar una consulta de ${svc.name}`)}`}
+            target="_blank"
+            rel="noopener noreferrer"
+            class={`rounded-2xl bg-white border-2 border-[#D8E6EB] hover:border-[#134E5E] shadow-[0_4px_16px_rgba(19,78,94,0.06)] hover:shadow-[0_16px_40px_rgba(19,78,94,0.16)] transition-all duration-300 flex flex-col group overflow-hidden cursor-pointer ${
+              svc.featured ? 'sm:col-span-2 sm:row-span-2' : ''
+            }`}
+          >
+            <!-- Contenedor Fotográfico Limpio -->
+            <div class={`relative overflow-hidden bg-[#F0F6F8] ${svc.featured ? 'h-[250px] sm:h-[320px] lg:h-[350px]' : 'h-48'}`}>
+              <img
+                src={svc.img}
+                alt={svc.name}
+                loading="lazy"
+                class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700 filter contrast-[1.03]"
+              />
+
+              <!-- Badges Flotantes sobre la Imagen (Luminosos y Legibles) -->
+              <div class="absolute top-3.5 left-3.5 right-3.5 flex items-center justify-between pointer-events-none">
+                <span class="px-3 py-1 rounded-full text-[10px] sm:text-[11px] font-bold uppercase tracking-wider bg-[#134E5E] text-white shadow-md">
+                  {svc.featured ? 'Tratamiento Principal' : 'Quiropraxia'}
+                </span>
+                <span class="px-2.5 py-1 rounded-full text-xs font-bold bg-white/95 text-[#134E5E] border border-[#B8DCE6] backdrop-blur-md shadow-sm flex items-center gap-1">
+                  <svg class="w-3 h-3 text-[#134E5E]" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg>
+                  <span>{svc.duration}</span>
+                </span>
+              </div>
+            </div>
+
+            <!-- Cuerpo de Información Clínico (Fondo Blanco, Contraste Perfecto) -->
+            <div class={`p-5 sm:p-6 flex-1 flex flex-col justify-between ${svc.featured ? 'bg-[#FAFCFD]' : 'bg-white'}`}>
               <div>
-                <div class="flex items-baseline justify-between gap-2 mb-1.5">
-                  <h4 class={`font-serif font-bold text-white group-hover:text-[#38B2CE] transition-colors ${svc.featured ? 'text-2xl sm:text-3xl' : 'text-lg'}`}>
+                <div class="flex items-start justify-between gap-3 mb-2">
+                  <h4 class={`font-serif font-bold text-[#0B2B33] group-hover:text-[#134E5E] transition-colors leading-snug ${
+                    svc.featured ? 'text-2xl sm:text-3xl' : 'text-lg sm:text-xl'
+                  }`}>
                     {svc.name}
                   </h4>
-                  <span class={`font-bold text-[#38B2CE] shrink-0 ${svc.featured ? 'text-xl' : 'text-base'}`}>
+                  <span class={`font-bold text-[#134E5E] shrink-0 font-sans ${
+                    svc.featured ? 'text-2xl' : 'text-lg'
+                  }`}>
                     {svc.price}
                   </span>
                 </div>
-                <p class={`text-[#C0D2CC] leading-relaxed ${svc.featured ? 'text-sm max-w-lg' : 'text-xs'}`}>
+
+                <p class={`text-[#44594A] leading-relaxed mb-4 ${
+                  svc.featured ? 'text-sm sm:text-base' : 'text-xs sm:text-sm line-clamp-2'
+                }`}>
                   {svc.subtitle}
                 </p>
               </div>
+
+              <!-- Footer de la Tarjeta con Llamado a la Acción -->
+              <div class="pt-3 border-t border-[#E8EFF2] flex items-center justify-between">
+                <span class="text-xs font-semibold text-[#66828C] flex items-center gap-1.5">
+                  <span class="w-1.5 h-1.5 rounded-full bg-[#134E5E]"></span>
+                  <span>Box Privado Felipe</span>
+                </span>
+
+                <span class="inline-flex items-center gap-1.5 text-xs font-bold text-[#134E5E] group-hover:text-[#0E3B47] transition-all">
+                  <span>Agendar</span>
+                  <span class="group-hover:translate-x-1 transition-transform">→</span>
+                </span>
+              </div>
             </div>
-          </article>
+          </a>
         ))}
       </div>
+
     </div>
 
 
-    <!-- ==============================================
-         GRUPO 2: ACUPUNTURA & MED. CHINA (SALVIA)
-         ============================================== -->
-    <div class="pt-6" id="acup-section">
-      <div class="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 mb-8 pb-4 border-b border-white/10">
-        <div class="flex items-center gap-3">
-          <div class="w-10 h-10 rounded-xl bg-[#2E4D38] text-[#65A775] flex items-center justify-center font-bold text-lg shadow-sage-glow">
-            🌿
-          </div>
-          <div>
-            <h3 class="font-serif text-2xl font-bold text-white">
-              Acupuntura &amp; Medicina Tradicional China
-            </h3>
-            <p class="text-xs text-[#65A775] font-semibold">
-              Eduardo Lagos · Manejo de dolor crónico, sistema nervioso y equilibrio orgánico
-            </p>
-          </div>
-        </div>
+    <!-- =====================================================================
+         ÁREA 2: EDUARDO LAGOS · ACUPUNTURA & MEDICINA TRADICIONAL CHINA
+         Color temático marcado: Verde Salvia Botánico (#2E4D38 / #15281D)
+         ===================================================================== -->
+    <div id="acup-section" class="rounded-3xl p-6 sm:p-8 lg:p-10 bg-white border-2 border-[#D3E3D6] shadow-[0_12px_40px_rgba(46,77,56,0.07)] relative overflow-hidden">
 
-        <a
-          href="https://wa.me/56973888910?text=Hola%20Eduardo,%20quisiera%20consultar%20por%20servicios%20de%20Acupuntura"
-          target="_blank"
-          rel="noopener noreferrer"
-          class="btn-press inline-flex items-center gap-2 px-4 py-2 rounded-xl bg-[#2E4D38]/40 border border-[#65A775]/40 text-[#E5F5E9] text-xs font-semibold hover:bg-[#2E4D38] transition-all cursor-pointer"
-        >
-          <span>Agendar con Eduardo</span>
-          <svg class="w-3.5 h-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
-        </a>
-      </div>
+      <!-- BANNER HORIZONTAL SUTIL: Acupuntura & Medicina China -->
+      <div class="relative rounded-2xl bg-gradient-to-r from-[#EEF5F0] via-[#E1EFE5] to-[#EEF5F0] border-2 border-[#CCE2D2] p-6 sm:p-8 mb-8 overflow-hidden">
 
-      <!-- Mosaico Asimétrico Acupuntura -->
-      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">
-        {acupServices.map((svc) => (
-          <article
-            class={`relative rounded-2xl overflow-hidden border border-[#23422E] bg-[#0E1F16] group cursor-pointer transition-all duration-300 hover:-translate-y-1.5 hover:border-[#65A775] hover:shadow-[0_12px_36px_rgba(46,77,56,0.45)] ${svc.featured ? 'sm:col-span-2 sm:row-span-2 min-h-[360px]' : 'min-h-[240px]'}`}
-          >
-            <!-- Full bleed photo -->
-            <img
-              src={svc.img}
-              alt={svc.name}
-              loading="lazy"
-              class="absolute inset-0 w-full h-full object-cover group-hover:scale-108 transition-transform duration-700 filter brightness-[0.85] contrast-[1.05]"
-            />
+        <!-- Textura Vectorial Horizontal Sutil (Ondas energéticas de Qi y follaje botánico sin ruido visual) -->
+        <svg class="absolute inset-0 w-full h-full pointer-events-none opacity-[0.16]" viewBox="0 0 1200 240" fill="none" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">
+          <path d="M-100,90 C150,180 400,20 650,130 C900,240 1100,40 1300,110" stroke="#2E4D38" stroke-width="2.5" />
+          <path d="M-100,120 C170,210 420,50 670,160 C920,270 1120,70 1300,140" stroke="#2E4D38" stroke-width="2" stroke-dasharray="8 6" />
+          <path d="M-100,60 C130,150 380,-10 630,100 C880,210 1080,10 1300,80" stroke="#2E4D38" stroke-width="1.5" />
+          <circle cx="250" cy="130" r="16" stroke="#2E4D38" stroke-width="1.5" fill="none" />
+          <circle cx="250" cy="130" r="4" fill="#2E4D38" />
+          <circle cx="500" cy="60" r="18" stroke="#2E4D38" stroke-width="1.5" fill="none" />
+          <circle cx="500" cy="60" r="5" fill="#2E4D38" />
+          <circle cx="780" cy="170" r="16" stroke="#2E4D38" stroke-width="1.5" fill="none" />
+          <circle cx="780" cy="170" r="5" fill="#2E4D38" />
+          <circle cx="1020" cy="80" r="20" stroke="#2E4D38" stroke-width="1.5" fill="none" />
+          <circle cx="1020" cy="80" r="6" fill="#2E4D38" />
+        </svg>
 
-            <!-- Dark gradient scrim -->
-            <div class="absolute inset-0 bg-gradient-to-t from-[#07130D] via-[#0E1F16]/70 to-transparent"></div>
+        <!-- Contenido del Banner Horizontal -->
+        <div class="relative z-10 flex flex-col lg:flex-row lg:items-center justify-between gap-6">
 
-            <!-- Content overlay -->
-            <div class="relative h-full flex flex-col justify-between p-6 z-10">
-              <div class="flex items-center justify-between gap-2">
-                <span class="px-3 py-1 rounded-full text-[11px] font-bold uppercase tracking-wider bg-[#2E4D38]/80 backdrop-blur-md text-[#65A775] border border-[#65A775]/40">
-                  Acupuntura &amp; MTC
+          <!-- Identidad Profesional: Eduardo Lagos -->
+          <div class="flex items-start sm:items-center gap-4">
+            <div class="relative shrink-0">
+              <img
+                src="/pix/eduardo-acupuntura-400.webp"
+                alt="Eduardo Lagos - Acupunturista Minsal"
+                class="w-16 h-16 sm:w-20 sm:h-20 rounded-2xl object-cover object-top border-2 border-[#2E4D38] shadow-md bg-[#E1EFE5]"
+                loading="lazy"
+              />
+              <span class="absolute -bottom-1 -right-1 w-5 h-5 rounded-full bg-[#2E4D38] text-white flex items-center justify-center text-[10px] shadow-sm font-bold">
+                ✓
+              </span>
+            </div>
+
+            <div>
+              <div class="flex flex-wrap items-center gap-2 mb-1.5">
+                <span class="px-3 py-0.5 rounded-full text-[11px] font-bold uppercase tracking-wider bg-[#2E4D38] text-white shadow-sm">
+                  Área de Acupuntura &amp; MTC
                 </span>
-                <span class="px-2.5 py-1 rounded-md text-xs font-bold bg-white/15 backdrop-blur-md text-white">
-                  {svc.duration}
+                <span class="px-2.5 py-0.5 rounded-full text-[11px] font-bold bg-white text-[#2E4D38] border border-[#CCE2D2] shadow-sm">
+                  Reg. SIS N° 381042
                 </span>
               </div>
+              <h3 class="font-serif text-2xl sm:text-3xl font-bold text-[#15281D] leading-tight">
+                Acupuntura &amp; Medicina Tradicional China
+              </h3>
+              <p class="text-xs sm:text-sm font-semibold text-[#2E4D38] mt-0.5">
+                Eduardo Lagos · Manejo de dolor crónico, neuroacupuntura y regulación bioenergética
+              </p>
+            </div>
+          </div>
 
+          <!-- Acciones Rápidas del Banner -->
+          <div class="flex flex-col sm:flex-row items-stretch sm:items-center gap-3 shrink-0">
+            <div class="hidden xl:flex flex-col text-right pr-2">
+              <span class="text-xs font-bold text-[#15281D]">Box de Acupuntura</span>
+              <span class="text-[11px] text-[#556D55]">6 tratamientos activos</span>
+            </div>
+            <a
+              href={`https://wa.me/56973888910?text=${encodeURIComponent('Hola Eduardo, me interesa consultar por una sesión de Acupuntura y Medicina Tradicional China.')}`}
+              target="_blank"
+              rel="noopener noreferrer"
+              class="btn-press inline-flex items-center justify-center gap-2.5 px-6 py-3.5 rounded-xl bg-[#2E4D38] hover:bg-[#233C2C] text-white text-xs sm:text-sm font-bold shadow-[0_6px_20px_rgba(46,77,56,0.25)] hover:shadow-[0_8px_25px_rgba(46,77,56,0.35)] transition-all cursor-pointer whitespace-nowrap"
+            >
+              <svg class="w-4 h-4 text-emerald-200" viewBox="0 0 24 24" fill="currentColor">
+                <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413Z"/>
+              </svg>
+              <span>Consultar a Eduardo</span>
+            </a>
+          </div>
+
+        </div>
+
+      </div>
+
+      <!-- GRID DE TARJETAS CLÍNICAS LUMINOSAS: Eduardo Lagos -->
+      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+        {acupServices.map((svc) => (
+          <a
+            href={`https://wa.me/56973888910?text=${encodeURIComponent(`Hola Eduardo, me interesa agendar una sesión de ${svc.name}`)}`}
+            target="_blank"
+            rel="noopener noreferrer"
+            class={`rounded-2xl bg-white border-2 border-[#D3E3D6] hover:border-[#2E4D38] shadow-[0_4px_16px_rgba(46,77,56,0.06)] hover:shadow-[0_16px_40px_rgba(46,77,56,0.16)] transition-all duration-300 flex flex-col group overflow-hidden cursor-pointer ${
+              svc.featured ? 'sm:col-span-2 sm:row-span-2' : ''
+            }`}
+          >
+            <!-- Contenedor Fotográfico Limpio -->
+            <div class={`relative overflow-hidden bg-[#F2F7F3] ${svc.featured ? 'h-[250px] sm:h-[320px] lg:h-[350px]' : 'h-48'}`}>
+              <img
+                src={svc.img}
+                alt={svc.name}
+                loading="lazy"
+                class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700 filter contrast-[1.03]"
+              />
+
+              <!-- Badges Flotantes sobre la Imagen (Luminosos y Legibles) -->
+              <div class="absolute top-3.5 left-3.5 right-3.5 flex items-center justify-between pointer-events-none">
+                <span class="px-3 py-1 rounded-full text-[10px] sm:text-[11px] font-bold uppercase tracking-wider bg-[#2E4D38] text-white shadow-md">
+                  {svc.featured ? 'Tratamiento Principal' : 'Acupuntura & MTC'}
+                </span>
+                <span class="px-2.5 py-1 rounded-full text-xs font-bold bg-white/95 text-[#2E4D38] border border-[#CCE2D2] backdrop-blur-md shadow-sm flex items-center gap-1">
+                  <svg class="w-3 h-3 text-[#2E4D38]" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg>
+                  <span>{svc.duration}</span>
+                </span>
+              </div>
+            </div>
+
+            <!-- Cuerpo de Información Clínico (Fondo Blanco, Contraste Perfecto) -->
+            <div class={`p-5 sm:p-6 flex-1 flex flex-col justify-between ${svc.featured ? 'bg-[#FCFDFC]' : 'bg-white'}`}>
               <div>
-                <div class="flex items-baseline justify-between gap-2 mb-1.5">
-                  <h4 class={`font-serif font-bold text-white group-hover:text-[#65A775] transition-colors ${svc.featured ? 'text-2xl sm:text-3xl' : 'text-lg'}`}>
+                <div class="flex items-start justify-between gap-3 mb-2">
+                  <h4 class={`font-serif font-bold text-[#15281D] group-hover:text-[#2E4D38] transition-colors leading-snug ${
+                    svc.featured ? 'text-2xl sm:text-3xl' : 'text-lg sm:text-xl'
+                  }`}>
                     {svc.name}
                   </h4>
-                  <span class={`font-bold text-[#65A775] shrink-0 ${svc.featured ? 'text-xl' : 'text-base'}`}>
+                  <span class={`font-bold text-[#2E4D38] shrink-0 font-sans ${
+                    svc.featured ? 'text-2xl' : 'text-lg'
+                  }`}>
                     {svc.price}
                   </span>
                 </div>
-                <p class={`text-[#C2D6C8] leading-relaxed ${svc.featured ? 'text-sm max-w-lg' : 'text-xs'}`}>
+
+                <p class={`text-[#44594A] leading-relaxed mb-4 ${
+                  svc.featured ? 'text-sm sm:text-base' : 'text-xs sm:text-sm line-clamp-2'
+                }`}>
                   {svc.subtitle}
                 </p>
               </div>
+
+              <!-- Footer de la Tarjeta con Llamado a la Acción -->
+              <div class="pt-3 border-t border-[#E8EFEA] flex items-center justify-between">
+                <span class="text-xs font-semibold text-[#556D55] flex items-center gap-1.5">
+                  <span class="w-1.5 h-1.5 rounded-full bg-[#2E4D38]"></span>
+                  <span>Box Privado Eduardo</span>
+                </span>
+
+                <span class="inline-flex items-center gap-1.5 text-xs font-bold text-[#2E4D38] group-hover:text-[#233C2C] transition-all">
+                  <span>Agendar</span>
+                  <span class="group-hover:translate-x-1 transition-transform">→</span>
+                </span>
+              </div>
             </div>
-          </article>
+          </a>
         ))}
       </div>
+
     </div>
 
   </div>
