@@ -1,0 +1,1119 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Explorador de Azules Petróleo vs Verde Salvia — Centro Vida Sana Austral</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,300..700;1,9..40,400&family=Playfair+Display:ital,wght@0,500;0,600;0,700;1,500&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    :root {
+      --font-serif: 'Playfair Display', Georgia, serif;
+      --font-sans: 'DM Sans', -apple-system, BlinkMacSystemFont, sans-serif;
+      --transition: all 0.3s cubic-bezier(0.2, 0, 0, 1);
+    }
+
+    body {
+      font-family: var(--font-sans);
+      background: #0E1210;
+      color: #EAEAEA;
+      line-height: 1.6;
+      padding: 30px 20px 80px;
+    }
+
+    .container {
+      max-width: 1240px;
+      margin: 0 auto;
+    }
+
+    header.top-header {
+      text-align: center;
+      margin-bottom: 40px;
+    }
+
+    .top-header .tag {
+      display: inline-block;
+      text-transform: uppercase;
+      font-size: 11px;
+      letter-spacing: 2px;
+      font-weight: 700;
+      color: #388A9F;
+      background: rgba(35, 107, 128, 0.15);
+      padding: 6px 14px;
+      border-radius: 999px;
+      border: 1px solid rgba(56, 138, 159, 0.3);
+      margin-bottom: 12px;
+    }
+
+    .top-header h1 {
+      font-family: var(--font-serif);
+      font-size: clamp(28px, 4vw, 42px);
+      font-weight: 600;
+      color: #FFFFFF;
+      margin-bottom: 10px;
+    }
+
+    .top-header p {
+      color: #9EABA0;
+      font-size: 16px;
+      max-width: 720px;
+      margin: 0 auto 24px;
+    }
+
+    /* Tab Controller */
+    .tab-bar {
+      display: flex;
+      justify-content: center;
+      gap: 10px;
+      flex-wrap: wrap;
+      margin-bottom: 36px;
+    }
+
+    .tab-btn {
+      background: #171E1B;
+      color: #A0B0A6;
+      border: 1px solid #283630;
+      padding: 12px 20px;
+      border-radius: 12px;
+      font-family: var(--font-sans);
+      font-size: 14px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: var(--transition);
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .tab-btn:hover {
+      background: #202B27;
+      color: #FFFFFF;
+      border-color: #364B42;
+    }
+
+    .tab-btn.active {
+      background: #FFFFFF;
+      color: #0E1210;
+      border-color: #FFFFFF;
+      box-shadow: 0 4px 20px rgba(255, 255, 255, 0.15);
+    }
+
+    .tab-btn .badge-pill {
+      font-size: 10px;
+      padding: 2px 7px;
+      border-radius: 6px;
+      background: rgba(0, 0, 0, 0.08);
+      font-weight: 700;
+      text-transform: uppercase;
+    }
+
+    .tab-btn.active .badge-pill {
+      background: #134E5E;
+      color: #FFFFFF;
+    }
+
+    /* Color Swatch Dot in Button */
+    .btn-color-dot {
+      width: 12px;
+      height: 12px;
+      border-radius: 50%;
+      display: inline-block;
+      flex-shrink: 0;
+    }
+
+    /* Preview Canvas Wrapper */
+    .palette-view {
+      display: none;
+      animation: fadeIn 0.4s ease-out;
+    }
+
+    .palette-view.active {
+      display: block;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(10px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    /* Simulation Board */
+    .simulation-canvas {
+      border-radius: 24px;
+      padding: clamp(24px, 5vw, 50px);
+      box-shadow: 0 20px 60px rgba(0,0,0,0.5);
+      border: 1px solid rgba(255,255,255,0.08);
+      position: relative;
+      overflow: hidden;
+    }
+
+    /* Shared Canvas Tokens */
+    .canvas-shared {
+      --bg-canvas: #F8F9F6;
+      --card-bg: #FFFFFF;
+      --card-border: #E5E8E2;
+      --text-main: #18201A;
+      --text-muted: #526056;
+      --acup-primary: #2E4D38;
+      --acup-accent: #497356;
+      --acup-light: #EFF5F0;
+      --acup-border: #D3E3D6;
+    }
+
+    /* Theme 1: Petróleo Clásico (Ocean Petrol) */
+    .theme-petrol-classic {
+      --quiro-primary: #134E5E;
+      --quiro-accent: #236B80;
+      --quiro-light: #EBF4F6;
+      --quiro-border: #C9DFE6;
+    }
+
+    /* Theme 2: Petróleo Noche / Profundo (Deep Midnight Petrol) */
+    .theme-petrol-deep {
+      --quiro-primary: #0F3D47;
+      --quiro-accent: #1D5764;
+      --quiro-light: #E8F1F3;
+      --quiro-border: #BFD8DE;
+    }
+
+    /* Theme 3: Petróleo Mineral Egeo (Luminous Mineral Petrol) */
+    .theme-petrol-mineral {
+      --quiro-primary: #185A6B;
+      --quiro-accent: #25788E;
+      --quiro-light: #EDF6F8;
+      --quiro-border: #CEE4EB;
+    }
+
+    /* Theme 4: Azul Pizarra Original (Slate Blue) */
+    .theme-slate-original {
+      --quiro-primary: #244255;
+      --quiro-accent: #3B6682;
+      --quiro-light: #EDF3F7;
+      --quiro-border: #D1DFE8;
+    }
+
+    .simulation-canvas {
+      background: var(--bg-canvas);
+      color: var(--text-main);
+    }
+
+    /* Canvas Header */
+    .canvas-hero {
+      text-align: center;
+      margin-bottom: 40px;
+    }
+
+    .canvas-hero .clinic-eyebrow {
+      font-size: 13px;
+      font-weight: 700;
+      letter-spacing: 1.5px;
+      text-transform: uppercase;
+      color: var(--text-muted);
+      margin-bottom: 8px;
+    }
+
+    .canvas-hero h2 {
+      font-family: var(--font-serif);
+      font-size: clamp(26px, 3.5vw, 38px);
+      font-weight: 600;
+      color: var(--text-main);
+      margin-bottom: 12px;
+      line-height: 1.25;
+    }
+
+    .canvas-hero h2 span.q-word {
+      color: var(--quiro-primary);
+      text-decoration: underline;
+      text-decoration-color: var(--quiro-accent);
+      text-underline-offset: 6px;
+    }
+
+    .canvas-hero h2 span.a-word {
+      color: var(--acup-primary);
+      text-decoration: underline;
+      text-decoration-color: var(--acup-accent);
+      text-underline-offset: 6px;
+    }
+
+    .canvas-hero p {
+      font-size: 16px;
+      color: var(--text-muted);
+      max-width: 620px;
+      margin: 0 auto;
+    }
+
+    /* Dual Discipline Showcase Grid */
+    .dual-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 32px;
+      margin-bottom: 40px;
+    }
+
+    @media (max-width: 860px) {
+      .dual-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    /* Discipline Column Box */
+    .discipline-box {
+      background: var(--card-bg);
+      border-radius: 20px;
+      padding: 30px;
+      border: 1px solid var(--card-border);
+      position: relative;
+      transition: var(--transition);
+      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.03);
+    }
+
+    .discipline-box.quiro {
+      border-top: 4px solid var(--quiro-primary);
+    }
+
+    .discipline-box.acup {
+      border-top: 4px solid var(--acup-primary);
+    }
+
+    .box-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      margin-bottom: 20px;
+      padding-bottom: 16px;
+      border-bottom: 1px solid var(--card-border);
+    }
+
+    .box-header .discipline-tag {
+      font-size: 11px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      padding: 5px 12px;
+      border-radius: 999px;
+    }
+
+    .discipline-box.quiro .discipline-tag {
+      background: var(--quiro-light);
+      color: var(--quiro-primary);
+      border: 1px solid var(--quiro-border);
+    }
+
+    .discipline-box.acup .discipline-tag {
+      background: var(--acup-light);
+      color: var(--acup-primary);
+      border: 1px solid var(--acup-border);
+    }
+
+    .pro-profile {
+      display: flex;
+      gap: 16px;
+      align-items: center;
+      margin-bottom: 20px;
+    }
+
+    .pro-avatar {
+      width: 68px;
+      height: 68px;
+      border-radius: 18px;
+      object-fit: cover;
+      background: #D8DDD6;
+      border: 2px solid #FFFFFF;
+      box-shadow: 0 3px 12px rgba(0,0,0,0.1);
+    }
+
+    .pro-info h3 {
+      font-family: var(--font-serif);
+      font-size: 21px;
+      font-weight: 600;
+      color: var(--text-main);
+      margin-bottom: 2px;
+    }
+
+    .pro-info .role {
+      font-size: 13px;
+      font-weight: 600;
+    }
+
+    .discipline-box.quiro .pro-info .role { color: var(--quiro-primary); }
+    .discipline-box.acup .pro-info .role { color: var(--acup-primary); }
+
+    .pro-info .cert {
+      font-size: 12px;
+      color: var(--text-muted);
+    }
+
+    .services-mini-list {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      margin-bottom: 24px;
+    }
+
+    .svc-pill-item {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 12px 16px;
+      border-radius: 12px;
+      font-size: 14px;
+      font-weight: 500;
+      background: #FAFAFA;
+      border: 1px solid var(--card-border);
+      transition: var(--transition);
+    }
+
+    .svc-pill-item:hover {
+      background: #FFFFFF;
+      transform: translateX(4px);
+    }
+
+    .discipline-box.quiro .svc-pill-item:hover {
+      border-color: var(--quiro-accent);
+    }
+
+    .discipline-box.acup .svc-pill-item:hover {
+      border-color: var(--acup-accent);
+    }
+
+    .action-cta-btn {
+      width: 100%;
+      padding: 14px 20px;
+      border-radius: 12px;
+      font-size: 14px;
+      font-weight: 600;
+      text-align: center;
+      cursor: pointer;
+      border: none;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      transition: var(--transition);
+      color: #FFFFFF;
+      text-decoration: none;
+    }
+
+    .discipline-box.quiro .action-cta-btn {
+      background: var(--quiro-primary);
+    }
+    .discipline-box.quiro .action-cta-btn:hover {
+      background: var(--quiro-accent);
+      box-shadow: 0 6px 18px rgba(0, 0, 0, 0.15);
+    }
+
+    .discipline-box.acup .action-cta-btn {
+      background: var(--acup-primary);
+    }
+    .discipline-box.acup .action-cta-btn:hover {
+      background: var(--acup-accent);
+      box-shadow: 0 6px 18px rgba(0, 0, 0, 0.15);
+    }
+
+    /* Pathologies Tag Simulation */
+    .patho-bar {
+      background: var(--card-bg);
+      border-radius: 18px;
+      padding: 24px;
+      border: 1px solid var(--card-border);
+      margin-bottom: 30px;
+    }
+
+    .patho-bar h4 {
+      font-family: var(--font-serif);
+      font-size: 17px;
+      margin-bottom: 14px;
+      color: var(--text-main);
+    }
+
+    .tag-cloud {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+    }
+
+    .patho-badge {
+      font-size: 12px;
+      font-weight: 600;
+      padding: 6px 14px;
+      border-radius: 8px;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .patho-badge.quiro-tag {
+      background: var(--quiro-light);
+      color: var(--quiro-primary);
+      border: 1px solid var(--quiro-border);
+    }
+
+    .patho-badge.acup-tag {
+      background: var(--acup-light);
+      color: var(--acup-primary);
+      border: 1px solid var(--acup-border);
+    }
+
+    .patho-badge.shared-tag {
+      background: #F0F2EF;
+      color: var(--text-main);
+      border: 1px dashed var(--card-border);
+    }
+
+    /* Specs & Palette Swatches */
+    .swatches-footer {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 16px;
+      background: rgba(0,0,0,0.03);
+      padding: 20px;
+      border-radius: 16px;
+      border: 1px solid var(--card-border);
+    }
+
+    .swatch-card {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .color-circle {
+      width: 38px;
+      height: 38px;
+      border-radius: 10px;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+      border: 2px solid #FFFFFF;
+      flex-shrink: 0;
+    }
+
+    .swatch-info .name {
+      font-size: 12px;
+      font-weight: 700;
+      color: var(--text-main);
+    }
+
+    .swatch-info .hex {
+      font-size: 11px;
+      font-family: monospace;
+      color: var(--text-muted);
+    }
+
+    /* Design Notes Panel */
+    .design-notes {
+      margin-top: 24px;
+      background: #151A18;
+      border: 1px solid #25332C;
+      border-radius: 16px;
+      padding: 20px 24px;
+      font-size: 14px;
+      color: #CAD5CD;
+    }
+
+    .design-notes strong {
+      color: #FFFFFF;
+    }
+
+    .design-notes ul {
+      margin-left: 20px;
+      margin-top: 8px;
+    }
+
+    .design-notes li {
+      margin-bottom: 4px;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="container">
+    <header class="top-header">
+      <span class="tag">Variaciones de Color Petróleo</span>
+      <h1>Quiropraxia Petróleo &amp; Acupuntura Salvia</h1>
+      <p>Compara tres intensidades de <strong>Azul Petróleo</strong> para Felipe Méndez (Quiropraxia), todas combinadas armónicamente con el <strong>Verde Salvia Botánico</strong> de Eduardo Lagos (Acupuntura).</p>
+
+      <!-- Tabs -->
+      <div class="tab-bar">
+        <button class="tab-btn active" onclick="switchTheme('petrol-classic', this)">
+          <span class="btn-color-dot" style="background: #134E5E;"></span>
+          <span>1. Petróleo Clásico</span>
+          <span class="badge-pill">Equilibrado</span>
+        </button>
+        <button class="tab-btn" onclick="switchTheme('petrol-deep', this)">
+          <span class="btn-color-dot" style="background: #0F3D47;"></span>
+          <span>2. Petróleo Noche</span>
+          <span class="badge-pill">Profundo</span>
+        </button>
+        <button class="tab-btn" onclick="switchTheme('petrol-mineral', this)">
+          <span class="btn-color-dot" style="background: #185A6B;"></span>
+          <span>3. Petróleo Mineral</span>
+          <span class="badge-pill">Luminoso</span>
+        </button>
+        <button class="tab-btn" onclick="switchTheme('slate-original', this)">
+          <span class="btn-color-dot" style="background: #244255;"></span>
+          <span>Anterior: Slate Blue</span>
+        </button>
+      </div>
+    </header>
+
+
+    <!-- ==========================================
+         OPCIÓN 1: PETRÓLEO CLÁSICO (OCEAN PETROL)
+         ========================================== -->
+    <div id="view-petrol-classic" class="palette-view active">
+      <div class="simulation-canvas canvas-shared theme-petrol-classic">
+
+        <div class="canvas-hero">
+          <div class="clinic-eyebrow">Centro Vida Sana Austral · Temuco</div>
+          <h2>Salud Integral: <span class="q-word">Quiropraxia</span> &amp; <span class="a-word">Acupuntura</span></h2>
+          <p>Dos disciplinas complementarias con profesionales certificados por el Minsal para recuperar tu movilidad y bienestar.</p>
+        </div>
+
+        <div class="dual-grid">
+          <!-- Columna Quiropraxia (Petróleo Clásico) -->
+          <div class="discipline-box quiro">
+            <div class="box-header">
+              <span class="discipline-tag">Quiropraxia &amp; Kinesiología</span>
+              <span style="font-size: 12px; color: var(--text-muted); font-weight: 600;">Estructura &amp; Movimiento</span>
+            </div>
+
+            <div class="pro-profile">
+              <img class="pro-avatar" src="pix/felipe-kinesiologo-400.webp" alt="Felipe Méndez">
+              <div class="pro-info">
+                <h3>Felipe Méndez</h3>
+                <div class="role">Quiropráctico &amp; Kinesiólogo</div>
+                <div class="cert">Certificación Minsal · Especialista Columna</div>
+              </div>
+            </div>
+
+            <div class="services-mini-list">
+              <div class="svc-pill-item">
+                <span>Ajuste Vertebral y Articular</span>
+                <strong style="color: var(--quiro-primary)">$30.000</strong>
+              </div>
+              <div class="svc-pill-item">
+                <span>Rehabilitación Musculoesquelética</span>
+                <strong style="color: var(--quiro-primary)">$25.000</strong>
+              </div>
+              <div class="svc-pill-item">
+                <span>Kinesiología Integral a Domicilio</span>
+                <strong style="color: var(--quiro-primary)">$35.000</strong>
+              </div>
+            </div>
+
+            <button class="action-cta-btn">
+              <span>Agendar Consulta con Felipe</span>
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+            </button>
+          </div>
+
+          <!-- Columna Acupuntura (Botanical Sage) -->
+          <div class="discipline-box acup">
+            <div class="box-header">
+              <span class="discipline-tag">Acupuntura &amp; Med. China</span>
+              <span style="font-size: 12px; color: var(--text-muted); font-weight: 600;">Equilibrio &amp; Energía</span>
+            </div>
+
+            <div class="pro-profile">
+              <img class="pro-avatar" src="pix/eduardo-acupuntura-400.webp" alt="Eduardo Lagos">
+              <div class="pro-info">
+                <h3>Eduardo Lagos</h3>
+                <div class="role">Acupunturista Certificado Minsal</div>
+                <div class="cert">Medicina Tradicional China &amp; Bienestar</div>
+              </div>
+            </div>
+
+            <div class="services-mini-list">
+              <div class="svc-pill-item">
+                <span>Acupuntura Clínica Sistémica</span>
+                <strong style="color: var(--acup-primary)">$30.000</strong>
+              </div>
+              <div class="svc-pill-item">
+                <span>Terapia de Ventosas &amp; Moxibustión</span>
+                <strong style="color: var(--acup-primary)">$25.000</strong>
+              </div>
+              <div class="svc-pill-item">
+                <span>Electroacupuntura para Dolor Crónico</span>
+                <strong style="color: var(--acup-primary)">$30.000</strong>
+              </div>
+            </div>
+
+            <button class="action-cta-btn">
+              <span>Agendar Consulta con Eduardo</span>
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+            </button>
+          </div>
+        </div>
+
+        <!-- Mapeo de Patologías según Especialidad -->
+        <div class="patho-bar">
+          <h4>Condiciones que Tratamos en Temuco</h4>
+          <div class="tag-cloud">
+            <span class="patho-badge quiro-tag">● Lumbago &amp; Hernias Discales (Quiro)</span>
+            <span class="patho-badge quiro-tag">● Dolor Cervical &amp; Tortícolis (Quiro)</span>
+            <span class="patho-badge shared-tag">◈ Ciática Aguda (Terapia Combinada)</span>
+            <span class="patho-badge acup-tag">● Cefaleas &amp; Migrañas (Acupuntura)</span>
+            <span class="patho-badge acup-tag">● Estrés, Ansiedad e Insomnio (Acupuntura)</span>
+            <span class="patho-badge shared-tag">◈ Fibromialgia (Terapia Dual)</span>
+          </div>
+        </div>
+
+        <!-- Muestras cromáticas -->
+        <div class="swatches-footer">
+          <div class="swatch-card">
+            <div class="color-circle" style="background: #134E5E;"></div>
+            <div class="swatch-info">
+              <div class="name">Petróleo Clásico (Quiro)</div>
+              <div class="hex">#134E5E</div>
+            </div>
+          </div>
+          <div class="swatch-card">
+            <div class="color-circle" style="background: #2E4D38;"></div>
+            <div class="swatch-info">
+              <div class="name">Verde Salvia (Acupuntura)</div>
+              <div class="hex">#2E4D38</div>
+            </div>
+          </div>
+          <div class="swatch-card">
+            <div class="color-circle" style="background: #F8F9F6; border: 1px solid #DCDED9;"></div>
+            <div class="swatch-info">
+              <div class="name">Lino Mineral (Lienzo)</div>
+              <div class="hex">#F8F9F6</div>
+            </div>
+          </div>
+          <div class="swatch-card">
+            <div class="color-circle" style="background: #18201A;"></div>
+            <div class="swatch-info">
+              <div class="name">Grafito Carbón (Texto)</div>
+              <div class="hex">#18201A</div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+
+      <div class="design-notes">
+        <strong>Detalle del Petróleo Clásico (`#134E5E`):</strong>
+        <ul>
+          <li><strong>Identidad perfecta:</strong> Tiene la cantidad exacta de azul oceánico con un matiz verde azulado profundo (teal/petróleo) que dialoga de forma natural con el verde salvia de la acupuntura.</li>
+          <li><strong>Elegancia y prestigio:</strong> Es un color muy usado en clínicas de traumatología y centros kinesiológicos de vanguardia porque transmite precisión técnica sin sentirse estéril.</li>
+        </ul>
+      </div>
+    </div>
+
+
+    <!-- ==========================================
+         OPCIÓN 2: PETRÓLEO NOCHE / PROFUNDO
+         ========================================== -->
+    <div id="view-petrol-deep" class="palette-view">
+      <div class="simulation-canvas canvas-shared theme-petrol-deep">
+
+        <div class="canvas-hero">
+          <div class="clinic-eyebrow">Centro Vida Sana Austral · Temuco</div>
+          <h2>Salud Integral: <span class="q-word">Quiropraxia</span> &amp; <span class="a-word">Acupuntura</span></h2>
+          <p>Dos disciplinas complementarias con profesionales certificados por el Minsal para recuperar tu movilidad y bienestar.</p>
+        </div>
+
+        <div class="dual-grid">
+          <!-- Columna Quiropraxia (Petróleo Noche) -->
+          <div class="discipline-box quiro">
+            <div class="box-header">
+              <span class="discipline-tag">Quiropraxia &amp; Kinesiología</span>
+              <span style="font-size: 12px; color: var(--text-muted); font-weight: 600;">Estructura &amp; Movimiento</span>
+            </div>
+
+            <div class="pro-profile">
+              <img class="pro-avatar" src="pix/felipe-kinesiologo-400.webp" alt="Felipe Méndez">
+              <div class="pro-info">
+                <h3>Felipe Méndez</h3>
+                <div class="role">Quiropráctico &amp; Kinesiólogo</div>
+                <div class="cert">Certificación Minsal · Especialista Columna</div>
+              </div>
+            </div>
+
+            <div class="services-mini-list">
+              <div class="svc-pill-item">
+                <span>Ajuste Vertebral y Articular</span>
+                <strong style="color: var(--quiro-primary)">$30.000</strong>
+              </div>
+              <div class="svc-pill-item">
+                <span>Rehabilitación Musculoesquelética</span>
+                <strong style="color: var(--quiro-primary)">$25.000</strong>
+              </div>
+              <div class="svc-pill-item">
+                <span>Kinesiología Integral a Domicilio</span>
+                <strong style="color: var(--quiro-primary)">$35.000</strong>
+              </div>
+            </div>
+
+            <button class="action-cta-btn">
+              <span>Agendar Consulta con Felipe</span>
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+            </button>
+          </div>
+
+          <!-- Columna Acupuntura (Botanical Sage) -->
+          <div class="discipline-box acup">
+            <div class="box-header">
+              <span class="discipline-tag">Acupuntura &amp; Med. China</span>
+              <span style="font-size: 12px; color: var(--text-muted); font-weight: 600;">Equilibrio &amp; Energía</span>
+            </div>
+
+            <div class="pro-profile">
+              <img class="pro-avatar" src="pix/eduardo-acupuntura-400.webp" alt="Eduardo Lagos">
+              <div class="pro-info">
+                <h3>Eduardo Lagos</h3>
+                <div class="role">Acupunturista Certificado Minsal</div>
+                <div class="cert">Medicina Tradicional China &amp; Bienestar</div>
+              </div>
+            </div>
+
+            <div class="services-mini-list">
+              <div class="svc-pill-item">
+                <span>Acupuntura Clínica Sistémica</span>
+                <strong style="color: var(--acup-primary)">$30.000</strong>
+              </div>
+              <div class="svc-pill-item">
+                <span>Terapia de Ventosas &amp; Moxibustión</span>
+                <strong style="color: var(--acup-primary)">$25.000</strong>
+              </div>
+              <div class="svc-pill-item">
+                <span>Electroacupuntura para Dolor Crónico</span>
+                <strong style="color: var(--acup-primary)">$30.000</strong>
+              </div>
+            </div>
+
+            <button class="action-cta-btn">
+              <span>Agendar Consulta con Eduardo</span>
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+            </button>
+          </div>
+        </div>
+
+        <!-- Mapeo de Patologías según Especialidad -->
+        <div class="patho-bar">
+          <h4>Condiciones que Tratamos en Temuco</h4>
+          <div class="tag-cloud">
+            <span class="patho-badge quiro-tag">● Lumbago &amp; Hernias Discales (Quiro)</span>
+            <span class="patho-badge quiro-tag">● Dolor Cervical &amp; Tortícolis (Quiro)</span>
+            <span class="patho-badge shared-tag">◈ Ciática Aguda (Terapia Combinada)</span>
+            <span class="patho-badge acup-tag">● Cefaleas &amp; Migrañas (Acupuntura)</span>
+            <span class="patho-badge acup-tag">● Estrés, Ansiedad e Insomnio (Acupuntura)</span>
+            <span class="patho-badge shared-tag">◈ Fibromialgia (Terapia Dual)</span>
+          </div>
+        </div>
+
+        <!-- Muestras cromáticas -->
+        <div class="swatches-footer">
+          <div class="swatch-card">
+            <div class="color-circle" style="background: #0F3D47;"></div>
+            <div class="swatch-info">
+              <div class="name">Petróleo Noche (Quiro)</div>
+              <div class="hex">#0F3D47</div>
+            </div>
+          </div>
+          <div class="swatch-card">
+            <div class="color-circle" style="background: #2E4D38;"></div>
+            <div class="swatch-info">
+              <div class="name">Verde Salvia (Acupuntura)</div>
+              <div class="hex">#2E4D38</div>
+            </div>
+          </div>
+          <div class="swatch-card">
+            <div class="color-circle" style="background: #F8F9F6; border: 1px solid #DCDED9;"></div>
+            <div class="swatch-info">
+              <div class="name">Lino Mineral (Lienzo)</div>
+              <div class="hex">#F8F9F6</div>
+            </div>
+          </div>
+          <div class="swatch-card">
+            <div class="color-circle" style="background: #18201A;"></div>
+            <div class="swatch-info">
+              <div class="name">Grafito Carbón (Texto)</div>
+              <div class="hex">#18201A</div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+
+      <div class="design-notes">
+        <strong>Detalle del Petróleo Noche (`#0F3D47`):</strong>
+        <ul>
+          <li><strong>Mayor profundidad y contraste:</strong> Es más oscuro y solemne. Aporta mucho contraste sobre fondos blancos y se siente sumamente premium y autoritario.</li>
+        </ul>
+      </div>
+    </div>
+
+
+    <!-- ==========================================
+         OPCIÓN 3: PETRÓLEO MINERAL EGEO
+         ========================================== -->
+    <div id="view-petrol-mineral" class="palette-view">
+      <div class="simulation-canvas canvas-shared theme-petrol-mineral">
+
+        <div class="canvas-hero">
+          <div class="clinic-eyebrow">Centro Vida Sana Austral · Temuco</div>
+          <h2>Salud Integral: <span class="q-word">Quiropraxia</span> &amp; <span class="a-word">Acupuntura</span></h2>
+          <p>Dos disciplinas complementarias con profesionales certificados por el Minsal para recuperar tu movilidad y bienestar.</p>
+        </div>
+
+        <div class="dual-grid">
+          <!-- Columna Quiropraxia (Petróleo Mineral) -->
+          <div class="discipline-box quiro">
+            <div class="box-header">
+              <span class="discipline-tag">Quiropraxia &amp; Kinesiología</span>
+              <span style="font-size: 12px; color: var(--text-muted); font-weight: 600;">Estructura &amp; Movimiento</span>
+            </div>
+
+            <div class="pro-profile">
+              <img class="pro-avatar" src="pix/felipe-kinesiologo-400.webp" alt="Felipe Méndez">
+              <div class="pro-info">
+                <h3>Felipe Méndez</h3>
+                <div class="role">Quiropráctico &amp; Kinesiólogo</div>
+                <div class="cert">Certificación Minsal · Especialista Columna</div>
+              </div>
+            </div>
+
+            <div class="services-mini-list">
+              <div class="svc-pill-item">
+                <span>Ajuste Vertebral y Articular</span>
+                <strong style="color: var(--quiro-primary)">$30.000</strong>
+              </div>
+              <div class="svc-pill-item">
+                <span>Rehabilitación Musculoesquelética</span>
+                <strong style="color: var(--quiro-primary)">$25.000</strong>
+              </div>
+              <div class="svc-pill-item">
+                <span>Kinesiología Integral a Domicilio</span>
+                <strong style="color: var(--quiro-primary)">$35.000</strong>
+              </div>
+            </div>
+
+            <button class="action-cta-btn">
+              <span>Agendar Consulta con Felipe</span>
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+            </button>
+          </div>
+
+          <!-- Columna Acupuntura (Botanical Sage) -->
+          <div class="discipline-box acup">
+            <div class="box-header">
+              <span class="discipline-tag">Acupuntura &amp; Med. China</span>
+              <span style="font-size: 12px; color: var(--text-muted); font-weight: 600;">Equilibrio &amp; Energía</span>
+            </div>
+
+            <div class="pro-profile">
+              <img class="pro-avatar" src="pix/eduardo-acupuntura-400.webp" alt="Eduardo Lagos">
+              <div class="pro-info">
+                <h3>Eduardo Lagos</h3>
+                <div class="role">Acupunturista Certificado Minsal</div>
+                <div class="cert">Medicina Tradicional China &amp; Bienestar</div>
+              </div>
+            </div>
+
+            <div class="services-mini-list">
+              <div class="svc-pill-item">
+                <span>Acupuntura Clínica Sistémica</span>
+                <strong style="color: var(--acup-primary)">$30.000</strong>
+              </div>
+              <div class="svc-pill-item">
+                <span>Terapia de Ventosas &amp; Moxibustión</span>
+                <strong style="color: var(--acup-primary)">$25.000</strong>
+              </div>
+              <div class="svc-pill-item">
+                <span>Electroacupuntura para Dolor Crónico</span>
+                <strong style="color: var(--acup-primary)">$30.000</strong>
+              </div>
+            </div>
+
+            <button class="action-cta-btn">
+              <span>Agendar Consulta con Eduardo</span>
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+            </button>
+          </div>
+        </div>
+
+        <!-- Mapeo de Patologías según Especialidad -->
+        <div class="patho-bar">
+          <h4>Condiciones que Tratamos en Temuco</h4>
+          <div class="tag-cloud">
+            <span class="patho-badge quiro-tag">● Lumbago &amp; Hernias Discales (Quiro)</span>
+            <span class="patho-badge quiro-tag">● Dolor Cervical &amp; Tortícolis (Quiro)</span>
+            <span class="patho-badge shared-tag">◈ Ciática Aguda (Terapia Combinada)</span>
+            <span class="patho-badge acup-tag">● Cefaleas &amp; Migrañas (Acupuntura)</span>
+            <span class="patho-badge acup-tag">● Estrés, Ansiedad e Insomnio (Acupuntura)</span>
+            <span class="patho-badge shared-tag">◈ Fibromialgia (Terapia Dual)</span>
+          </div>
+        </div>
+
+        <!-- Muestras cromáticas -->
+        <div class="swatches-footer">
+          <div class="swatch-card">
+            <div class="color-circle" style="background: #185A6B;"></div>
+            <div class="swatch-info">
+              <div class="name">Petróleo Mineral (Quiro)</div>
+              <div class="hex">#185A6B</div>
+            </div>
+          </div>
+          <div class="swatch-card">
+            <div class="color-circle" style="background: #2E4D38;"></div>
+            <div class="swatch-info">
+              <div class="name">Verde Salvia (Acupuntura)</div>
+              <div class="hex">#2E4D38</div>
+            </div>
+          </div>
+          <div class="swatch-card">
+            <div class="color-circle" style="background: #F8F9F6; border: 1px solid #DCDED9;"></div>
+            <div class="swatch-info">
+              <div class="name">Lino Mineral (Lienzo)</div>
+              <div class="hex">#F8F9F6</div>
+            </div>
+          </div>
+          <div class="swatch-card">
+            <div class="color-circle" style="background: #18201A;"></div>
+            <div class="swatch-info">
+              <div class="name">Grafito Carbón (Texto)</div>
+              <div class="hex">#18201A</div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+
+      <div class="design-notes">
+        <strong>Detalle del Petróleo Mineral (`#185A6B`):</strong>
+        <ul>
+          <li><strong>Mayor luminosidad:</strong> Tiene un matiz ligeramente más azul verdoso brillante. Resalta mucho en pantallas móviles y botones de llamada a la acción.</li>
+        </ul>
+      </div>
+    </div>
+
+
+    <!-- ==========================================
+         OPCIÓN 4: SLATE ORIGINAL (REFERENCIA)
+         ========================================== -->
+    <div id="view-slate-original" class="palette-view">
+      <div class="simulation-canvas canvas-shared theme-slate-original">
+
+        <div class="canvas-hero">
+          <div class="clinic-eyebrow">Centro Vida Sana Austral · Temuco</div>
+          <h2>Salud Integral: <span class="q-word">Quiropraxia</span> &amp; <span class="a-word">Acupuntura</span></h2>
+          <p>Esta es la opción anterior (Azul Pizarra Slate) para comparar directamente la diferencia con el Azul Petróleo.</p>
+        </div>
+
+        <div class="dual-grid">
+          <!-- Columna Quiropraxia (Slate) -->
+          <div class="discipline-box quiro">
+            <div class="box-header">
+              <span class="discipline-tag">Quiropraxia &amp; Kinesiología</span>
+              <span style="font-size: 12px; color: var(--text-muted); font-weight: 600;">Estructura &amp; Movimiento</span>
+            </div>
+
+            <div class="pro-profile">
+              <img class="pro-avatar" src="pix/felipe-kinesiologo-400.webp" alt="Felipe Méndez">
+              <div class="pro-info">
+                <h3>Felipe Méndez</h3>
+                <div class="role">Quiropráctico &amp; Kinesiólogo</div>
+                <div class="cert">Certificación Minsal · Especialista Columna</div>
+              </div>
+            </div>
+
+            <div class="services-mini-list">
+              <div class="svc-pill-item">
+                <span>Ajuste Vertebral y Articular</span>
+                <strong style="color: var(--quiro-primary)">$30.000</strong>
+              </div>
+              <div class="svc-pill-item">
+                <span>Rehabilitación Musculoesquelética</span>
+                <strong style="color: var(--quiro-primary)">$25.000</strong>
+              </div>
+              <div class="svc-pill-item">
+                <span>Kinesiología Integral a Domicilio</span>
+                <strong style="color: var(--quiro-primary)">$35.000</strong>
+              </div>
+            </div>
+
+            <button class="action-cta-btn">
+              <span>Agendar Consulta con Felipe</span>
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+            </button>
+          </div>
+
+          <!-- Columna Acupuntura (Botanical Sage) -->
+          <div class="discipline-box acup">
+            <div class="box-header">
+              <span class="discipline-tag">Acupuntura &amp; Med. China</span>
+              <span style="font-size: 12px; color: var(--text-muted); font-weight: 600;">Equilibrio &amp; Energía</span>
+            </div>
+
+            <div class="pro-profile">
+              <img class="pro-avatar" src="pix/eduardo-acupuntura-400.webp" alt="Eduardo Lagos">
+              <div class="pro-info">
+                <h3>Eduardo Lagos</h3>
+                <div class="role">Acupunturista Certificado Minsal</div>
+                <div class="cert">Medicina Tradicional China &amp; Bienestar</div>
+              </div>
+            </div>
+
+            <div class="services-mini-list">
+              <div class="svc-pill-item">
+                <span>Acupuntura Clínica Sistémica</span>
+                <strong style="color: var(--acup-primary)">$30.000</strong>
+              </div>
+              <div class="svc-pill-item">
+                <span>Terapia de Ventosas &amp; Moxibustión</span>
+                <strong style="color: var(--acup-primary)">$25.000</strong>
+              </div>
+              <div class="svc-pill-item">
+                <span>Electroacupuntura para Dolor Crónico</span>
+                <strong style="color: var(--acup-primary)">$30.000</strong>
+              </div>
+            </div>
+
+            <button class="action-cta-btn">
+              <span>Agendar Consulta con Eduardo</span>
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+            </button>
+          </div>
+        </div>
+
+        <!-- Muestras cromáticas -->
+        <div class="swatches-footer">
+          <div class="swatch-card">
+            <div class="color-circle" style="background: #244255;"></div>
+            <div class="swatch-info">
+              <div class="name">Slate Blue (Anterior)</div>
+              <div class="hex">#244255</div>
+            </div>
+          </div>
+          <div class="swatch-card">
+            <div class="color-circle" style="background: #2E4D38;"></div>
+            <div class="swatch-info">
+              <div class="name">Verde Salvia (Acupuntura)</div>
+              <div class="hex">#2E4D38</div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+  </div>
+
+  <script>
+    function switchTheme(themeId, btn) {
+      document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+      document.querySelectorAll('.palette-view').forEach(v => v.classList.remove('active'));
+
+      btn.classList.add('active');
+      document.getElementById('view-' + themeId).classList.add('active');
+    }
+  </script>
+</body>
+</html>
