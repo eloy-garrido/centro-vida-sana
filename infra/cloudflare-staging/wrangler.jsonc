@@ -1,0 +1,18 @@
+{
+  "name": "vida-sana-reservas-staging",
+  "account_id": "21c858ed53ec9083b6fcd89d18c27372",
+  "main": "worker.js",
+  "compatibility_date": "2026-11-05",
+  "workers_dev": false,
+  "preview_urls": false,
+  "observability": {
+    "enabled": false
+  },
+  "d1_databases": [
+    {
+      "binding": "DB",
+      "database_name": "vida-sana-reservas-staging",
+      "database_id": "3d91d453-2ef5-4601-80cf-27622a0787bf"
+    }
+  ]
+}
