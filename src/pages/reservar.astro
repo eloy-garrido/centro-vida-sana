@@ -592,7 +592,7 @@ import { professionals } from '../data/professionals';
 
 <script>
   import { AgendamientoClient, ApiError } from '../lib/agendamiento/client.ts';
-  import { formatChileanRut, validateChileanRut } from '../lib/agendamiento/validation.ts';
+  import { cleanRut, formatChileanRut, validateChileanRut } from '../lib/agendamiento/validation.ts';
 
   // ESTADO DEL WIZARD
   let currentStep = 1;
@@ -987,25 +987,179 @@ import { professionals } from '../data/professionals';
   });
 
   // ==========================================================================
-  // PASO 3: TUS DATOS Y CONTACTO
+  // PASO 3: TUS DATOS Y CONTACTO (FORMATEO EN VIVO Y VALIDACIÓN ROBUSTA)
   // ==========================================================================
   btnStep3Back.addEventListener('click', () => {
     updateStep2NextButton();
     goToStep(2);
   });
 
-  // Validación y formato de RUT en tiempo real
+  /**
+   * Formatea un RUT en tiempo real agregando puntos y guion mientras el usuario escribe.
+   */
+  function formatRutLive(val: string): string {
+    const cleaned = cleanRut(val);
+    if (!cleaned) return '';
+    if (cleaned.length === 1) return cleaned;
+
+    // Máximo 9 caracteres (8 cuerpo + 1 dv)
+    const sliced = cleaned.slice(0, 9);
+    const cuerpo = sliced.slice(0, -1);
+    const dv = sliced.slice(-1);
+
+    let formattedCuerpo = '';
+    let count = 0;
+    for (let i = cuerpo.length - 1; i >= 0; i--) {
+      formattedCuerpo = cuerpo[i] + formattedCuerpo;
+      count++;
+      if (count % 3 === 0 && i > 0) {
+        formattedCuerpo = '.' + formattedCuerpo;
+      }
+    }
+
+    return `${formattedCuerpo}-${dv}`;
+  }
+
+  /**
+   * Formatea el teléfono móvil chileno anteponiendo automáticamente '+56 9 ' y separando dígitos.
+   */
+  function formatPhoneLive(val: string): string {
+    const trimmed = val.trim();
+    if (!trimmed) return '';
+
+    // Extraer únicamente los dígitos numéricos
+    let digits = val.replace(/\D/g, '');
+
+    // Descontar prefijo país 569 o 56 si el usuario lo incluyó
+    if (digits.startsWith('569')) {
+      digits = digits.slice(3);
+    } else if (digits.startsWith('56')) {
+      digits = digits.slice(2);
+    } else if (digits.length === 9 && digits.startsWith('9')) {
+      // Si escribió 9XXXXXXXX (9 dígitos incluyendo el 9)
+      digits = digits.slice(1);
+    }
+
+    // Máximo 8 dígitos de número de abonado móvil chileno
+    digits = digits.slice(0, 8);
+
+    if (digits.length === 0) {
+      return '+56 9 ';
+    }
+    if (digits.length <= 4) {
+      return `+56 9 ${digits}`;
+    }
+    return `+56 9 ${digits.slice(0, 4)} ${digits.slice(4)}`;
+  }
+
+  // Auto-formato de RUT en vivo
+  stepInputRut.addEventListener('input', () => {
+    if (stepInputDocType.value === 'rut') {
+      const formatted = formatRutLive(stepInputRut.value);
+      stepInputRut.value = formatted;
+
+      // Si ya tiene longitud completa (mínimo 7 u 8 dígitos cuerpo + dv)
+      const cleaned = cleanRut(stepInputRut.value);
+      if (cleaned.length >= 8) {
+        if (validateChileanRut(cleaned)) {
+          errStepRut.classList.add('hidden');
+          stepInputRut.classList.remove('border-red-400');
+        }
+      } else {
+        errStepRut.classList.add('hidden');
+        stepInputRut.classList.remove('border-red-400');
+      }
+    }
+  });
+
+  // Validación de RUT al perder el foco (blur)
   stepInputRut.addEventListener('blur', () => {
-    if (stepInputDocType.value === 'rut' && stepInputRut.value.trim()) {
-      const val = validateChileanRut(stepInputRut.value);
-      if (!val.valid) {
-        errStepRut.textContent = val.error || 'RUT inválido';
+    const raw = stepInputRut.value.trim();
+    if (!raw) {
+      errStepRut.classList.add('hidden');
+      stepInputRut.classList.remove('border-red-400');
+      return;
+    }
+
+    if (stepInputDocType.value === 'rut') {
+      const isValid = validateChileanRut(raw);
+      if (!isValid) {
+        errStepRut.textContent = 'El RUT ingresado no es válido. Revisa los dígitos y el dígito verificador.';
         errStepRut.classList.remove('hidden');
         stepInputRut.classList.add('border-red-400');
       } else {
         errStepRut.classList.add('hidden');
         stepInputRut.classList.remove('border-red-400');
-        stepInputRut.value = formatChileanRut(stepInputRut.value);
+        stepInputRut.value = formatChileanRut(raw);
+      }
+    } else {
+      // Pasaporte
+      if (!/^[A-Za-z0-9\-]{4,20}$/.test(raw)) {
+        errStepRut.textContent = 'El pasaporte debe tener entre 4 y 20 caracteres alfanuméricos.';
+        errStepRut.classList.remove('hidden');
+        stepInputRut.classList.add('border-red-400');
+      } else {
+        errStepRut.classList.add('hidden');
+        stepInputRut.classList.remove('border-red-400');
+        stepInputRut.value = raw.toUpperCase();
+      }
+    }
+  });
+
+  // Cambio de tipo de documento (RUT / Pasaporte)
+  stepInputDocType.addEventListener('change', () => {
+    if (stepInputDocType.value === 'rut') {
+      stepInputRut.placeholder = '12.345.678-5';
+      if (stepInputRut.value.trim()) {
+        stepInputRut.value = formatRutLive(stepInputRut.value);
+      }
+    } else {
+      stepInputRut.placeholder = 'Pasaporte (ej: A1234567)';
+      stepInputRut.value = stepInputRut.value.replace(/[^A-Za-z0-9\-]/g, '').toUpperCase();
+    }
+    errStepRut.classList.add('hidden');
+    stepInputRut.classList.remove('border-red-400');
+  });
+
+  // Auto-prefijo y formato de Teléfono en vivo
+  stepInputPhone.addEventListener('focus', () => {
+    if (!stepInputPhone.value.trim()) {
+      stepInputPhone.value = '+56 9 ';
+    }
+  });
+
+  stepInputPhone.addEventListener('input', () => {
+    const current = stepInputPhone.value;
+    if (!current || current === '+' || current === '+5' || current === '+56' || current === '+56 ') {
+      return; // permitir borrar libremente sin atrapar al usuario
+    }
+    stepInputPhone.value = formatPhoneLive(current);
+
+    const digits = stepInputPhone.value.replace(/\D/g, '');
+    if (digits.length >= 11 || digits.length === 8) {
+      errStepPhone.classList.add('hidden');
+      stepInputPhone.classList.remove('border-red-400');
+    }
+  });
+
+  stepInputPhone.addEventListener('blur', () => {
+    const trimmed = stepInputPhone.value.trim();
+    if (trimmed === '+56 9' || trimmed === '+56 9 ' || trimmed === '+56' || trimmed === '+') {
+      stepInputPhone.value = '';
+      errStepPhone.classList.add('hidden');
+      stepInputPhone.classList.remove('border-red-400');
+      return;
+    }
+
+    if (trimmed) {
+      const digits = trimmed.replace(/\D/g, '');
+      if (digits.length < 11 && digits.length < 8) {
+        errStepPhone.textContent = 'Ingresa un número telefónico válido (ej: +56 9 1234 5678).';
+        errStepPhone.classList.remove('hidden');
+        stepInputPhone.classList.add('border-red-400');
+      } else {
+        errStepPhone.classList.add('hidden');
+        stepInputPhone.classList.remove('border-red-400');
       }
     }
   });
@@ -1017,42 +1171,67 @@ import { professionals } from '../data/professionals';
     if (!stepInputName.value.trim()) {
       errStepName.textContent = 'Ingresa el nombre completo.';
       errStepName.classList.remove('hidden');
+      stepInputName.classList.add('border-red-400');
       valid = false;
     } else {
       errStepName.classList.add('hidden');
+      stepInputName.classList.remove('border-red-400');
     }
 
     if (!stepInputRut.value.trim()) {
       errStepRut.textContent = 'Ingresa el documento de identidad.';
       errStepRut.classList.remove('hidden');
+      stepInputRut.classList.add('border-red-400');
       valid = false;
     } else if (stepInputDocType.value === 'rut') {
-      const rutVal = validateChileanRut(stepInputRut.value);
-      if (!rutVal.valid) {
-        errStepRut.textContent = rutVal.error || 'RUT inválido.';
+      const isValid = validateChileanRut(stepInputRut.value);
+      if (!isValid) {
+        errStepRut.textContent = 'El RUT ingresado no es válido. Revisa los dígitos y el dígito verificador.';
         errStepRut.classList.remove('hidden');
+        stepInputRut.classList.add('border-red-400');
         valid = false;
       } else {
         errStepRut.classList.add('hidden');
+        stepInputRut.classList.remove('border-red-400');
       }
     } else {
-      errStepRut.classList.add('hidden');
+      if (!/^[A-Za-z0-9\-]{4,20}$/.test(stepInputRut.value.trim())) {
+        errStepRut.textContent = 'El pasaporte debe tener entre 4 y 20 caracteres alfanuméricos.';
+        errStepRut.classList.remove('hidden');
+        stepInputRut.classList.add('border-red-400');
+        valid = false;
+      } else {
+        errStepRut.classList.add('hidden');
+        stepInputRut.classList.remove('border-red-400');
+      }
     }
 
     if (!stepInputEmail.value.trim() || !stepInputEmail.value.includes('@')) {
       errStepEmail.textContent = 'Ingresa un correo electrónico válido.';
       errStepEmail.classList.remove('hidden');
+      stepInputEmail.classList.add('border-red-400');
       valid = false;
     } else {
       errStepEmail.classList.add('hidden');
+      stepInputEmail.classList.remove('border-red-400');
     }
 
     if (!stepInputPhone.value.trim()) {
       errStepPhone.textContent = 'Ingresa un teléfono de contacto.';
       errStepPhone.classList.remove('hidden');
+      stepInputPhone.classList.add('border-red-400');
       valid = false;
     } else {
-      errStepPhone.classList.add('hidden');
+      const phoneDigits = stepInputPhone.value.replace(/\D/g, '');
+      if (phoneDigits.length < 11 && phoneDigits.length < 8) {
+        errStepPhone.textContent = 'Ingresa un número telefónico válido (ej: +56 9 1234 5678).';
+        errStepPhone.classList.remove('hidden');
+        stepInputPhone.classList.add('border-red-400');
+        valid = false;
+      } else {
+        errStepPhone.classList.add('hidden');
+        stepInputPhone.classList.remove('border-red-400');
+      }
     }
 
     if (!currentSession || !currentSession.authenticated) {
@@ -1223,9 +1402,11 @@ import { professionals } from '../data/professionals';
       if (p.profile) {
         stepInputName.value = p.profile.name || '';
         stepInputDocType.value = p.profile.documentType || 'rut';
-        stepInputRut.value = p.profile.rut || '';
+        stepInputRut.value = p.profile.rut
+          ? (p.profile.documentType === 'rut' ? formatChileanRut(p.profile.rut) : p.profile.rut)
+          : '';
         stepInputEmail.value = p.profile.email || '';
-        stepInputPhone.value = p.profile.phone || '';
+        stepInputPhone.value = p.profile.phone ? formatPhoneLive(p.profile.phone) : '';
         rememberedProfileVersion = p.version;
       } else if (currentSession && currentSession.user) {
         stepInputName.value = currentSession.user.name || '';
