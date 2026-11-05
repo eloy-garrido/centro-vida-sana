@@ -88,7 +88,7 @@ import { professionals } from '../data/professionals';
           <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-8">
             <!-- Tarjeta Felipe (Quiropraxia & Kinesiología) -->
             <label
-              class="pro-card relative flex flex-col justify-between p-5 rounded-2xl border-2 border-slate-200 hover:border-slate-400 cursor-pointer transition-all select-none group bg-white shadow-xs"
+              class="pro-card relative flex flex-col justify-between p-5 rounded-2xl border-2 border-slate-200 hover:border-slate-400 hover:shadow-sm cursor-pointer transition-all duration-150 ease-out select-none group bg-white shadow-xs active:scale-[0.985]"
               data-pro="felipe"
             >
               <input type="radio" name="selectedPro" value="felipe" class="sr-only" />
@@ -97,7 +97,7 @@ import { professionals } from '../data/professionals';
                   <img
                     src={professionals.felipe.photoUrl}
                     alt={professionals.felipe.name}
-                    class="w-14 h-14 rounded-xl object-cover shrink-0 shadow-xs border border-slate-100"
+                    class="w-14 h-14 rounded-xl object-cover shrink-0 shadow-xs border border-slate-100 group-hover:scale-105 transition-transform duration-200 ease-out"
                     loading="eager"
                   />
                   <div class="min-w-0">
@@ -114,13 +114,13 @@ import { professionals } from '../data/professionals';
               </div>
               <div class="pt-3 border-t border-slate-100 flex items-center justify-between text-xs">
                 <span class="text-slate-500 font-medium">Box 1 · Atención privada</span>
-                <span class="select-indicator font-bold text-slate-600 opacity-75 group-hover:opacity-100 transition-opacity">Seleccionar →</span>
+                <span class="select-indicator font-bold text-slate-600 opacity-75 group-hover:opacity-100 group-hover:translate-x-0.5 transition-all duration-150">Seleccionar →</span>
               </div>
             </label>
 
             <!-- Tarjeta Eduardo (Acupuntura & Medicina Tradicional China) -->
             <label
-              class="pro-card relative flex flex-col justify-between p-5 rounded-2xl border-2 border-slate-200 hover:border-slate-400 cursor-pointer transition-all select-none group bg-white shadow-xs"
+              class="pro-card relative flex flex-col justify-between p-5 rounded-2xl border-2 border-slate-200 hover:border-slate-400 hover:shadow-sm cursor-pointer transition-all duration-150 ease-out select-none group bg-white shadow-xs active:scale-[0.985]"
               data-pro="eduardo"
             >
               <input type="radio" name="selectedPro" value="eduardo" class="sr-only" />
@@ -129,7 +129,7 @@ import { professionals } from '../data/professionals';
                   <img
                     src={professionals.eduardo.photoUrl}
                     alt={professionals.eduardo.name}
-                    class="w-14 h-14 rounded-xl object-cover shrink-0 shadow-xs border border-slate-100"
+                    class="w-14 h-14 rounded-xl object-cover shrink-0 shadow-xs border border-slate-100 group-hover:scale-105 transition-transform duration-200 ease-out"
                     loading="eager"
                   />
                   <div class="min-w-0">
@@ -146,7 +146,7 @@ import { professionals } from '../data/professionals';
               </div>
               <div class="pt-3 border-t border-slate-100 flex items-center justify-between text-xs">
                 <span class="text-slate-500 font-medium">Box 2 · Atención privada</span>
-                <span class="select-indicator font-bold text-slate-600 opacity-75 group-hover:opacity-100 transition-opacity">Seleccionar →</span>
+                <span class="select-indicator font-bold text-slate-600 opacity-75 group-hover:opacity-100 group-hover:translate-x-0.5 transition-all duration-150">Seleccionar →</span>
               </div>
             </label>
           </div>
@@ -157,7 +157,7 @@ import { professionals } from '../data/professionals';
               type="button"
               id="btn-step-1-next"
               disabled
-              class="inline-flex items-center justify-center gap-2 px-6 py-3 rounded-xl bg-slate-900 hover:bg-slate-800 disabled:bg-slate-200 disabled:text-slate-400 disabled:cursor-not-allowed opacity-50 cursor-not-allowed text-white text-xs font-semibold transition-all shadow-sm"
+              class="inline-flex items-center justify-center gap-2 px-6 py-3 rounded-xl bg-slate-900 hover:bg-slate-800 active:scale-[0.97] disabled:bg-slate-200 disabled:text-slate-400 disabled:cursor-not-allowed disabled:active:scale-100 opacity-50 cursor-not-allowed text-white text-xs font-semibold transition-all duration-150 ease-out shadow-sm"
             >
               <span>Continuar a Fecha y Horario</span>
               <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -223,7 +223,7 @@ import { professionals } from '../data/professionals';
             <button
               type="button"
               id="btn-step-2-back"
-              class="inline-flex items-center gap-1.5 px-4 py-2.5 rounded-xl border border-slate-200 text-slate-600 hover:bg-slate-50 text-xs font-semibold transition-colors"
+              class="inline-flex items-center gap-1.5 px-4 py-2.5 rounded-xl border border-slate-200 text-slate-600 hover:bg-slate-50 active:scale-[0.96] text-xs font-semibold transition-all duration-150 ease-out"
             >
               <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18"/>
@@ -235,7 +235,7 @@ import { professionals } from '../data/professionals';
               type="button"
               id="btn-step-2-next"
               disabled
-              class="inline-flex items-center justify-center gap-2 px-6 py-3 rounded-xl bg-slate-900 hover:bg-slate-800 disabled:bg-slate-200 disabled:text-slate-400 disabled:cursor-not-allowed opacity-50 cursor-not-allowed text-white text-xs font-semibold transition-all shadow-sm"
+              class="inline-flex items-center justify-center gap-2 px-6 py-3 rounded-xl bg-slate-900 hover:bg-slate-800 active:scale-[0.97] disabled:bg-slate-200 disabled:text-slate-400 disabled:cursor-not-allowed disabled:active:scale-100 opacity-50 cursor-not-allowed text-white text-xs font-semibold transition-all duration-150 ease-out shadow-sm"
             >
               <span>Continuar a Mis Datos</span>
               <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -398,7 +398,7 @@ import { professionals } from '../data/professionals';
             <button
               type="button"
               id="btn-step-3-back"
-              class="inline-flex items-center gap-1.5 px-4 py-2.5 rounded-xl border border-slate-200 text-slate-600 hover:bg-slate-50 text-xs font-semibold transition-colors"
+              class="inline-flex items-center gap-1.5 px-4 py-2.5 rounded-xl border border-slate-200 text-slate-600 hover:bg-slate-50 active:scale-[0.96] text-xs font-semibold transition-all duration-150 ease-out"
             >
               <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18"/>
@@ -409,7 +409,7 @@ import { professionals } from '../data/professionals';
             <button
               type="button"
               id="btn-step-3-next"
-              class="inline-flex items-center justify-center gap-2 px-6 py-3 rounded-xl bg-slate-900 hover:bg-slate-800 disabled:bg-slate-200 disabled:text-slate-400 disabled:cursor-not-allowed text-white text-xs font-semibold transition-all shadow-sm"
+              class="inline-flex items-center justify-center gap-2 px-6 py-3 rounded-xl bg-slate-900 hover:bg-slate-800 active:scale-[0.97] disabled:bg-slate-200 disabled:text-slate-400 disabled:cursor-not-allowed disabled:active:scale-100 text-white text-xs font-semibold transition-all duration-150 ease-out shadow-sm"
             >
               <span>Revisar y Confirmar</span>
               <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -490,7 +490,7 @@ import { professionals } from '../data/professionals';
             <button
               type="button"
               id="btn-step-4-back"
-              class="inline-flex items-center gap-1.5 px-4 py-2.5 rounded-xl border border-slate-200 text-slate-600 hover:bg-slate-50 text-xs font-semibold transition-colors"
+              class="inline-flex items-center gap-1.5 px-4 py-2.5 rounded-xl border border-slate-200 text-slate-600 hover:bg-slate-50 active:scale-[0.96] text-xs font-semibold transition-all duration-150 ease-out"
             >
               <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18"/>
@@ -502,7 +502,7 @@ import { professionals } from '../data/professionals';
               type="button"
               id="btn-final-confirm"
               disabled
-              class="inline-flex items-center justify-center gap-2 px-8 py-3.5 rounded-xl bg-slate-900 hover:bg-slate-800 disabled:bg-slate-200 disabled:text-slate-400 disabled:cursor-not-allowed opacity-50 cursor-not-allowed text-white text-xs font-bold transition-all shadow-md"
+              class="inline-flex items-center justify-center gap-2 px-8 py-3.5 rounded-xl bg-slate-900 hover:bg-slate-800 active:scale-[0.97] disabled:bg-slate-200 disabled:text-slate-400 disabled:cursor-not-allowed disabled:active:scale-100 opacity-50 cursor-not-allowed text-white text-xs font-bold transition-all duration-150 ease-out shadow-md"
             >
               <span id="btn-final-text">Confirmar y Agendar Cita</span>
               <svg id="btn-final-spinner" class="hidden animate-spin w-4 h-4 text-white" fill="none" viewBox="0 0 24 24">
@@ -517,7 +517,7 @@ import { professionals } from '../data/professionals';
         <!-- PASO 5: PANTALLA DE ÉXITO Y COPIA A CALENDARIO (S06)               -->
         <!-- ================================================================== -->
         <section id="step-view-success" class="wizard-step hidden bg-white rounded-2xl p-6 sm:p-10 shadow-lg border border-emerald-200 text-center animate-step">
-          <div id="success-icon-wrap" class="w-16 h-16 rounded-full bg-emerald-100 text-emerald-700 flex items-center justify-center mx-auto mb-4">
+          <div id="success-icon-wrap" class="w-16 h-16 rounded-full bg-emerald-100 text-emerald-700 flex items-center justify-center mx-auto mb-4 animate-success-bounce">
             <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/>
             </svg>
@@ -546,7 +546,7 @@ import { professionals } from '../data/professionals';
                 href="#"
                 target="_blank"
                 rel="noopener noreferrer"
-                class="inline-flex items-center justify-center gap-2 px-4 py-2.5 rounded-xl bg-white border border-slate-300 hover:border-slate-400 text-slate-700 text-xs font-semibold shadow-xs transition-colors"
+                class="inline-flex items-center justify-center gap-2 px-4 py-2.5 rounded-xl bg-white border border-slate-300 hover:border-slate-400 active:scale-[0.97] text-slate-700 text-xs font-semibold shadow-xs transition-all duration-150 ease-out"
               >
                 <svg class="w-4 h-4 text-red-500" viewBox="0 0 24 24" fill="currentColor">
                   <path d="M19 4h-1V2h-2v2H8V2H6v2H5c-1.11 0-1.99.9-1.99 2L3 20a2 2 0 002 2h14c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 16H5V9h14v11z"/>
@@ -557,7 +557,7 @@ import { professionals } from '../data/professionals';
               <a
                 id="btn-ics-calendar"
                 href="#"
-                class="inline-flex items-center justify-center gap-2 px-4 py-2.5 rounded-xl bg-white border border-slate-300 hover:border-slate-400 text-slate-700 text-xs font-semibold shadow-xs transition-colors"
+                class="inline-flex items-center justify-center gap-2 px-4 py-2.5 rounded-xl bg-white border border-slate-300 hover:border-slate-400 active:scale-[0.97] text-slate-700 text-xs font-semibold shadow-xs transition-all duration-150 ease-out"
               >
                 <svg class="w-4 h-4 text-blue-600" viewBox="0 0 24 24" fill="none" stroke="currentColor">
                   <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"/>
@@ -692,19 +692,20 @@ import { professionals } from '../data/professionals';
   function goToStep(step: number) {
     currentStep = step;
 
-    // Ocultar todas las vistas
-    stepView1.classList.add('hidden');
-    stepView2.classList.add('hidden');
-    stepView3.classList.add('hidden');
-    stepView4.classList.add('hidden');
-    stepViewSuccess.classList.add('hidden');
+    // Ocultar todas las vistas y preparar animación fluida de entrada
+    const views = [stepView1, stepView2, stepView3, stepView4, stepViewSuccess];
+    views.forEach((v) => {
+      v.classList.add('hidden');
+      v.classList.remove('animate-step');
+    });
 
-    // Mostrar vista activa
-    if (step === 1) stepView1.classList.remove('hidden');
-    if (step === 2) stepView2.classList.remove('hidden');
-    if (step === 3) stepView3.classList.remove('hidden');
-    if (step === 4) stepView4.classList.remove('hidden');
-    if (step === 5) stepViewSuccess.classList.remove('hidden');
+    const activeView = views[step - 1];
+    if (activeView) {
+      activeView.classList.remove('hidden');
+      // Forzar reflow para reiniciar la animación suave sin saltos
+      void activeView.offsetWidth;
+      activeView.classList.add('animate-step');
+    }
 
     // Actualizar barra de progreso (Desktop)
     stepNavItems.forEach((item, index) => {
@@ -712,32 +713,32 @@ import { professionals } from '../data/professionals';
       const numSpan = item.querySelector('.step-nav-number') as HTMLElement;
 
       if (stepNum < step) {
-        // Completado
-        item.className = 'step-nav-item flex items-center gap-2.5 px-3 py-2 rounded-xl text-xs font-semibold border transition-all select-none bg-emerald-50 text-emerald-800 border-emerald-200';
-        numSpan.className = 'step-nav-number flex items-center justify-center w-6 h-6 rounded-full text-xs font-bold shrink-0 bg-emerald-600 text-white';
+        // Completado con micro-pop elástico de checkmark
+        item.className = 'step-nav-item flex items-center gap-2.5 px-3 py-2 rounded-xl text-xs font-semibold border transition-all duration-200 select-none bg-emerald-50 text-emerald-800 border-emerald-200';
+        numSpan.className = 'step-nav-number flex items-center justify-center w-6 h-6 rounded-full text-xs font-bold shrink-0 bg-emerald-600 text-white animate-check-pop';
         numSpan.innerHTML = '✓';
       } else if (stepNum === step) {
-        // Activo
-        item.className = 'step-nav-item flex items-center gap-2.5 px-3 py-2 rounded-xl text-xs font-semibold transition-all select-none bg-slate-900 text-white shadow-xs';
-        numSpan.className = 'step-nav-number flex items-center justify-center w-6 h-6 rounded-full bg-white/20 text-white text-xs font-bold shrink-0';
+        // Activo con transición sutil
+        item.className = 'step-nav-item flex items-center gap-2.5 px-3 py-2 rounded-xl text-xs font-semibold transition-all duration-200 select-none bg-slate-900 text-white shadow-xs';
+        numSpan.className = 'step-nav-number flex items-center justify-center w-6 h-6 rounded-full bg-white/20 text-white text-xs font-bold shrink-0 animate-number-pop';
         numSpan.textContent = String(stepNum);
       } else {
         // Pendiente
-        item.className = 'step-nav-item flex items-center gap-2.5 px-3 py-2 rounded-xl text-xs font-medium text-slate-500 transition-all select-none';
+        item.className = 'step-nav-item flex items-center gap-2.5 px-3 py-2 rounded-xl text-xs font-medium text-slate-500 transition-all duration-200 select-none';
         numSpan.className = 'step-nav-number flex items-center justify-center w-6 h-6 rounded-full bg-slate-100 text-slate-600 text-xs font-bold shrink-0';
         numSpan.textContent = String(stepNum);
       }
     });
 
-    // Actualizar barra móvil
+    // Actualizar barra móvil con transición
     if (step <= 4) {
       mobileStepIndicator.textContent = `Paso ${step} de 4`;
       mobileStepTitle.textContent = stepTitles[step - 1];
 
       for (let i = 0; i < 4; i++) {
         mobileDots[i].className = i + 1 === step
-          ? 'w-2.5 h-2.5 rounded-full bg-slate-900'
-          : (i + 1 < step ? 'w-2.5 h-2.5 rounded-full bg-emerald-600' : 'w-2.5 h-2.5 rounded-full bg-slate-200');
+          ? 'w-2.5 h-2.5 rounded-full bg-slate-900 transition-all duration-200 scale-110'
+          : (i + 1 < step ? 'w-2.5 h-2.5 rounded-full bg-emerald-600 transition-all duration-200' : 'w-2.5 h-2.5 rounded-full bg-slate-200 transition-all duration-200');
       }
     }
 
@@ -754,19 +755,21 @@ import { professionals } from '../data/professionals';
       selectedProfessionalId = pro;
 
       proCards.forEach((c) => {
-        c.classList.remove('border-slate-900', 'bg-slate-50', 'ring-2', 'ring-slate-900', 'shadow-sm');
+        c.classList.remove('border-slate-900', 'bg-slate-50', 'ring-2', 'ring-slate-900', 'shadow-sm', 'animate-card-select');
         c.classList.add('border-slate-200', 'bg-white');
         const radio = c.querySelector('input[type="radio"]') as HTMLInputElement;
         if (radio) radio.checked = false;
         const ind = c.querySelector('.select-indicator') as HTMLElement;
         if (ind) {
           ind.textContent = 'Seleccionar →';
-          ind.className = 'select-indicator font-bold text-slate-600 opacity-75 group-hover:opacity-100 transition-opacity';
+          ind.className = 'select-indicator font-bold text-slate-600 opacity-75 group-hover:opacity-100 group-hover:translate-x-0.5 transition-all duration-150';
         }
       });
 
       card.classList.remove('border-slate-200', 'bg-white');
-      card.classList.add('border-slate-900', 'bg-slate-50', 'ring-2', 'ring-slate-900', 'shadow-sm');
+      // Forzar reflow para que el micro-latido se aprecie
+      void (card as HTMLElement).offsetWidth;
+      card.classList.add('border-slate-900', 'bg-slate-50', 'ring-2', 'ring-slate-900', 'shadow-sm', 'animate-card-select');
 
       const radio = card.querySelector('input[type="radio"]') as HTMLInputElement;
       if (radio) radio.checked = true;
@@ -831,10 +834,11 @@ import { professionals } from '../data/professionals';
     return list;
   }
 
-  function applyDatePillClasses(btn: HTMLButtonElement, isSelected: boolean) {
+  function applyDatePillClasses(btn: HTMLButtonElement, isSelected: boolean, triggerPop = false) {
+    const popClass = triggerPop ? 'animate-pill-pop' : '';
     btn.className = isSelected
-      ? 'date-pill shrink-0 flex flex-col items-center justify-center w-16 h-18 py-2.5 px-2 rounded-xl border-2 select-none text-center cursor-pointer font-medium transition-all border-slate-900 bg-slate-900 text-white shadow-xs'
-      : 'date-pill shrink-0 flex flex-col items-center justify-center w-16 h-18 py-2.5 px-2 rounded-xl border-2 border-slate-200 bg-white hover:border-slate-400 text-slate-700 select-none text-center cursor-pointer transition-colors';
+      ? `date-pill shrink-0 flex flex-col items-center justify-center w-16 h-18 py-2.5 px-2 rounded-xl border-2 select-none text-center cursor-pointer font-medium transition-all duration-150 ease-out border-slate-900 bg-slate-900 text-white shadow-xs active:scale-[0.94] ${popClass}`
+      : 'date-pill shrink-0 flex flex-col items-center justify-center w-16 h-18 py-2.5 px-2 rounded-xl border-2 border-slate-200 bg-white hover:border-slate-400 hover:scale-[1.02] text-slate-700 select-none text-center cursor-pointer transition-all duration-150 ease-out active:scale-[0.94]';
   }
 
   function renderDatePills() {
@@ -848,12 +852,15 @@ import { professionals } from '../data/professionals';
       }
     }
 
-    availableDates.forEach((d) => {
+    availableDates.forEach((d, index) => {
       const btn = document.createElement('button');
       btn.type = 'button';
       btn.setAttribute('data-date-str', d.dateStr);
       const isSelected = selectedDateString === d.dateStr;
       applyDatePillClasses(btn, isSelected);
+      btn.classList.add('animate-slot-enter');
+      btn.style.animationDelay = `${index * 35}ms`;
+
       btn.innerHTML = `
         <span class="text-[10px] font-semibold tracking-wider uppercase opacity-80">${daysEs[d.weekday]}</span>
         <span class="text-lg font-bold leading-none my-1">${d.dayNum}</span>
@@ -865,7 +872,11 @@ import { professionals } from '../data/professionals';
         selectedDateString = d.dateStr;
         selectedSlotUtc = null; // Reiniciar selección de hora al cambiar día
         updateStep2NextButton();
-        renderDatePills();
+        // Aplicar clase activa con feedback táctil inmediato
+        datePillsRow.querySelectorAll<HTMLButtonElement>('.date-pill').forEach((p) => {
+          const isPillSelected = p.getAttribute('data-date-str') === selectedDateString;
+          applyDatePillClasses(p, isPillSelected, isPillSelected);
+        });
         loadSlots();
       });
 
@@ -873,18 +884,20 @@ import { professionals } from '../data/professionals';
     });
   }
 
-  function applySlotButtonClasses(btn: HTMLButtonElement, isSelected: boolean) {
+  function applySlotButtonClasses(btn: HTMLButtonElement, isSelected: boolean, triggerPop = false) {
+    const popClass = triggerPop ? 'animate-slot-pop' : '';
     btn.className = isSelected
-      ? 'slot-btn py-3.5 px-3 rounded-xl border-2 font-semibold text-xs transition-all text-center flex flex-col items-center justify-center cursor-pointer transform scale-[1.02] border-slate-900 bg-slate-900 text-white shadow-md ring-2 ring-slate-900 ring-offset-2'
-      : 'slot-btn py-3.5 px-3 rounded-xl border-2 font-semibold text-xs transition-all text-center flex flex-col items-center justify-center border-slate-200 hover:border-slate-800 hover:bg-slate-50 bg-white text-slate-800 cursor-pointer';
+      ? `slot-btn py-3.5 px-3 rounded-xl border-2 font-semibold text-xs transition-all duration-150 ease-out text-center flex flex-col items-center justify-center cursor-pointer transform scale-[1.02] border-slate-900 bg-slate-900 text-white shadow-md ring-2 ring-slate-900 ring-offset-2 active:scale-[0.97] ${popClass}`
+      : 'slot-btn py-3.5 px-3 rounded-xl border-2 font-semibold text-xs transition-all duration-150 ease-out text-center flex flex-col items-center justify-center border-slate-200 hover:border-slate-800 hover:scale-[1.02] hover:bg-slate-50 bg-white text-slate-800 cursor-pointer active:scale-[0.95]';
   }
 
-  function updateSlotButtons() {
+  function updateSlotButtons(triggeredSlotUtc: string | null = null) {
     const allSlots = slotsButtonsGrid.querySelectorAll<HTMLButtonElement>('.slot-btn');
     allSlots.forEach((btn) => {
       const slotUtc = btn.getAttribute('data-slot-utc');
       const isSelected = Boolean(selectedSlotUtc && slotUtc === selectedSlotUtc);
-      applySlotButtonClasses(btn, isSelected);
+      const isTriggered = Boolean(triggeredSlotUtc && slotUtc === triggeredSlotUtc);
+      applySlotButtonClasses(btn, isSelected, isTriggered);
     });
   }
 
@@ -927,7 +940,7 @@ import { professionals } from '../data/professionals';
 
       slotsNoneBox.classList.add('hidden');
 
-      res.slots.forEach((slot) => {
+      res.slots.forEach((slot, index) => {
         const d = new Date(slot.startAt);
         const timeStr = d.toLocaleTimeString('es-CL', { timeZone: 'America/Santiago', hour: '2-digit', minute: '2-digit', hour12: false });
 
@@ -937,13 +950,17 @@ import { professionals } from '../data/professionals';
         const isSelected = selectedSlotUtc === slot.startAt;
         applySlotButtonClasses(btn, isSelected);
 
+        // Cascada escalonada (staggered entrance)
+        btn.classList.add('animate-slot-enter');
+        btn.style.animationDelay = `${index * 28}ms`;
+
         btn.innerHTML = `
           <span class="text-sm font-bold">${timeStr} hrs</span>
         `;
 
         btn.addEventListener('click', () => {
           selectedSlotUtc = slot.startAt;
-          updateSlotButtons();
+          updateSlotButtons(slot.startAt);
           updateStep2NextButton();
         });
 
@@ -1237,11 +1254,160 @@ import { professionals } from '../data/professionals';
 </script>
 
 <style>
-  @keyframes stepFadeIn {
-    from { opacity: 0; transform: translateY(6px); }
-    to { opacity: 1; transform: translateY(0); }
+  :root {
+    --ease-out-expo: cubic-bezier(0.16, 1, 0.3, 1);
+    --ease-spring: cubic-bezier(0.34, 1.56, 0.64, 1);
   }
+
+  /* Transición fluida y física entre pasos */
+  @keyframes stepFadeIn {
+    0% {
+      opacity: 0;
+      transform: translateY(10px) scale(0.99);
+    }
+    100% {
+      opacity: 1;
+      transform: translateY(0) scale(1);
+    }
+  }
+
   .animate-step {
-    animation: stepFadeIn 0.25s ease-out forwards;
+    animation: stepFadeIn 0.24s var(--ease-out-expo) forwards;
+  }
+
+  /* Pop elástico de checkmark completado en stepper */
+  @keyframes checkmarkPop {
+    0% {
+      transform: scale(0.65);
+      opacity: 0;
+    }
+    60% {
+      transform: scale(1.18);
+    }
+    100% {
+      transform: scale(1);
+      opacity: 1;
+    }
+  }
+
+  .animate-check-pop {
+    animation: checkmarkPop 0.28s var(--ease-spring) forwards;
+  }
+
+  @keyframes numberPop {
+    0% {
+      transform: scale(0.85);
+    }
+    100% {
+      transform: scale(1);
+    }
+  }
+
+  .animate-number-pop {
+    animation: numberPop 0.2s var(--ease-out-expo) forwards;
+  }
+
+  /* Cascada suave escalonada para slots de horario */
+  @keyframes slotSlideUp {
+    0% {
+      opacity: 0;
+      transform: translateY(8px) scale(0.96);
+    }
+    100% {
+      opacity: 1;
+      transform: translateY(0) scale(1);
+    }
+  }
+
+  .animate-slot-enter {
+    animation: slotSlideUp 0.26s var(--ease-out-expo) backwards;
+  }
+
+  /* Feedback táctil de selección instantánea (Micro-pop de confirmación) */
+  @keyframes selectPop {
+    0% {
+      transform: scale(0.95);
+    }
+    50% {
+      transform: scale(1.035);
+    }
+    100% {
+      transform: scale(1.02);
+    }
+  }
+
+  .animate-slot-pop {
+    animation: selectPop 0.22s var(--ease-spring) forwards;
+  }
+
+  @keyframes pillPop {
+    0% {
+      transform: scale(0.94);
+    }
+    55% {
+      transform: scale(1.05);
+    }
+    100% {
+      transform: scale(1);
+    }
+  }
+
+  .animate-pill-pop {
+    animation: pillPop 0.22s var(--ease-spring) forwards;
+  }
+
+  /* Celebración en pantalla de confirmación exitosa */
+  @keyframes successBounce {
+    0% {
+      transform: scale(0.4);
+      opacity: 0;
+    }
+    50% {
+      transform: scale(1.15);
+    }
+    75% {
+      transform: scale(0.96);
+    }
+    100% {
+      transform: scale(1);
+      opacity: 1;
+    }
+  }
+
+  .animate-success-bounce {
+    animation: successBounce 0.48s var(--ease-spring) forwards;
+  }
+
+  /* Tarjetas seleccionadas con micro-latido inicial */
+  @keyframes cardSelectPulse {
+    0% {
+      transform: scale(0.98);
+    }
+    50% {
+      transform: scale(1.012);
+    }
+    100% {
+      transform: scale(1);
+    }
+  }
+
+  .animate-card-select {
+    animation: cardSelectPulse 0.24s var(--ease-spring) forwards;
+  }
+
+  /* Accesibilidad: Respeta la preferencia de movimiento reducido */
+  @media (prefers-reduced-motion: reduce) {
+    .animate-step,
+    .animate-check-pop,
+    .animate-number-pop,
+    .animate-slot-enter,
+    .animate-slot-pop,
+    .animate-pill-pop,
+    .animate-success-bounce,
+    .animate-card-select {
+      animation: none !important;
+      transform: none !important;
+      transition: opacity 0.15s ease !important;
+    }
   }
 </style>
