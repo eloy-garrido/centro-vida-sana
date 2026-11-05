@@ -29,11 +29,13 @@ test('D1 Schema: tablas, profesionales y miembros iniciales', () => {
   assert.strictEqual(pros[0].id, 'eduardo');
   assert.strictEqual(pros[1].id, 'felipe');
 
-  const memberQuery = db.prepare('SELECT email, role FROM team_members');
+  const memberQuery = db.prepare('SELECT email, role FROM team_members ORDER BY email');
   const members = memberQuery.all() as { email: string; role: string }[];
-  assert.strictEqual(members.length, 1);
+  assert.strictEqual(members.length, 2);
   assert.strictEqual(members[0].email, 'centrovida.sanaaustral@gmail.com');
   assert.strictEqual(members[0].role, 'admin');
+  assert.strictEqual(members[1].email, 'eloegf@gmail.com');
+  assert.strictEqual(members[1].role, 'admin');
 
   db.close();
 });

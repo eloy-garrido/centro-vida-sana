@@ -147,4 +147,5 @@ INSERT OR IGNORE INTO professionals (id, name, title, box_name, is_active) VALUE
   ('eduardo', 'Eduardo Lagos', 'Acupunturista & Medicina Tradicional China', 'Box 2 Acupuntura', 1);
 
 INSERT OR IGNORE INTO team_members (email, role, is_active, created_at) VALUES
-  ('centrovida.sanaaustral@gmail.com', 'admin', 1, 1730815200);
+  ('centrovida.sanaaustral@gmail.com', 'admin', 1, 1730815200),
+  ('eloegf@gmail.com', 'admin', 1, 1730815200);
