@@ -12,6 +12,26 @@ import { handleApiRequest } from './router.ts';
 
 let devDbAdapter: DatabaseAdapter | null = null;
 
+function loadLocalEnv(): void {
+  const envPath = resolve(process.cwd(), '.env');
+  if (existsSync(envPath)) {
+    const content = readFileSync(envPath, 'utf-8');
+    for (const line of content.split('\n')) {
+      const trimmed = line.trim();
+      if (!trimmed || trimmed.startsWith('#')) continue;
+      const idx = trimmed.indexOf('=');
+      if (idx > 0) {
+        const key = trimmed.slice(0, idx).trim();
+        const val = trimmed.slice(idx + 1).trim();
+        if (!process.env[key]) {
+          process.env[key] = val;
+        }
+      }
+    }
+  }
+}
+loadLocalEnv();
+
 export function getDevDatabase(): DatabaseAdapter {
   if (!devDbAdapter) {
     const dataDir = resolve(process.cwd(), '.dev-db');
@@ -65,7 +85,7 @@ export async function handleDevApiRequest(req: IncomingMessage, res: ServerRespo
   });
 
   const adapter = getDevDatabase();
-  const webResponse = await handleApiRequest(webRequest, adapter);
+  const webResponse = await handleApiRequest(webRequest, adapter, { isDev: true });
 
   res.statusCode = webResponse.status;
   webResponse.headers.forEach((value, name) => {
