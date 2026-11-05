@@ -134,7 +134,7 @@ export async function handleApiRequest(
         ? 'Equipo Vida Sana'
         : (body.name || 'Paciente Ficticio');
 
-      const mockSub = `mock_sub_${Buffer.from(email).toString('hex').slice(0, 16)}`;
+      const mockSub = `mock_sub_${Buffer.from(email).toString('hex')}`;
       const dbUser = await findOrCreateUser(db, { googleSub: mockSub, name, email });
       const newSession = await createSession(db, dbUser.id);
 

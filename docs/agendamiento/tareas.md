@@ -59,9 +59,9 @@ Orden de dependencias: entregas E1–E4 del [plan maestro](planes/implementacion
 - [x] Q03: concurrencia mismo cupo, solapamiento parcial, paciente/equipo y ambas agendas simultáneas (E2 verificada).
 - [x] Q04: versiones, cancelación contra edición y reintento tras commit con respuesta perdida (E4 verificada).
 - [x] Q05: mañana no 24h, extremos semana aprobados, pausas y DST Chile (E4 verificada).
-- [ ] Q06: tercero, RUT, privacidad de enlace/almacenamiento/logs y copia de calendario.
-- [ ] Q07: revisar cada comando de infraestructura contra allowlist sin ejecutar mutaciones ni explorar otros proyectos.
-- [ ] Q08: informe de pruebas locales, pendientes y revisión independiente antes de staging.
+- [x] Q06: tercero, RUT, privacidad de enlace/almacenamiento/logs y copia de calendario (E6 verificada).
+- [x] Q07: revisar cada comando de infraestructura contra allowlist sin ejecutar mutaciones ni explorar otros proyectos (E6 verificada).
+- [x] Q08: informe de pruebas locales, pendientes y revisión independiente antes de staging (E6 completada en informe-e6.md).
 
 ## Cambios remotos posteriores — coordinador, con U10
 
