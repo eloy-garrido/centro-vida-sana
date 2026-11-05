@@ -232,11 +232,12 @@ export const AgendamientoClient = {
     version: string,
     csrfToken: string
   ): Promise<MutationResult> {
+    const etag = version ? (version.startsWith('"') ? version : `"${version}"`) : '"v1"';
     return requestJson<MutationResult>(`/api/team/bookings/${bookingId}`, {
       method: 'DELETE',
       headers: {
         'X-CSRF-Token': csrfToken,
-        'If-Match': version
+        'If-Match': etag
       }
     });
   },
@@ -270,11 +271,12 @@ export const AgendamientoClient = {
     version: string,
     csrfToken: string
   ): Promise<MutationResult> {
+    const etag = version ? (version.startsWith('"') ? version : `"${version}"`) : '"v1"';
     return requestJson<MutationResult>(`/api/team/blocks/${blockId}`, {
       method: 'DELETE',
       headers: {
         'X-CSRF-Token': csrfToken,
-        'If-Match': version
+        'If-Match': etag
       }
     });
   }

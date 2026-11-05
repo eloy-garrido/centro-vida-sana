@@ -359,8 +359,10 @@ export async function executeCancelBookingCommand(
     throw new ApiCommandError('BOOKING_CANCELLED', 'La reserva ya se encuentra cancelada.', 409);
   }
 
-  // Verificación estricta de versión (If-Match)
-  if (existing.version !== expectedVersion) {
+  // Verificación estricta de versión (If-Match) tolerando comillas RFC 7232
+  const normExpected = (expectedVersion || '').replace(/^"|"$/g, '').trim();
+  const normExisting = (existing.version || '').replace(/^"|"$/g, '').trim();
+  if (normExisting !== normExpected) {
     throw new ApiCommandError(
       'VERSION_CONFLICT',
       'La reserva ha sido modificada por otra operación. Por favor actualiza la página.',

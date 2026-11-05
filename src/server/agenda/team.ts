@@ -350,7 +350,9 @@ export async function executeEditTeamBookingCommand(
     throw new ApiCommandError('BOOKING_CANCELLED', 'No se puede editar una cita cancelada.', 409);
   }
 
-  if (existing.version !== expectedVersion) {
+  const normExpected = (expectedVersion || '').replace(/^"|"$/g, '').trim();
+  const normExisting = (existing.version || '').replace(/^"|"$/g, '').trim();
+  if (normExisting !== normExpected) {
     throw new ApiCommandError(
       'VERSION_CONFLICT',
       'La cita fue modificada por otro usuario. Actualice la página.',
@@ -467,7 +469,9 @@ export async function executeDeleteBlockCommand(
     throw new ApiCommandError('BOOKING_CANCELLED', 'El bloqueo ya fue cancelado previamente.', 409);
   }
 
-  if (existing.version !== expectedVersion) {
+  const normExpected = (expectedVersion || '').replace(/^"|"$/g, '').trim();
+  const normExisting = (existing.version || '').replace(/^"|"$/g, '').trim();
+  if (normExisting !== normExpected) {
     throw new ApiCommandError('VERSION_CONFLICT', 'El bloqueo fue modificado previamente.', 412);
   }
 

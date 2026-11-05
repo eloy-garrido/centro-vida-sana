@@ -14,50 +14,51 @@ import { professionals } from '../data/professionals';
   description="Panel interno de gestión de agendas y atenciones clínicas de Centro Vida Sana Austral."
   noindex={true}
 >
-  <!-- Barra Superior Minimalista de Gestión Clínica (Distraction-free) -->
-  <header class="bg-white border-b border-slate-200/90 sticky top-0 z-30 shadow-xs">
-    <div class="max-w-6xl mx-auto px-4 sm:px-6 h-16 flex items-center justify-between">
-      <a href="/" class="flex items-center gap-2.5 group transition-opacity hover:opacity-85" aria-label="Volver al inicio">
-        <img
-          src="/pix/logo-sin-texto-96.webp"
-          alt="Centro Vida Sana Logo"
-          class="w-8 h-8 rounded-full object-cover shadow-xs border border-slate-100"
-        />
-        <div class="flex items-center gap-2">
-          <span class="font-serif font-bold text-base sm:text-lg text-slate-900 tracking-tight">
-            Centro Vida Sana
-          </span>
-          <span class="hidden sm:inline-flex items-center px-2 py-0.5 rounded text-[10px] font-semibold bg-slate-100 text-slate-700 border border-slate-200">
-            Panel Clínico
-          </span>
+  <div class="min-h-screen flex flex-col bg-[#F8F9F6]">
+    <!-- Barra Superior Minimalista de Gestión Clínica (Distraction-free) -->
+    <header class="bg-white border-b border-slate-200/90 sticky top-0 z-30 shadow-xs shrink-0">
+      <div class="max-w-6xl mx-auto px-4 sm:px-6 h-16 flex items-center justify-between">
+        <a href="/" class="flex items-center gap-2.5 group transition-opacity hover:opacity-85" aria-label="Volver al inicio">
+          <img
+            src="/pix/logo-sin-texto-96.webp"
+            alt="Centro Vida Sana Logo"
+            class="w-8 h-8 rounded-full object-cover shadow-xs border border-slate-100"
+          />
+          <div class="flex items-center gap-2">
+            <span class="font-serif font-bold text-base sm:text-lg text-slate-900 tracking-tight">
+              Centro Vida Sana
+            </span>
+            <span class="hidden sm:inline-flex items-center px-2 py-0.5 rounded text-[10px] font-semibold bg-slate-100 text-slate-700 border border-slate-200">
+              Panel Clínico
+            </span>
+          </div>
+        </a>
+
+        <div class="flex items-center gap-3">
+          <a
+            href="/reservar"
+            class="hidden sm:inline-flex items-center gap-1.5 text-xs font-semibold text-emerald-800 bg-emerald-50 border border-emerald-200 hover:bg-emerald-100 transition-colors py-1.5 px-3 rounded-lg"
+          >
+            <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"/>
+            </svg>
+            <span>Pasarela Pacientes</span>
+          </a>
+
+          <a
+            href="/"
+            class="inline-flex items-center gap-1.5 text-xs font-semibold text-slate-600 hover:text-slate-900 transition-colors py-1.5 px-3 rounded-lg hover:bg-slate-100/70"
+          >
+            <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18"/>
+            </svg>
+            <span>Volver al sitio web</span>
+          </a>
         </div>
-      </a>
-
-      <div class="flex items-center gap-3">
-        <a
-          href="/reservar"
-          class="hidden sm:inline-flex items-center gap-1.5 text-xs font-semibold text-emerald-800 bg-emerald-50 border border-emerald-200 hover:bg-emerald-100 transition-colors py-1.5 px-3 rounded-lg"
-        >
-          <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"/>
-          </svg>
-          <span>Pasarela Pacientes</span>
-        </a>
-
-        <a
-          href="/"
-          class="inline-flex items-center gap-1.5 text-xs font-semibold text-slate-600 hover:text-slate-900 transition-colors py-1.5 px-3 rounded-lg hover:bg-slate-100/70"
-        >
-          <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18"/>
-          </svg>
-          <span>Volver al sitio web</span>
-        </a>
       </div>
-    </div>
-  </header>
+    </header>
 
-  <main class="min-h-[calc(100vh-4rem)] bg-[#F8F9F6] py-8 sm:py-10 px-4 sm:px-6 lg:px-8 flex flex-col justify-between">
+    <div class="flex-1 py-8 sm:py-10 px-4 sm:px-6 lg:px-8 flex flex-col justify-between">
     <div class="max-w-6xl mx-auto w-full">
 
       <!-- Encabezado del Panel -->
@@ -380,7 +381,7 @@ import { professionals } from '../data/professionals';
         <p class="text-[11px] text-slate-400 mt-1">Uso exclusivo para profesionales y equipo administrativo · Los Armiños 1620, Temuco</p>
       </footer>
     </div>
-  </main>
+  </div>
 </BaseLayout>
 
 <script>
@@ -624,7 +625,7 @@ import { professionals } from '../data/professionals';
                 class="btn-cancel-entry px-3 py-1.5 rounded-lg border border-red-200 text-red-700 hover:bg-red-50 text-xs font-medium transition-colors"
                 data-id="${entry.id}"
                 data-patient="${entry.patient?.name || 'Paciente'}"
-                data-version="${entry.version}"
+                data-version="${(entry.version || 'v1').replace(/"/g, '')}"
               >
                 Cancelar Cita
               </button>
@@ -643,7 +644,7 @@ import { professionals } from '../data/professionals';
               type="button"
               class="btn-delete-block px-3 py-1.5 rounded-lg border border-slate-300 text-slate-700 hover:bg-slate-100 text-xs font-medium transition-colors"
               data-id="${entry.id}"
-              data-version="${entry.version}"
+              data-version="${(entry.version || 'v1').replace(/"/g, '')}"
             >
               Liberar Horario
             </button>
@@ -708,7 +709,8 @@ import { professionals } from '../data/professionals';
       btn.addEventListener('click', () => {
         const id = btn.getAttribute('data-id')!;
         const patient = btn.getAttribute('data-patient')!;
-        const version = btn.getAttribute('data-version')!;
+        const rawVer = btn.getAttribute('data-version') || 'v1';
+        const version = rawVer.startsWith('"') ? rawVer : `"${rawVer}"`;
         openCancelModal(id, patient, version);
       });
     });
@@ -717,7 +719,8 @@ import { professionals } from '../data/professionals';
     document.querySelectorAll('.btn-delete-block').forEach((btn) => {
       btn.addEventListener('click', async () => {
         const id = btn.getAttribute('data-id')!;
-        const version = btn.getAttribute('data-version')!;
+        const rawVer = btn.getAttribute('data-version') || 'v1';
+        const version = rawVer.startsWith('"') ? rawVer : `"${rawVer}"`;
         if (!confirm('¿Liberar este horario bloqueado para permitir reservas?')) return;
         try {
           await AgendamientoClient.deleteTeamBlock(id, version, currentSession.csrfToken);
