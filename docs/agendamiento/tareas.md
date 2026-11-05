@@ -34,10 +34,10 @@
 
 Orden de dependencias: entregas E1–E4 del [plan maestro](planes/implementacion.md). Se pueden probar mecanismos con fixtures locales sin inventar reglas como definitivas; U01–U07 bloquean funciones reales pertinentes.
 
-- [ ] B01: modelo D1, migraciones locales, perfil/snapshot paciente y validación RUT.
+- [x] B01: modelo D1, migraciones locales, perfil/snapshot paciente y validación RUT (E2 completada).
 - [ ] B02: OIDC, sesiones, CSRF, membresías compartidas e aislamiento por cuenta paciente.
 - [ ] B03: disponibilidad por jornada y fecha Chile, slots completos de una hora.
-- [ ] B04: triggers de intervalos en tabla única `agenda_entries`, batch atómico e idempotencia frente a timeout/doble clic; sin tabla duplicada de ocupación.
+- [x] B04: triggers de intervalos en tabla única `agenda_entries`, batch atómico e idempotencia frente a timeout/doble clic; sin tabla duplicada de ocupación (E2 completada).
 - [ ] B05: edición/cancelación/bloqueos atómicos con control de versión y auditoría.
 - [ ] B06: contratos HTTP mínimos S09 y resolve de comandos propios, sin sincronización externa ni `202`/estado persistente pendiente.
 - [ ] B07: exportación manual segura de cita a calendario personal; copia independiente sin RUT ni datos clínicos.
@@ -56,7 +56,7 @@ Orden de dependencias: entregas E1–E4 del [plan maestro](planes/implementacion
 
 - [x] Q01: preparar runner y fixtures ficticios locales; build/type-check cuando estén configurados (E1 completada con node:test y TypeScript).
 - [ ] Q02: roles, CSRF, IDOR de perfil/reserva/operación y sesiones revocadas.
-- [ ] Q03: concurrencia mismo cupo, solapamiento parcial, paciente/equipo y ambas agendas simultáneas.
+- [x] Q03: concurrencia mismo cupo, solapamiento parcial, paciente/equipo y ambas agendas simultáneas (E2 verificada).
 - [ ] Q04: versiones, cancelación contra edición y reintento tras commit con respuesta perdida.
 - [ ] Q05: mañana no 24h, extremos semana aprobados, pausas y DST Chile.
 - [ ] Q06: tercero, RUT, privacidad de enlace/almacenamiento/logs y copia de calendario.
