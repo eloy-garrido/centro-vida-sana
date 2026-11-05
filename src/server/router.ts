@@ -8,14 +8,24 @@ import {
   extractSessionToken,
   createSessionCookie,
   createClearSessionCookie,
-  validateCsrfHeader
+  validateCsrfHeader,
+  validateSafeReturnUrl
 } from './auth/middleware.ts';
 import {
   validateSession,
   revokeSession,
   createSession,
-  findOrCreateUser
+  findOrCreateUser,
+  createOAuthAttempt,
+  consumeOAuthAttempt
 } from './auth/session-service.ts';
+import {
+  generateRandomString,
+  sha256Base64Url
+} from './auth/crypto.ts';
+import {
+  validateGoogleIdTokenClaims
+} from './auth/oidc-validator.ts';
 import {
   ApiCommandError,
   resolveCommand,
@@ -57,10 +67,32 @@ function errorResponse(code: string, message: string, status: number, fields?: R
   }, status);
 }
 
+function parseJwtPayload(token: string): any {
+  const parts = token.split('.');
+  if (parts.length !== 3) throw new Error('JWT malformado');
+  const base64 = parts[1].replace(/-/g, '+').replace(/_/g, '/');
+  const jsonStr = decodeURIComponent(
+    atob(base64)
+      .split('')
+      .map(c => '%' + ('00' + c.charCodeAt(0).toString(16)).slice(-2))
+      .join('')
+  );
+  return JSON.parse(jsonStr);
+}
+
+export interface RouterOptions {
+  nowSeconds?: number;
+  isDev?: boolean;
+  googleClientId?: string;
+  googleClientSecret?: string;
+  googleRedirectUri?: string;
+  env?: Record<string, any>;
+}
+
 export async function handleApiRequest(
   request: Request,
   db: DatabaseAdapter,
-  options: { nowSeconds?: number; isDev?: boolean } = {}
+  options: RouterOptions = {}
 ): Promise<Response> {
   const url = new URL(request.url);
   const path = url.pathname;
@@ -148,6 +180,147 @@ export async function handleApiRequest(
         200,
         { 'Set-Cookie': createSessionCookie(newSession.rawToken, { isHttps: false }) }
       );
+    }
+
+    // ========================================================================
+    // OAUTH GOOGLE DE IDENTIDAD (S01 / D08 / S09)
+    // ========================================================================
+
+    if (method === 'GET' && path === '/auth/google/start') {
+      const returnTo = validateSafeReturnUrl(url.searchParams.get('returnTo'));
+      const clientId = options.googleClientId || options.env?.GOOGLE_CLIENT_ID || (typeof process !== 'undefined' ? process.env?.GOOGLE_CLIENT_ID : undefined);
+      const redirectUri = options.googleRedirectUri || options.env?.GOOGLE_REDIRECT_URI || (typeof process !== 'undefined' ? process.env?.GOOGLE_REDIRECT_URI : undefined) || `${url.origin}/auth/google/callback`;
+
+      if (!clientId) {
+        return errorResponse('OIDC_NOT_CONFIGURED', 'Google OAuth no está configurado aún en este entorno.', 503);
+      }
+
+      const codeVerifier = generateRandomString(32);
+      const codeChallenge = await sha256Base64Url(codeVerifier);
+      const nonce = generateRandomString(24);
+
+      const attempt = await createOAuthAttempt(db, {
+        returnTo,
+        codeVerifier,
+        nonce
+      });
+
+      const googleAuthUrl = new URL('https://accounts.google.com/o/oauth2/v2/auth');
+      googleAuthUrl.searchParams.set('client_id', clientId);
+      googleAuthUrl.searchParams.set('redirect_uri', redirectUri);
+      googleAuthUrl.searchParams.set('response_type', 'code');
+      googleAuthUrl.searchParams.set('scope', 'openid email profile');
+      googleAuthUrl.searchParams.set('state', attempt.state);
+      googleAuthUrl.searchParams.set('nonce', nonce);
+      googleAuthUrl.searchParams.set('code_challenge', codeChallenge);
+      googleAuthUrl.searchParams.set('code_challenge_method', 'S256');
+      googleAuthUrl.searchParams.set('prompt', 'select_account');
+
+      return new Response(null, {
+        status: 302,
+        headers: {
+          Location: googleAuthUrl.toString(),
+          'Cache-Control': 'no-store'
+        }
+      });
+    }
+
+    if (method === 'GET' && path === '/auth/google/callback') {
+      const code = url.searchParams.get('code');
+      const state = url.searchParams.get('state');
+      const error = url.searchParams.get('error');
+
+      if (error || !code || !state) {
+        return new Response(`Error de autenticación con Google: ${error || 'código o estado ausente'}. <a href="/">Volver al inicio</a>`, {
+          status: 400,
+          headers: { 'Content-Type': 'text/html; charset=utf-8' }
+        });
+      }
+
+      const attempt = await consumeOAuthAttempt(db, state);
+      if (!attempt) {
+        return new Response('El intento de inicio de sesión ha expirado o ya fue utilizado. Por favor intenta nuevamente. <a href="/">Volver al inicio</a>', {
+          status: 400,
+          headers: { 'Content-Type': 'text/html; charset=utf-8' }
+        });
+      }
+
+      const clientId = options.googleClientId || options.env?.GOOGLE_CLIENT_ID || (typeof process !== 'undefined' ? process.env?.GOOGLE_CLIENT_ID : undefined);
+      const clientSecret = options.googleClientSecret || options.env?.GOOGLE_CLIENT_SECRET || (typeof process !== 'undefined' ? process.env?.GOOGLE_CLIENT_SECRET : undefined);
+      const redirectUri = options.googleRedirectUri || options.env?.GOOGLE_REDIRECT_URI || (typeof process !== 'undefined' ? process.env?.GOOGLE_REDIRECT_URI : undefined) || `${url.origin}/auth/google/callback`;
+
+      if (!clientId || !clientSecret) {
+        return errorResponse('OIDC_NOT_CONFIGURED', 'Credenciales de Google OAuth no configuradas.', 503);
+      }
+
+      // Intercambio de código por tokens con Google
+      const tokenParams = new URLSearchParams({
+        code,
+        client_id: clientId,
+        client_secret: clientSecret,
+        redirect_uri: redirectUri,
+        grant_type: 'authorization_code',
+        code_verifier: attempt.codeVerifier
+      });
+
+      const tokenRes = await fetch('https://oauth2.googleapis.com/token', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+        body: tokenParams.toString()
+      });
+
+      if (!tokenRes.ok) {
+        const errBody = await tokenRes.text();
+        console.error('Error al intercambiar código con Google:', errBody);
+        return new Response('Error al verificar las credenciales con Google. <a href="/">Volver al inicio</a>', {
+          status: 502,
+          headers: { 'Content-Type': 'text/html; charset=utf-8' }
+        });
+      }
+
+      const tokenData = await tokenRes.json() as { id_token?: string };
+      if (!tokenData.id_token) {
+        return new Response('Google no retornó un id_token válido. <a href="/">Volver al inicio</a>', {
+          status: 502,
+          headers: { 'Content-Type': 'text/html; charset=utf-8' }
+        });
+      }
+
+      let claims: any;
+      try {
+        claims = parseJwtPayload(tokenData.id_token);
+      } catch {
+        return new Response('No se pudieron leer los datos del token de Google. <a href="/">Volver al inicio</a>', {
+          status: 400,
+          headers: { 'Content-Type': 'text/html; charset=utf-8' }
+        });
+      }
+
+      const validation = validateGoogleIdTokenClaims(claims, {
+        expectedClientId: clientId,
+        expectedNonce: attempt.nonce,
+        nowSeconds
+      });
+
+      if (!validation.valid || !validation.user) {
+        return new Response(`Token de Google rechazado por seguridad: ${validation.error}. <a href="/">Volver al inicio</a>`, {
+          status: 403,
+          headers: { 'Content-Type': 'text/html; charset=utf-8' }
+        });
+      }
+
+      const dbUser = await findOrCreateUser(db, validation.user);
+      const session = await createSession(db, dbUser.id, { nowSeconds });
+      const isHttps = url.protocol === 'https:';
+
+      return new Response(null, {
+        status: 302,
+        headers: {
+          Location: attempt.returnTo,
+          'Set-Cookie': createSessionCookie(session.rawToken, { isHttps }),
+          'Cache-Control': 'no-store'
+        }
+      });
     }
 
     // ========================================================================

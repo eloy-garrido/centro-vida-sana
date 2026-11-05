@@ -303,3 +303,37 @@ test('Open Redirect: solo se permiten rutas relativas locales seguras', () => {
   assert.strictEqual(validateSafeReturnUrl(''), '/reservar');
   assert.strictEqual(validateSafeReturnUrl(null), '/reservar');
 });
+
+// ============================================================================
+// 7. ENDPOINTS OAUTH GOOGLE (/auth/google/start y /callback) (S01 / D08)
+// ============================================================================
+
+test('AUTH-05: Flujo HTTP de inicio y callback Google OAuth', async () => {
+  const { adapter } = createTestDatabase();
+  const { handleApiRequest } = await import('../../src/server/router.ts');
+
+  // 1. /auth/google/start sin Client ID -> 503 OIDC_NOT_CONFIGURED
+  const reqNoConfig = new Request('http://localhost:4321/auth/google/start');
+  const resNoConfig = await handleApiRequest(reqNoConfig, adapter, {});
+  assert.strictEqual(resNoConfig.status, 503);
+
+  // 2. /auth/google/start con Client ID -> 302 Redirección a Google con PKCE S256
+  const reqStart = new Request('http://localhost:4321/auth/google/start?returnTo=/agenda');
+  const resStart = await handleApiRequest(reqStart, adapter, {
+    googleClientId: 'test-client-id.apps.googleusercontent.com'
+  });
+  assert.strictEqual(resStart.status, 302);
+  const location = resStart.headers.get('Location') || '';
+  assert.ok(location.startsWith('https://accounts.google.com/o/oauth2/v2/auth'));
+  assert.ok(location.includes('client_id=test-client-id.apps.googleusercontent.com'));
+  assert.ok(location.includes('code_challenge_method=S256'));
+  assert.ok(location.includes('scope=openid+email+profile') || location.includes('scope=openid%20email%20profile'));
+
+  // 3. /auth/google/callback con estado inexistente o expirado -> 400
+  const reqCallbackBadState = new Request('http://localhost:4321/auth/google/callback?code=abc&state=fake_state_123');
+  const resCallbackBadState = await handleApiRequest(reqCallbackBadState, adapter, {
+    googleClientId: 'test-client-id.apps.googleusercontent.com',
+    googleClientSecret: 'test-secret'
+  });
+  assert.strictEqual(resCallbackBadState.status, 400);
+});
