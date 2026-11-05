@@ -157,7 +157,7 @@ import { professionals } from '../data/professionals';
               type="button"
               id="btn-step-1-next"
               disabled
-              class="inline-flex items-center justify-center gap-2 px-6 py-3 rounded-xl bg-slate-900 hover:bg-slate-800 disabled:bg-slate-200 disabled:text-slate-400 disabled:cursor-not-allowed text-white text-xs font-semibold transition-all shadow-sm focus:ring-2 focus:ring-slate-900"
+              class="inline-flex items-center justify-center gap-2 px-6 py-3 rounded-xl bg-slate-900 hover:bg-slate-800 disabled:bg-slate-200 disabled:text-slate-400 disabled:cursor-not-allowed opacity-50 cursor-not-allowed text-white text-xs font-semibold transition-all shadow-sm focus:ring-2 focus:ring-slate-900"
             >
               <span>Continuar a Fecha y Horario</span>
               <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -174,7 +174,7 @@ import { professionals } from '../data/professionals';
           <div class="flex items-center justify-between border-b border-slate-100 pb-4 mb-6">
             <div>
               <h2 class="text-xl font-serif text-slate-900 font-medium">2. Selecciona Día y Horario</h2>
-              <p class="text-xs text-slate-500 mt-1">Ventana oficial: desde mañana ($D+1$) hasta 7 días hacia adelante.</p>
+              <p class="text-xs text-slate-500 mt-1">Ventana oficial de reserva: desde mañana hasta 7 días hacia adelante.</p>
             </div>
             <!-- Badge recordatorio del especialista elegido -->
             <div id="step-2-pro-chip" class="hidden sm:inline-flex items-center gap-2 px-3 py-1 rounded-full text-xs font-semibold bg-slate-100 text-slate-800">
@@ -235,7 +235,7 @@ import { professionals } from '../data/professionals';
               type="button"
               id="btn-step-2-next"
               disabled
-              class="inline-flex items-center justify-center gap-2 px-6 py-3 rounded-xl bg-slate-900 hover:bg-slate-800 disabled:bg-slate-200 disabled:text-slate-400 disabled:cursor-not-allowed text-white text-xs font-semibold transition-all shadow-sm focus:ring-2 focus:ring-slate-900"
+              class="inline-flex items-center justify-center gap-2 px-6 py-3 rounded-xl bg-slate-900 hover:bg-slate-800 disabled:bg-slate-200 disabled:text-slate-400 disabled:cursor-not-allowed opacity-50 cursor-not-allowed text-white text-xs font-semibold transition-all shadow-sm focus:ring-2 focus:ring-slate-900"
             >
               <span>Continuar a Mis Datos</span>
               <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -502,7 +502,7 @@ import { professionals } from '../data/professionals';
               type="button"
               id="btn-final-confirm"
               disabled
-              class="inline-flex items-center justify-center gap-2 px-8 py-3.5 rounded-xl bg-slate-900 hover:bg-slate-800 disabled:bg-slate-200 disabled:text-slate-400 disabled:cursor-not-allowed text-white text-xs font-bold transition-all shadow-md focus:ring-2 focus:ring-slate-900"
+              class="inline-flex items-center justify-center gap-2 px-8 py-3.5 rounded-xl bg-slate-900 hover:bg-slate-800 disabled:bg-slate-200 disabled:text-slate-400 disabled:cursor-not-allowed opacity-50 cursor-not-allowed text-white text-xs font-bold transition-all shadow-md focus:ring-2 focus:ring-slate-900"
             >
               <span id="btn-final-text">Confirmar y Agendar Cita</span>
               <svg id="btn-final-spinner" class="hidden animate-spin w-4 h-4 text-white" fill="none" viewBox="0 0 24 24">
@@ -752,15 +752,21 @@ import { professionals } from '../data/professionals';
 
       proCards.forEach((c) => {
         c.classList.remove('border-slate-900', 'bg-slate-50', 'ring-2', 'ring-slate-900');
+        const radio = c.querySelector('input[type="radio"]') as HTMLInputElement;
+        if (radio) radio.checked = false;
         const ind = c.querySelector('.select-indicator') as HTMLElement;
         if (ind) ind.textContent = 'Seleccionar →';
       });
 
       card.classList.add('border-slate-900', 'bg-slate-50', 'ring-2', 'ring-slate-900');
+      const radio = card.querySelector('input[type="radio"]') as HTMLInputElement;
+      if (radio) radio.checked = true;
       const activeInd = card.querySelector('.select-indicator') as HTMLElement;
       if (activeInd) activeInd.textContent = '✓ Seleccionado';
 
       btnStep1Next.disabled = false;
+      btnStep1Next.removeAttribute('disabled');
+      btnStep1Next.classList.remove('opacity-50', 'cursor-not-allowed');
     });
   });
 
@@ -773,9 +779,9 @@ import { professionals } from '../data/professionals';
       : 'Eduardo Lagos (Box 2)';
     step2ProChip.classList.remove('hidden');
 
-    // Resetear hora al cambiar pro y cargar slots
+    // Resetear hora al entrar al paso 2 y bloquear botón continuar
     selectedSlotUtc = null;
-    btnStep2Next.disabled = true;
+    updateStep2NextButton();
     loadSlots();
     goToStep(2);
   });
@@ -785,12 +791,10 @@ import { professionals } from '../data/professionals';
   // ==========================================================================
   btnStep2Back.addEventListener('click', () => goToStep(1));
 
-  function renderDatePills() {
-    datePillsRow.innerHTML = '';
+  function getAvailableDates(): Array<{ dateStr: string; weekday: number; dayNum: number; monthName: string }> {
+    const list: Array<{ dateStr: string; weekday: number; dayNum: number; monthName: string }> = [];
     const now = new Date();
-    const daysEs = ['Dom', 'Lun', 'Mar', 'Mié', 'Jue', 'Vie', 'Sáb'];
     const monthsEs = ['Ene', 'Feb', 'Mar', 'Abr', 'May', 'Jun', 'Jul', 'Ago', 'Sep', 'Oct', 'Nov', 'Dic'];
-
     for (let i = 1; i <= 7; i++) {
       const date = new Date(now.getTime() + i * 24 * 60 * 60 * 1000);
       const yyyy = date.getFullYear();
@@ -801,34 +805,84 @@ import { professionals } from '../data/professionals';
 
       if (weekday === 0) continue; // Cerrado domingos
 
+      list.push({
+        dateStr,
+        weekday,
+        dayNum: date.getDate(),
+        monthName: monthsEs[date.getMonth()]
+      });
+    }
+    return list;
+  }
+
+  function applyDatePillClasses(btn: HTMLButtonElement, isSelected: boolean) {
+    btn.className = isSelected
+      ? 'date-pill shrink-0 flex flex-col items-center justify-center w-16 h-18 py-2.5 px-2 rounded-xl border-2 border-slate-900 bg-slate-900 text-white shadow-xs select-none text-center cursor-pointer font-medium'
+      : 'date-pill shrink-0 flex flex-col items-center justify-center w-16 h-18 py-2.5 px-2 rounded-xl border-2 border-slate-200 bg-white hover:border-slate-400 text-slate-700 select-none text-center cursor-pointer transition-colors';
+  }
+
+  function renderDatePills() {
+    datePillsRow.innerHTML = '';
+    const daysEs = ['Dom', 'Lun', 'Mar', 'Mié', 'Jue', 'Vie', 'Sáb'];
+    const availableDates = getAvailableDates();
+
+    if (!selectedDateString || !availableDates.some(d => d.dateStr === selectedDateString)) {
+      if (availableDates.length > 0) {
+        selectedDateString = availableDates[0].dateStr;
+      }
+    }
+
+    availableDates.forEach((d) => {
       const btn = document.createElement('button');
       btn.type = 'button';
-      const isSelected = selectedDateString === dateStr;
-      btn.className = `date-pill shrink-0 flex flex-col items-center justify-center w-16 h-18 py-2.5 px-2 rounded-xl border-2 transition-all select-none text-center ${
-        isSelected
-          ? 'border-slate-900 bg-slate-900 text-white shadow-xs'
-          : 'border-slate-200 bg-white hover:border-slate-400 text-slate-700'
-      }`;
+      btn.setAttribute('data-date-str', d.dateStr);
+      const isSelected = selectedDateString === d.dateStr;
+      applyDatePillClasses(btn, isSelected);
       btn.innerHTML = `
-        <span class="text-[10px] font-semibold tracking-wider uppercase opacity-80">${daysEs[weekday]}</span>
-        <span class="text-lg font-bold leading-none my-1">${date.getDate()}</span>
-        <span class="text-[10px] font-medium opacity-80">${monthsEs[date.getMonth()]}</span>
+        <span class="text-[10px] font-semibold tracking-wider uppercase opacity-80">${daysEs[d.weekday]}</span>
+        <span class="text-lg font-bold leading-none my-1">${d.dayNum}</span>
+        <span class="text-[10px] font-medium opacity-80">${d.monthName}</span>
       `;
 
       btn.addEventListener('click', () => {
-        selectedDateString = dateStr;
-        selectedSlotUtc = null;
-        btnStep2Next.disabled = true;
+        if (selectedDateString === d.dateStr) return;
+        selectedDateString = d.dateStr;
+        selectedSlotUtc = null; // Reiniciar selección de hora al cambiar día
+        updateStep2NextButton();
         renderDatePills();
         loadSlots();
       });
 
-      if (!selectedDateString && i === 1) {
-        selectedDateString = dateStr;
-        btn.className = btn.className.replace('border-slate-200 bg-white text-slate-700', 'border-slate-900 bg-slate-900 text-white shadow-xs');
-      }
-
       datePillsRow.appendChild(btn);
+    });
+  }
+
+  function applySlotButtonClasses(btn: HTMLButtonElement, isSelected: boolean) {
+    btn.className = isSelected
+      ? 'slot-btn py-3 px-3 rounded-xl border-2 font-semibold text-xs transition-all text-center flex flex-col items-center justify-center border-slate-900 bg-slate-900 text-white shadow-md ring-2 ring-slate-900 ring-offset-2 cursor-pointer transform scale-[1.02]'
+      : 'slot-btn py-3 px-3 rounded-xl border-2 font-semibold text-xs transition-all text-center flex flex-col items-center justify-center border-slate-200 hover:border-slate-800 hover:bg-slate-50 bg-white text-slate-800 cursor-pointer';
+  }
+
+  function updateSlotButtons() {
+    const allSlots = slotsButtonsGrid.querySelectorAll<HTMLButtonElement>('.slot-btn');
+    allSlots.forEach((btn) => {
+      const slotUtc = btn.getAttribute('data-slot-utc');
+      const isSelected = Boolean(selectedSlotUtc && slotUtc === selectedSlotUtc);
+      applySlotButtonClasses(btn, isSelected);
+    });
+  }
+
+  function updateStep2NextButton() {
+    const canProceed = Boolean(selectedDateString && selectedSlotUtc);
+    btnStep2Next.disabled = !canProceed;
+    if (canProceed) {
+      btnStep2Next.removeAttribute('disabled');
+      btnStep2Next.setAttribute('aria-disabled', 'false');
+      btnStep2Next.classList.remove('opacity-50', 'cursor-not-allowed');
+    } else {
+      btnStep2Next.setAttribute('disabled', 'true');
+      btnStep2Next.setAttribute('aria-disabled', 'true');
+      btnStep2Next.classList.add('opacity-50', 'cursor-not-allowed');
     }
   }
 
@@ -839,6 +893,7 @@ import { professionals } from '../data/professionals';
     slotsButtonsGrid.innerHTML = '';
     slotsSkeleton.classList.remove('hidden');
     slotsNoneBox.classList.add('hidden');
+    updateStep2NextButton(); // Garantizar que continúe bloqueado mientras carga
 
     try {
       const nextDate = new Date(new Date(selectedDateString + 'T12:00:00Z').getTime() + 24 * 3600 * 1000);
@@ -849,6 +904,8 @@ import { professionals } from '../data/professionals';
 
       if (!res.slots || res.slots.length === 0) {
         slotsNoneBox.classList.remove('hidden');
+        selectedSlotUtc = null;
+        updateStep2NextButton();
         return;
       }
 
@@ -862,12 +919,10 @@ import { professionals } from '../data/professionals';
 
         const btn = document.createElement('button');
         btn.type = 'button';
+        btn.setAttribute('data-slot-utc', slot.startAt);
         const isSelected = selectedSlotUtc === slot.startAt;
-        btn.className = `slot-btn py-3 px-3 rounded-xl border-2 font-semibold text-xs transition-all text-center flex flex-col items-center justify-center ${
-          isSelected
-            ? 'border-slate-900 bg-slate-900 text-white shadow-xs ring-2 ring-slate-900 ring-offset-1'
-            : 'border-slate-200 hover:border-slate-800 bg-white text-slate-800'
-        }`;
+        applySlotButtonClasses(btn, isSelected);
+
         btn.innerHTML = `
           <span class="text-sm font-bold">${timeStr}</span>
           <span class="text-[10px] opacity-75 font-normal">hasta ${endTimeStr}</span>
@@ -875,15 +930,15 @@ import { professionals } from '../data/professionals';
 
         btn.addEventListener('click', () => {
           selectedSlotUtc = slot.startAt;
-          document.querySelectorAll('.slot-btn').forEach((b) => {
-            b.className = b.className.replace('border-slate-900 bg-slate-900 text-white shadow-xs ring-2 ring-slate-900 ring-offset-1', 'border-slate-200 bg-white text-slate-800');
-          });
-          btn.className = btn.className.replace('border-slate-200 bg-white text-slate-800', 'border-slate-900 bg-slate-900 text-white shadow-xs ring-2 ring-slate-900 ring-offset-1');
-          btnStep2Next.disabled = false;
+          updateSlotButtons();
+          updateStep2NextButton();
         });
 
         slotsButtonsGrid.appendChild(btn);
       });
+
+      // Asegurar que el botón siguiente refleje el estado
+      updateStep2NextButton();
     } catch {
       slotsSkeleton.classList.add('hidden');
       slotsButtonsGrid.innerHTML = `
@@ -891,18 +946,23 @@ import { professionals } from '../data/professionals';
           Error al consultar horarios disponibles. Intenta nuevamente.
         </p>
       `;
+      selectedSlotUtc = null;
+      updateStep2NextButton();
     }
   }
 
   btnStep2Next.addEventListener('click', () => {
-    if (!selectedSlotUtc) return;
+    if (!selectedDateString || !selectedSlotUtc) return;
     goToStep(3);
   });
 
   // ==========================================================================
   // PASO 3: TUS DATOS Y CONTACTO
   // ==========================================================================
-  btnStep3Back.addEventListener('click', () => goToStep(2));
+  btnStep3Back.addEventListener('click', () => {
+    updateStep2NextButton();
+    goToStep(2);
+  });
 
   // Validación y formato de RUT en tiempo real
   stepInputRut.addEventListener('blur', () => {
@@ -994,7 +1054,15 @@ import { professionals } from '../data/professionals';
   btnStep4Back.addEventListener('click', () => goToStep(3));
 
   finalConsentCheck.addEventListener('change', () => {
-    btnFinalConfirm.disabled = !finalConsentCheck.checked;
+    const isChecked = finalConsentCheck.checked;
+    btnFinalConfirm.disabled = !isChecked;
+    if (isChecked) {
+      btnFinalConfirm.removeAttribute('disabled');
+      btnFinalConfirm.classList.remove('opacity-50', 'cursor-not-allowed');
+    } else {
+      btnFinalConfirm.setAttribute('disabled', 'true');
+      btnFinalConfirm.classList.add('opacity-50', 'cursor-not-allowed');
+    }
   });
 
   btnFinalConfirm.addEventListener('click', async () => {
