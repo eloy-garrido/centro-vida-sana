@@ -54,7 +54,7 @@ Orden de dependencias: entregas E1–E4 del [plan maestro](planes/implementacion
 
 ## QA y revisión — qa-reservas / revisor-reservas
 
-- [ ] Q01: preparar runner y fixtures ficticios locales; build/type-check cuando estén configurados.
+- [x] Q01: preparar runner y fixtures ficticios locales; build/type-check cuando estén configurados (E1 completada con node:test y TypeScript).
 - [ ] Q02: roles, CSRF, IDOR de perfil/reserva/operación y sesiones revocadas.
 - [ ] Q03: concurrencia mismo cupo, solapamiento parcial, paciente/equipo y ambas agendas simultáneas.
 - [ ] Q04: versiones, cancelación contra edición y reintento tras commit con respuesta perdida.
