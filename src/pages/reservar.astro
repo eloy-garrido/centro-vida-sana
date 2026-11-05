@@ -1,7 +1,8 @@
 ---
 /**
- * Centro Vida Sana Austral — Pasarela de Reserva de Pacientes (S04 / D01 / D02 / D05 / S06)
- * Cumple estrictamente con noindex, sin PII en almacenamiento/URLs, accesibilidad AA y diseño de alta calidad.
+ * Centro Vida Sana Austral — Pasarela de Reserva por Pasos (Wizard)
+ * Conforme a S04, S09, D01, D02, D05 y S06.
+ * Incluye noindex, validación de RUT en tiempo real, gestión de foco, accesibilidad AA y transiciones suaves.
  */
 
 import BaseLayout from '../layouts/BaseLayout.astro';
@@ -19,378 +20,503 @@ import { professionals } from '../data/professionals';
   <Navbar slot="navbar" activePage="home" />
 
   <main class="min-h-screen bg-[#F8F9F6] pt-28 pb-20 px-4 sm:px-6 lg:px-8">
-    <div class="max-w-4xl mx-auto">
+    <div class="max-w-3xl mx-auto">
       
       <!-- Encabezado Clínico -->
-      <header class="text-center mb-10">
-        <span class="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full text-xs font-semibold tracking-wide uppercase bg-emerald-50 text-emerald-800 border border-emerald-200 mb-4">
+      <header class="text-center mb-8">
+        <span class="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full text-xs font-semibold tracking-wide uppercase bg-emerald-50 text-emerald-800 border border-emerald-200 mb-3">
           <span class="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></span>
           Agenda Oficial en Línea
         </span>
-        <h1 class="text-3xl sm:text-4xl lg:text-5xl font-serif text-[#151C17] tracking-tight">
+        <h1 class="text-3xl sm:text-4xl font-serif text-[#151C17] tracking-tight">
           Reserva tu Atención
         </h1>
-        <p class="mt-3 text-base sm:text-lg text-slate-600 max-w-2xl mx-auto leading-relaxed">
-          Selecciona tu especialista, día y horario. Cada sesión tiene una duración de 60 minutos en box clínico privado en Temuco.
+        <p class="mt-2 text-sm sm:text-base text-slate-600 max-w-xl mx-auto leading-relaxed">
+          Atención personalizada de 60 minutos en Box clínico privado en Los Armiños 1620, Temuco.
         </p>
       </header>
 
-      <!-- Estado / Wizard de Reserva -->
-      <div id="booking-app" class="relative">
+      <!-- BARRA DE PROGRESO DEL WIZARD (1 -> 2 -> 3 -> 4) -->
+      <nav aria-label="Progreso de la reserva" class="mb-8">
+        <!-- Vista Desktop / Tablet -->
+        <ol class="hidden sm:grid grid-cols-4 gap-2 bg-white p-2.5 rounded-2xl border border-slate-200 shadow-xs">
+          <li id="step-nav-1" class="step-nav-item flex items-center gap-2.5 px-3 py-2 rounded-xl text-xs font-semibold transition-all select-none bg-slate-900 text-white">
+            <span class="step-nav-number flex items-center justify-center w-6 h-6 rounded-full bg-white/20 text-white text-xs font-bold shrink-0">1</span>
+            <span class="step-nav-label truncate">Especialista</span>
+          </li>
+          <li id="step-nav-2" class="step-nav-item flex items-center gap-2.5 px-3 py-2 rounded-xl text-xs font-medium text-slate-500 transition-all select-none">
+            <span class="step-nav-number flex items-center justify-center w-6 h-6 rounded-full bg-slate-100 text-slate-600 text-xs font-bold shrink-0">2</span>
+            <span class="step-nav-label truncate">Día y Hora</span>
+          </li>
+          <li id="step-nav-3" class="step-nav-item flex items-center gap-2.5 px-3 py-2 rounded-xl text-xs font-medium text-slate-500 transition-all select-none">
+            <span class="step-nav-number flex items-center justify-center w-6 h-6 rounded-full bg-slate-100 text-slate-600 text-xs font-bold shrink-0">3</span>
+            <span class="step-nav-label truncate">Tus Datos</span>
+          </li>
+          <li id="step-nav-4" class="step-nav-item flex items-center gap-2.5 px-3 py-2 rounded-xl text-xs font-medium text-slate-500 transition-all select-none">
+            <span class="step-nav-number flex items-center justify-center w-6 h-6 rounded-full bg-slate-100 text-slate-600 text-xs font-bold shrink-0">4</span>
+            <span class="step-nav-label truncate">Confirmación</span>
+          </li>
+        </ol>
 
-        <!-- 1. IDENTIFICACIÓN Y SESIÓN -->
-        <section id="step-auth" class="bg-white rounded-2xl p-6 sm:p-8 shadow-sm border border-slate-200/80 mb-8 transition-all">
-          <div class="flex items-center justify-between border-b border-slate-100 pb-4 mb-6">
-            <div class="flex items-center gap-3">
-              <span class="flex items-center justify-center w-8 h-8 rounded-full bg-slate-900 text-white text-sm font-semibold">1</span>
-              <h2 class="text-xl font-serif text-[#151C17]">Identificación de Cuenta</h2>
-            </div>
-            <div id="auth-status-badge"></div>
+        <!-- Vista Móvil Compacta -->
+        <div class="sm:hidden bg-white p-4 rounded-2xl border border-slate-200 shadow-xs flex items-center justify-between">
+          <div>
+            <span id="mobile-step-indicator" class="text-xs font-bold uppercase tracking-wider text-slate-500">Paso 1 de 4</span>
+            <h2 id="mobile-step-title" class="text-base font-serif font-bold text-slate-900">Selecciona Especialista</h2>
+          </div>
+          <div class="flex gap-1.5" id="mobile-step-dots">
+            <span class="w-2.5 h-2.5 rounded-full bg-slate-900"></span>
+            <span class="w-2.5 h-2.5 rounded-full bg-slate-200"></span>
+            <span class="w-2.5 h-2.5 rounded-full bg-slate-200"></span>
+            <span class="w-2.5 h-2.5 rounded-full bg-slate-200"></span>
+          </div>
+        </div>
+      </nav>
+
+      <!-- CONTENEDOR DE PASOS DEL WIZARD -->
+      <div id="wizard-container" class="relative">
+
+        <!-- ================================================================== -->
+        <!-- PASO 1: SELECCIÓN DE ESPECIALISTA Y ÁREA                             -->
+        <!-- ================================================================== -->
+        <section id="step-view-1" class="wizard-step bg-white rounded-2xl p-6 sm:p-8 shadow-sm border border-slate-200 animate-step">
+          <div class="border-b border-slate-100 pb-4 mb-6">
+            <h2 class="text-xl font-serif text-slate-900 font-medium">1. Elige tu Profesional</h2>
+            <p class="text-xs text-slate-500 mt-1">Selecciona al especialista de acuerdo al área de tratamiento o síntoma que requieres.</p>
           </div>
 
-          <!-- Si NO está autenticado -->
-          <div id="auth-logged-out" class="space-y-4">
-            <p class="text-sm text-slate-600 leading-relaxed">
-              Para garantizar la seguridad y trazabilidad de tu cita, identifícate con tu cuenta Google. Solo usaremos tu identidad básica; no enviamos correos ni accedemos a tus datos privados.
-            </p>
-            <div class="flex flex-col sm:flex-row gap-3 pt-2">
-              <a
-                href="/auth/google/start?returnTo=/reservar"
-                class="inline-flex items-center justify-center gap-3 px-5 py-3 rounded-xl bg-slate-900 hover:bg-slate-800 text-white text-sm font-medium transition-colors shadow-sm focus:outline-none focus:ring-2 focus:ring-slate-900 focus:ring-offset-2"
-              >
-                <svg class="w-4 h-4" viewBox="0 0 24 24">
-                  <path fill="#EA4335" d="M12 5c1.6 0 3 .6 4.1 1.6l3.1-3.1C17.3 1.8 14.8 1 12 1 7.5 1 3.7 3.6 1.9 7.3l3.7 2.9C6.5 7.4 9 5 12 5z"/>
-                  <path fill="#4285F4" d="M23.5 12.3c0-.8-.1-1.7-.2-2.3H12v4.5h6.5c-.3 1.5-1.1 2.8-2.4 3.7l3.7 2.9c2.2-2 3.7-5.1 3.7-8.8z"/>
-                  <path fill="#FBBC05" d="M5.6 14.8c-.2-.7-.4-1.5-.4-2.3 0-.8.2-1.6.4-2.3L1.9 7.3C.7 9.7 0 12.3 0 15.2s.7 5.5 1.9 7.9l3.7-2.9z"/>
-                  <path fill="#34A853" d="M12 23.5c3.2 0 6-1.1 8-3l-3.7-2.9c-1.1.7-2.5 1.2-4.3 1.2-3 0-5.5-2.4-6.4-5.2L1.9 16.5C3.7 20.2 7.5 23.5 12 23.5z"/>
-                </svg>
-                <span>Continuar con Google</span>
-              </a>
-
-              <!-- Botón local de prueba rápida en desarrollo -->
-              <button
-                type="button"
-                id="btn-dev-quick-login"
-                class="inline-flex items-center justify-center px-4 py-3 rounded-xl bg-emerald-50 hover:bg-emerald-100 text-emerald-800 text-xs font-semibold border border-emerald-300 transition-colors"
-              >
-                ⚡ Ingreso Rápido de Prueba (Paciente)
-              </button>
-            </div>
-          </div>
-
-          <!-- Si SÍ está autenticado -->
-          <div id="auth-logged-in" class="hidden flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 bg-slate-50 rounded-xl p-4 border border-slate-200">
-            <div class="flex items-center gap-3">
-              <div id="user-avatar" class="w-10 h-10 rounded-full bg-slate-800 text-white flex items-center justify-center font-bold text-base">U</div>
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-8">
+            <!-- Tarjeta Felipe -->
+            <label
+              class="pro-card relative flex flex-col justify-between p-5 rounded-2xl border-2 border-slate-200 hover:border-[#134E5E] cursor-pointer transition-all select-none group"
+              data-pro="felipe"
+            >
+              <input type="radio" name="selectedPro" value="felipe" class="sr-only" />
               <div>
-                <p id="user-display-name" class="font-semibold text-slate-900 text-sm">Usuario</p>
-                <p id="user-display-email" class="text-xs text-slate-500">usuario@correo.cl</p>
+                <div class="flex items-center gap-3.5 mb-3.5">
+                  <img
+                    src={professionals.felipe.photoUrl}
+                    alt={professionals.felipe.name}
+                    class="w-14 h-14 rounded-xl object-cover shrink-0 shadow-xs border border-slate-100"
+                    loading="eager"
+                  />
+                  <div class="min-w-0">
+                    <span class="inline-block px-2 py-0.5 rounded text-[10px] font-semibold bg-cyan-50 text-[#134E5E] border border-cyan-200/60 mb-1">
+                      Box 1 · Quiropraxia
+                    </span>
+                    <h3 class="font-serif text-lg text-slate-900 font-bold leading-tight">{professionals.felipe.name}</h3>
+                    <p class="text-xs text-slate-500 font-medium">{professionals.felipe.title}</p>
+                  </div>
+                </div>
+                <p class="text-xs text-slate-600 leading-relaxed mb-3">
+                  Especialista en ajustes vertebrales de alta precisión, descompresión articular, lumbago, ciática y rehabilitación de columna.
+                </p>
               </div>
-            </div>
+              <div class="pt-3 border-t border-slate-100 flex items-center justify-between text-xs">
+                <span class="text-slate-500 font-medium">Sesión clínica de 60 min</span>
+                <span class="select-indicator font-semibold text-[#134E5E] opacity-0 group-hover:opacity-100 transition-opacity">Seleccionar →</span>
+              </div>
+            </label>
+
+            <!-- Tarjeta Eduardo -->
+            <label
+              class="pro-card relative flex flex-col justify-between p-5 rounded-2xl border-2 border-slate-200 hover:border-[#2E4D38] cursor-pointer transition-all select-none group"
+              data-pro="eduardo"
+            >
+              <input type="radio" name="selectedPro" value="eduardo" class="sr-only" />
+              <div>
+                <div class="flex items-center gap-3.5 mb-3.5">
+                  <img
+                    src={professionals.eduardo.photoUrl}
+                    alt={professionals.eduardo.name}
+                    class="w-14 h-14 rounded-xl object-cover shrink-0 shadow-xs border border-slate-100"
+                    loading="eager"
+                  />
+                  <div class="min-w-0">
+                    <span class="inline-block px-2 py-0.5 rounded text-[10px] font-semibold bg-emerald-50 text-[#2E4D38] border border-emerald-200/60 mb-1">
+                      Box 2 · Acupuntura
+                    </span>
+                    <h3 class="font-serif text-lg text-slate-900 font-bold leading-tight">{professionals.eduardo.name}</h3>
+                    <p class="text-xs text-slate-500 font-medium">{professionals.eduardo.title}</p>
+                  </div>
+                </div>
+                <p class="text-xs text-slate-600 leading-relaxed mb-3">
+                  Medicina Tradicional China y Acupuntura clínica para modulación del dolor crónico, estrés, insomnio, cefaleas y bienestar integral.
+                </p>
+              </div>
+              <div class="pt-3 border-t border-slate-100 flex items-center justify-between text-xs">
+                <span class="text-slate-500 font-medium">Sesión clínica de 60 min</span>
+                <span class="select-indicator font-semibold text-[#2E4D38] opacity-0 group-hover:opacity-100 transition-opacity">Seleccionar →</span>
+              </div>
+            </label>
+          </div>
+
+          <!-- Barra de Navegación del Paso 1 -->
+          <div class="flex justify-end pt-4 border-t border-slate-100">
             <button
               type="button"
-              id="btn-logout"
-              class="text-xs font-medium text-slate-600 hover:text-red-700 hover:underline px-3 py-1.5 rounded-lg border border-slate-200 hover:border-red-200 transition-colors"
+              id="btn-step-1-next"
+              disabled
+              class="inline-flex items-center justify-center gap-2 px-6 py-3 rounded-xl bg-slate-900 hover:bg-slate-800 disabled:bg-slate-200 disabled:text-slate-400 disabled:cursor-not-allowed text-white text-xs font-semibold transition-all shadow-sm focus:ring-2 focus:ring-slate-900"
             >
-              Cerrar sesión
+              <span>Continuar a Fecha y Horario</span>
+              <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"/>
+              </svg>
             </button>
           </div>
         </section>
 
-        <!-- CONTENEDOR DEL FORMULARIO Y SELECCIÓN (Visible solo si autenticado) -->
-        <div id="booking-flow" class="space-y-8 opacity-40 pointer-events-none transition-opacity duration-300">
+        <!-- ================================================================== -->
+        <!-- PASO 2: SELECCIÓN DE DÍA Y HORA                                    -->
+        <!-- ================================================================== -->
+        <section id="step-view-2" class="wizard-step hidden bg-white rounded-2xl p-6 sm:p-8 shadow-sm border border-slate-200 animate-step">
+          <div class="flex items-center justify-between border-b border-slate-100 pb-4 mb-6">
+            <div>
+              <h2 class="text-xl font-serif text-slate-900 font-medium">2. Selecciona Día y Horario</h2>
+              <p class="text-xs text-slate-500 mt-1">Ventana oficial: desde mañana ($D+1$) hasta 7 días hacia adelante.</p>
+            </div>
+            <!-- Badge recordatorio del especialista elegido -->
+            <div id="step-2-pro-chip" class="hidden sm:inline-flex items-center gap-2 px-3 py-1 rounded-full text-xs font-semibold bg-slate-100 text-slate-800">
+              <span class="w-2 h-2 rounded-full bg-slate-600"></span>
+              <span id="step-2-pro-name">Especialista</span>
+            </div>
+          </div>
 
-          <!-- 2. DATOS DEL PACIENTE -->
-          <section class="bg-white rounded-2xl p-6 sm:p-8 shadow-sm border border-slate-200/80">
-            <div class="flex items-center gap-3 border-b border-slate-100 pb-4 mb-6">
-              <span class="flex items-center justify-center w-8 h-8 rounded-full bg-slate-900 text-white text-sm font-semibold">2</span>
-              <div>
-                <h2 class="text-xl font-serif text-[#151C17]">Persona que Recibirá la Atención</h2>
-                <p class="text-xs text-slate-500 mt-0.5">Puedes ingresar tus datos o los de un familiar / persona a quien agendas.</p>
+          <!-- Selector de Días (Píldoras D+1 a D+7) -->
+          <div class="mb-6">
+            <p class="text-xs font-semibold text-slate-700 uppercase tracking-wider mb-2.5">Elige un día:</p>
+            <div id="date-pills-row" class="flex gap-2.5 overflow-x-auto pb-2 scrollbar-none">
+              <!-- Se inyecta dinámicamente con JS -->
+            </div>
+          </div>
+
+          <!-- Horarios Disponibles -->
+          <div class="mb-8">
+            <div class="flex items-center justify-between mb-3">
+              <p class="text-xs font-semibold text-slate-700 uppercase tracking-wider">Horarios Disponibles (60 min):</p>
+              <span id="step-2-date-label" class="text-xs text-slate-500 font-medium"></span>
+            </div>
+
+            <!-- Loading Skeleton -->
+            <div id="slots-skeleton" class="hidden grid grid-cols-2 sm:grid-cols-4 gap-2.5">
+              <div class="h-14 bg-slate-100 rounded-xl animate-pulse"></div>
+              <div class="h-14 bg-slate-100 rounded-xl animate-pulse"></div>
+              <div class="h-14 bg-slate-100 rounded-xl animate-pulse"></div>
+              <div class="h-14 bg-slate-100 rounded-xl animate-pulse"></div>
+            </div>
+
+            <!-- Grilla de Slots -->
+            <div id="slots-buttons-grid" class="grid grid-cols-2 sm:grid-cols-4 gap-2.5">
+              <!-- Se inyecta dinámicamente -->
+            </div>
+
+            <!-- Mensaje Vacío -->
+            <div id="slots-none-box" class="hidden py-8 text-center bg-slate-50 rounded-xl border border-dashed border-slate-200">
+              <p class="text-xs text-slate-600 font-medium">No hay turnos disponibles para este día.</p>
+              <p class="text-[11px] text-slate-400 mt-0.5">Por favor selecciona otra fecha en el calendario superior.</p>
+            </div>
+          </div>
+
+          <!-- Barra de Navegación del Paso 2 -->
+          <div class="flex items-center justify-between pt-4 border-t border-slate-100">
+            <button
+              type="button"
+              id="btn-step-2-back"
+              class="inline-flex items-center gap-1.5 px-4 py-2.5 rounded-xl border border-slate-200 text-slate-600 hover:bg-slate-50 text-xs font-semibold transition-colors"
+            >
+              <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18"/>
+              </svg>
+              <span>Cambiar Especialista</span>
+            </button>
+
+            <button
+              type="button"
+              id="btn-step-2-next"
+              disabled
+              class="inline-flex items-center justify-center gap-2 px-6 py-3 rounded-xl bg-slate-900 hover:bg-slate-800 disabled:bg-slate-200 disabled:text-slate-400 disabled:cursor-not-allowed text-white text-xs font-semibold transition-all shadow-sm focus:ring-2 focus:ring-slate-900"
+            >
+              <span>Continuar a Mis Datos</span>
+              <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"/>
+              </svg>
+            </button>
+          </div>
+        </section>
+
+        <!-- ================================================================== -->
+        <!-- PASO 3: IDENTIFICACIÓN Y DATOS DEL PACIENTE                       -->
+        <!-- ================================================================== -->
+        <section id="step-view-3" class="wizard-step hidden bg-white rounded-2xl p-6 sm:p-8 shadow-sm border border-slate-200 animate-step">
+          <div class="border-b border-slate-100 pb-4 mb-6">
+            <h2 class="text-xl font-serif text-slate-900 font-medium">3. Tus Datos y Contacto</h2>
+            <p class="text-xs text-slate-500 mt-1">Ingresa la información de la persona que recibirá la atención clínica.</p>
+          </div>
+
+          <!-- Estado de Cuenta / Sesión -->
+          <div class="mb-6 p-4 rounded-xl bg-slate-50 border border-slate-200">
+            <!-- No autenticado -->
+            <div id="step-3-auth-out" class="space-y-3">
+              <div class="flex items-start gap-3">
+                <div class="w-8 h-8 rounded-full bg-slate-900 text-white flex items-center justify-center shrink-0 text-xs font-bold">
+                  G
+                </div>
+                <div>
+                  <h3 class="text-xs font-bold text-slate-900">Identificación con Google requerida</h3>
+                  <p class="text-[11px] text-slate-500 leading-relaxed mt-0.5">
+                    Permite proteger tu cita contra dobles reservas y recordar tus datos. No enviamos correos ni solicitamos acceso a tu calendario.
+                  </p>
+                </div>
+              </div>
+              <div class="flex flex-wrap gap-2 pt-1">
+                <a
+                  href="/auth/google/start?returnTo=/reservar"
+                  class="inline-flex items-center gap-2 px-4 py-2 rounded-xl bg-slate-900 hover:bg-slate-800 text-white text-xs font-semibold shadow-xs"
+                >
+                  <svg class="w-3.5 h-3.5" viewBox="0 0 24 24">
+                    <path fill="#EA4335" d="M12 5c1.6 0 3 .6 4.1 1.6l3.1-3.1C17.3 1.8 14.8 1 12 1 7.5 1 3.7 3.6 1.9 7.3l3.7 2.9C6.5 7.4 9 5 12 5z"/>
+                    <path fill="#4285F4" d="M23.5 12.3c0-.8-.1-1.7-.2-2.3H12v4.5h6.5c-.3 1.5-1.1 2.8-2.4 3.7l3.7 2.9c2.2-2 3.7-5.1 3.7-8.8z"/>
+                    <path fill="#FBBC05" d="M5.6 14.8c-.2-.7-.4-1.5-.4-2.3 0-.8.2-1.6.4-2.3L1.9 7.3C.7 9.7 0 12.3 0 15.2s.7 5.5 1.9 7.9l3.7-2.9z"/>
+                    <path fill="#34A853" d="M12 23.5c3.2 0 6-1.1 8-3l-3.7-2.9c-1.1.7-2.5 1.2-4.3 1.2-3 0-5.5-2.4-6.4-5.2L1.9 16.5C3.7 20.2 7.5 23.5 12 23.5z"/>
+                  </svg>
+                  <span>Identificarme con Google</span>
+                </a>
+                <button
+                  type="button"
+                  id="btn-step-3-quick-login"
+                  class="px-3.5 py-2 rounded-xl bg-emerald-50 hover:bg-emerald-100 text-emerald-800 text-xs font-semibold border border-emerald-300"
+                >
+                  ⚡ Acceso Rápido de Prueba (Dev)
+                </button>
               </div>
             </div>
 
-            <form id="patient-form" class="grid grid-cols-1 sm:grid-cols-2 gap-5" novalidate>
-              <!-- Nombre -->
-              <div class="sm:col-span-2">
-                <label for="patient-name" class="block text-xs font-semibold text-slate-700 uppercase tracking-wider mb-1.5">
-                  Nombre Completo *
-                </label>
+            <!-- Sí autenticado -->
+            <div id="step-3-auth-in" class="hidden flex items-center justify-between">
+              <div class="flex items-center gap-3">
+                <div id="step-3-avatar" class="w-8 h-8 rounded-full bg-slate-900 text-white flex items-center justify-center font-bold text-xs">U</div>
+                <div>
+                  <p id="step-3-name" class="text-xs font-bold text-slate-900">Usuario Identificado</p>
+                  <p id="step-3-email" class="text-[11px] text-slate-500">usuario@correo.com</p>
+                </div>
+              </div>
+              <span class="inline-flex items-center px-2 py-0.5 rounded text-[10px] font-semibold bg-emerald-100 text-emerald-800">
+                ✓ Sesión Activa
+              </span>
+            </div>
+          </div>
+
+          <!-- Formulario de Datos del Paciente -->
+          <form id="step-3-form" class="space-y-4 mb-8" novalidate>
+            <!-- Nombre Completo -->
+            <div>
+              <label for="step-input-name" class="block text-xs font-semibold text-slate-700 uppercase tracking-wider mb-1">
+                Nombre Completo del Paciente *
+              </label>
+              <input
+                type="text"
+                id="step-input-name"
+                required
+                placeholder="Ej: Camila González Soto"
+                class="w-full px-3.5 py-2.5 rounded-xl border border-slate-300 text-slate-900 text-xs font-medium focus:ring-2 focus:ring-slate-900 focus:border-slate-900 transition-colors"
+              />
+              <p id="err-step-name" class="hidden text-xs text-red-600 mt-1 font-medium"></p>
+            </div>
+
+            <!-- Documento (RUT / Pasaporte) -->
+            <div>
+              <label for="step-input-rut" class="block text-xs font-semibold text-slate-700 uppercase tracking-wider mb-1">
+                Documento de Identidad *
+              </label>
+              <div class="grid grid-cols-3 gap-2">
+                <select
+                  id="step-input-doc-type"
+                  class="col-span-1 px-3 py-2.5 rounded-xl border border-slate-300 text-slate-900 text-xs font-medium bg-white focus:ring-2 focus:ring-slate-900"
+                >
+                  <option value="rut">RUT</option>
+                  <option value="passport">Pasaporte</option>
+                </select>
                 <input
                   type="text"
-                  id="patient-name"
-                  name="name"
+                  id="step-input-rut"
                   required
-                  placeholder="Ej: Camila González Soto"
-                  class="w-full px-4 py-2.5 rounded-xl border border-slate-300 text-slate-900 text-sm focus:ring-2 focus:ring-slate-800 focus:border-slate-800 transition-colors"
+                  placeholder="12.345.678-5"
+                  class="col-span-2 px-3.5 py-2.5 rounded-xl border border-slate-300 text-slate-900 text-xs font-medium focus:ring-2 focus:ring-slate-900 focus:border-slate-900 transition-colors"
                 />
-                <p id="error-patient-name" class="hidden text-xs text-red-600 mt-1 font-medium" role="alert"></p>
               </div>
+              <p id="err-step-rut" class="hidden text-xs text-red-600 mt-1 font-medium"></p>
+            </div>
 
-              <!-- Tipo Documento & RUT -->
+            <!-- Correo y Teléfono -->
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
               <div>
-                <label for="patient-doc-type" class="block text-xs font-semibold text-slate-700 uppercase tracking-wider mb-1.5">
-                  Documento de Identidad *
+                <label for="step-input-email" class="block text-xs font-semibold text-slate-700 uppercase tracking-wider mb-1">
+                  Correo de Contacto *
                 </label>
-                <div class="grid grid-cols-3 gap-2">
-                  <select
-                    id="patient-doc-type"
-                    name="documentType"
-                    class="col-span-1 px-3 py-2.5 rounded-xl border border-slate-300 text-slate-900 text-sm bg-white focus:ring-2 focus:ring-slate-800 focus:border-slate-800"
-                  >
-                    <option value="rut">RUT</option>
-                    <option value="passport">Pasaporte</option>
-                  </select>
-                  <input
-                    type="text"
-                    id="patient-rut"
-                    name="rut"
-                    required
-                    placeholder="12.345.678-5"
-                    class="col-span-2 px-4 py-2.5 rounded-xl border border-slate-300 text-slate-900 text-sm focus:ring-2 focus:ring-slate-800 focus:border-slate-800 transition-colors"
-                  />
-                </div>
-                <p id="error-patient-rut" class="hidden text-xs text-red-600 mt-1 font-medium" role="alert"></p>
+                <input
+                  type="email"
+                  id="step-input-email"
+                  required
+                  placeholder="paciente@gmail.com"
+                  class="w-full px-3.5 py-2.5 rounded-xl border border-slate-300 text-slate-900 text-xs font-medium focus:ring-2 focus:ring-slate-900 focus:border-slate-900 transition-colors"
+                />
+                <p id="err-step-email" class="hidden text-xs text-red-600 mt-1 font-medium"></p>
               </div>
 
-              <!-- Teléfono -->
               <div>
-                <label for="patient-phone" class="block text-xs font-semibold text-slate-700 uppercase tracking-wider mb-1.5">
+                <label for="step-input-phone" class="block text-xs font-semibold text-slate-700 uppercase tracking-wider mb-1">
                   Teléfono Móvil (WhatsApp) *
                 </label>
                 <input
                   type="tel"
-                  id="patient-phone"
-                  name="phone"
+                  id="step-input-phone"
                   required
                   placeholder="+56 9 1234 5678"
-                  class="w-full px-4 py-2.5 rounded-xl border border-slate-300 text-slate-900 text-sm focus:ring-2 focus:ring-slate-800 focus:border-slate-800 transition-colors"
+                  class="w-full px-3.5 py-2.5 rounded-xl border border-slate-300 text-slate-900 text-xs font-medium focus:ring-2 focus:ring-slate-900 focus:border-slate-900 transition-colors"
                 />
-                <p id="error-patient-phone" class="hidden text-xs text-red-600 mt-1 font-medium" role="alert"></p>
-              </div>
-
-              <!-- Correo de contacto -->
-              <div class="sm:col-span-2">
-                <label for="patient-email" class="block text-xs font-semibold text-slate-700 uppercase tracking-wider mb-1.5">
-                  Correo Electrónico de Contacto *
-                </label>
-                <input
-                  type="email"
-                  id="patient-email"
-                  name="email"
-                  required
-                  placeholder="camila@gmail.com"
-                  class="w-full px-4 py-2.5 rounded-xl border border-slate-300 text-slate-900 text-sm focus:ring-2 focus:ring-slate-800 focus:border-slate-800 transition-colors"
-                />
-                <p id="error-patient-email" class="hidden text-xs text-red-600 mt-1 font-medium" role="alert"></p>
-              </div>
-
-              <!-- Checkbox recordar datos -->
-              <div class="sm:col-span-2 pt-1 flex items-center gap-2.5">
-                <input
-                  type="checkbox"
-                  id="remember-profile"
-                  name="rememberProfile"
-                  checked
-                  class="w-4 h-4 rounded border-slate-300 text-slate-900 focus:ring-slate-800"
-                />
-                <label for="remember-profile" class="text-xs text-slate-600 cursor-pointer select-none">
-                  Recordar estos datos para autocompletar mi próxima visita (asociado a mi cuenta)
-                </label>
-              </div>
-            </form>
-          </section>
-
-          <!-- 3. SELECCIÓN DE PROFESIONAL -->
-          <section class="bg-white rounded-2xl p-6 sm:p-8 shadow-sm border border-slate-200/80">
-            <div class="flex items-center gap-3 border-b border-slate-100 pb-4 mb-6">
-              <span class="flex items-center justify-center w-8 h-8 rounded-full bg-slate-900 text-white text-sm font-semibold">3</span>
-              <div>
-                <h2 class="text-xl font-serif text-[#151C17]">Selecciona Especialista</h2>
-                <p class="text-xs text-slate-500 mt-0.5">Elige el profesional y área de tratamiento que requieres.</p>
+                <p id="err-step-phone" class="hidden text-xs text-red-600 mt-1 font-medium"></p>
               </div>
             </div>
 
-            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-              <!-- Tarjeta Felipe -->
-              <label
-                class="professional-card relative flex items-start gap-4 p-5 rounded-xl border-2 border-slate-200 hover:border-[#134E5E] cursor-pointer transition-all select-none"
-                data-pro="felipe"
-              >
-                <input type="radio" name="professionalId" value="felipe" class="sr-only" />
-                <img
-                  src={professionals.felipe.photoUrl}
-                  alt={professionals.felipe.name}
-                  class="w-16 h-16 rounded-xl object-cover shrink-0 shadow-sm border border-slate-100"
-                  loading="lazy"
-                />
-                <div class="flex-1 min-w-0">
-                  <span class="inline-block px-2 py-0.5 rounded text-[11px] font-semibold bg-cyan-50 text-[#134E5E] border border-cyan-200/60 mb-1">
-                    Box 1 · Quiropraxia
-                  </span>
-                  <h3 class="font-serif text-lg text-slate-900 font-medium truncate">{professionals.felipe.name}</h3>
-                  <p class="text-xs text-slate-500 line-clamp-2 mt-0.5">{professionals.felipe.title}</p>
-                  <p class="text-[11px] text-slate-600 mt-2 font-medium">Columna, ciática, lumbago y biomecánica</p>
-                </div>
-                <div class="check-icon hidden text-[#134E5E] shrink-0">
-                  <svg class="w-6 h-6" fill="currentColor" viewBox="0 0 20 20">
-                    <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"/>
-                  </svg>
-                </div>
-              </label>
-
-              <!-- Tarjeta Eduardo -->
-              <label
-                class="professional-card relative flex items-start gap-4 p-5 rounded-xl border-2 border-slate-200 hover:border-[#2E4D38] cursor-pointer transition-all select-none"
-                data-pro="eduardo"
-              >
-                <input type="radio" name="professionalId" value="eduardo" class="sr-only" />
-                <img
-                  src={professionals.eduardo.photoUrl}
-                  alt={professionals.eduardo.name}
-                  class="w-16 h-16 rounded-xl object-cover shrink-0 shadow-sm border border-slate-100"
-                  loading="lazy"
-                />
-                <div class="flex-1 min-w-0">
-                  <span class="inline-block px-2 py-0.5 rounded text-[11px] font-semibold bg-emerald-50 text-[#2E4D38] border border-emerald-200/60 mb-1">
-                    Box 2 · Acupuntura
-                  </span>
-                  <h3 class="font-serif text-lg text-slate-900 font-medium truncate">{professionals.eduardo.name}</h3>
-                  <p class="text-xs text-slate-500 line-clamp-2 mt-0.5">{professionals.eduardo.title}</p>
-                  <p class="text-[11px] text-slate-600 mt-2 font-medium">Dolor crónico, estrés, insomnio y MTC</p>
-                </div>
-                <div class="check-icon hidden text-[#2E4D38] shrink-0">
-                  <svg class="w-6 h-6" fill="currentColor" viewBox="0 0 20 20">
-                    <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"/>
-                  </svg>
-                </div>
-              </label>
-            </div>
-          </section>
-
-          <!-- 4. FECHA Y HORA -->
-          <section class="bg-white rounded-2xl p-6 sm:p-8 shadow-sm border border-slate-200/80">
-            <div class="flex items-center gap-3 border-b border-slate-100 pb-4 mb-6">
-              <span class="flex items-center justify-center w-8 h-8 rounded-full bg-slate-900 text-white text-sm font-semibold">4</span>
-              <div>
-                <h2 class="text-xl font-serif text-[#151C17]">Día y Horario de Atención</h2>
-                <p class="text-xs text-slate-500 mt-0.5">Ventana oficial de agendamiento: desde mañana (D+1) hasta 7 días hacia adelante.</p>
-              </div>
-            </div>
-
-            <!-- Carrusel / Píldoras de Días -->
-            <div class="mb-6">
-              <p class="text-xs font-semibold text-slate-700 uppercase tracking-wider mb-2.5">Selecciona el Día:</p>
-              <div id="date-picker-container" class="flex gap-2.5 overflow-x-auto pb-2 scrollbar-none">
-                <!-- Se llena dinámicamente con JS -->
-              </div>
-            </div>
-
-            <!-- Grilla de Horarios -->
-            <div>
-              <div class="flex items-center justify-between mb-2.5">
-                <p class="text-xs font-semibold text-slate-700 uppercase tracking-wider">Horarios Disponibles (60 min):</p>
-                <span id="selected-date-label" class="text-xs text-slate-500 font-medium"></span>
-              </div>
-
-              <!-- Loading Skeleton -->
-              <div id="slots-loading" class="hidden grid grid-cols-2 sm:grid-cols-4 gap-3">
-                <div class="h-12 bg-slate-100 rounded-xl animate-pulse"></div>
-                <div class="h-12 bg-slate-100 rounded-xl animate-pulse"></div>
-                <div class="h-12 bg-slate-100 rounded-xl animate-pulse"></div>
-                <div class="h-12 bg-slate-100 rounded-xl animate-pulse"></div>
-              </div>
-
-              <!-- Contenedor de Botones de Hora -->
-              <div id="slots-grid" class="grid grid-cols-2 sm:grid-cols-4 gap-3">
-                <p class="col-span-full text-xs text-slate-500 py-4 text-center italic">
-                  Selecciona primero un especialista y un día para consultar disponibilidad en tiempo real.
-                </p>
-              </div>
-
-              <!-- Estado Vacío -->
-              <div id="slots-empty" class="hidden py-6 text-center bg-slate-50 rounded-xl border border-dashed border-slate-200">
-                <p class="text-sm text-slate-600 font-medium">No hay cupos disponibles para esta fecha.</p>
-                <p class="text-xs text-slate-400 mt-1">Por favor elige otro día en el selector superior.</p>
-              </div>
-            </div>
-          </section>
-
-          <!-- 5. RESUMEN Y CONFIRMACIÓN -->
-          <section id="step-summary" class="bg-white rounded-2xl p-6 sm:p-8 shadow-sm border border-slate-200/80">
-            <div class="flex items-center gap-3 border-b border-slate-100 pb-4 mb-6">
-              <span class="flex items-center justify-center w-8 h-8 rounded-full bg-slate-900 text-white text-sm font-semibold">5</span>
-              <div>
-                <h2 class="text-xl font-serif text-[#151C17]">Resumen y Confirmación</h2>
-                <p class="text-xs text-slate-500 mt-0.5">Verifica los detalles antes de reservar tu turno.</p>
-              </div>
-            </div>
-
-            <div class="bg-slate-50 rounded-xl p-5 border border-slate-200/70 space-y-3.5 mb-6 text-sm">
-              <div class="flex justify-between items-center pb-2 border-b border-slate-200/60">
-                <span class="text-slate-500 text-xs">Especialista:</span>
-                <span id="summary-pro" class="font-semibold text-slate-800">—</span>
-              </div>
-              <div class="flex justify-between items-center pb-2 border-b border-slate-200/60">
-                <span class="text-slate-500 text-xs">Fecha y Hora:</span>
-                <span id="summary-time" class="font-semibold text-slate-800 text-right">—</span>
-              </div>
-              <div class="flex justify-between items-center pb-2 border-b border-slate-200/60">
-                <span class="text-slate-500 text-xs">Paciente Atendido:</span>
-                <span id="summary-patient" class="font-semibold text-slate-800">—</span>
-              </div>
-              <div class="flex justify-between items-center">
-                <span class="text-slate-500 text-xs">Lugar de Atención:</span>
-                <span class="text-slate-700 text-xs text-right font-medium">{clinicInfo.address.street}, Temuco</span>
-              </div>
-            </div>
-
-            <!-- Aviso reglamentario S04 / S09 -->
-            <div class="bg-amber-50 rounded-xl p-4 border border-amber-200/70 text-xs text-amber-900 space-y-1 mb-6">
-              <p class="font-semibold flex items-center gap-1.5">
-                <svg class="w-4 h-4 text-amber-600 shrink-0" fill="currentColor" viewBox="0 0 20 20">
-                  <path fill-rule="evenodd" d="M8.257 3.099c.765-1.36 2.722-1.36 3.486 0l5.58 9.92c.75 1.334-.213 2.98-1.742 2.98H4.42c-1.53 0-2.493-1.646-1.743-2.98l5.58-9.92zM11 13a1 1 0 11-2 0 1 1 0 012 0zm-1-8a1 1 0 00-1 1v3a1 1 0 002 0V6a1 1 0 00-1-1z" clip-rule="evenodd"/>
-                </svg>
-                Importante sobre tu reserva:
-              </p>
-              <p class="text-amber-800/90 leading-relaxed">
-                Seleccionar un cupo no lo bloquea hasta que presiones Confirmar. No enviamos correos electrónicos automáticos; tu reserva se guarda en la base de datos oficial de la clínica.
-              </p>
-            </div>
-
-            <!-- Consentimiento -->
-            <div class="mb-6 flex items-start gap-2.5">
+            <!-- Checkbox recordar datos -->
+            <div class="pt-2 flex items-center gap-2.5">
               <input
                 type="checkbox"
-                id="consent-check"
-                required
-                class="w-4 h-4 mt-0.5 rounded border-slate-300 text-slate-900 focus:ring-slate-800"
+                id="step-check-remember"
+                checked
+                class="w-4 h-4 rounded border-slate-300 text-slate-900 focus:ring-slate-900"
               />
-              <label for="consent-check" class="text-xs text-slate-600 leading-normal select-none">
-                Confirmo que los datos ingresados son verídicos y acepto la política de atención clínica de Centro Vida Sana Austral.
+              <label for="step-check-remember" class="text-xs text-slate-600 cursor-pointer select-none">
+                Recordar estos datos para autocompletar mi próxima visita
               </label>
             </div>
+          </form>
 
-            <!-- Botón Confirmar -->
+          <!-- Barra de Navegación del Paso 3 -->
+          <div class="flex items-center justify-between pt-4 border-t border-slate-100">
             <button
               type="button"
-              id="btn-confirm-booking"
-              disabled
-              class="w-full py-3.5 px-6 rounded-xl bg-slate-900 hover:bg-slate-800 disabled:bg-slate-300 disabled:cursor-not-allowed text-white font-medium text-sm transition-all shadow-md focus:outline-none focus:ring-2 focus:ring-slate-900 focus:ring-offset-2 flex items-center justify-center gap-2"
+              id="btn-step-3-back"
+              class="inline-flex items-center gap-1.5 px-4 py-2.5 rounded-xl border border-slate-200 text-slate-600 hover:bg-slate-50 text-xs font-semibold transition-colors"
             >
-              <span id="btn-confirm-text">Confirmar Reserva de Atención</span>
-              <svg id="btn-confirm-spinner" class="hidden animate-spin w-4 h-4 text-white" fill="none" viewBox="0 0 24 24">
+              <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18"/>
+              </svg>
+              <span>Volver a Horario</span>
+            </button>
+
+            <button
+              type="button"
+              id="btn-step-3-next"
+              class="inline-flex items-center justify-center gap-2 px-6 py-3 rounded-xl bg-slate-900 hover:bg-slate-800 disabled:bg-slate-200 disabled:text-slate-400 disabled:cursor-not-allowed text-white text-xs font-semibold transition-all shadow-sm focus:ring-2 focus:ring-slate-900"
+            >
+              <span>Revisar y Confirmar</span>
+              <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"/>
+              </svg>
+            </button>
+          </div>
+        </section>
+
+        <!-- ================================================================== -->
+        <!-- PASO 4: RESUMEN Y CONFIRMACIÓN                                     -->
+        <!-- ================================================================== -->
+        <section id="step-view-4" class="wizard-step hidden bg-white rounded-2xl p-6 sm:p-8 shadow-sm border border-slate-200 animate-step">
+          <div class="border-b border-slate-100 pb-4 mb-6">
+            <h2 class="text-xl font-serif text-slate-900 font-medium">4. Resumen y Confirmación</h2>
+            <p class="text-xs text-slate-500 mt-1">Verifica los datos de tu sesión clínica antes de confirmar.</p>
+          </div>
+
+          <!-- Tarjeta de Resumen Clínico -->
+          <div class="bg-slate-50 rounded-2xl p-5 border border-slate-200/80 space-y-4 mb-6 text-xs">
+            <div class="flex items-center justify-between pb-3 border-b border-slate-200/60">
+              <span class="text-slate-500">Profesional y Box:</span>
+              <span id="final-summary-pro" class="font-bold text-slate-900 text-sm">—</span>
+            </div>
+
+            <div class="flex items-center justify-between pb-3 border-b border-slate-200/60">
+              <span class="text-slate-500">Fecha y Horario:</span>
+              <span id="final-summary-time" class="font-bold text-slate-900 text-right">—</span>
+            </div>
+
+            <div class="flex items-center justify-between pb-3 border-b border-slate-200/60">
+              <span class="text-slate-500">Paciente Atendido:</span>
+              <span id="final-summary-patient" class="font-bold text-slate-900">—</span>
+            </div>
+
+            <div class="flex items-center justify-between pb-3 border-b border-slate-200/60">
+              <span class="text-slate-500">Contacto:</span>
+              <span id="final-summary-contact" class="font-medium text-slate-800 text-right">—</span>
+            </div>
+
+            <div class="flex items-center justify-between">
+              <span class="text-slate-500">Lugar de Atención:</span>
+              <span class="text-slate-800 font-medium">{clinicInfo.address.street}, Temuco</span>
+            </div>
+          </div>
+
+          <!-- Aviso Clínico Oficial -->
+          <div class="bg-amber-50 rounded-xl p-4 border border-amber-200/80 text-amber-900 text-xs space-y-1 mb-6">
+            <p class="font-bold flex items-center gap-1.5">
+              <svg class="w-4 h-4 text-amber-600 shrink-0" fill="currentColor" viewBox="0 0 20 20">
+                <path fill-rule="evenodd" d="M8.257 3.099c.765-1.36 2.722-1.36 3.486 0l5.58 9.92c.75 1.334-.213 2.98-1.742 2.98H4.42c-1.53 0-2.493-1.646-1.743-2.98l5.58-9.92zM11 13a1 1 0 11-2 0 1 1 0 012 0zm-1-8a1 1 0 00-1 1v3a1 1 0 002 0V6a1 1 0 00-1-1z" clip-rule="evenodd"/>
+              </svg>
+              Condición oficial de la reserva:
+            </p>
+            <p class="text-amber-800/90 leading-relaxed">
+              El cupo queda confirmado en nuestra base oficial en el instante en que presiones el botón. No enviamos correos electrónicos automáticos. Podrás añadir la cita directamente a tu calendario personal en la siguiente pantalla.
+            </p>
+          </div>
+
+          <!-- Checkbox de Consentimiento -->
+          <div class="mb-6 flex items-start gap-2.5">
+            <input
+              type="checkbox"
+              id="final-consent-check"
+              required
+              class="w-4 h-4 mt-0.5 rounded border-slate-300 text-slate-900 focus:ring-slate-900"
+            />
+            <label for="final-consent-check" class="text-xs text-slate-600 leading-normal select-none">
+              Confirmo que los datos ingresados son correctos y acepto la política de atención clínica de Centro Vida Sana Austral.
+            </label>
+          </div>
+
+          <!-- Mensaje de Error si ocurre -->
+          <p id="final-booking-error" class="hidden text-xs text-center text-red-600 font-semibold mb-4" role="alert"></p>
+
+          <!-- Barra de Navegación del Paso 4 -->
+          <div class="flex items-center justify-between pt-4 border-t border-slate-100">
+            <button
+              type="button"
+              id="btn-step-4-back"
+              class="inline-flex items-center gap-1.5 px-4 py-2.5 rounded-xl border border-slate-200 text-slate-600 hover:bg-slate-50 text-xs font-semibold transition-colors"
+            >
+              <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18"/>
+              </svg>
+              <span>Modificar Datos</span>
+            </button>
+
+            <button
+              type="button"
+              id="btn-final-confirm"
+              disabled
+              class="inline-flex items-center justify-center gap-2 px-8 py-3.5 rounded-xl bg-slate-900 hover:bg-slate-800 disabled:bg-slate-200 disabled:text-slate-400 disabled:cursor-not-allowed text-white text-xs font-bold transition-all shadow-md focus:ring-2 focus:ring-slate-900"
+            >
+              <span id="btn-final-text">Confirmar y Agendar Cita</span>
+              <svg id="btn-final-spinner" class="hidden animate-spin w-4 h-4 text-white" fill="none" viewBox="0 0 24 24">
                 <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
                 <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
               </svg>
             </button>
-            <p id="booking-error-msg" class="hidden text-xs text-center text-red-600 mt-2 font-medium" role="alert"></p>
-          </section>
+          </div>
+        </section>
 
-        </div>
-
-        <!-- 6. PANTALLA DE ÉXITO Y COPIA A CALENDARIO (S06) -->
-        <section id="step-success" class="hidden bg-white rounded-2xl p-6 sm:p-10 shadow-lg border border-emerald-200/80 text-center animate-fade-in">
+        <!-- ================================================================== -->
+        <!-- PASO 5: PANTALLA DE ÉXITO Y COPIA A CALENDARIO (S06)               -->
+        <!-- ================================================================== -->
+        <section id="step-view-success" class="wizard-step hidden bg-white rounded-2xl p-6 sm:p-10 shadow-lg border border-emerald-200 text-center animate-step">
           <div class="w-16 h-16 rounded-full bg-emerald-100 text-emerald-700 flex items-center justify-center mx-auto mb-4">
             <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/>
@@ -398,8 +524,8 @@ import { professionals } from '../data/professionals';
           </div>
 
           <h2 class="text-2xl sm:text-3xl font-serif text-slate-900 font-medium">¡Atención Agendada con Éxito!</h2>
-          <p class="text-sm text-slate-600 mt-2 max-w-md mx-auto">
-            Tu reserva ha sido confirmada en la agenda clínica oficial.
+          <p class="text-xs sm:text-sm text-slate-600 mt-2 max-w-md mx-auto">
+            Tu hora médica ha sido confirmada en la base de datos oficial de Centro Vida Sana Austral.
           </p>
 
           <div class="mt-6 p-4 rounded-xl bg-slate-50 border border-slate-200 inline-block text-left text-xs space-y-1.5">
@@ -409,18 +535,18 @@ import { professionals } from '../data/professionals';
             <p><span class="text-slate-500">Paciente:</span> <span id="success-patient" class="font-semibold text-slate-800"></span></p>
           </div>
 
-          <!-- Acciones de Calendario S06 -->
+          <!-- Acciones de Calendario Personal S06 -->
           <div class="mt-8 pt-6 border-t border-slate-100 max-w-md mx-auto">
             <p class="text-xs font-semibold text-slate-700 uppercase tracking-wider mb-3">
               Guarda una copia en tu calendario personal:
             </p>
-            <div class="flex flex-col sm:flex-row gap-3 justify-center">
+            <div class="flex flex-col sm:flex-row gap-2.5 justify-center">
               <a
                 id="btn-google-calendar"
                 href="#"
                 target="_blank"
                 rel="noopener noreferrer"
-                class="inline-flex items-center justify-center gap-2 px-4 py-2.5 rounded-xl bg-white border border-slate-300 hover:border-slate-400 text-slate-700 text-xs font-semibold shadow-sm transition-colors"
+                class="inline-flex items-center justify-center gap-2 px-4 py-2.5 rounded-xl bg-white border border-slate-300 hover:border-slate-400 text-slate-700 text-xs font-semibold shadow-xs transition-colors"
               >
                 <svg class="w-4 h-4 text-red-500" viewBox="0 0 24 24" fill="currentColor">
                   <path d="M19 4h-1V2h-2v2H8V2H6v2H5c-1.11 0-1.99.9-1.99 2L3 20a2 2 0 002 2h14c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 16H5V9h14v11z"/>
@@ -431,7 +557,7 @@ import { professionals } from '../data/professionals';
               <a
                 id="btn-ics-calendar"
                 href="#"
-                class="inline-flex items-center justify-center gap-2 px-4 py-2.5 rounded-xl bg-white border border-slate-300 hover:border-slate-400 text-slate-700 text-xs font-semibold shadow-sm transition-colors"
+                class="inline-flex items-center justify-center gap-2 px-4 py-2.5 rounded-xl bg-white border border-slate-300 hover:border-slate-400 text-slate-700 text-xs font-semibold shadow-xs transition-colors"
               >
                 <svg class="w-4 h-4 text-blue-600" viewBox="0 0 24 24" fill="none" stroke="currentColor">
                   <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"/>
@@ -449,7 +575,7 @@ import { professionals } from '../data/professionals';
           <div class="mt-8">
             <button
               type="button"
-              id="btn-reset-booking"
+              id="btn-restart-wizard"
               class="text-xs text-slate-500 hover:text-slate-800 underline font-medium"
             >
               Agendar otra atención
@@ -466,167 +592,205 @@ import { professionals } from '../data/professionals';
 
 <script>
   import { AgendamientoClient, ApiError } from '../lib/agendamiento/client.ts';
-  import { validateChileanRut, formatChileanRut } from '../lib/agendamiento/validation.ts';
+  import { formatChileanRut, validateChileanRut } from '../lib/agendamiento/validation.ts';
 
-  // ESTADO LOCAL DE LA PASARELA
+  // ESTADO DEL WIZARD
+  let currentStep = 1;
   let currentSession: any = null;
   let rememberedProfileVersion: string | null = null;
   let selectedProfessionalId: 'felipe' | 'eduardo' | null = null;
   let selectedDateString: string | null = null;
   let selectedSlotUtc: string | null = null;
-
-  // Clave de idempotencia única para este intento de reserva
   let currentIdempotencyKey = 'idemp_' + Math.random().toString(36).substring(2, 12) + Date.now().toString(36);
 
-  // Elementos DOM
-  const bookingFlow = document.getElementById('booking-flow')!;
-  const authLoggedOut = document.getElementById('auth-logged-out')!;
-  const authLoggedIn = document.getElementById('auth-logged-in')!;
-  const userAvatar = document.getElementById('user-avatar')!;
-  const userDisplayName = document.getElementById('user-display-name')!;
-  const userDisplayEmail = document.getElementById('user-display-email')!;
-  const btnLogout = document.getElementById('btn-logout')!;
-  const btnDevQuickLogin = document.getElementById('btn-dev-quick-login');
+  // VISTAS DEL WIZARD
+  const stepView1 = document.getElementById('step-view-1')!;
+  const stepView2 = document.getElementById('step-view-2')!;
+  const stepView3 = document.getElementById('step-view-3')!;
+  const stepView4 = document.getElementById('step-view-4')!;
+  const stepViewSuccess = document.getElementById('step-view-success')!;
 
-  const patientForm = document.getElementById('patient-form') as HTMLFormElement;
-  const inputName = document.getElementById('patient-name') as HTMLInputElement;
-  const inputDocType = document.getElementById('patient-doc-type') as HTMLSelectElement;
-  const inputRut = document.getElementById('patient-rut') as HTMLInputElement;
-  const inputPhone = document.getElementById('patient-phone') as HTMLInputElement;
-  const inputEmail = document.getElementById('patient-email') as HTMLInputElement;
-  const checkRemember = document.getElementById('remember-profile') as HTMLInputElement;
+  // NAV INDICATORS
+  const stepNavItems = [
+    document.getElementById('step-nav-1')!,
+    document.getElementById('step-nav-2')!,
+    document.getElementById('step-nav-3')!,
+    document.getElementById('step-nav-4')!
+  ];
+  const mobileStepIndicator = document.getElementById('mobile-step-indicator')!;
+  const mobileStepTitle = document.getElementById('mobile-step-title')!;
+  const mobileDots = document.getElementById('mobile-step-dots')!.children;
 
-  const datePickerContainer = document.getElementById('date-picker-container')!;
-  const selectedDateLabel = document.getElementById('selected-date-label')!;
-  const slotsLoading = document.getElementById('slots-loading')!;
-  const slotsGrid = document.getElementById('slots-grid')!;
-  const slotsEmpty = document.getElementById('slots-empty')!;
+  const stepTitles = [
+    'Selecciona Especialista',
+    'Día y Horario',
+    'Tus Datos y Contacto',
+    'Revisar y Confirmar'
+  ];
 
-  const summaryPro = document.getElementById('summary-pro')!;
-  const summaryTime = document.getElementById('summary-time')!;
-  const summaryPatient = document.getElementById('summary-patient')!;
-  const consentCheck = document.getElementById('consent-check') as HTMLInputElement;
-  const btnConfirmBooking = document.getElementById('btn-confirm-booking') as HTMLButtonElement;
-  const btnConfirmText = document.getElementById('btn-confirm-text')!;
-  const btnConfirmSpinner = document.getElementById('btn-confirm-spinner')!;
-  const bookingErrorMsg = document.getElementById('booking-error-msg')!;
+  // PASO 1 DOM
+  const btnStep1Next = document.getElementById('btn-step-1-next') as HTMLButtonElement;
+  const proCards = document.querySelectorAll('.pro-card');
 
-  const stepAuth = document.getElementById('step-auth')!;
-  const stepSummary = document.getElementById('step-summary')!;
-  const stepSuccess = document.getElementById('step-success')!;
+  // PASO 2 DOM
+  const btnStep2Back = document.getElementById('btn-step-2-back')!;
+  const btnStep2Next = document.getElementById('btn-step-2-next') as HTMLButtonElement;
+  const step2ProChip = document.getElementById('step-2-pro-chip')!;
+  const step2ProName = document.getElementById('step-2-pro-name')!;
+  const datePillsRow = document.getElementById('date-pills-row')!;
+  const step2DateLabel = document.getElementById('step-2-date-label')!;
+  const slotsSkeleton = document.getElementById('slots-skeleton')!;
+  const slotsButtonsGrid = document.getElementById('slots-buttons-grid')!;
+  const slotsNoneBox = document.getElementById('slots-none-box')!;
+
+  // PASO 3 DOM
+  const btnStep3Back = document.getElementById('btn-step-3-back')!;
+  const btnStep3Next = document.getElementById('btn-step-3-next') as HTMLButtonElement;
+  const step3AuthOut = document.getElementById('step-3-auth-out')!;
+  const step3AuthIn = document.getElementById('step-3-auth-in')!;
+  const step3Avatar = document.getElementById('step-3-avatar')!;
+  const step3Name = document.getElementById('step-3-name')!;
+  const step3Email = document.getElementById('step-3-email')!;
+  const btnStep3QuickLogin = document.getElementById('btn-step-3-quick-login');
+
+  const stepInputName = document.getElementById('step-input-name') as HTMLInputElement;
+  const stepInputDocType = document.getElementById('step-input-doc-type') as HTMLSelectElement;
+  const stepInputRut = document.getElementById('step-input-rut') as HTMLInputElement;
+  const stepInputEmail = document.getElementById('step-input-email') as HTMLInputElement;
+  const stepInputPhone = document.getElementById('step-input-phone') as HTMLInputElement;
+  const stepCheckRemember = document.getElementById('step-check-remember') as HTMLInputElement;
+
+  const errStepName = document.getElementById('err-step-name')!;
+  const errStepRut = document.getElementById('err-step-rut')!;
+  const errStepEmail = document.getElementById('err-step-email')!;
+  const errStepPhone = document.getElementById('err-step-phone')!;
+
+  // PASO 4 DOM
+  const btnStep4Back = document.getElementById('btn-step-4-back')!;
+  const finalSummaryPro = document.getElementById('final-summary-pro')!;
+  const finalSummaryTime = document.getElementById('final-summary-time')!;
+  const finalSummaryPatient = document.getElementById('final-summary-patient')!;
+  const finalSummaryContact = document.getElementById('final-summary-contact')!;
+  const finalConsentCheck = document.getElementById('final-consent-check') as HTMLInputElement;
+  const btnFinalConfirm = document.getElementById('btn-final-confirm') as HTMLButtonElement;
+  const btnFinalText = document.getElementById('btn-final-text')!;
+  const btnFinalSpinner = document.getElementById('btn-final-spinner')!;
+  const finalBookingError = document.getElementById('final-booking-error')!;
+
+  // PASO 5 (ÉXITO) DOM
   const successCode = document.getElementById('success-code')!;
   const successPro = document.getElementById('success-pro')!;
   const successTime = document.getElementById('success-time')!;
   const successPatient = document.getElementById('success-patient')!;
   const btnGoogleCalendar = document.getElementById('btn-google-calendar') as HTMLAnchorElement;
   const btnIcsCalendar = document.getElementById('btn-ics-calendar') as HTMLAnchorElement;
-  const btnResetBooking = document.getElementById('btn-reset-booking')!;
+  const btnRestartWizard = document.getElementById('btn-restart-wizard')!;
 
-  // 1. INICIALIZAR SESIÓN
-  async function initSession() {
-    try {
-      const session = await AgendamientoClient.getSession();
-      currentSession = session;
-      renderSession();
-      if (session.authenticated) {
-        await loadPatientProfile();
-      }
-    } catch (err) {
-      console.error('Error al consultar sesión:', err);
-    }
-  }
+  // ==========================================================================
+  // FUNCIÓN CENTRAL: NAVEGACIÓN ENTRE PASOS
+  // ==========================================================================
+  function goToStep(step: number) {
+    currentStep = step;
 
-  function renderSession() {
-    if (currentSession && currentSession.authenticated) {
-      authLoggedOut.classList.add('hidden');
-      authLoggedIn.classList.remove('hidden');
-      userDisplayName.textContent = currentSession.user.name;
-      userDisplayEmail.textContent = currentSession.user.email;
-      userAvatar.textContent = (currentSession.user.name[0] || 'U').toUpperCase();
+    // Ocultar todas las vistas
+    stepView1.classList.add('hidden');
+    stepView2.classList.add('hidden');
+    stepView3.classList.add('hidden');
+    stepView4.classList.add('hidden');
+    stepViewSuccess.classList.add('hidden');
 
-      bookingFlow.classList.remove('opacity-40', 'pointer-events-none');
-    } else {
-      authLoggedOut.classList.remove('hidden');
-      authLoggedIn.classList.add('hidden');
-      bookingFlow.classList.add('opacity-40', 'pointer-events-none');
-    }
-  }
+    // Mostrar vista activa
+    if (step === 1) stepView1.classList.remove('hidden');
+    if (step === 2) stepView2.classList.remove('hidden');
+    if (step === 3) stepView3.classList.remove('hidden');
+    if (step === 4) stepView4.classList.remove('hidden');
+    if (step === 5) stepViewSuccess.classList.remove('hidden');
 
-  // 2. PERFIL DE PACIENTE
-  async function loadPatientProfile() {
-    try {
-      const res = await AgendamientoClient.getPatientProfile();
-      if (res.profile) {
-        inputName.value = res.profile.name || '';
-        inputDocType.value = res.profile.documentType || 'rut';
-        inputRut.value = res.profile.rut || '';
-        inputEmail.value = res.profile.email || '';
-        inputPhone.value = res.profile.phone || '';
-        rememberedProfileVersion = res.version;
-      } else if (currentSession && currentSession.user) {
-        // Sugerir nombre y email de Google
-        inputName.value = currentSession.user.name || '';
-        inputEmail.value = currentSession.user.email || '';
-      }
-      updateSummary();
-    } catch (err) {
-      console.error('Error al cargar perfil:', err);
-    }
-  }
+    // Actualizar barra de progreso (Desktop)
+    stepNavItems.forEach((item, index) => {
+      const stepNum = index + 1;
+      const numSpan = item.querySelector('.step-nav-number') as HTMLElement;
 
-  // Validación y formateo de RUT en tiempo real
-  inputRut.addEventListener('blur', () => {
-    if (inputDocType.value === 'rut' && inputRut.value.trim()) {
-      const val = validateChileanRut(inputRut.value);
-      const errEl = document.getElementById('error-patient-rut')!;
-      if (!val.valid) {
-        errEl.textContent = val.error || 'RUT no válido';
-        errEl.classList.remove('hidden');
-        inputRut.classList.add('border-red-400');
+      if (stepNum < step) {
+        // Completado
+        item.className = 'step-nav-item flex items-center gap-2.5 px-3 py-2 rounded-xl text-xs font-semibold bg-emerald-50 text-emerald-800 border border-emerald-200 transition-all select-none';
+        numSpan.className = 'step-nav-number flex items-center justify-center w-6 h-6 rounded-full bg-emerald-600 text-white text-xs font-bold shrink-0';
+        numSpan.innerHTML = '✓';
+      } else if (stepNum === step) {
+        // Activo
+        item.className = 'step-nav-item flex items-center gap-2.5 px-3 py-2 rounded-xl text-xs font-semibold bg-slate-900 text-white shadow-xs transition-all select-none';
+        numSpan.className = 'step-nav-number flex items-center justify-center w-6 h-6 rounded-full bg-white/20 text-white text-xs font-bold shrink-0';
+        numSpan.textContent = String(stepNum);
       } else {
-        errEl.classList.add('hidden');
-        inputRut.classList.remove('border-red-400');
-        inputRut.value = formatChileanRut(inputRut.value);
+        // Pendiente
+        item.className = 'step-nav-item flex items-center gap-2.5 px-3 py-2 rounded-xl text-xs font-medium text-slate-500 transition-all select-none';
+        numSpan.className = 'step-nav-number flex items-center justify-center w-6 h-6 rounded-full bg-slate-100 text-slate-600 text-xs font-bold shrink-0';
+        numSpan.textContent = String(stepNum);
+      }
+    });
+
+    // Actualizar barra móvil
+    if (step <= 4) {
+      mobileStepIndicator.textContent = `Paso ${step} de 4`;
+      mobileStepTitle.textContent = stepTitles[step - 1];
+      for (let i = 0; i < 4; i++) {
+        mobileDots[i].className = i + 1 === step ? 'w-2.5 h-2.5 rounded-full bg-slate-900' : (i + 1 < step ? 'w-2.5 h-2.5 rounded-full bg-emerald-500' : 'w-2.5 h-2.5 rounded-full bg-slate-200');
       }
     }
-    updateSummary();
-  });
 
-  [inputName, inputEmail, inputPhone].forEach((el) => {
-    el.addEventListener('input', updateSummary);
-  });
+    // Scroll suave hacia arriba
+    window.scrollTo({ top: 120, behavior: 'smooth' });
+  }
 
-  // 3. SELECCIÓN DE PROFESIONAL
-  document.querySelectorAll('.professional-card').forEach((card) => {
+  // ==========================================================================
+  // PASO 1: SELECCIÓN DE ESPECIALISTA
+  // ==========================================================================
+  proCards.forEach((card) => {
     card.addEventListener('click', () => {
       const pro = card.getAttribute('data-pro') as 'felipe' | 'eduardo';
       selectedProfessionalId = pro;
 
-      document.querySelectorAll('.professional-card').forEach((c) => {
-        c.classList.remove('border-slate-900', 'bg-slate-50/70', 'ring-2', 'ring-slate-900');
-        c.querySelector('.check-icon')?.classList.add('hidden');
+      proCards.forEach((c) => {
+        c.classList.remove('border-slate-900', 'bg-slate-50', 'ring-2', 'ring-slate-900');
+        const ind = c.querySelector('.select-indicator') as HTMLElement;
+        if (ind) ind.textContent = 'Seleccionar →';
       });
 
-      card.classList.add('border-slate-900', 'bg-slate-50/70', 'ring-2', 'ring-slate-900');
-      card.querySelector('.check-icon')?.classList.remove('hidden');
+      card.classList.add('border-slate-900', 'bg-slate-50', 'ring-2', 'ring-slate-900');
+      const activeInd = card.querySelector('.select-indicator') as HTMLElement;
+      if (activeInd) activeInd.textContent = '✓ Seleccionado';
 
-      // Al cambiar profesional, resetear selección de hora y recargar slots
-      selectedSlotUtc = null;
-      updateSummary();
-      loadSlots();
+      btnStep1Next.disabled = false;
     });
   });
 
-  // 4. GENERAR PÍLDORAS DE FECHA (D+1 a D+7 en Chile)
-  function renderDatePills() {
-    datePickerContainer.innerHTML = '';
-    const now = new Date();
+  btnStep1Next.addEventListener('click', () => {
+    if (!selectedProfessionalId) return;
 
-    // Días de la semana en español
+    // Actualizar chip en Paso 2
+    step2ProName.textContent = selectedProfessionalId === 'felipe'
+      ? 'Felipe Méndez (Box 1)'
+      : 'Eduardo Lagos (Box 2)';
+    step2ProChip.classList.remove('hidden');
+
+    // Resetear hora al cambiar pro y cargar slots
+    selectedSlotUtc = null;
+    btnStep2Next.disabled = true;
+    loadSlots();
+    goToStep(2);
+  });
+
+  // ==========================================================================
+  // PASO 2: DÍA Y HORA
+  // ==========================================================================
+  btnStep2Back.addEventListener('click', () => goToStep(1));
+
+  function renderDatePills() {
+    datePillsRow.innerHTML = '';
+    const now = new Date();
     const daysEs = ['Dom', 'Lun', 'Mar', 'Mié', 'Jue', 'Vie', 'Sáb'];
     const monthsEs = ['Ene', 'Feb', 'Mar', 'Abr', 'May', 'Jun', 'Jul', 'Ago', 'Sep', 'Oct', 'Nov', 'Dic'];
 
-    // Desde mañana (D+1) hasta 7 días hacia adelante (D+7)
     for (let i = 1; i <= 7; i++) {
       const date = new Date(now.getTime() + i * 24 * 60 * 60 * 1000);
       const yyyy = date.getFullYear();
@@ -635,18 +799,18 @@ import { professionals } from '../data/professionals';
       const dateStr = `${yyyy}-${mm}-${dd}`;
       const weekday = date.getDay();
 
-      // Si es domingo, no abrir por política D01
-      if (weekday === 0) continue;
+      if (weekday === 0) continue; // Cerrado domingos
 
       const btn = document.createElement('button');
       btn.type = 'button';
+      const isSelected = selectedDateString === dateStr;
       btn.className = `date-pill shrink-0 flex flex-col items-center justify-center w-16 h-18 py-2.5 px-2 rounded-xl border-2 transition-all select-none text-center ${
-        selectedDateString === dateStr
-          ? 'border-slate-900 bg-slate-900 text-white shadow-sm'
+        isSelected
+          ? 'border-slate-900 bg-slate-900 text-white shadow-xs'
           : 'border-slate-200 bg-white hover:border-slate-400 text-slate-700'
       }`;
       btn.innerHTML = `
-        <span class="text-[11px] font-semibold tracking-wider uppercase opacity-80">${daysEs[weekday]}</span>
+        <span class="text-[10px] font-semibold tracking-wider uppercase opacity-80">${daysEs[weekday]}</span>
         <span class="text-lg font-bold leading-none my-1">${date.getDate()}</span>
         <span class="text-[10px] font-medium opacity-80">${monthsEs[date.getMonth()]}</span>
       `;
@@ -654,68 +818,54 @@ import { professionals } from '../data/professionals';
       btn.addEventListener('click', () => {
         selectedDateString = dateStr;
         selectedSlotUtc = null;
+        btnStep2Next.disabled = true;
         renderDatePills();
         loadSlots();
-        updateSummary();
       });
 
-      // Seleccionar el primer día por defecto si ninguno seleccionado
       if (!selectedDateString && i === 1) {
         selectedDateString = dateStr;
-        btn.className = btn.className.replace('border-slate-200 bg-white text-slate-700', 'border-slate-900 bg-slate-900 text-white shadow-sm');
+        btn.className = btn.className.replace('border-slate-200 bg-white text-slate-700', 'border-slate-900 bg-slate-900 text-white shadow-xs');
       }
 
-      datePickerContainer.appendChild(btn);
+      datePillsRow.appendChild(btn);
     }
   }
 
-  // 5. CARGAR SLOTS DESDE /api/availability
   async function loadSlots() {
-    if (!selectedProfessionalId || !selectedDateString) {
-      slotsGrid.innerHTML = `
-        <p class="col-span-full text-xs text-slate-500 py-4 text-center italic">
-          Selecciona un especialista y una fecha para ver horarios disponibles.
-        </p>
-      `;
-      slotsEmpty.classList.add('hidden');
-      return;
-    }
+    if (!selectedProfessionalId || !selectedDateString) return;
 
-    selectedDateLabel.textContent = `Fecha: ${selectedDateString}`;
-    slotsGrid.innerHTML = '';
-    slotsLoading.classList.remove('hidden');
-    slotsEmpty.classList.add('hidden');
+    step2DateLabel.textContent = `Fecha: ${selectedDateString}`;
+    slotsButtonsGrid.innerHTML = '';
+    slotsSkeleton.classList.remove('hidden');
+    slotsNoneBox.classList.add('hidden');
 
     try {
-      // S09: rango de consulta [from, to) donde to es el día siguiente
       const nextDate = new Date(new Date(selectedDateString + 'T12:00:00Z').getTime() + 24 * 3600 * 1000);
-      const toYyyy = nextDate.getUTCFullYear();
-      const toMm = String(nextDate.getUTCMonth() + 1).padStart(2, '0');
-      const toDd = String(nextDate.getUTCDate()).padStart(2, '0');
-      const toDateStr = `${toYyyy}-${toMm}-${toDd}`;
+      const toDateStr = `${nextDate.getUTCFullYear()}-${String(nextDate.getUTCMonth() + 1).padStart(2, '0')}-${String(nextDate.getUTCDate()).padStart(2, '0')}`;
 
       const res = await AgendamientoClient.getAvailability(selectedProfessionalId, selectedDateString, toDateStr);
-      slotsLoading.classList.add('hidden');
+      slotsSkeleton.classList.add('hidden');
 
       if (!res.slots || res.slots.length === 0) {
-        slotsEmpty.classList.remove('hidden');
+        slotsNoneBox.classList.remove('hidden');
         return;
       }
 
-      slotsEmpty.classList.add('hidden');
+      slotsNoneBox.classList.add('hidden');
 
       res.slots.forEach((slot) => {
         const d = new Date(slot.startAt);
-        // Formatear hora de Chile
         const timeStr = d.toLocaleTimeString('es-CL', { timeZone: 'America/Santiago', hour: '2-digit', minute: '2-digit', hour12: false });
         const endD = new Date(new Date(slot.startAt).getTime() + 3600 * 1000);
         const endTimeStr = endD.toLocaleTimeString('es-CL', { timeZone: 'America/Santiago', hour: '2-digit', minute: '2-digit', hour12: false });
 
         const btn = document.createElement('button');
         btn.type = 'button';
-        btn.className = `slot-button py-3 px-3 rounded-xl border-2 font-semibold text-xs transition-all text-center flex flex-col items-center justify-center ${
-          selectedSlotUtc === slot.startAt
-            ? 'border-slate-900 bg-slate-900 text-white shadow-sm ring-2 ring-slate-900 ring-offset-1'
+        const isSelected = selectedSlotUtc === slot.startAt;
+        btn.className = `slot-btn py-3 px-3 rounded-xl border-2 font-semibold text-xs transition-all text-center flex flex-col items-center justify-center ${
+          isSelected
+            ? 'border-slate-900 bg-slate-900 text-white shadow-xs ring-2 ring-slate-900 ring-offset-1'
             : 'border-slate-200 hover:border-slate-800 bg-white text-slate-800'
         }`;
         btn.innerHTML = `
@@ -725,104 +875,167 @@ import { professionals } from '../data/professionals';
 
         btn.addEventListener('click', () => {
           selectedSlotUtc = slot.startAt;
-          document.querySelectorAll('.slot-button').forEach((b) => {
-            b.className = b.className.replace('border-slate-900 bg-slate-900 text-white shadow-sm ring-2 ring-slate-900 ring-offset-1', 'border-slate-200 bg-white text-slate-800');
+          document.querySelectorAll('.slot-btn').forEach((b) => {
+            b.className = b.className.replace('border-slate-900 bg-slate-900 text-white shadow-xs ring-2 ring-slate-900 ring-offset-1', 'border-slate-200 bg-white text-slate-800');
           });
-          btn.className = btn.className.replace('border-slate-200 bg-white text-slate-800', 'border-slate-900 bg-slate-900 text-white shadow-sm ring-2 ring-slate-900 ring-offset-1');
-          updateSummary();
+          btn.className = btn.className.replace('border-slate-200 bg-white text-slate-800', 'border-slate-900 bg-slate-900 text-white shadow-xs ring-2 ring-slate-900 ring-offset-1');
+          btnStep2Next.disabled = false;
         });
 
-        slotsGrid.appendChild(btn);
+        slotsButtonsGrid.appendChild(btn);
       });
-    } catch (err) {
-      slotsLoading.classList.add('hidden');
-      slotsGrid.innerHTML = `
+    } catch {
+      slotsSkeleton.classList.add('hidden');
+      slotsButtonsGrid.innerHTML = `
         <p class="col-span-full text-xs text-red-600 py-4 text-center font-medium">
-          Error al consultar horarios. Por favor intenta nuevamente.
+          Error al consultar horarios disponibles. Intenta nuevamente.
         </p>
       `;
     }
   }
 
-  // 6. ACTUALIZAR RESUMEN Y ESTADO DEL BOTÓN
-  function updateSummary() {
-    if (selectedProfessionalId) {
-      summaryPro.textContent = selectedProfessionalId === 'felipe'
-        ? 'Felipe Méndez (Quiropraxia · Box 1)'
-        : 'Eduardo Lagos (Acupuntura · Box 2)';
+  btnStep2Next.addEventListener('click', () => {
+    if (!selectedSlotUtc) return;
+    goToStep(3);
+  });
+
+  // ==========================================================================
+  // PASO 3: TUS DATOS Y CONTACTO
+  // ==========================================================================
+  btnStep3Back.addEventListener('click', () => goToStep(2));
+
+  // Validación y formato de RUT en tiempo real
+  stepInputRut.addEventListener('blur', () => {
+    if (stepInputDocType.value === 'rut' && stepInputRut.value.trim()) {
+      const val = validateChileanRut(stepInputRut.value);
+      if (!val.valid) {
+        errStepRut.textContent = val.error || 'RUT inválido';
+        errStepRut.classList.remove('hidden');
+        stepInputRut.classList.add('border-red-400');
+      } else {
+        errStepRut.classList.add('hidden');
+        stepInputRut.classList.remove('border-red-400');
+        stepInputRut.value = formatChileanRut(stepInputRut.value);
+      }
+    }
+  });
+
+  btnStep3Next.addEventListener('click', () => {
+    // Validar campos
+    let valid = true;
+
+    if (!stepInputName.value.trim()) {
+      errStepName.textContent = 'Ingresa el nombre completo.';
+      errStepName.classList.remove('hidden');
+      valid = false;
     } else {
-      summaryPro.textContent = 'Pendiente selección';
+      errStepName.classList.add('hidden');
     }
 
-    if (selectedSlotUtc) {
-      const d = new Date(selectedSlotUtc);
-      const datePart = d.toLocaleDateString('es-CL', { timeZone: 'America/Santiago', weekday: 'long', day: 'numeric', month: 'long', year: 'numeric' });
-      const timePart = d.toLocaleTimeString('es-CL', { timeZone: 'America/Santiago', hour: '2-digit', minute: '2-digit', hour12: false });
-      summaryTime.textContent = `${datePart}, ${timePart} hrs`;
+    if (!stepInputRut.value.trim()) {
+      errStepRut.textContent = 'Ingresa el documento de identidad.';
+      errStepRut.classList.remove('hidden');
+      valid = false;
+    } else if (stepInputDocType.value === 'rut') {
+      const rutVal = validateChileanRut(stepInputRut.value);
+      if (!rutVal.valid) {
+        errStepRut.textContent = rutVal.error || 'RUT inválido.';
+        errStepRut.classList.remove('hidden');
+        valid = false;
+      } else {
+        errStepRut.classList.add('hidden');
+      }
     } else {
-      summaryTime.textContent = 'Pendiente selección';
+      errStepRut.classList.add('hidden');
     }
 
-    if (inputName.value.trim()) {
-      summaryPatient.textContent = `${inputName.value.trim()} (${inputRut.value.trim() || 'Sin RUT'})`;
+    if (!stepInputEmail.value.trim() || !stepInputEmail.value.includes('@')) {
+      errStepEmail.textContent = 'Ingresa un correo electrónico válido.';
+      errStepEmail.classList.remove('hidden');
+      valid = false;
     } else {
-      summaryPatient.textContent = 'Pendiente ingreso';
+      errStepEmail.classList.add('hidden');
     }
 
-    const isValid =
-      Boolean(currentSession && currentSession.authenticated) &&
-      Boolean(selectedProfessionalId) &&
-      Boolean(selectedSlotUtc) &&
-      Boolean(inputName.value.trim()) &&
-      Boolean(inputEmail.value.trim()) &&
-      Boolean(inputRut.value.trim()) &&
-      Boolean(consentCheck.checked);
+    if (!stepInputPhone.value.trim()) {
+      errStepPhone.textContent = 'Ingresa un teléfono de contacto.';
+      errStepPhone.classList.remove('hidden');
+      valid = false;
+    } else {
+      errStepPhone.classList.add('hidden');
+    }
 
-    btnConfirmBooking.disabled = !isValid;
-  }
+    if (!currentSession || !currentSession.authenticated) {
+      alert('Debes identificarte con tu cuenta Google para continuar.');
+      return;
+    }
 
-  consentCheck.addEventListener('change', updateSummary);
+    if (!valid) return;
 
-  // 7. CONFIRMAR RESERVA ATÓMICA (S04 / S09 / P03)
-  btnConfirmBooking.addEventListener('click', async () => {
+    // Actualizar Resumen en Paso 4
+    finalSummaryPro.textContent = selectedProfessionalId === 'felipe'
+      ? 'Felipe Méndez (Box 1 · Quiropraxia)'
+      : 'Eduardo Lagos (Box 2 · Acupuntura)';
+
+    const d = new Date(selectedSlotUtc!);
+    const dateFormatted = d.toLocaleDateString('es-CL', { timeZone: 'America/Santiago', weekday: 'long', day: 'numeric', month: 'long', year: 'numeric' });
+    const timeFormatted = d.toLocaleTimeString('es-CL', { timeZone: 'America/Santiago', hour: '2-digit', minute: '2-digit', hour12: false });
+    finalSummaryTime.textContent = `${dateFormatted}, ${timeFormatted} hrs`;
+
+    finalSummaryPatient.textContent = `${stepInputName.value.trim()} (${stepInputRut.value.trim()})`;
+    finalSummaryContact.textContent = `${stepInputPhone.value.trim()} · ${stepInputEmail.value.trim()}`;
+
+    goToStep(4);
+  });
+
+  // ==========================================================================
+  // PASO 4: CONFIRMACIÓN Y COMMIT ATÓMICO
+  // ==========================================================================
+  btnStep4Back.addEventListener('click', () => goToStep(3));
+
+  finalConsentCheck.addEventListener('change', () => {
+    btnFinalConfirm.disabled = !finalConsentCheck.checked;
+  });
+
+  btnFinalConfirm.addEventListener('click', async () => {
     if (!currentSession || !currentSession.csrfToken) return;
 
-    btnConfirmBooking.disabled = true;
-    btnConfirmText.textContent = 'Confirmando tu cita...';
-    btnConfirmSpinner.classList.remove('hidden');
-    bookingErrorMsg.classList.add('hidden');
+    btnFinalConfirm.disabled = true;
+    btnFinalText.textContent = 'Confirmando tu reserva...';
+    btnFinalSpinner.classList.remove('hidden');
+    finalBookingError.classList.add('hidden');
 
     try {
-      // Guardar perfil recordado si se marcó el checkbox
-      if (checkRemember.checked) {
+      // Guardar perfil si se seleccionó recordar
+      if (stepCheckRemember.checked) {
         try {
           await AgendamientoClient.savePatientProfile(
             {
-              name: inputName.value.trim(),
-              email: inputEmail.value.trim(),
-              rut: inputRut.value.trim(),
-              documentType: inputDocType.value as any,
-              phone: inputPhone.value.trim()
+              name: stepInputName.value.trim(),
+              email: stepInputEmail.value.trim(),
+              rut: stepInputRut.value.trim(),
+              documentType: stepInputDocType.value as any,
+              phone: stepInputPhone.value.trim()
             },
             rememberedProfileVersion,
             currentSession.csrfToken
           );
         } catch {
-          // Fallo no bloqueante de perfil recordado
+          // Fallo de guardado de perfil no impide la reserva
         }
       }
 
-      // Ejecutar comando de reserva con idempotencia
-      const result = await AgendamientoClient.createBooking(
+      // Enviar comando atómico con idempotencia
+      const res = await AgendamientoClient.createBooking(
         {
           professionalId: selectedProfessionalId!,
           startAt: selectedSlotUtc!,
           patient: {
-            name: inputName.value.trim(),
-            email: inputEmail.value.trim(),
-            rut: inputRut.value.trim(),
-            documentType: inputDocType.value as any,
-            phone: inputPhone.value.trim()
+            name: stepInputName.value.trim(),
+            email: stepInputEmail.value.trim(),
+            rut: stepInputRut.value.trim(),
+            documentType: stepInputDocType.value as any,
+            phone: stepInputPhone.value.trim()
           },
           consentVersion: 'v1.0'
         },
@@ -830,78 +1043,117 @@ import { professionals } from '../data/professionals';
         currentSession.csrfToken
       );
 
-      // Éxito: Mostrar pantalla de confirmación
-      showSuccess(result.result.resourceId);
+      // Mostrar pantalla de éxito (Paso 5)
+      showSuccessView(res.result.resourceId);
     } catch (err: any) {
-      btnConfirmBooking.disabled = false;
-      btnConfirmText.textContent = 'Confirmar Reserva de Atención';
-      btnConfirmSpinner.classList.add('hidden');
+      btnFinalConfirm.disabled = false;
+      btnFinalText.textContent = 'Confirmar y Agendar Cita';
+      btnFinalSpinner.classList.add('hidden');
 
       if (err instanceof ApiError && err.code === 'SLOT_CONFLICT') {
-        bookingErrorMsg.textContent = 'El horario seleccionado acaba de ser reservado. Por favor elige otro cupo.';
-        bookingErrorMsg.classList.remove('hidden');
-        loadSlots(); // Refrescar slots disponibles
+        finalBookingError.textContent = 'El horario seleccionado ya no está disponible. Por favor regresa al paso 2 y elige otro cupo.';
       } else {
-        bookingErrorMsg.textContent = err.message || 'No fue posible completar tu reserva. Intenta nuevamente.';
-        bookingErrorMsg.classList.remove('hidden');
+        finalBookingError.textContent = err.message || 'Error al confirmar la reserva. Intenta nuevamente.';
       }
+      finalBookingError.classList.remove('hidden');
     }
   });
 
-  // 8. MOSTRAR CONFIRMACIÓN Y ENLACES DE CALENDARIO (S06)
-  async function showSuccess(bookingId: string) {
-    stepAuth.classList.add('hidden');
-    bookingFlow.classList.add('hidden');
-    stepSuccess.classList.remove('hidden');
-
+  // ==========================================================================
+  // PASO 5: ÉXITO Y COPIA A CALENDARIO
+  // ==========================================================================
+  async function showSuccessView(bookingId: string) {
     successCode.textContent = bookingId;
-    successPro.textContent = summaryPro.textContent;
-    successTime.textContent = summaryTime.textContent;
-    successPatient.textContent = summaryPatient.textContent;
+    successPro.textContent = finalSummaryPro.textContent;
+    successTime.textContent = finalSummaryTime.textContent;
+    successPatient.textContent = finalSummaryPatient.textContent;
 
     try {
-      const calData = await AgendamientoClient.getCalendarExport(bookingId);
-      btnGoogleCalendar.href = calData.googleUrl;
-      btnIcsCalendar.href = calData.icsUrl;
+      const cal = await AgendamientoClient.getCalendarExport(bookingId);
+      btnGoogleCalendar.href = cal.googleUrl;
+      btnIcsCalendar.href = cal.icsUrl;
     } catch (err) {
-      console.error('Error al obtener exportación a calendario:', err);
+      console.error('Error al obtener enlaces de calendario:', err);
+    }
+
+    goToStep(5);
+  }
+
+  btnRestartWizard.addEventListener('click', () => {
+    window.location.reload();
+  });
+
+  // ==========================================================================
+  // INICIALIZACIÓN DE SESIÓN
+  // ==========================================================================
+  async function initSession() {
+    try {
+      const session = await AgendamientoClient.getSession();
+      currentSession = session;
+      renderSessionState();
+      if (session.authenticated) {
+        await loadProfile();
+      }
+    } catch (err) {
+      console.error('Error al consultar sesión:', err);
     }
   }
 
-  // 9. EVENT LISTENERS AUXILIARES
-  btnLogout.addEventListener('click', async () => {
-    if (currentSession && currentSession.csrfToken) {
-      await AgendamientoClient.logout(currentSession.csrfToken);
-      window.location.reload();
+  function renderSessionState() {
+    if (currentSession && currentSession.authenticated) {
+      step3AuthOut.classList.add('hidden');
+      step3AuthIn.classList.remove('hidden');
+      step3Name.textContent = currentSession.user.name;
+      step3Email.textContent = currentSession.user.email;
+      step3Avatar.textContent = (currentSession.user.name[0] || 'U').toUpperCase();
+    } else {
+      step3AuthOut.classList.remove('hidden');
+      step3AuthIn.classList.add('hidden');
     }
-  });
+  }
 
-  if (btnDevQuickLogin) {
-    btnDevQuickLogin.addEventListener('click', async () => {
+  async function loadProfile() {
+    try {
+      const p = await AgendamientoClient.getPatientProfile();
+      if (p.profile) {
+        stepInputName.value = p.profile.name || '';
+        stepInputDocType.value = p.profile.documentType || 'rut';
+        stepInputRut.value = p.profile.rut || '';
+        stepInputEmail.value = p.profile.email || '';
+        stepInputPhone.value = p.profile.phone || '';
+        rememberedProfileVersion = p.version;
+      } else if (currentSession && currentSession.user) {
+        stepInputName.value = currentSession.user.name || '';
+        stepInputEmail.value = currentSession.user.email || '';
+      }
+    } catch (err) {
+      console.error('Error al precargar perfil:', err);
+    }
+  }
+
+  if (btnStep3QuickLogin) {
+    btnStep3QuickLogin.addEventListener('click', async () => {
       try {
         await AgendamientoClient.mockLogin('patient');
         await initSession();
       } catch (err) {
-        console.error('Error en login de prueba:', err);
+        console.error('Error en quick login:', err);
       }
     });
   }
 
-  btnResetBooking.addEventListener('click', () => {
-    window.location.reload();
-  });
-
-  // Inicialización
+  // Arrancar en Paso 1
   renderDatePills();
   initSession();
+  goToStep(1);
 </script>
 
 <style>
-  @keyframes fadeIn {
+  @keyframes stepFadeIn {
     from { opacity: 0; transform: translateY(6px); }
     to { opacity: 1; transform: translateY(0); }
   }
-  .animate-fade-in {
-    animation: fadeIn 0.3s ease-out forwards;
+  .animate-step {
+    animation: stepFadeIn 0.25s ease-out forwards;
   }
 </style>
