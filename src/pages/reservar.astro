@@ -20,7 +20,7 @@ import { professionals } from '../data/professionals';
   <Navbar slot="navbar" activePage="home" />
 
   <main class="min-h-screen bg-[#F8F9F6] pt-28 pb-20 px-4 sm:px-6 lg:px-8">
-    <div class="max-w-3xl mx-auto">
+    <div id="wizard-wrapper" class="max-w-3xl mx-auto transition-colors duration-300">
       
       <!-- Encabezado Clínico -->
       <header class="text-center mb-8">
@@ -32,7 +32,7 @@ import { professionals } from '../data/professionals';
           Reserva tu Atención
         </h1>
         <p class="mt-2 text-sm sm:text-base text-slate-600 max-w-xl mx-auto leading-relaxed">
-          Atención personalizada de 60 minutos en Box clínico privado en Los Armiños 1620, Temuco.
+          Atención personalizada en Box clínico privado en Los Armiños 1620, Temuco.
         </p>
       </header>
 
@@ -86,9 +86,9 @@ import { professionals } from '../data/professionals';
           </div>
 
           <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-8">
-            <!-- Tarjeta Felipe -->
+            <!-- Tarjeta Felipe (Quiropraxia & Kinesiología) -->
             <label
-              class="pro-card relative flex flex-col justify-between p-5 rounded-2xl border-2 border-slate-200 hover:border-[#134E5E] cursor-pointer transition-all select-none group"
+              class="pro-card relative flex flex-col justify-between p-5 rounded-2xl border-2 border-slate-200 hover:border-[#134E5E] cursor-pointer transition-all select-none group bg-white shadow-xs"
               data-pro="felipe"
             >
               <input type="radio" name="selectedPro" value="felipe" class="sr-only" />
@@ -101,11 +101,11 @@ import { professionals } from '../data/professionals';
                     loading="eager"
                   />
                   <div class="min-w-0">
-                    <span class="inline-block px-2 py-0.5 rounded text-[10px] font-semibold bg-cyan-50 text-[#134E5E] border border-cyan-200/60 mb-1">
-                      Box 1 · Quiropraxia
+                    <span class="inline-block px-2.5 py-0.5 rounded-full text-[10px] font-bold bg-[#EBF5F8] text-[#134E5E] border border-[#C2DFE8] mb-1">
+                      Box 1 · Quiropraxia & Kine
                     </span>
-                    <h3 class="font-serif text-lg text-slate-900 font-bold leading-tight">{professionals.felipe.name}</h3>
-                    <p class="text-xs text-slate-500 font-medium">{professionals.felipe.title}</p>
+                    <h3 class="font-serif text-lg text-slate-900 font-bold leading-tight group-hover:text-[#134E5E] transition-colors">{professionals.felipe.name}</h3>
+                    <p class="text-xs text-[#134E5E] font-medium">{professionals.felipe.title}</p>
                   </div>
                 </div>
                 <p class="text-xs text-slate-600 leading-relaxed mb-3">
@@ -113,14 +113,14 @@ import { professionals } from '../data/professionals';
                 </p>
               </div>
               <div class="pt-3 border-t border-slate-100 flex items-center justify-between text-xs">
-                <span class="text-slate-500 font-medium">Sesión clínica de 60 min</span>
-                <span class="select-indicator font-semibold text-[#134E5E] opacity-0 group-hover:opacity-100 transition-opacity">Seleccionar →</span>
+                <span class="text-slate-500 font-medium">Box 1 · Atención privada</span>
+                <span class="select-indicator font-bold text-[#134E5E] opacity-75 group-hover:opacity-100 transition-opacity">Seleccionar →</span>
               </div>
             </label>
 
-            <!-- Tarjeta Eduardo -->
+            <!-- Tarjeta Eduardo (Acupuntura & Medicina Tradicional China) -->
             <label
-              class="pro-card relative flex flex-col justify-between p-5 rounded-2xl border-2 border-slate-200 hover:border-[#2E4D38] cursor-pointer transition-all select-none group"
+              class="pro-card relative flex flex-col justify-between p-5 rounded-2xl border-2 border-slate-200 hover:border-[#2E4D38] cursor-pointer transition-all select-none group bg-white shadow-xs"
               data-pro="eduardo"
             >
               <input type="radio" name="selectedPro" value="eduardo" class="sr-only" />
@@ -133,11 +133,11 @@ import { professionals } from '../data/professionals';
                     loading="eager"
                   />
                   <div class="min-w-0">
-                    <span class="inline-block px-2 py-0.5 rounded text-[10px] font-semibold bg-emerald-50 text-[#2E4D38] border border-emerald-200/60 mb-1">
-                      Box 2 · Acupuntura
+                    <span class="inline-block px-2.5 py-0.5 rounded-full text-[10px] font-bold bg-[#EEF5F0] text-[#2E4D38] border border-[#CCE2D2] mb-1">
+                      Box 2 · Acupuntura & MTC
                     </span>
-                    <h3 class="font-serif text-lg text-slate-900 font-bold leading-tight">{professionals.eduardo.name}</h3>
-                    <p class="text-xs text-slate-500 font-medium">{professionals.eduardo.title}</p>
+                    <h3 class="font-serif text-lg text-slate-900 font-bold leading-tight group-hover:text-[#2E4D38] transition-colors">{professionals.eduardo.name}</h3>
+                    <p class="text-xs text-[#2E4D38] font-medium">{professionals.eduardo.title}</p>
                   </div>
                 </div>
                 <p class="text-xs text-slate-600 leading-relaxed mb-3">
@@ -145,8 +145,8 @@ import { professionals } from '../data/professionals';
                 </p>
               </div>
               <div class="pt-3 border-t border-slate-100 flex items-center justify-between text-xs">
-                <span class="text-slate-500 font-medium">Sesión clínica de 60 min</span>
-                <span class="select-indicator font-semibold text-[#2E4D38] opacity-0 group-hover:opacity-100 transition-opacity">Seleccionar →</span>
+                <span class="text-slate-500 font-medium">Box 2 · Atención privada</span>
+                <span class="select-indicator font-bold text-[#2E4D38] opacity-75 group-hover:opacity-100 transition-opacity">Seleccionar →</span>
               </div>
             </label>
           </div>
@@ -157,7 +157,7 @@ import { professionals } from '../data/professionals';
               type="button"
               id="btn-step-1-next"
               disabled
-              class="inline-flex items-center justify-center gap-2 px-6 py-3 rounded-xl bg-slate-900 hover:bg-slate-800 disabled:bg-slate-200 disabled:text-slate-400 disabled:cursor-not-allowed opacity-50 cursor-not-allowed text-white text-xs font-semibold transition-all shadow-sm focus:ring-2 focus:ring-slate-900"
+              class="theme-btn-action inline-flex items-center justify-center gap-2 px-6 py-3 rounded-xl disabled:bg-slate-200 disabled:text-slate-400 disabled:cursor-not-allowed opacity-50 cursor-not-allowed text-white text-xs font-semibold transition-all shadow-sm"
             >
               <span>Continuar a Fecha y Horario</span>
               <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -178,7 +178,7 @@ import { professionals } from '../data/professionals';
             </div>
             <!-- Badge recordatorio del especialista elegido -->
             <div id="step-2-pro-chip" class="hidden sm:inline-flex items-center gap-2 px-3 py-1 rounded-full text-xs font-semibold bg-slate-100 text-slate-800">
-              <span class="w-2 h-2 rounded-full bg-slate-600"></span>
+              <span id="step-2-pro-dot" class="w-2 h-2 rounded-full bg-slate-600"></span>
               <span id="step-2-pro-name">Especialista</span>
             </div>
           </div>
@@ -194,7 +194,7 @@ import { professionals } from '../data/professionals';
           <!-- Horarios Disponibles -->
           <div class="mb-8">
             <div class="flex items-center justify-between mb-3">
-              <p class="text-xs font-semibold text-slate-700 uppercase tracking-wider">Horarios Disponibles (60 min):</p>
+              <p class="text-xs font-semibold text-slate-700 uppercase tracking-wider">Horarios Disponibles:</p>
               <span id="step-2-date-label" class="text-xs text-slate-500 font-medium"></span>
             </div>
 
@@ -235,7 +235,7 @@ import { professionals } from '../data/professionals';
               type="button"
               id="btn-step-2-next"
               disabled
-              class="inline-flex items-center justify-center gap-2 px-6 py-3 rounded-xl bg-slate-900 hover:bg-slate-800 disabled:bg-slate-200 disabled:text-slate-400 disabled:cursor-not-allowed opacity-50 cursor-not-allowed text-white text-xs font-semibold transition-all shadow-sm focus:ring-2 focus:ring-slate-900"
+              class="theme-btn-action inline-flex items-center justify-center gap-2 px-6 py-3 rounded-xl disabled:bg-slate-200 disabled:text-slate-400 disabled:cursor-not-allowed opacity-50 cursor-not-allowed text-white text-xs font-semibold transition-all shadow-sm"
             >
               <span>Continuar a Mis Datos</span>
               <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -319,7 +319,7 @@ import { professionals } from '../data/professionals';
                 id="step-input-name"
                 required
                 placeholder="Ej: Camila González Soto"
-                class="w-full px-3.5 py-2.5 rounded-xl border border-slate-300 text-slate-900 text-xs font-medium focus:ring-2 focus:ring-slate-900 focus:border-slate-900 transition-colors"
+                class="theme-input w-full px-3.5 py-2.5 rounded-xl border border-slate-300 text-slate-900 text-xs font-medium focus:outline-none transition-colors"
               />
               <p id="err-step-name" class="hidden text-xs text-red-600 mt-1 font-medium"></p>
             </div>
@@ -332,7 +332,7 @@ import { professionals } from '../data/professionals';
               <div class="grid grid-cols-3 gap-2">
                 <select
                   id="step-input-doc-type"
-                  class="col-span-1 px-3 py-2.5 rounded-xl border border-slate-300 text-slate-900 text-xs font-medium bg-white focus:ring-2 focus:ring-slate-900"
+                  class="theme-input col-span-1 px-3 py-2.5 rounded-xl border border-slate-300 text-slate-900 text-xs font-medium bg-white focus:outline-none"
                 >
                   <option value="rut">RUT</option>
                   <option value="passport">Pasaporte</option>
@@ -342,7 +342,7 @@ import { professionals } from '../data/professionals';
                   id="step-input-rut"
                   required
                   placeholder="12.345.678-5"
-                  class="col-span-2 px-3.5 py-2.5 rounded-xl border border-slate-300 text-slate-900 text-xs font-medium focus:ring-2 focus:ring-slate-900 focus:border-slate-900 transition-colors"
+                  class="theme-input col-span-2 px-3.5 py-2.5 rounded-xl border border-slate-300 text-slate-900 text-xs font-medium focus:outline-none transition-colors"
                 />
               </div>
               <p id="err-step-rut" class="hidden text-xs text-red-600 mt-1 font-medium"></p>
@@ -359,7 +359,7 @@ import { professionals } from '../data/professionals';
                   id="step-input-email"
                   required
                   placeholder="ejemplo@correo.cl"
-                  class="w-full px-3.5 py-2.5 rounded-xl border border-slate-300 text-slate-900 text-xs font-medium focus:ring-2 focus:ring-slate-900 focus:border-slate-900 transition-colors"
+                  class="theme-input w-full px-3.5 py-2.5 rounded-xl border border-slate-300 text-slate-900 text-xs font-medium focus:outline-none transition-colors"
                 />
                 <p id="err-step-email" class="hidden text-xs text-red-600 mt-1 font-medium"></p>
               </div>
@@ -373,7 +373,7 @@ import { professionals } from '../data/professionals';
                   id="step-input-phone"
                   required
                   placeholder="+56 9 1234 5678"
-                  class="w-full px-3.5 py-2.5 rounded-xl border border-slate-300 text-slate-900 text-xs font-medium focus:ring-2 focus:ring-slate-900 focus:border-slate-900 transition-colors"
+                  class="theme-input w-full px-3.5 py-2.5 rounded-xl border border-slate-300 text-slate-900 text-xs font-medium focus:outline-none transition-colors"
                 />
                 <p id="err-step-phone" class="hidden text-xs text-red-600 mt-1 font-medium"></p>
               </div>
@@ -409,7 +409,7 @@ import { professionals } from '../data/professionals';
             <button
               type="button"
               id="btn-step-3-next"
-              class="inline-flex items-center justify-center gap-2 px-6 py-3 rounded-xl bg-slate-900 hover:bg-slate-800 disabled:bg-slate-200 disabled:text-slate-400 disabled:cursor-not-allowed text-white text-xs font-semibold transition-all shadow-sm focus:ring-2 focus:ring-slate-900"
+              class="theme-btn-action inline-flex items-center justify-center gap-2 px-6 py-3 rounded-xl disabled:bg-slate-200 disabled:text-slate-400 disabled:cursor-not-allowed text-white text-xs font-semibold transition-all shadow-sm"
             >
               <span>Revisar y Confirmar</span>
               <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -502,7 +502,7 @@ import { professionals } from '../data/professionals';
               type="button"
               id="btn-final-confirm"
               disabled
-              class="inline-flex items-center justify-center gap-2 px-8 py-3.5 rounded-xl bg-slate-900 hover:bg-slate-800 disabled:bg-slate-200 disabled:text-slate-400 disabled:cursor-not-allowed opacity-50 cursor-not-allowed text-white text-xs font-bold transition-all shadow-md focus:ring-2 focus:ring-slate-900"
+              class="theme-btn-action inline-flex items-center justify-center gap-2 px-8 py-3.5 rounded-xl disabled:bg-slate-200 disabled:text-slate-400 disabled:cursor-not-allowed opacity-50 cursor-not-allowed text-white text-xs font-bold transition-all shadow-md"
             >
               <span id="btn-final-text">Confirmar y Agendar Cita</span>
               <svg id="btn-final-spinner" class="hidden animate-spin w-4 h-4 text-white" fill="none" viewBox="0 0 24 24">
@@ -517,7 +517,7 @@ import { professionals } from '../data/professionals';
         <!-- PASO 5: PANTALLA DE ÉXITO Y COPIA A CALENDARIO (S06)               -->
         <!-- ================================================================== -->
         <section id="step-view-success" class="wizard-step hidden bg-white rounded-2xl p-6 sm:p-10 shadow-lg border border-emerald-200 text-center animate-step">
-          <div class="w-16 h-16 rounded-full bg-emerald-100 text-emerald-700 flex items-center justify-center mx-auto mb-4">
+          <div id="success-icon-wrap" class="w-16 h-16 rounded-full bg-emerald-100 text-emerald-700 flex items-center justify-center mx-auto mb-4">
             <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/>
             </svg>
@@ -710,15 +710,28 @@ import { professionals } from '../data/professionals';
     stepNavItems.forEach((item, index) => {
       const stepNum = index + 1;
       const numSpan = item.querySelector('.step-nav-number') as HTMLElement;
+      const isFelipe = selectedProfessionalId === 'felipe';
+      const isEduardo = selectedProfessionalId === 'eduardo';
+
+      const completedBg = isFelipe
+        ? 'bg-[#EBF5F8] text-[#134E5E] border-[#C2DFE8]'
+        : (isEduardo ? 'bg-[#EEF5F0] text-[#2E4D38] border-[#CCE2D2]' : 'bg-emerald-50 text-emerald-800 border-emerald-200');
+      const completedCircle = isFelipe
+        ? 'bg-[#134E5E] text-white'
+        : (isEduardo ? 'bg-[#2E4D38] text-white' : 'bg-emerald-600 text-white');
+
+      const activeBg = isFelipe
+        ? 'bg-[#134E5E] text-white shadow-xs'
+        : (isEduardo ? 'bg-[#2E4D38] text-white shadow-xs' : 'bg-slate-900 text-white shadow-xs');
 
       if (stepNum < step) {
         // Completado
-        item.className = 'step-nav-item flex items-center gap-2.5 px-3 py-2 rounded-xl text-xs font-semibold bg-emerald-50 text-emerald-800 border border-emerald-200 transition-all select-none';
-        numSpan.className = 'step-nav-number flex items-center justify-center w-6 h-6 rounded-full bg-emerald-600 text-white text-xs font-bold shrink-0';
+        item.className = `step-nav-item flex items-center gap-2.5 px-3 py-2 rounded-xl text-xs font-semibold border transition-all select-none ${completedBg}`;
+        numSpan.className = `step-nav-number flex items-center justify-center w-6 h-6 rounded-full text-xs font-bold shrink-0 ${completedCircle}`;
         numSpan.innerHTML = '✓';
       } else if (stepNum === step) {
         // Activo
-        item.className = 'step-nav-item flex items-center gap-2.5 px-3 py-2 rounded-xl text-xs font-semibold bg-slate-900 text-white shadow-xs transition-all select-none';
+        item.className = `step-nav-item flex items-center gap-2.5 px-3 py-2 rounded-xl text-xs font-semibold transition-all select-none ${activeBg}`;
         numSpan.className = 'step-nav-number flex items-center justify-center w-6 h-6 rounded-full bg-white/20 text-white text-xs font-bold shrink-0';
         numSpan.textContent = String(stepNum);
       } else {
@@ -733,13 +746,31 @@ import { professionals } from '../data/professionals';
     if (step <= 4) {
       mobileStepIndicator.textContent = `Paso ${step} de 4`;
       mobileStepTitle.textContent = stepTitles[step - 1];
+      const isFelipe = selectedProfessionalId === 'felipe';
+      const isEduardo = selectedProfessionalId === 'eduardo';
+      const activeColor = isFelipe ? 'bg-[#134E5E]' : (isEduardo ? 'bg-[#2E4D38]' : 'bg-slate-900');
+      const compColor = isFelipe ? 'bg-[#134E5E]' : (isEduardo ? 'bg-[#2E4D38]' : 'bg-emerald-500');
+
       for (let i = 0; i < 4; i++) {
-        mobileDots[i].className = i + 1 === step ? 'w-2.5 h-2.5 rounded-full bg-slate-900' : (i + 1 < step ? 'w-2.5 h-2.5 rounded-full bg-emerald-500' : 'w-2.5 h-2.5 rounded-full bg-slate-200');
+        mobileDots[i].className = i + 1 === step ? `w-2.5 h-2.5 rounded-full ${activeColor}` : (i + 1 < step ? `w-2.5 h-2.5 rounded-full ${compColor}` : 'w-2.5 h-2.5 rounded-full bg-slate-200');
       }
     }
 
     // Scroll suave hacia arriba
     window.scrollTo({ top: 120, behavior: 'smooth' });
+  }
+
+  // ==========================================================================
+  // APLICACIÓN DE TEMA DEL PROFESIONAL
+  // ==========================================================================
+  function applyTheme(pro: 'felipe' | 'eduardo' | null) {
+    const wizardWrapper = document.getElementById('wizard-wrapper');
+    if (!wizardWrapper) return;
+    if (pro) {
+      wizardWrapper.setAttribute('data-pro-theme', pro);
+    } else {
+      wizardWrapper.removeAttribute('data-pro-theme');
+    }
   }
 
   // ==========================================================================
@@ -749,16 +780,27 @@ import { professionals } from '../data/professionals';
     card.addEventListener('click', () => {
       const pro = card.getAttribute('data-pro') as 'felipe' | 'eduardo';
       selectedProfessionalId = pro;
+      applyTheme(pro);
 
       proCards.forEach((c) => {
-        c.classList.remove('border-slate-900', 'bg-slate-50', 'ring-2', 'ring-slate-900');
+        c.classList.remove(
+          'border-[#134E5E]', 'bg-[#F4F9FA]', 'ring-2', 'ring-[#134E5E]',
+          'border-[#2E4D38]', 'bg-[#F5F9F6]', 'ring-[#2E4D38]', 'shadow-sm'
+        );
+        c.classList.add('border-slate-200', 'bg-white');
         const radio = c.querySelector('input[type="radio"]') as HTMLInputElement;
         if (radio) radio.checked = false;
         const ind = c.querySelector('.select-indicator') as HTMLElement;
         if (ind) ind.textContent = 'Seleccionar →';
       });
 
-      card.classList.add('border-slate-900', 'bg-slate-50', 'ring-2', 'ring-slate-900');
+      card.classList.remove('border-slate-200', 'bg-white');
+      if (pro === 'felipe') {
+        card.classList.add('border-[#134E5E]', 'bg-[#F4F9FA]', 'ring-2', 'ring-[#134E5E]', 'shadow-sm');
+      } else {
+        card.classList.add('border-[#2E4D38]', 'bg-[#F5F9F6]', 'ring-2', 'ring-[#2E4D38]', 'shadow-sm');
+      }
+
       const radio = card.querySelector('input[type="radio"]') as HTMLInputElement;
       if (radio) radio.checked = true;
       const activeInd = card.querySelector('.select-indicator') as HTMLElement;
@@ -767,6 +809,9 @@ import { professionals } from '../data/professionals';
       btnStep1Next.disabled = false;
       btnStep1Next.removeAttribute('disabled');
       btnStep1Next.classList.remove('opacity-50', 'cursor-not-allowed');
+
+      // Actualizar la barra superior con el color distintivo inmediatamente
+      goToStep(1);
     });
   });
 
@@ -774,14 +819,22 @@ import { professionals } from '../data/professionals';
     if (!selectedProfessionalId) return;
 
     // Actualizar chip en Paso 2
-    step2ProName.textContent = selectedProfessionalId === 'felipe'
-      ? 'Felipe Méndez (Box 1)'
-      : 'Eduardo Lagos (Box 2)';
+    const step2ProDot = document.getElementById('step-2-pro-dot');
+    if (selectedProfessionalId === 'felipe') {
+      step2ProChip.className = 'hidden sm:inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full text-xs font-bold bg-[#EBF5F8] text-[#134E5E] border border-[#C2DFE8]';
+      if (step2ProDot) step2ProDot.className = 'w-2 h-2 rounded-full bg-[#134E5E]';
+      step2ProName.textContent = 'Felipe Méndez · Box 1 (Quiropraxia & Kine)';
+    } else {
+      step2ProChip.className = 'hidden sm:inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full text-xs font-bold bg-[#EEF5F0] text-[#2E4D38] border border-[#CCE2D2]';
+      if (step2ProDot) step2ProDot.className = 'w-2 h-2 rounded-full bg-[#2E4D38]';
+      step2ProName.textContent = 'Eduardo Lagos · Box 2 (Acupuntura & MTC)';
+    }
     step2ProChip.classList.remove('hidden');
 
     // Resetear hora al entrar al paso 2 y bloquear botón continuar
     selectedSlotUtc = null;
     updateStep2NextButton();
+    renderDatePills();
     loadSlots();
     goToStep(2);
   });
@@ -816,8 +869,18 @@ import { professionals } from '../data/professionals';
   }
 
   function applyDatePillClasses(btn: HTMLButtonElement, isSelected: boolean) {
+    const isFelipe = selectedProfessionalId === 'felipe';
+    const isEduardo = selectedProfessionalId === 'eduardo';
+
+    let activeClass = 'border-slate-900 bg-slate-900 text-white shadow-xs';
+    if (isFelipe) {
+      activeClass = 'border-[#134E5E] bg-[#134E5E] text-white shadow-md ring-2 ring-[#134E5E]/20';
+    } else if (isEduardo) {
+      activeClass = 'border-[#2E4D38] bg-[#2E4D38] text-white shadow-md ring-2 ring-[#2E4D38]/20';
+    }
+
     btn.className = isSelected
-      ? 'date-pill shrink-0 flex flex-col items-center justify-center w-16 h-18 py-2.5 px-2 rounded-xl border-2 border-slate-900 bg-slate-900 text-white shadow-xs select-none text-center cursor-pointer font-medium'
+      ? `date-pill shrink-0 flex flex-col items-center justify-center w-16 h-18 py-2.5 px-2 rounded-xl border-2 select-none text-center cursor-pointer font-medium transition-all ${activeClass}`
       : 'date-pill shrink-0 flex flex-col items-center justify-center w-16 h-18 py-2.5 px-2 rounded-xl border-2 border-slate-200 bg-white hover:border-slate-400 text-slate-700 select-none text-center cursor-pointer transition-colors';
   }
 
@@ -858,9 +921,23 @@ import { professionals } from '../data/professionals';
   }
 
   function applySlotButtonClasses(btn: HTMLButtonElement, isSelected: boolean) {
+    const isFelipe = selectedProfessionalId === 'felipe';
+    const isEduardo = selectedProfessionalId === 'eduardo';
+
+    let activeClass = 'border-slate-900 bg-slate-900 text-white shadow-md ring-2 ring-slate-900 ring-offset-2';
+    let hoverBorder = 'hover:border-slate-800';
+
+    if (isFelipe) {
+      activeClass = 'border-[#134E5E] bg-[#134E5E] text-white shadow-lg ring-2 ring-[#134E5E] ring-offset-2 shadow-[0_4px_16px_rgba(19,78,94,0.22)]';
+      hoverBorder = 'hover:border-[#134E5E] hover:text-[#134E5E]';
+    } else if (isEduardo) {
+      activeClass = 'border-[#2E4D38] bg-[#2E4D38] text-white shadow-lg ring-2 ring-[#2E4D38] ring-offset-2 shadow-[0_4px_16px_rgba(46,77,56,0.22)]';
+      hoverBorder = 'hover:border-[#2E4D38] hover:text-[#2E4D38]';
+    }
+
     btn.className = isSelected
-      ? 'slot-btn py-3 px-3 rounded-xl border-2 font-semibold text-xs transition-all text-center flex flex-col items-center justify-center border-slate-900 bg-slate-900 text-white shadow-md ring-2 ring-slate-900 ring-offset-2 cursor-pointer transform scale-[1.02]'
-      : 'slot-btn py-3 px-3 rounded-xl border-2 font-semibold text-xs transition-all text-center flex flex-col items-center justify-center border-slate-200 hover:border-slate-800 hover:bg-slate-50 bg-white text-slate-800 cursor-pointer';
+      ? `slot-btn py-3.5 px-3 rounded-xl border-2 font-semibold text-xs transition-all text-center flex flex-col items-center justify-center cursor-pointer transform scale-[1.02] ${activeClass}`
+      : `slot-btn py-3.5 px-3 rounded-xl border-2 font-semibold text-xs transition-all text-center flex flex-col items-center justify-center border-slate-200 ${hoverBorder} hover:bg-slate-50 bg-white text-slate-800 cursor-pointer`;
   }
 
   function updateSlotButtons() {
@@ -914,8 +991,6 @@ import { professionals } from '../data/professionals';
       res.slots.forEach((slot) => {
         const d = new Date(slot.startAt);
         const timeStr = d.toLocaleTimeString('es-CL', { timeZone: 'America/Santiago', hour: '2-digit', minute: '2-digit', hour12: false });
-        const endD = new Date(new Date(slot.startAt).getTime() + 3600 * 1000);
-        const endTimeStr = endD.toLocaleTimeString('es-CL', { timeZone: 'America/Santiago', hour: '2-digit', minute: '2-digit', hour12: false });
 
         const btn = document.createElement('button');
         btn.type = 'button';
@@ -924,8 +999,7 @@ import { professionals } from '../data/professionals';
         applySlotButtonClasses(btn, isSelected);
 
         btn.innerHTML = `
-          <span class="text-sm font-bold">${timeStr}</span>
-          <span class="text-[10px] opacity-75 font-normal">hasta ${endTimeStr}</span>
+          <span class="text-sm font-bold">${timeStr} hrs</span>
         `;
 
         btn.addEventListener('click', () => {
@@ -1033,9 +1107,13 @@ import { professionals } from '../data/professionals';
     if (!valid) return;
 
     // Actualizar Resumen en Paso 4
-    finalSummaryPro.textContent = selectedProfessionalId === 'felipe'
-      ? 'Felipe Méndez (Box 1 · Quiropraxia)'
-      : 'Eduardo Lagos (Box 2 · Acupuntura)';
+    if (selectedProfessionalId === 'felipe') {
+      finalSummaryPro.textContent = 'Felipe Méndez · Box 1 (Quiropraxia & Kinesiología)';
+      finalSummaryPro.className = 'font-bold text-[#134E5E] text-sm';
+    } else {
+      finalSummaryPro.textContent = 'Eduardo Lagos · Box 2 (Acupuntura & MTC)';
+      finalSummaryPro.className = 'font-bold text-[#2E4D38] text-sm';
+    }
 
     const d = new Date(selectedSlotUtc!);
     const dateFormatted = d.toLocaleDateString('es-CL', { timeZone: 'America/Santiago', weekday: 'long', day: 'numeric', month: 'long', year: 'numeric' });
@@ -1136,6 +1214,19 @@ import { professionals } from '../data/professionals';
     successTime.textContent = finalSummaryTime.textContent;
     successPatient.textContent = finalSummaryPatient.textContent;
 
+    const successIconWrap = document.getElementById('success-icon-wrap');
+    if (successIconWrap) {
+      if (selectedProfessionalId === 'felipe') {
+        successIconWrap.className = 'w-16 h-16 rounded-full bg-[#EBF5F8] text-[#134E5E] flex items-center justify-center mx-auto mb-4';
+        stepViewSuccess.classList.remove('border-emerald-200');
+        stepViewSuccess.classList.add('border-[#C2DFE8]');
+      } else {
+        successIconWrap.className = 'w-16 h-16 rounded-full bg-[#EEF5F0] text-[#2E4D38] flex items-center justify-center mx-auto mb-4';
+        stepViewSuccess.classList.remove('border-emerald-200');
+        stepViewSuccess.classList.add('border-[#CCE2D2]');
+      }
+    }
+
     try {
       const cal = await AgendamientoClient.getCalendarExport(bookingId);
       btnGoogleCalendar.href = cal.googleUrl;
@@ -1223,5 +1314,47 @@ import { professionals } from '../data/professionals';
   }
   .animate-step {
     animation: stepFadeIn 0.25s ease-out forwards;
+  }
+
+  /* Variables dinámicas según el especialista seleccionado */
+  #wizard-wrapper {
+    --pro-primary: #151C17;
+    --pro-hover: #0F172A;
+    --pro-light: #F1F5F9;
+    --pro-border: #CBD5E1;
+    --pro-ring: rgba(15, 23, 42, 0.25);
+    --pro-shadow: 0 4px 14px rgba(15, 23, 42, 0.1);
+  }
+
+  #wizard-wrapper[data-pro-theme="felipe"] {
+    --pro-primary: #134E5E;
+    --pro-hover: #103E4A;
+    --pro-light: #EBF5F8;
+    --pro-border: #C2DFE8;
+    --pro-ring: rgba(19, 78, 94, 0.28);
+    --pro-shadow: 0 8px 24px rgba(19, 78, 94, 0.2);
+  }
+
+  #wizard-wrapper[data-pro-theme="eduardo"] {
+    --pro-primary: #2E4D38;
+    --pro-hover: #213C2B;
+    --pro-light: #EEF5F0;
+    --pro-border: #CCE2D2;
+    --pro-ring: rgba(46, 77, 56, 0.28);
+    --pro-shadow: 0 8px 24px rgba(46, 77, 56, 0.2);
+  }
+
+  .theme-btn-action {
+    background-color: var(--pro-primary) !important;
+    color: #ffffff !important;
+  }
+  .theme-btn-action:hover:not(:disabled) {
+    background-color: var(--pro-hover) !important;
+    box-shadow: var(--pro-shadow) !important;
+  }
+
+  .theme-input:focus {
+    border-color: var(--pro-primary) !important;
+    box-shadow: 0 0 0 2px var(--pro-ring) !important;
   }
 </style>
