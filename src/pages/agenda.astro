@@ -94,32 +94,108 @@ import { professionals } from '../data/professionals';
       </header>
 
       <!-- Pantalla de Login Requerido si no es equipo -->
-      <div id="team-login-gate" class="hidden bg-white rounded-2xl p-8 sm:p-12 shadow-sm border border-slate-200 text-center max-w-lg mx-auto my-12">
-        <div class="w-12 h-12 rounded-full bg-slate-100 text-slate-800 flex items-center justify-center mx-auto mb-4">
-          <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"/>
-          </svg>
+      <div id="team-login-gate" class="hidden bg-white rounded-2xl p-6 sm:p-10 shadow-sm border border-slate-200 text-center max-w-lg mx-auto my-12 animate-fade-in">
+        
+        <!-- Estado 1: Anónimo / Sin Sesión Iniciada -->
+        <div id="gate-anonymous" class="space-y-4">
+          <div class="w-12 h-12 rounded-full bg-slate-100 text-slate-800 flex items-center justify-center mx-auto mb-3">
+            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"/>
+            </svg>
+          </div>
+          <h2 class="text-xl font-serif text-slate-900 font-medium mb-1">Acceso Exclusivo del Equipo</h2>
+          <p class="text-xs text-slate-600 mb-6 leading-relaxed">
+            Esta sección está reservada para los profesionales y el administrador de Centro Vida Sana Austral.
+          </p>
+          <div class="space-y-3">
+            <a
+              href="/auth/google/start?returnTo=/agenda"
+              class="w-full inline-flex items-center justify-center gap-2.5 py-3 px-4 rounded-xl bg-slate-900 hover:bg-slate-800 text-white text-xs font-semibold shadow-sm transition-colors"
+            >
+              <svg class="w-4 h-4" viewBox="0 0 24 24">
+                <path fill="#EA4335" d="M12 5c1.6 0 3 .6 4.1 1.6l3.1-3.1C17.3 1.8 14.8 1 12 1 7.5 1 3.7 3.6 1.9 7.3l3.7 2.9C6.5 7.4 9 5 12 5z"/>
+                <path fill="#4285F4" d="M23.5 12.3c0-.8-.1-1.7-.2-2.3H12v4.5h6.5c-.3 1.5-1.1 2.8-2.4 3.7l3.7 2.9c2.2-2 3.7-5.1 3.7-8.8z"/>
+                <path fill="#FBBC05" d="M5.6 14.8c-.2-.7-.4-1.5-.4-2.3 0-.8.2-1.6.4-2.3L1.9 7.3C.7 9.7 0 12.3 0 15.2s.7 5.5 1.9 7.9l3.7-2.9z"/>
+                <path fill="#34A853" d="M12 23.5c3.2 0 6-1.1 8-3l-3.7-2.9c-1.1.7-2.5 1.2-4.3 1.2-3 0-5.5-2.4-6.4-5.2L1.9 16.5C3.7 20.2 7.5 23.5 12 23.5z"/>
+              </svg>
+              <span>Identificarse con Cuenta de Equipo</span>
+            </a>
+            <!-- Atajo para entorno local -->
+            <button
+              type="button"
+              id="btn-dev-quick-team"
+              class="w-full py-2.5 px-4 rounded-xl bg-emerald-50 hover:bg-emerald-100 text-emerald-800 text-xs font-semibold border border-emerald-300 transition-colors"
+            >
+              ⚡ Acceso Rápido de Prueba (Administrador / Equipo)
+            </button>
+          </div>
         </div>
-        <h2 class="text-xl font-serif text-slate-900 font-medium mb-2">Acceso Exclusivo del Equipo</h2>
-        <p class="text-xs text-slate-600 mb-6 leading-relaxed">
-          Esta sección está reservada para los profesionales y el administrador de Centro Vida Sana Austral.
-        </p>
-        <div class="space-y-3">
-          <a
-            href="/auth/google/start?returnTo=/agenda"
-            class="w-full inline-flex items-center justify-center gap-2 py-3 px-4 rounded-xl bg-slate-900 hover:bg-slate-800 text-white text-xs font-semibold shadow-sm transition-colors"
-          >
-            Identificarse con Cuenta de Equipo
-          </a>
-          <!-- Atajo para entorno local -->
-          <button
-            type="button"
-            id="btn-dev-quick-team"
-            class="w-full py-2.5 px-4 rounded-xl bg-emerald-50 hover:bg-emerald-100 text-emerald-800 text-xs font-semibold border border-emerald-300 transition-colors"
-          >
-            ⚡ Acceso Rápido de Prueba (Administrador / Equipo)
-          </button>
+
+        <!-- Estado 2: Autenticado pero Sin Permisos de Equipo (No registrado en team_members) -->
+        <div id="gate-forbidden" class="hidden space-y-4">
+          <div class="w-14 h-14 rounded-full bg-amber-50 border border-amber-200 text-amber-700 flex items-center justify-center mx-auto mb-2">
+            <svg class="w-7 h-7" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"/>
+            </svg>
+          </div>
+
+          <span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-bold uppercase tracking-wider bg-amber-100 text-amber-900 border border-amber-300">
+            Acceso No Autorizado
+          </span>
+
+          <h2 class="text-xl font-serif text-slate-900 font-medium">Cuenta sin Permisos de Equipo</h2>
+
+          <!-- Tarjeta con la cuenta activa del usuario -->
+          <div class="bg-slate-50 border border-slate-200 rounded-xl p-3.5 text-left flex items-center gap-3 my-4">
+            <div id="gate-user-avatar" class="w-9 h-9 rounded-full bg-slate-900 text-white font-bold text-xs flex items-center justify-center shrink-0">
+              U
+            </div>
+            <div class="min-w-0 flex-1">
+              <p id="gate-user-name" class="text-xs font-bold text-slate-900 truncate">Usuario</p>
+              <p id="gate-user-email" class="text-[11px] text-slate-500 font-mono truncate">correo@gmail.com</p>
+            </div>
+            <span class="px-2 py-0.5 rounded text-[10px] font-semibold bg-slate-200 text-slate-700 shrink-0">
+              Rol: Paciente
+            </span>
+          </div>
+
+          <p class="text-xs text-slate-600 leading-relaxed">
+            Iniciaste sesión con Google, pero este correo no está registrado como profesional de salud ni como administrador de Centro Vida Sana.
+          </p>
+
+          <div class="space-y-2.5 pt-2">
+            <button
+              type="button"
+              id="btn-gate-switch-account"
+              class="w-full inline-flex items-center justify-center gap-2.5 py-3 px-4 rounded-xl bg-slate-900 hover:bg-slate-800 text-white text-xs font-semibold shadow-sm transition-colors"
+            >
+              <svg class="w-4 h-4" viewBox="0 0 24 24">
+                <path fill="#EA4335" d="M12 5c1.6 0 3 .6 4.1 1.6l3.1-3.1C17.3 1.8 14.8 1 12 1 7.5 1 3.7 3.6 1.9 7.3l3.7 2.9C6.5 7.4 9 5 12 5z"/>
+                <path fill="#4285F4" d="M23.5 12.3c0-.8-.1-1.7-.2-2.3H12v4.5h6.5c-.3 1.5-1.1 2.8-2.4 3.7l3.7 2.9c2.2-2 3.7-5.1 3.7-8.8z"/>
+                <path fill="#FBBC05" d="M5.6 14.8c-.2-.7-.4-1.5-.4-2.3 0-.8.2-1.6.4-2.3L1.9 7.3C.7 9.7 0 12.3 0 15.2s.7 5.5 1.9 7.9l3.7-2.9z"/>
+                <path fill="#34A853" d="M12 23.5c3.2 0 6-1.1 8-3l-3.7-2.9c-1.1.7-2.5 1.2-4.3 1.2-3 0-5.5-2.4-6.4-5.2L1.9 16.5C3.7 20.2 7.5 23.5 12 23.5z"/>
+              </svg>
+              <span>Cambiar a Cuenta de Equipo</span>
+            </button>
+
+            <div class="flex gap-2">
+              <button
+                type="button"
+                id="btn-gate-logout"
+                class="flex-1 py-2.5 px-3 rounded-xl border border-slate-200 hover:bg-slate-50 text-slate-700 text-xs font-semibold transition-colors"
+              >
+                Cerrar Sesión
+              </button>
+              <a
+                href="/reservar"
+                class="flex-1 inline-flex items-center justify-center py-2.5 px-3 rounded-xl bg-emerald-50 hover:bg-emerald-100 text-emerald-800 text-xs font-semibold border border-emerald-200 transition-colors"
+              >
+                Ir a Reservas Paciente
+              </a>
+            </div>
+          </div>
         </div>
+
       </div>
 
       <!-- CONTENEDOR PRINCIPAL DEL PANEL -->
@@ -323,6 +399,14 @@ import { professionals } from '../data/professionals';
 
   // DOM
   const teamLoginGate = document.getElementById('team-login-gate')!;
+  const gateAnonymous = document.getElementById('gate-anonymous')!;
+  const gateForbidden = document.getElementById('gate-forbidden')!;
+  const gateUserName = document.getElementById('gate-user-name')!;
+  const gateUserEmail = document.getElementById('gate-user-email')!;
+  const gateUserAvatar = document.getElementById('gate-user-avatar')!;
+  const btnGateSwitchAccount = document.getElementById('btn-gate-switch-account');
+  const btnGateLogout = document.getElementById('btn-gate-logout');
+
   const teamAppContent = document.getElementById('team-app-content')!;
   const teamSessionBox = document.getElementById('team-session-box')!;
   const teamUserName = document.getElementById('team-user-name')!;
@@ -371,8 +455,22 @@ import { professionals } from '../data/professionals';
         teamUserName.textContent = session.user.name;
         teamUserEmail.textContent = session.user.email;
         loadSchedule();
-      } else {
+      } else if (session.authenticated && !session.capabilities.teamAgenda) {
+        // Autenticado pero sin membresía de equipo
         teamLoginGate.classList.remove('hidden');
+        gateAnonymous.classList.add('hidden');
+        gateForbidden.classList.remove('hidden');
+        teamAppContent.classList.add('hidden');
+        teamSessionBox.classList.add('hidden');
+
+        gateUserName.textContent = session.user.name;
+        gateUserEmail.textContent = session.user.email;
+        gateUserAvatar.textContent = (session.user.name[0] || 'U').toUpperCase();
+      } else {
+        // Anónimo / sin sesión iniciada
+        teamLoginGate.classList.remove('hidden');
+        gateAnonymous.classList.remove('hidden');
+        gateForbidden.classList.add('hidden');
         teamAppContent.classList.add('hidden');
         teamSessionBox.classList.add('hidden');
       }
@@ -751,6 +849,29 @@ import { professionals } from '../data/professionals';
       window.location.reload();
     }
   });
+
+  // BOTONES DE ESTADO NO AUTORIZADO
+  if (btnGateSwitchAccount) {
+    btnGateSwitchAccount.addEventListener('click', async () => {
+      if (currentSession && currentSession.csrfToken) {
+        try {
+          await AgendamientoClient.logout(currentSession.csrfToken);
+        } catch (_) {}
+      }
+      window.location.href = '/auth/google/start?returnTo=/agenda';
+    });
+  }
+
+  if (btnGateLogout) {
+    btnGateLogout.addEventListener('click', async () => {
+      if (currentSession && currentSession.csrfToken) {
+        try {
+          await AgendamientoClient.logout(currentSession.csrfToken);
+        } catch (_) {}
+      }
+      window.location.reload();
+    });
+  }
 
   // DEV LOGIN EQUIPO
   if (btnDevQuickTeam) {
