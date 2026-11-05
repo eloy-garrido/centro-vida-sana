@@ -45,12 +45,12 @@ Orden de dependencias: entregas E1–E4 del [plan maestro](planes/implementacion
 
 ## Frontend local — frontend-reservas
 
-- [ ] F01: acceso Google, datos editables/precarga por cuenta y elección de profesional.
-- [ ] F02: selector de día/hora, resumen, confirmación real y recuperación idempotente.
-- [ ] F03: panel compartido con pestañas Felipe/Eduardo, crear/editar/cancelar y bloquear.
-- [ ] F04: confirmación destructiva, conflictos de versión y separación del actor/profesional atendiente.
-- [ ] F05: accesibilidad, móvil, noindex/no-store, sin PII en almacenamiento/analítica.
-- [ ] F06: botón de copia al calendario y aviso de que cambios posteriores no se sincronizan; sin correos.
+- [x] F01: acceso Google, datos editables/precarga por cuenta y elección de profesional (E5 completada).
+- [x] F02: selector de día/hora, resumen, confirmación real y recuperación idempotente (E5 completada).
+- [x] F03: panel compartido con pestañas Felipe/Eduardo, crear/editar/cancelar y bloquear (E5 completada).
+- [x] F04: confirmación destructiva, conflictos de versión y separación del actor/profesional atendiente (E5 completada).
+- [x] F05: accesibilidad, móvil, noindex/no-store, sin PII en almacenamiento/analítica (E5 completada).
+- [x] F06: botón de copia al calendario y aviso de que cambios posteriores no se sincronizan; sin correos (E5 completada).
 
 ## QA y revisión — qa-reservas / revisor-reservas
 

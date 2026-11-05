@@ -60,6 +60,16 @@ export function getChileTime(date: Date): {
 }
 
 /**
+ * Devuelve la fecha local de Chile en formato YYYY-MM-DD para un timestamp Unix en segundos.
+ */
+export function getChileDateString(utcSeconds: number): string {
+  const t = getChileTime(new Date(utcSeconds * 1000));
+  const m = String(t.month).padStart(2, '0');
+  const d = String(t.day).padStart(2, '0');
+  return `${t.year}-${m}-${d}`;
+}
+
+/**
  * Convierte una fecha y hora local de Chile a un Unix timestamp UTC (en segundos).
  * Usa aproximación segura y refinamiento con Intl para garantizar exactitud con DST.
  */
