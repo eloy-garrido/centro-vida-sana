@@ -35,7 +35,7 @@
 Orden de dependencias: entregas E1–E4 del [plan maestro](planes/implementacion.md). Se pueden probar mecanismos con fixtures locales sin inventar reglas como definitivas; U01–U07 bloquean funciones reales pertinentes.
 
 - [x] B01: modelo D1, migraciones locales, perfil/snapshot paciente y validación RUT (E2 completada).
-- [ ] B02: OIDC, sesiones, CSRF, membresías compartidas e aislamiento por cuenta paciente.
+- [x] B02: OIDC, sesiones, CSRF, membresías compartidas e aislamiento por cuenta paciente (E3 completada).
 - [ ] B03: disponibilidad por jornada y fecha Chile, slots completos de una hora.
 - [x] B04: triggers de intervalos en tabla única `agenda_entries`, batch atómico e idempotencia frente a timeout/doble clic; sin tabla duplicada de ocupación (E2 completada).
 - [ ] B05: edición/cancelación/bloqueos atómicos con control de versión y auditoría.
@@ -55,7 +55,7 @@ Orden de dependencias: entregas E1–E4 del [plan maestro](planes/implementacion
 ## QA y revisión — qa-reservas / revisor-reservas
 
 - [x] Q01: preparar runner y fixtures ficticios locales; build/type-check cuando estén configurados (E1 completada con node:test y TypeScript).
-- [ ] Q02: roles, CSRF, IDOR de perfil/reserva/operación y sesiones revocadas.
+- [x] Q02: roles, CSRF, IDOR de perfil/reserva/operación y sesiones revocadas (E3 verificada).
 - [x] Q03: concurrencia mismo cupo, solapamiento parcial, paciente/equipo y ambas agendas simultáneas (E2 verificada).
 - [ ] Q04: versiones, cancelación contra edición y reintento tras commit con respuesta perdida.
 - [ ] Q05: mañana no 24h, extremos semana aprobados, pausas y DST Chile.
