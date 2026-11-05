@@ -6,7 +6,9 @@
 		"dev": "astro dev",
 		"start": "astro dev",
 		"build": "astro build",
-		"preview": "astro preview"
+		"preview": "astro preview",
+		"test": "node --test --experimental-strip-types tests/**/*.test.ts",
+		"test:contracts": "node --test --experimental-strip-types tests/contracts/*.test.ts"
 	},
 	"dependencies": {
 		"@astrojs/tailwind": "^5.1.5",
