@@ -150,39 +150,36 @@ import { professionals } from '../data/professionals';
 
         <!-- Barra de Controles de Fecha (D04: Hoy y dentro del mes) -->
         <div class="bg-white rounded-2xl p-4 sm:p-5 shadow-sm border border-slate-200 flex flex-wrap items-center justify-between gap-4">
-          <div class="flex items-center gap-2">
+          <div class="flex items-center gap-1.5 sm:gap-2">
             <button
               type="button"
               id="btn-prev-day"
-              class="p-2 rounded-xl border border-slate-200 hover:bg-slate-50 text-slate-700 transition-colors"
+              class="p-2 sm:p-2.5 rounded-xl border border-slate-200 hover:bg-slate-50 active:scale-95 text-slate-700 transition-all shadow-xs"
               title="Día anterior"
+              aria-label="Día anterior"
             >
               <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"/>
               </svg>
             </button>
-            <button
-              type="button"
-              id="btn-today"
-              class="px-3.5 py-2 rounded-xl border border-slate-200 hover:bg-slate-50 text-xs font-semibold text-slate-800 transition-colors"
-            >
-              Hoy (D+0)
-            </button>
+
+            <input
+              type="date"
+              id="input-date-picker"
+              class="px-3.5 py-2 rounded-xl border border-slate-300 text-xs sm:text-sm text-slate-800 font-semibold focus:ring-2 focus:ring-slate-900 focus:border-slate-900 bg-white shadow-xs transition-colors cursor-pointer"
+            />
+
             <button
               type="button"
               id="btn-next-day"
-              class="p-2 rounded-xl border border-slate-200 hover:bg-slate-50 text-slate-700 transition-colors"
+              class="p-2 sm:p-2.5 rounded-xl border border-slate-200 hover:bg-slate-50 active:scale-95 text-slate-700 transition-all shadow-xs"
               title="Día siguiente"
+              aria-label="Día siguiente"
             >
               <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/>
               </svg>
             </button>
-            <input
-              type="date"
-              id="input-date-picker"
-              class="px-3 py-1.5 rounded-xl border border-slate-300 text-xs text-slate-800 font-medium focus:ring-2 focus:ring-slate-900"
-            />
           </div>
 
           <div class="text-right">
@@ -337,7 +334,6 @@ import { professionals } from '../data/professionals';
   const tabEduardo = document.getElementById('tab-eduardo')!;
 
   const btnPrevDay = document.getElementById('btn-prev-day')!;
-  const btnToday = document.getElementById('btn-today')!;
   const btnNextDay = document.getElementById('btn-next-day')!;
   const inputDatePicker = document.getElementById('input-date-picker') as HTMLInputElement;
   const scheduleActiveDateLabel = document.getElementById('schedule-active-date-label')!;
@@ -415,11 +411,6 @@ import { professionals } from '../data/professionals';
     });
     loadSchedule();
   }
-
-  btnToday.addEventListener('click', () => {
-    const today = new Date().toLocaleDateString('en-CA', { timeZone: 'America/Santiago' });
-    setDate(today);
-  });
 
   btnPrevDay.addEventListener('click', () => {
     const cur = new Date(activeDateString + 'T12:00:00Z');
