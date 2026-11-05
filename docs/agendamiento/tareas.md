@@ -36,11 +36,11 @@ Orden de dependencias: entregas E1–E4 del [plan maestro](planes/implementacion
 
 - [x] B01: modelo D1, migraciones locales, perfil/snapshot paciente y validación RUT (E2 completada).
 - [x] B02: OIDC, sesiones, CSRF, membresías compartidas e aislamiento por cuenta paciente (E3 completada).
-- [ ] B03: disponibilidad por jornada y fecha Chile, slots completos de una hora.
+- [x] B03: disponibilidad por jornada y fecha Chile, slots completos de una hora (E4 completada).
 - [x] B04: triggers de intervalos en tabla única `agenda_entries`, batch atómico e idempotencia frente a timeout/doble clic; sin tabla duplicada de ocupación (E2 completada).
-- [ ] B05: edición/cancelación/bloqueos atómicos con control de versión y auditoría.
-- [ ] B06: contratos HTTP mínimos S09 y resolve de comandos propios, sin sincronización externa ni `202`/estado persistente pendiente.
-- [ ] B07: exportación manual segura de cita a calendario personal; copia independiente sin RUT ni datos clínicos.
+- [x] B05: edición/cancelación/bloqueos atómicos con control de versión y auditoría (E4 completada).
+- [x] B06: contratos HTTP mínimos S09 y resolve de comandos propios, sin sincronización externa ni `202`/estado persistente pendiente (E4 completada).
+- [x] B07: exportación manual segura de cita a calendario personal; copia independiente sin RUT ni datos clínicos (E1/E4 completada).
 - [ ] B08: preparar configuración/secretos solo para recurso permitido; no ejecutarlos remotamente sin U10.
 
 ## Frontend local — frontend-reservas
@@ -57,8 +57,8 @@ Orden de dependencias: entregas E1–E4 del [plan maestro](planes/implementacion
 - [x] Q01: preparar runner y fixtures ficticios locales; build/type-check cuando estén configurados (E1 completada con node:test y TypeScript).
 - [x] Q02: roles, CSRF, IDOR de perfil/reserva/operación y sesiones revocadas (E3 verificada).
 - [x] Q03: concurrencia mismo cupo, solapamiento parcial, paciente/equipo y ambas agendas simultáneas (E2 verificada).
-- [ ] Q04: versiones, cancelación contra edición y reintento tras commit con respuesta perdida.
-- [ ] Q05: mañana no 24h, extremos semana aprobados, pausas y DST Chile.
+- [x] Q04: versiones, cancelación contra edición y reintento tras commit con respuesta perdida (E4 verificada).
+- [x] Q05: mañana no 24h, extremos semana aprobados, pausas y DST Chile (E4 verificada).
 - [ ] Q06: tercero, RUT, privacidad de enlace/almacenamiento/logs y copia de calendario.
 - [ ] Q07: revisar cada comando de infraestructura contra allowlist sin ejecutar mutaciones ni explorar otros proyectos.
 - [ ] Q08: informe de pruebas locales, pendientes y revisión independiente antes de staging.
