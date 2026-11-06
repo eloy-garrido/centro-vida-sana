@@ -102,7 +102,7 @@ import { professionals } from '../data/professionals';
         <!-- ================================================================== -->
         <!-- PASO 1: SELECCIÓN DE ESPECIALISTA Y ÁREA                             -->
         <!-- ================================================================== -->
-        <section id="step-view-1" class="wizard-step bg-white rounded-2xl p-6 sm:p-8 shadow-sm border border-slate-200 animate-step">
+        <section id="step-view-1" class="wizard-step bg-white rounded-2xl p-6 sm:p-8 shadow-sm border border-slate-200">
           <div class="border-b border-slate-100 pb-4 mb-6">
             <h2 class="text-xl font-serif text-slate-900 font-medium">1. Elige tu Profesional</h2>
             <p class="text-xs text-slate-500 mt-1">Selecciona al especialista de acuerdo al área de tratamiento o síntoma que requieres.</p>
@@ -193,7 +193,9 @@ import { professionals } from '../data/professionals';
         <!-- ================================================================== -->
         <!-- PASO 2: SELECCIÓN DE DÍA Y HORA                                    -->
         <!-- ================================================================== -->
-        <section id="step-view-2" class="wizard-step hidden bg-white rounded-2xl p-6 sm:p-8 shadow-sm border border-slate-200 animate-step">
+        <!-- PASO 2: SELECCIÓN DE DÍA Y HORA                                      -->
+        <!-- ================================================================== -->
+        <section id="step-view-2" class="wizard-step hidden bg-white rounded-2xl p-6 sm:p-8 shadow-sm border border-slate-200">
           <div class="flex items-center justify-between border-b border-slate-100 pb-4 mb-6">
             <div>
               <h2 class="text-xl font-serif text-slate-900 font-medium">2. Selecciona Día y Horario</h2>
@@ -206,65 +208,87 @@ import { professionals } from '../data/professionals';
             </div>
           </div>
 
-          <!-- Selector de Días (Píldoras D+1 a D+7) -->
-          <div class="mb-6">
-            <p class="text-xs font-semibold text-slate-700 uppercase tracking-wider mb-2.5">Elige un día:</p>
-            <div id="date-pills-row" class="flex gap-2.5 overflow-x-auto pb-2 scrollbar-none">
-              <!-- Se inyecta dinámicamente con JS -->
+          <!-- Loading Unificado del Paso 2 (Animación de Carga) -->
+          <div id="step-2-loading" class="py-12 flex flex-col items-center justify-center text-center">
+            <div class="relative w-11 h-11 mb-3.5">
+              <div class="w-11 h-11 rounded-full border-2 border-slate-200"></div>
+              <div class="w-11 h-11 rounded-full border-2 border-[#134E5E] border-t-transparent animate-spin absolute top-0 left-0"></div>
+            </div>
+            <p class="text-xs font-bold text-slate-800">Cargando disponibilidad oficial...</p>
+            <p class="text-[11px] text-slate-400 mt-0.5">Consultando turnos en tiempo real</p>
+
+            <!-- Skeleton Placeholder coordinado -->
+            <div class="w-full mt-6 space-y-4 max-w-lg mx-auto opacity-40 select-none pointer-events-none">
+              <div class="flex gap-2 justify-center overflow-hidden">
+                <div class="w-16 h-18 rounded-xl bg-slate-200 animate-pulse"></div>
+                <div class="w-16 h-18 rounded-xl bg-slate-200 animate-pulse"></div>
+                <div class="w-16 h-18 rounded-xl bg-slate-200 animate-pulse"></div>
+                <div class="w-16 h-18 rounded-xl bg-slate-200 animate-pulse"></div>
+                <div class="w-16 h-18 rounded-xl bg-slate-200 animate-pulse"></div>
+              </div>
+              <div class="grid grid-cols-2 sm:grid-cols-4 gap-2 pt-2">
+                <div class="h-14 rounded-xl bg-slate-200 animate-pulse"></div>
+                <div class="h-14 rounded-xl bg-slate-200 animate-pulse"></div>
+                <div class="h-14 rounded-xl bg-slate-200 animate-pulse"></div>
+                <div class="h-14 rounded-xl bg-slate-200 animate-pulse"></div>
+              </div>
             </div>
           </div>
 
-          <!-- Horarios Disponibles -->
-          <div class="mb-8">
-            <div class="flex items-center justify-between mb-3">
-              <p class="text-xs font-semibold text-slate-700 uppercase tracking-wider">Horarios Disponibles:</p>
-              <span id="step-2-date-label" class="text-xs text-slate-500 font-medium"></span>
+          <!-- Contenido del Paso 2 (se muestra coordinado cuando todo está cargado) -->
+          <div id="step-2-content" class="hidden">
+            <!-- Selector de Días (Píldoras D+1 a D+7) -->
+            <div class="mb-6">
+              <p class="text-xs font-semibold text-slate-700 uppercase tracking-wider mb-2.5">Elige un día:</p>
+              <div id="date-pills-row" class="flex gap-2.5 overflow-x-auto pb-2 scrollbar-none">
+                <!-- Se inyecta dinámicamente con JS -->
+              </div>
             </div>
 
-            <!-- Loading Skeleton -->
-            <div id="slots-skeleton" class="hidden grid grid-cols-2 sm:grid-cols-4 gap-2.5">
-              <div class="h-14 bg-slate-100 rounded-xl animate-pulse"></div>
-              <div class="h-14 bg-slate-100 rounded-xl animate-pulse"></div>
-              <div class="h-14 bg-slate-100 rounded-xl animate-pulse"></div>
-              <div class="h-14 bg-slate-100 rounded-xl animate-pulse"></div>
+            <!-- Horarios Disponibles -->
+            <div class="mb-8">
+              <div class="flex items-center justify-between mb-3">
+                <p class="text-xs font-semibold text-slate-700 uppercase tracking-wider">Horarios Disponibles:</p>
+                <span id="step-2-date-label" class="text-xs text-slate-500 font-medium"></span>
+              </div>
+
+              <!-- Grilla de Slots -->
+              <div id="slots-buttons-grid" class="grid grid-cols-2 sm:grid-cols-4 gap-2.5">
+                <!-- Se inyecta dinámicamente -->
+              </div>
+
+              <!-- Mensaje Vacío -->
+              <div id="slots-none-box" class="hidden py-8 text-center bg-slate-50 rounded-xl border border-dashed border-slate-200">
+                <p class="text-xs text-slate-600 font-medium">No hay turnos disponibles para este día.</p>
+                <p class="text-[11px] text-slate-400 mt-0.5">Por favor selecciona otra fecha en el calendario superior.</p>
+              </div>
             </div>
 
-            <!-- Grilla de Slots -->
-            <div id="slots-buttons-grid" class="grid grid-cols-2 sm:grid-cols-4 gap-2.5">
-              <!-- Se inyecta dinámicamente -->
+            <!-- Barra de Navegación del Paso 2 -->
+            <div class="flex items-center justify-between pt-4 border-t border-slate-100">
+              <button
+                type="button"
+                id="btn-step-2-back"
+                class="inline-flex items-center gap-1.5 px-4 py-2.5 rounded-xl border border-slate-200 text-slate-600 hover:bg-slate-50 active:scale-[0.96] text-xs font-semibold transition-all duration-150 ease-out"
+              >
+                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18"/>
+                </svg>
+                <span>Cambiar Especialista</span>
+              </button>
+
+              <button
+                type="button"
+                id="btn-step-2-next"
+                disabled
+                class="inline-flex items-center gap-2 px-6 py-3 rounded-xl bg-slate-900 text-white font-semibold text-xs shadow-xs hover:bg-slate-800 disabled:opacity-40 disabled:cursor-not-allowed transition-all duration-150 ease-out active:scale-[0.97]"
+              >
+                <span>Continuar a Mis Datos</span>
+                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"/>
+                </svg>
+              </button>
             </div>
-
-            <!-- Mensaje Vacío -->
-            <div id="slots-none-box" class="hidden py-8 text-center bg-slate-50 rounded-xl border border-dashed border-slate-200">
-              <p class="text-xs text-slate-600 font-medium">No hay turnos disponibles para este día.</p>
-              <p class="text-[11px] text-slate-400 mt-0.5">Por favor selecciona otra fecha en el calendario superior.</p>
-            </div>
-          </div>
-
-          <!-- Barra de Navegación del Paso 2 -->
-          <div class="flex items-center justify-between pt-4 border-t border-slate-100">
-            <button
-              type="button"
-              id="btn-step-2-back"
-              class="inline-flex items-center gap-1.5 px-4 py-2.5 rounded-xl border border-slate-200 text-slate-600 hover:bg-slate-50 active:scale-[0.96] text-xs font-semibold transition-all duration-150 ease-out"
-            >
-              <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18"/>
-              </svg>
-              <span>Cambiar Especialista</span>
-            </button>
-
-            <button
-              type="button"
-              id="btn-step-2-next"
-              disabled
-              class="inline-flex items-center justify-center gap-2 px-6 py-3 rounded-xl bg-slate-900 hover:bg-slate-800 active:scale-[0.97] disabled:bg-slate-200 disabled:text-slate-400 disabled:cursor-not-allowed disabled:active:scale-100 opacity-50 cursor-not-allowed text-white text-xs font-semibold transition-all duration-150 ease-out shadow-sm"
-            >
-              <span>Continuar a Mis Datos</span>
-              <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"/>
-              </svg>
-            </button>
           </div>
         </section>
 
@@ -732,11 +756,16 @@ import { professionals } from '../data/professionals';
   const btnStep2Next = document.getElementById('btn-step-2-next') as HTMLButtonElement;
   const step2ProChip = document.getElementById('step-2-pro-chip')!;
   const step2ProName = document.getElementById('step-2-pro-name')!;
+  const step2Loading = document.getElementById('step-2-loading')!;
+  const step2Content = document.getElementById('step-2-content')!;
   const datePillsRow = document.getElementById('date-pills-row')!;
   const step2DateLabel = document.getElementById('step-2-date-label')!;
-  const slotsSkeleton = document.getElementById('slots-skeleton')!;
   const slotsButtonsGrid = document.getElementById('slots-buttons-grid')!;
   const slotsNoneBox = document.getElementById('slots-none-box')!;
+
+  // Cache en memoria para disponibilidad de la semana (evita pestañeos y múltiples llamadas)
+  let slotsByDate: Map<string, Array<{ startAt: string; endAt: string; available?: boolean }>> = new Map();
+  let loadedAvailabilityForPro: string | null = null;
 
   // PASO 3 DOM
   const btnStep3Back = document.getElementById('btn-step-3-back')!;
@@ -783,22 +812,30 @@ import { professionals } from '../data/professionals';
   // ==========================================================================
   // FUNCIÓN CENTRAL: NAVEGACIÓN ENTRE PASOS
   // ==========================================================================
-  function goToStep(step: number) {
+  function goToStep(step: number, isInitial = false) {
     currentStep = step;
 
-    // Ocultar todas las vistas y preparar animación fluida de entrada
     const views = [stepView1, stepView2, stepView3, stepView4, stepViewSuccess];
-    views.forEach((v) => {
-      v.classList.add('hidden');
-      v.classList.remove('animate-step');
-    });
 
-    const activeView = views[step - 1];
-    if (activeView) {
-      activeView.classList.remove('hidden');
-      // Forzar reflow para reiniciar la animación suave sin saltos
-      void activeView.offsetWidth;
-      activeView.classList.add('animate-step');
+    if (isInitial && step === 1) {
+      // Entrada inicial sin pestañeo ni salto de opacidad sobre el HTML estático
+      views.forEach((v, idx) => {
+        if (idx !== 0) v.classList.add('hidden');
+        v.classList.remove('animate-step');
+      });
+      stepView1.classList.remove('hidden');
+    } else {
+      views.forEach((v) => {
+        v.classList.add('hidden');
+        v.classList.remove('animate-step');
+      });
+
+      const activeView = views[step - 1];
+      if (activeView) {
+        activeView.classList.remove('hidden');
+        void activeView.offsetWidth;
+        activeView.classList.add('animate-step');
+      }
     }
 
     // Actualizar barra de progreso (Desktop)
@@ -807,24 +844,21 @@ import { professionals } from '../data/professionals';
       const numSpan = item.querySelector('.step-nav-number') as HTMLElement;
 
       if (stepNum < step) {
-        // Completado con micro-pop elástico de checkmark
         item.className = 'step-nav-item flex items-center gap-2.5 px-3 py-2 rounded-xl text-xs font-semibold border transition-all duration-200 select-none bg-emerald-50 text-emerald-800 border-emerald-200';
         numSpan.className = 'step-nav-number flex items-center justify-center w-6 h-6 rounded-full text-xs font-bold shrink-0 bg-emerald-600 text-white animate-check-pop';
         numSpan.innerHTML = '✓';
       } else if (stepNum === step) {
-        // Activo con transición sutil
         item.className = 'step-nav-item flex items-center gap-2.5 px-3 py-2 rounded-xl text-xs font-semibold transition-all duration-200 select-none bg-slate-900 text-white shadow-xs';
         numSpan.className = 'step-nav-number flex items-center justify-center w-6 h-6 rounded-full bg-white/20 text-white text-xs font-bold shrink-0 animate-number-pop';
         numSpan.textContent = String(stepNum);
       } else {
-        // Pendiente
         item.className = 'step-nav-item flex items-center gap-2.5 px-3 py-2 rounded-xl text-xs font-medium text-slate-500 transition-all duration-200 select-none';
         numSpan.className = 'step-nav-number flex items-center justify-center w-6 h-6 rounded-full bg-slate-100 text-slate-600 text-xs font-bold shrink-0';
         numSpan.textContent = String(stepNum);
       }
     });
 
-    // Actualizar barra móvil con transición
+    // Actualizar barra móvil
     if (step <= 4) {
       mobileStepIndicator.textContent = `Paso ${step} de 4`;
       mobileStepTitle.textContent = stepTitles[step - 1];
@@ -836,67 +870,72 @@ import { professionals } from '../data/professionals';
       }
     }
 
-    // Mantener la vista en la parte superior sin recortar el encabezado
-    window.scrollTo({ top: 0, behavior: 'smooth' });
+    if (!isInitial) {
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
   }
 
   // ==========================================================================
   // PASO 1: SELECCIÓN DE ESPECIALISTA
   // ==========================================================================
-  proCards.forEach((card) => {
-    card.addEventListener('click', () => {
-      const pro = card.getAttribute('data-pro') as 'felipe' | 'eduardo';
-      selectedProfessionalId = pro;
+  function selectProfessional(pro: 'felipe' | 'eduardo') {
+    selectedProfessionalId = pro;
 
-      proCards.forEach((c) => {
-        c.classList.remove('border-slate-900', 'bg-slate-50', 'ring-2', 'ring-slate-900', 'shadow-sm', 'animate-card-select');
-        c.classList.add('border-slate-200', 'bg-white');
-        const radio = c.querySelector('input[type="radio"]') as HTMLInputElement;
-        if (radio) radio.checked = false;
-        const ind = c.querySelector('.select-indicator') as HTMLElement;
-        if (ind) {
-          ind.textContent = 'Seleccionar →';
-          ind.className = 'select-indicator font-bold text-slate-600 opacity-75 group-hover:opacity-100 group-hover:translate-x-0.5 transition-all duration-150';
-        }
-      });
+    proCards.forEach((c) => {
+      c.classList.remove('border-slate-900', 'bg-slate-50', 'ring-2', 'ring-slate-900', 'shadow-sm', 'animate-card-select');
+      c.classList.add('border-slate-200', 'bg-white');
+      const radio = c.querySelector('input[type="radio"]') as HTMLInputElement;
+      if (radio) radio.checked = false;
+      const ind = c.querySelector('.select-indicator') as HTMLElement;
+      if (ind) {
+        ind.textContent = 'Seleccionar →';
+        ind.className = 'select-indicator font-bold text-slate-600 opacity-75 group-hover:opacity-100 group-hover:translate-x-0.5 transition-all duration-150';
+      }
+    });
 
-      card.classList.remove('border-slate-200', 'bg-white');
-      // Forzar reflow para que el micro-latido se aprecie
-      void (card as HTMLElement).offsetWidth;
-      card.classList.add('border-slate-900', 'bg-slate-50', 'ring-2', 'ring-slate-900', 'shadow-sm', 'animate-card-select');
+    const activeCard = Array.from(proCards).find((c) => c.getAttribute('data-pro') === pro) as HTMLElement | undefined;
+    if (activeCard) {
+      activeCard.classList.remove('border-slate-200', 'bg-white');
+      void activeCard.offsetWidth;
+      activeCard.classList.add('border-slate-900', 'bg-slate-50', 'ring-2', 'ring-slate-900', 'shadow-sm', 'animate-card-select');
 
-      const radio = card.querySelector('input[type="radio"]') as HTMLInputElement;
+      const radio = activeCard.querySelector('input[type="radio"]') as HTMLInputElement;
       if (radio) radio.checked = true;
-      const activeInd = card.querySelector('.select-indicator') as HTMLElement;
+      const activeInd = activeCard.querySelector('.select-indicator') as HTMLElement;
       if (activeInd) {
         activeInd.textContent = '✓ Seleccionado';
         activeInd.className = 'select-indicator font-bold text-slate-900';
       }
+    }
 
-      btnStep1Next.disabled = false;
-      btnStep1Next.removeAttribute('disabled');
-      btnStep1Next.classList.remove('opacity-50', 'cursor-not-allowed');
+    btnStep1Next.disabled = false;
+    btnStep1Next.removeAttribute('disabled');
+    btnStep1Next.classList.remove('opacity-50', 'cursor-not-allowed');
+
+    // Actualizar chip informativo en Paso 2
+    const step2ProDot = document.getElementById('step-2-pro-dot');
+    step2ProChip.className = 'hidden sm:inline-flex items-center gap-2 px-3 py-1 rounded-full text-xs font-semibold bg-slate-100 text-slate-800 border border-slate-200';
+    if (step2ProDot) step2ProDot.className = 'w-2 h-2 rounded-full bg-slate-600';
+    step2ProName.textContent = pro === 'felipe'
+      ? 'Felipe Méndez · Quiropraxia & Kinesiología'
+      : 'Eduardo Lagos · Acupuntura & Medicina China';
+    step2ProChip.classList.remove('hidden');
+  }
+
+  proCards.forEach((card) => {
+    card.addEventListener('click', () => {
+      const pro = card.getAttribute('data-pro') as 'felipe' | 'eduardo';
+      selectProfessional(pro);
     });
   });
 
   btnStep1Next.addEventListener('click', () => {
     if (!selectedProfessionalId) return;
 
-    // Actualizar chip neutral en Paso 2
-    const step2ProDot = document.getElementById('step-2-pro-dot');
-    step2ProChip.className = 'hidden sm:inline-flex items-center gap-2 px-3 py-1 rounded-full text-xs font-semibold bg-slate-100 text-slate-800 border border-slate-200';
-    if (step2ProDot) step2ProDot.className = 'w-2 h-2 rounded-full bg-slate-600';
-    step2ProName.textContent = selectedProfessionalId === 'felipe'
-      ? 'Felipe Méndez · Quiropraxia & Kinesiología'
-      : 'Eduardo Lagos · Acupuntura & Medicina China';
-    step2ProChip.classList.remove('hidden');
-
-    // Resetear hora al entrar al paso 2 y bloquear botón continuar
     selectedSlotUtc = null;
     updateStep2NextButton();
-    renderDatePills();
-    loadSlots();
     goToStep(2);
+    loadWeekAvailability(selectedProfessionalId);
   });
 
   // ==========================================================================
@@ -906,33 +945,52 @@ import { professionals } from '../data/professionals';
 
   function getAvailableDates(): Array<{ dateStr: string; weekday: number; dayNum: number; monthName: string }> {
     const list: Array<{ dateStr: string; weekday: number; dayNum: number; monthName: string }> = [];
-    const now = new Date();
     const monthsEs = ['Ene', 'Feb', 'Mar', 'Abr', 'May', 'Jun', 'Jul', 'Ago', 'Sep', 'Oct', 'Nov', 'Dic'];
+    const now = new Date();
+
     for (let i = 1; i <= 7; i++) {
-      const date = new Date(now.getTime() + i * 24 * 60 * 60 * 1000);
-      const yyyy = date.getFullYear();
-      const mm = String(date.getMonth() + 1).padStart(2, '0');
-      const dd = String(date.getDate()).padStart(2, '0');
+      const targetTime = new Date(now.getTime() + i * 24 * 60 * 60 * 1000);
+      const parts = new Intl.DateTimeFormat('en-US', {
+        timeZone: 'America/Santiago',
+        year: 'numeric',
+        month: 'numeric',
+        day: 'numeric'
+      }).formatToParts(targetTime);
+
+      const partMap: Record<string, number> = {};
+      for (const p of parts) {
+        if (p.type !== 'literal') partMap[p.type] = parseInt(p.value, 10);
+      }
+
+      const yyyy = partMap.year;
+      const mm = String(partMap.month).padStart(2, '0');
+      const dd = String(partMap.day).padStart(2, '0');
       const dateStr = `${yyyy}-${mm}-${dd}`;
-      const weekday = date.getDay();
+
+      const noonUtc = new Date(Date.UTC(yyyy, partMap.month - 1, partMap.day, 12, 0, 0));
+      const weekday = noonUtc.getUTCDay();
 
       if (weekday === 0) continue; // Cerrado domingos
 
       list.push({
         dateStr,
         weekday,
-        dayNum: date.getDate(),
-        monthName: monthsEs[date.getMonth()]
+        dayNum: partMap.day,
+        monthName: monthsEs[partMap.month - 1]
       });
     }
     return list;
   }
 
-  function applyDatePillClasses(btn: HTMLButtonElement, isSelected: boolean, triggerPop = false) {
+  function applyDatePillClasses(btn: HTMLButtonElement, isSelected: boolean, triggerPop = false, isFull = false) {
     const popClass = triggerPop ? 'animate-pill-pop' : '';
-    btn.className = isSelected
-      ? `date-pill shrink-0 flex flex-col items-center justify-center w-16 h-18 py-2.5 px-2 rounded-xl border-2 select-none text-center cursor-pointer font-medium transition-all duration-150 ease-out border-slate-900 bg-slate-900 text-white shadow-xs active:scale-[0.94] ${popClass}`
-      : 'date-pill shrink-0 flex flex-col items-center justify-center w-16 h-18 py-2.5 px-2 rounded-xl border-2 border-slate-200 bg-white hover:border-slate-400 hover:scale-[1.02] text-slate-700 select-none text-center cursor-pointer transition-all duration-150 ease-out active:scale-[0.94]';
+    if (isSelected) {
+      btn.className = `date-pill shrink-0 flex flex-col items-center justify-center w-16 h-20 py-2.5 px-2 rounded-xl border-2 select-none text-center cursor-pointer font-medium transition-all duration-150 ease-out border-slate-900 bg-slate-900 text-white shadow-xs active:scale-[0.94] ${popClass}`;
+    } else if (isFull) {
+      btn.className = 'date-pill shrink-0 flex flex-col items-center justify-center w-16 h-20 py-2.5 px-2 rounded-xl border border-dashed border-slate-200 bg-slate-50 text-slate-400 select-none text-center cursor-pointer transition-all duration-150 ease-out hover:border-slate-300';
+    } else {
+      btn.className = 'date-pill shrink-0 flex flex-col items-center justify-center w-16 h-20 py-2.5 px-2 rounded-xl border-2 border-slate-200 bg-white hover:border-slate-400 hover:scale-[1.02] text-slate-700 select-none text-center cursor-pointer transition-all duration-150 ease-out active:scale-[0.94]';
+    }
   }
 
   function renderDatePills() {
@@ -940,7 +998,7 @@ import { professionals } from '../data/professionals';
     const daysEs = ['Dom', 'Lun', 'Mar', 'Mié', 'Jue', 'Vie', 'Sáb'];
     const availableDates = getAvailableDates();
 
-    if (!selectedDateString || !availableDates.some(d => d.dateStr === selectedDateString)) {
+    if (!selectedDateString || !availableDates.some((d) => d.dateStr === selectedDateString)) {
       if (availableDates.length > 0) {
         selectedDateString = availableDates[0].dateStr;
       }
@@ -951,27 +1009,37 @@ import { professionals } from '../data/professionals';
       btn.type = 'button';
       btn.setAttribute('data-date-str', d.dateStr);
       const isSelected = selectedDateString === d.dateStr;
-      applyDatePillClasses(btn, isSelected);
+
+      const daySlots = slotsByDate.get(d.dateStr) || [];
+      const freeCount = daySlots.filter((s) => s.available !== false).length;
+      const isCompletelyFull = daySlots.length > 0 && freeCount === 0;
+
+      applyDatePillClasses(btn, isSelected, false, isCompletelyFull);
       btn.classList.add('animate-slot-enter');
-      btn.style.animationDelay = `${index * 35}ms`;
+      btn.style.animationDelay = `${index * 30}ms`;
 
       btn.innerHTML = `
         <span class="text-[10px] font-semibold tracking-wider uppercase opacity-80">${daysEs[d.weekday]}</span>
         <span class="text-lg font-bold leading-none my-1">${d.dayNum}</span>
         <span class="text-[10px] font-medium opacity-80">${d.monthName}</span>
+        ${isCompletelyFull ? '<span class="text-[9px] font-bold text-red-500 uppercase tracking-tighter mt-0.5">Lleno</span>' : ''}
       `;
 
       btn.addEventListener('click', () => {
         if (selectedDateString === d.dateStr) return;
         selectedDateString = d.dateStr;
-        selectedSlotUtc = null; // Reiniciar selección de hora al cambiar día
+        selectedSlotUtc = null;
         updateStep2NextButton();
-        // Aplicar clase activa con feedback táctil inmediato
+
         datePillsRow.querySelectorAll<HTMLButtonElement>('.date-pill').forEach((p) => {
-          const isPillSelected = p.getAttribute('data-date-str') === selectedDateString;
-          applyDatePillClasses(p, isPillSelected, isPillSelected);
+          const pDate = p.getAttribute('data-date-str')!;
+          const pSlots = slotsByDate.get(pDate) || [];
+          const pFull = pSlots.length > 0 && pSlots.filter((s) => s.available !== false).length === 0;
+          const isPillSelected = pDate === selectedDateString;
+          applyDatePillClasses(p, isPillSelected, isPillSelected, pFull);
         });
-        loadSlots();
+
+        renderSlotsForSelectedDate();
       });
 
       datePillsRow.appendChild(btn);
@@ -1009,132 +1077,162 @@ import { professionals } from '../data/professionals';
     }
   }
 
-  async function loadSlots() {
-    if (!selectedProfessionalId || !selectedDateString) return;
+  function renderSlotsForSelectedDate() {
+    if (!selectedDateString) return;
 
-    step2DateLabel.textContent = `Fecha: ${selectedDateString}`;
+    const [y, m, d] = selectedDateString.split('-').map(Number);
+    const dateObj = new Date(Date.UTC(y, m - 1, d, 12, 0, 0));
+    const friendlyDate = dateObj.toLocaleDateString('es-CL', {
+      weekday: 'long',
+      day: 'numeric',
+      month: 'long'
+    });
+    step2DateLabel.textContent = friendlyDate.charAt(0).toUpperCase() + friendlyDate.slice(1);
+
     slotsButtonsGrid.innerHTML = '';
-    slotsSkeleton.classList.remove('hidden');
+    const displaySlots = slotsByDate.get(selectedDateString) || [];
+
+    if (displaySlots.length === 0) {
+      slotsNoneBox.classList.remove('hidden');
+      selectedSlotUtc = null;
+      updateStep2NextButton();
+      return;
+    }
+
     slotsNoneBox.classList.add('hidden');
-    updateStep2NextButton(); // Garantizar que continúe bloqueado mientras carga
+
+    const hasAnyAvailable = displaySlots.some((s) => s.available !== false);
+    if (!hasAnyAvailable) {
+      const fullNotice = document.createElement('div');
+      fullNotice.className = 'col-span-full py-3 px-4 rounded-xl bg-amber-50 border border-amber-200/80 text-amber-800 text-xs flex items-center gap-2.5 mb-1';
+      fullNotice.innerHTML = `
+        <svg class="w-4 h-4 text-amber-600 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"/>
+        </svg>
+        <span class="font-medium">Todos los horarios de este día ya han sido reservados. Por favor selecciona otra fecha arriba.</span>
+      `;
+      slotsButtonsGrid.appendChild(fullNotice);
+    }
+
+    displaySlots.forEach((slot, index) => {
+      const slotDate = new Date(slot.startAt);
+      const timeStr = slotDate.toLocaleTimeString('es-CL', {
+        timeZone: 'America/Santiago',
+        hour: '2-digit',
+        minute: '2-digit',
+        hour12: false
+      });
+      const isOccupied = slot.available === false;
+
+      const btn = document.createElement('button');
+      btn.type = 'button';
+      btn.setAttribute('data-slot-utc', slot.startAt);
+
+      btn.classList.add('animate-slot-enter');
+      btn.style.animationDelay = `${index * 22}ms`;
+
+      if (isOccupied) {
+        if (selectedSlotUtc === slot.startAt) {
+          selectedSlotUtc = null;
+        }
+        btn.disabled = true;
+        btn.setAttribute('aria-disabled', 'true');
+        btn.setAttribute('aria-label', `${timeStr} hrs, hora ya reservada por otro paciente`);
+        btn.title = 'Esta hora ya fue reservada por otro paciente';
+        btn.className = 'slot-btn-occupied min-h-[64px] py-2.5 px-3 rounded-xl border border-dashed border-slate-300/80 bg-slate-100/70 text-slate-400 select-none text-center flex flex-col items-center justify-center cursor-not-allowed opacity-80';
+        btn.innerHTML = `
+          <span class="text-sm font-semibold text-slate-400 line-through leading-tight">${timeStr} hrs</span>
+          <span class="inline-flex items-center gap-1 text-[10px] font-bold text-slate-400 uppercase tracking-wider mt-1 px-1.5 py-0.5 rounded bg-slate-200/60">
+            <svg class="w-2.5 h-2.5 text-slate-400 shrink-0" fill="currentColor" viewBox="0 0 20 20" aria-hidden="true">
+              <path fill-rule="evenodd" d="M5 9V7a5 5 0 0110 0v2a2 2 0 012 2v5a2 2 0 01-2 2H5a2 2 0 01-2-2v-5a2 2 0 012-2zm8-2v2H7V7a3 3 0 016 0z" clip-rule="evenodd"/>
+            </svg>
+            <span>Reservada</span>
+          </span>
+        `;
+      } else {
+        const isSelected = selectedSlotUtc === slot.startAt;
+        applySlotButtonClasses(btn, isSelected);
+
+        btn.innerHTML = `
+          <span class="text-sm font-bold leading-tight">${timeStr} hrs</span>
+        `;
+
+        btn.addEventListener('click', () => {
+          selectedSlotUtc = slot.startAt;
+          updateSlotButtons(slot.startAt);
+          updateStep2NextButton();
+        });
+      }
+
+      slotsButtonsGrid.appendChild(btn);
+    });
+
+    updateStep2NextButton();
+  }
+
+  async function loadWeekAvailability(proId: 'felipe' | 'eduardo') {
+    // Si ya tenemos la disponibilidad cargada para este profesional, reusar inmediatamente sin red
+    if (loadedAvailabilityForPro === proId && slotsByDate.size > 0) {
+      step2Loading.classList.add('hidden');
+      step2Content.classList.remove('hidden');
+      renderDatePills();
+      renderSlotsForSelectedDate();
+      return;
+    }
+
+    // Mostrar estado de carga coordinado y ocultar contenido hasta que todo esté listo
+    step2Loading.classList.remove('hidden');
+    step2Content.classList.add('hidden');
+    slotsButtonsGrid.innerHTML = '';
+    updateStep2NextButton();
+
+    const availableDates = getAvailableDates();
+    if (availableDates.length === 0) {
+      step2Loading.classList.add('hidden');
+      step2Content.classList.remove('hidden');
+      return;
+    }
+
+    const fromDate = availableDates[0].dateStr;
+    const lastDate = availableDates[availableDates.length - 1].dateStr;
+    const lastDateObj = new Date(`${lastDate}T12:00:00Z`);
+    const nextToDate = new Date(lastDateObj.getTime() + 24 * 3600 * 1000);
+    const toDate = `${nextToDate.getUTCFullYear()}-${String(nextToDate.getUTCMonth() + 1).padStart(2, '0')}-${String(nextToDate.getUTCDate()).padStart(2, '0')}`;
 
     try {
-      const nextDate = new Date(new Date(selectedDateString + 'T12:00:00Z').getTime() + 24 * 3600 * 1000);
-      const toDateStr = `${nextDate.getUTCFullYear()}-${String(nextDate.getUTCMonth() + 1).padStart(2, '0')}-${String(nextDate.getUTCDate()).padStart(2, '0')}`;
+      const res = await AgendamientoClient.getAvailability(proId, fromDate, toDate);
+      slotsByDate.clear();
+      loadedAvailabilityForPro = proId;
 
-      const res = await AgendamientoClient.getAvailability(selectedProfessionalId, selectedDateString, toDateStr);
-      slotsSkeleton.classList.add('hidden');
-
-      let displaySlots: Array<{ startAt: string; endAt: string; available?: boolean }> = [];
-      if (res.allSlots && res.allSlots.length > 0) {
-        displaySlots = res.allSlots;
-      } else if (res.slots) {
-        // Fallback defensivo si el backend solo entrega slots libres
-        const dateObj = new Date(selectedDateString + 'T12:00:00Z');
-        const weekday = dateObj.getUTCDay();
-        if (weekday !== 0) {
-          const hours = weekday === 6
-            ? [9, 10, 11, 12, 13]
-            : [9, 10, 11, 12, 14, 15, 16, 17, 18, 19, 20];
-
-          displaySlots = hours.map((h) => {
-            const matchingSlot = res.slots.find((s) => {
-              const slotHour = new Date(s.startAt).toLocaleTimeString('es-CL', {
-                timeZone: 'America/Santiago',
-                hour: 'numeric',
-                hour12: false
-              });
-              return parseInt(slotHour, 10) === h;
-            });
-
-            if (matchingSlot) {
-              return { ...matchingSlot, available: true };
-            }
-
-            const guessUtcHour = h + 3;
-            const startAt = `${selectedDateString}T${String(guessUtcHour).padStart(2, '0')}:00:00.000Z`;
-            const endAt = `${selectedDateString}T${String(guessUtcHour + 1).padStart(2, '0')}:00:00.000Z`;
-            return { startAt, endAt, available: false };
-          });
-        }
-      }
-
-      if (displaySlots.length === 0) {
-        slotsNoneBox.classList.remove('hidden');
-        selectedSlotUtc = null;
-        updateStep2NextButton();
-        return;
-      }
-
-      slotsNoneBox.classList.add('hidden');
-
-      // Si todos los slots del día están ocupados, mostrar aviso informativo pero mantener los botones visibles
-      const hasAnyAvailable = displaySlots.some((s) => s.available !== false);
-      if (!hasAnyAvailable) {
-        const fullNotice = document.createElement('div');
-        fullNotice.className = 'col-span-full py-3 px-4 rounded-xl bg-amber-50 border border-amber-200/80 text-amber-800 text-xs flex items-center gap-2.5 mb-1';
-        fullNotice.innerHTML = `
-          <svg class="w-4 h-4 text-amber-600 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"/>
-          </svg>
-          <span class="font-medium">Todos los horarios de esta fecha ya han sido reservados. Por favor selecciona otro día en el calendario.</span>
-        `;
-        slotsButtonsGrid.appendChild(fullNotice);
-      }
-
-      displaySlots.forEach((slot, index) => {
+      const all = res.allSlots || [];
+      for (const slot of all) {
         const d = new Date(slot.startAt);
-        const timeStr = d.toLocaleTimeString('es-CL', { timeZone: 'America/Santiago', hour: '2-digit', minute: '2-digit', hour12: false });
-        const isOccupied = slot.available === false;
+        const slotDateStr = new Intl.DateTimeFormat('en-CA', {
+          timeZone: 'America/Santiago',
+          year: 'numeric',
+          month: '2-digit',
+          day: '2-digit'
+        }).format(d);
 
-        const btn = document.createElement('button');
-        btn.type = 'button';
-        btn.setAttribute('data-slot-utc', slot.startAt);
-
-        // Cascada escalonada (staggered entrance)
-        btn.classList.add('animate-slot-enter');
-        btn.style.animationDelay = `${index * 24}ms`;
-
-        if (isOccupied) {
-          if (selectedSlotUtc === slot.startAt) {
-            selectedSlotUtc = null;
-          }
-          btn.disabled = true;
-          btn.setAttribute('aria-disabled', 'true');
-          btn.setAttribute('aria-label', `${timeStr} hrs, hora ya reservada por otro paciente`);
-          btn.title = 'Esta hora ya fue reservada por otro paciente';
-          btn.className = 'slot-btn-occupied min-h-[64px] py-2.5 px-3 rounded-xl border border-dashed border-slate-300/80 bg-slate-100/70 text-slate-400 select-none text-center flex flex-col items-center justify-center cursor-not-allowed opacity-80';
-          btn.innerHTML = `
-            <span class="text-sm font-semibold text-slate-400 line-through leading-tight">${timeStr} hrs</span>
-            <span class="inline-flex items-center gap-1 text-[10px] font-bold text-slate-400 uppercase tracking-wider mt-1 px-1.5 py-0.5 rounded bg-slate-200/60">
-              <svg class="w-2.5 h-2.5 text-slate-400 shrink-0" fill="currentColor" viewBox="0 0 20 20" aria-hidden="true">
-                <path fill-rule="evenodd" d="M5 9V7a5 5 0 0110 0v2a2 2 0 012 2v5a2 2 0 01-2 2H5a2 2 0 01-2-2v-5a2 2 0 012-2zm8-2v2H7V7a3 3 0 016 0z" clip-rule="evenodd"/>
-              </svg>
-              <span>Reservada</span>
-            </span>
-          `;
-        } else {
-          const isSelected = selectedSlotUtc === slot.startAt;
-          applySlotButtonClasses(btn, isSelected);
-
-          btn.innerHTML = `
-            <span class="text-sm font-bold leading-tight">${timeStr} hrs</span>
-          `;
-
-          btn.addEventListener('click', () => {
-            selectedSlotUtc = slot.startAt;
-            updateSlotButtons(slot.startAt);
-            updateStep2NextButton();
-          });
+        if (!slotsByDate.has(slotDateStr)) {
+          slotsByDate.set(slotDateStr, []);
         }
+        slotsByDate.get(slotDateStr)!.push(slot);
+      }
 
-        slotsButtonsGrid.appendChild(btn);
-      });
+      // Si la fecha elegida no existe en este rango, auto-seleccionar la primera con cupos libres
+      if (!selectedDateString || !availableDates.some((d) => d.dateStr === selectedDateString)) {
+        const firstAvailable = availableDates.find((d) => {
+          const slots = slotsByDate.get(d.dateStr) || [];
+          return slots.some((s) => s.available !== false);
+        });
+        selectedDateString = firstAvailable ? firstAvailable.dateStr : availableDates[0].dateStr;
+      }
 
-      // Asegurar que el botón siguiente refleje el estado
-      updateStep2NextButton();
-    } catch {
-      slotsSkeleton.classList.add('hidden');
+      renderDatePills();
+      renderSlotsForSelectedDate();
+    } catch (err) {
+      console.error('Error al cargar disponibilidad de la semana:', err);
       slotsButtonsGrid.innerHTML = `
         <p class="col-span-full text-xs text-red-600 py-4 text-center font-medium">
           Error al consultar horarios disponibles. Intenta nuevamente.
@@ -1142,6 +1240,13 @@ import { professionals } from '../data/professionals';
       `;
       selectedSlotUtc = null;
       updateStep2NextButton();
+    } finally {
+      // Revelación suave coordinada del contenido ya renderizado
+      step2Loading.classList.add('hidden');
+      step2Content.classList.remove('hidden');
+      step2Content.classList.remove('animate-step');
+      void step2Content.offsetWidth;
+      step2Content.classList.add('animate-step');
     }
   }
 
@@ -1599,17 +1704,17 @@ import { professionals } from '../data/professionals';
     });
   }
 
-  // Arrancar en Paso 1 (o Paso 2 directo si viene ?pro=felipe o ?pro=eduardo)
-  renderDatePills();
+  // Inicialización de sesión y paso inicial
   initSession();
 
   const urlParams = new URLSearchParams(window.location.search);
   const paramPro = urlParams.get('pro');
   if (paramPro === 'felipe' || paramPro === 'eduardo') {
     selectProfessional(paramPro);
-    goToStep(2);
+    goToStep(2, true);
+    loadWeekAvailability(paramPro);
   } else {
-    goToStep(1);
+    goToStep(1, true);
   }
 </script>
 
@@ -1619,15 +1724,31 @@ import { professionals } from '../data/professionals';
     --ease-spring: cubic-bezier(0.34, 1.56, 0.64, 1);
   }
 
+  /* Suave entrada unificada del wizard al cargar la página (sin parpadeos) */
+  @keyframes wizardEntrance {
+    0% {
+      opacity: 0;
+      transform: translateY(6px);
+    }
+    100% {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+  #wizard-container {
+    animation: wizardEntrance 0.3s var(--ease-out-expo) both;
+  }
+
   /* Transición fluida y física entre pasos */
   @keyframes stepFadeIn {
     0% {
       opacity: 0;
-      transform: translateY(10px) scale(0.99);
+      transform: translateY(6px);
     }
     100% {
       opacity: 1;
-      transform: translateY(0) scale(1);
+      transform: translateY(0);
     }
   }
 
