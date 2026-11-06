@@ -107,6 +107,7 @@ export interface SavePatientProfileRequest {
 export interface TimeSlot {
   startAt: string; // RFC3339 UTC ('2026-11-06T12:00:00Z')
   endAt: string;   // RFC3339 UTC (+3600s)
+  available?: boolean; // Indicador de disponibilidad (true = libre, false = ocupado por otro paciente/bloqueo)
 }
 
 export interface AvailabilityQuery {
@@ -122,7 +123,8 @@ export interface AvailabilityResponse {
     from: string; // YYYY-MM-DD
     to: string;   // YYYY-MM-DD
   };
-  slots: TimeSlot[];
+  slots: TimeSlot[]; // Cupos disponibles (conservado para compatibilidad S09)
+  allSlots?: TimeSlot[]; // Lista completa de turnos oficiales de la jornada con flag available
   generatedAt: string; // RFC3339 UTC
 }
 

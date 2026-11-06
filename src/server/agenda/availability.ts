@@ -69,6 +69,7 @@ export async function getAvailableSlots(
         to: params.toDate
       },
       slots: [],
+      allSlots: [],
       generatedAt: new Date(now * 1000).toISOString()
     };
   }
@@ -91,18 +92,27 @@ export async function getAvailableSlots(
 
   // 3. Filtrar los slots que colisionen con citas activas o bloqueos
   const availableSlots: TimeSlot[] = [];
+  const allSlots: TimeSlot[] = [];
 
   for (const slot of candidateSlots) {
     const isOccupied = busyEntries.some(
       (busy) => busy.start_at < slot.endAt && busy.end_at > slot.startAt
     );
 
+    const slotPayload: TimeSlot = {
+      startAt: new Date(slot.startAt * 1000).toISOString(),
+      endAt: new Date(slot.endAt * 1000).toISOString(),
+      available: !isOccupied
+    };
+
     if (!isOccupied) {
       availableSlots.push({
-        startAt: new Date(slot.startAt * 1000).toISOString(),
-        endAt: new Date(slot.endAt * 1000).toISOString()
+        startAt: slotPayload.startAt,
+        endAt: slotPayload.endAt
       });
     }
+
+    allSlots.push(slotPayload);
   }
 
   return {
@@ -113,6 +123,7 @@ export async function getAvailableSlots(
       to: params.toDate
     },
     slots: availableSlots,
+    allSlots,
     generatedAt: new Date(now * 1000).toISOString()
   };
 }

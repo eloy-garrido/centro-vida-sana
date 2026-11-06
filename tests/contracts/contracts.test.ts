@@ -15,7 +15,9 @@ import {
   isAlignedToHour,
   calculateSlotEnd,
   isAllowedProfessional,
-  validateStrictPayload
+  validateStrictPayload,
+  formatWhatsAppPhone,
+  buildWhatsAppLink
 } from '../../src/lib/agendamiento/validation.ts';
 
 import {
@@ -223,3 +225,50 @@ test('Profesionales permitidos: exactamente felipe y eduardo', () => {
   assert.strictEqual(isAllowedProfessional('juan'), false);
   assert.strictEqual(isAllowedProfessional(''), false);
 });
+
+// ============================================================================
+// 6. TESTS DE CONTACTO WHATSAPP (wa.me)
+// ============================================================================
+
+test('WhatsApp: normalización de teléfonos chilenos e internacionales para wa.me', () => {
+  // Móvil chileno estándar con código país
+  assert.strictEqual(formatWhatsAppPhone('+56 9 7370 0616'), '56973700616');
+  assert.strictEqual(formatWhatsAppPhone('+56973700616'), '56973700616');
+  assert.strictEqual(formatWhatsAppPhone('+56-9-7370-0616'), '56973700616');
+
+  // Móvil chileno 9 dígitos sin código país (9XXXXXXXX)
+  assert.strictEqual(formatWhatsAppPhone('973700616'), '56973700616');
+  assert.strictEqual(formatWhatsAppPhone('9 7370 0616'), '56973700616');
+
+  // Marcación local 09XXXXXXXX
+  assert.strictEqual(formatWhatsAppPhone('09 7370 0616'), '56973700616');
+
+  // Teléfono 8 dígitos
+  assert.strictEqual(formatWhatsAppPhone('73700616'), '56973700616');
+
+  // Número internacional
+  assert.strictEqual(formatWhatsAppPhone('+33 1 23 45 67 89'), '33123456789');
+
+  // Inválidos o incompletos
+  assert.strictEqual(formatWhatsAppPhone(''), null);
+  assert.strictEqual(formatWhatsAppPhone('abc'), null);
+  assert.strictEqual(formatWhatsAppPhone('12345'), null);
+  assert.strictEqual(formatWhatsAppPhone(undefined), null);
+});
+
+test('WhatsApp: generación de enlaces wa.me con o sin mensaje predefinido', () => {
+  // Enlace simple
+  const linkSimple = buildWhatsAppLink('+56 9 7370 0616');
+  assert.strictEqual(linkSimple, 'https://wa.me/56973700616');
+
+  // Enlace con texto codificado
+  const linkWithText = buildWhatsAppLink('+56 9 7370 0616', 'Hola Camila, te contactamos de Centro Vida Sana');
+  assert.strictEqual(
+    linkWithText,
+    'https://wa.me/56973700616?text=Hola%20Camila%2C%20te%20contactamos%20de%20Centro%20Vida%20Sana'
+  );
+
+  // Teléfono inválido retorna null
+  assert.strictEqual(buildWhatsAppLink('123', 'Mensaje'), null);
+});
+

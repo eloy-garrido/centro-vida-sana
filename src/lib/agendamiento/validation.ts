@@ -215,3 +215,48 @@ export function validateStrictPayload<T extends Record<string, any>>(
 
   return { valid: true, sanitized: obj as T };
 }
+
+// ============================================================================
+// 6. ENLACES DE CONTACTO WHATSAPP (wa.me)
+// ============================================================================
+
+/**
+ * Normaliza un número telefónico al formato numérico internacional requerido por WhatsApp (wa.me).
+ * Elimina caracteres no numéricos y antepone el código de país chileno 56 cuando corresponde.
+ */
+export function formatWhatsAppPhone(phone?: string): string | null {
+  if (!phone || typeof phone !== 'string') return null;
+  let digits = phone.replace(/\D/g, '');
+  if (!digits) return null;
+
+  // Teléfono chileno estándar de 9 dígitos (móvil 9XXXXXXXX o fijo 2XXXXXXXX)
+  if (digits.length === 9) {
+    digits = '56' + digits;
+  } else if (digits.length === 8) {
+    // 8 dígitos antiguos sin 9 inicial
+    digits = '569' + digits;
+  } else if (digits.length === 10 && digits.startsWith('09')) {
+    // Formato discado local 09XXXXXXXX -> 569XXXXXXXX
+    digits = '56' + digits.slice(1);
+  }
+
+  // Si tiene menos de 8 dígitos, no es un teléfono válido
+  if (digits.length < 8) return null;
+
+  return digits;
+}
+
+/**
+ * Genera una URL canónica para WhatsApp (https://wa.me/<digits>?text=...).
+ * Si se incluye texto, se codifica adecuadamente en el query parameter.
+ */
+export function buildWhatsAppLink(phone?: string, text?: string): string | null {
+  const digits = formatWhatsAppPhone(phone);
+  if (!digits) return null;
+
+  if (text && text.trim()) {
+    return `https://wa.me/${digits}?text=${encodeURIComponent(text.trim())}`;
+  }
+  return `https://wa.me/${digits}`;
+}
+

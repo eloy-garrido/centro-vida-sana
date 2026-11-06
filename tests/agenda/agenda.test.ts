@@ -120,6 +120,8 @@ test('SLOT-01 / S03: Disponibilidad descuenta citas activas y no expone PII', as
 
   // Viernes tiene 11 slots
   assert.strictEqual(initial.slots.length, 11);
+  assert.strictEqual(initial.allSlots?.length, 11);
+  assert.ok(initial.allSlots?.every((s) => s.available === true));
 
   // 2. Insertar una cita activa para Felipe a las 10:00 hora de Chile
   const slot10Sec = chileLocalToUtcSeconds(2026, 11, 6, 10, 0);
@@ -131,7 +133,7 @@ test('SLOT-01 / S03: Disponibilidad descuenta citas activas y no expone PII', as
     slot10Sec + 3600
   );
 
-  // 3. Consultar nuevamente disponibilidad de Felipe: debe tener 10 slots (el de las 10:00 ya no está)
+  // 3. Consultar nuevamente disponibilidad de Felipe: debe tener 10 slots libres (el de las 10:00 ya no está en slots)
   const afterBooking = await getAvailableSlots(adapter, {
     professionalId: 'felipe',
     fromDate,
@@ -139,6 +141,13 @@ test('SLOT-01 / S03: Disponibilidad descuenta citas activas y no expone PII', as
     nowSeconds: nowChile
   });
   assert.strictEqual(afterBooking.slots.length, 10);
+
+  // allSlots contiene los 11 turnos oficiales del día, señalando el de las 10:00 como available: false
+  assert.strictEqual(afterBooking.allSlots?.length, 11);
+  const occupiedSlots = afterBooking.allSlots?.filter((s) => s.available === false) || [];
+  assert.strictEqual(occupiedSlots.length, 1);
+  const slot10Iso = new Date(slot10Sec * 1000).toISOString();
+  assert.strictEqual(occupiedSlots[0].startAt, slot10Iso);
 
   // 4. Consultar disponibilidad de Eduardo: DEBE seguir teniendo 11 slots (agendas independientes)
   const eduardoSlots = await getAvailableSlots(adapter, {

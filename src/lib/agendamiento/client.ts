@@ -4,6 +4,7 @@
  */
 
 import type {
+  AvailabilityResponse,
   CreateBookingRequest,
   MutationResult,
   PatientProfilePayload,
@@ -123,13 +124,9 @@ export const AgendamientoClient = {
     professionalId: ProfessionalId,
     fromDate: string,
     toDate: string
-  ): Promise<{
-    professionalId: ProfessionalId;
-    timeZone: string;
-    slots: Array<{ startAt: string; endAt: string }>;
-  }> {
+  ): Promise<AvailabilityResponse> {
     const query = new URLSearchParams({ professionalId, from: fromDate, to: toDate });
-    return requestJson(`/api/availability?${query.toString()}`);
+    return requestJson<AvailabilityResponse>(`/api/availability?${query.toString()}`);
   },
 
   /**

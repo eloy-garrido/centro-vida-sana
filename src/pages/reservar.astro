@@ -967,8 +967,8 @@ import { professionals } from '../data/professionals';
   function applySlotButtonClasses(btn: HTMLButtonElement, isSelected: boolean, triggerPop = false) {
     const popClass = triggerPop ? 'animate-slot-pop' : '';
     btn.className = isSelected
-      ? `slot-btn py-3.5 px-3 rounded-xl border-2 font-semibold text-xs transition-all duration-150 ease-out text-center flex flex-col items-center justify-center cursor-pointer transform scale-[1.02] border-slate-900 bg-slate-900 text-white shadow-md ring-2 ring-slate-900 ring-offset-2 active:scale-[0.97] ${popClass}`
-      : 'slot-btn py-3.5 px-3 rounded-xl border-2 font-semibold text-xs transition-all duration-150 ease-out text-center flex flex-col items-center justify-center border-slate-200 hover:border-slate-800 hover:scale-[1.02] hover:bg-slate-50 bg-white text-slate-800 cursor-pointer active:scale-[0.95]';
+      ? `slot-btn min-h-[64px] py-3.5 px-3 rounded-xl border-2 font-semibold text-xs transition-all duration-150 ease-out text-center flex flex-col items-center justify-center cursor-pointer transform scale-[1.02] border-slate-900 bg-slate-900 text-white shadow-md ring-2 ring-slate-900 ring-offset-2 active:scale-[0.97] ${popClass}`
+      : 'slot-btn min-h-[64px] py-3.5 px-3 rounded-xl border-2 font-semibold text-xs transition-all duration-150 ease-out text-center flex flex-col items-center justify-center border-slate-200 hover:border-slate-800 hover:scale-[1.02] hover:bg-slate-50 bg-white text-slate-800 cursor-pointer active:scale-[0.95]';
   }
 
   function updateSlotButtons(triggeredSlotUtc: string | null = null) {
@@ -1011,7 +1011,41 @@ import { professionals } from '../data/professionals';
       const res = await AgendamientoClient.getAvailability(selectedProfessionalId, selectedDateString, toDateStr);
       slotsSkeleton.classList.add('hidden');
 
-      if (!res.slots || res.slots.length === 0) {
+      let displaySlots: Array<{ startAt: string; endAt: string; available?: boolean }> = [];
+      if (res.allSlots && res.allSlots.length > 0) {
+        displaySlots = res.allSlots;
+      } else if (res.slots) {
+        // Fallback defensivo si el backend solo entrega slots libres
+        const dateObj = new Date(selectedDateString + 'T12:00:00Z');
+        const weekday = dateObj.getUTCDay();
+        if (weekday !== 0) {
+          const hours = weekday === 6
+            ? [9, 10, 11, 12, 13]
+            : [9, 10, 11, 12, 14, 15, 16, 17, 18, 19, 20];
+
+          displaySlots = hours.map((h) => {
+            const matchingSlot = res.slots.find((s) => {
+              const slotHour = new Date(s.startAt).toLocaleTimeString('es-CL', {
+                timeZone: 'America/Santiago',
+                hour: 'numeric',
+                hour12: false
+              });
+              return parseInt(slotHour, 10) === h;
+            });
+
+            if (matchingSlot) {
+              return { ...matchingSlot, available: true };
+            }
+
+            const guessUtcHour = h + 3;
+            const startAt = `${selectedDateString}T${String(guessUtcHour).padStart(2, '0')}:00:00.000Z`;
+            const endAt = `${selectedDateString}T${String(guessUtcHour + 1).padStart(2, '0')}:00:00.000Z`;
+            return { startAt, endAt, available: false };
+          });
+        }
+      }
+
+      if (displaySlots.length === 0) {
         slotsNoneBox.classList.remove('hidden');
         selectedSlotUtc = null;
         updateStep2NextButton();
@@ -1020,29 +1054,65 @@ import { professionals } from '../data/professionals';
 
       slotsNoneBox.classList.add('hidden');
 
-      res.slots.forEach((slot, index) => {
+      // Si todos los slots del día están ocupados, mostrar aviso informativo pero mantener los botones visibles
+      const hasAnyAvailable = displaySlots.some((s) => s.available !== false);
+      if (!hasAnyAvailable) {
+        const fullNotice = document.createElement('div');
+        fullNotice.className = 'col-span-full py-3 px-4 rounded-xl bg-amber-50 border border-amber-200/80 text-amber-800 text-xs flex items-center gap-2.5 mb-1';
+        fullNotice.innerHTML = `
+          <svg class="w-4 h-4 text-amber-600 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"/>
+          </svg>
+          <span class="font-medium">Todos los horarios de esta fecha ya han sido reservados. Por favor selecciona otro día en el calendario.</span>
+        `;
+        slotsButtonsGrid.appendChild(fullNotice);
+      }
+
+      displaySlots.forEach((slot, index) => {
         const d = new Date(slot.startAt);
         const timeStr = d.toLocaleTimeString('es-CL', { timeZone: 'America/Santiago', hour: '2-digit', minute: '2-digit', hour12: false });
+        const isOccupied = slot.available === false;
 
         const btn = document.createElement('button');
         btn.type = 'button';
         btn.setAttribute('data-slot-utc', slot.startAt);
-        const isSelected = selectedSlotUtc === slot.startAt;
-        applySlotButtonClasses(btn, isSelected);
 
         // Cascada escalonada (staggered entrance)
         btn.classList.add('animate-slot-enter');
-        btn.style.animationDelay = `${index * 28}ms`;
+        btn.style.animationDelay = `${index * 24}ms`;
 
-        btn.innerHTML = `
-          <span class="text-sm font-bold">${timeStr} hrs</span>
-        `;
+        if (isOccupied) {
+          if (selectedSlotUtc === slot.startAt) {
+            selectedSlotUtc = null;
+          }
+          btn.disabled = true;
+          btn.setAttribute('aria-disabled', 'true');
+          btn.setAttribute('aria-label', `${timeStr} hrs, hora ya reservada por otro paciente`);
+          btn.title = 'Esta hora ya fue reservada por otro paciente';
+          btn.className = 'slot-btn-occupied min-h-[64px] py-2.5 px-3 rounded-xl border border-dashed border-slate-300/80 bg-slate-100/70 text-slate-400 select-none text-center flex flex-col items-center justify-center cursor-not-allowed opacity-80';
+          btn.innerHTML = `
+            <span class="text-sm font-semibold text-slate-400 line-through leading-tight">${timeStr} hrs</span>
+            <span class="inline-flex items-center gap-1 text-[10px] font-bold text-slate-400 uppercase tracking-wider mt-1 px-1.5 py-0.5 rounded bg-slate-200/60">
+              <svg class="w-2.5 h-2.5 text-slate-400 shrink-0" fill="currentColor" viewBox="0 0 20 20" aria-hidden="true">
+                <path fill-rule="evenodd" d="M5 9V7a5 5 0 0110 0v2a2 2 0 012 2v5a2 2 0 01-2 2H5a2 2 0 01-2-2v-5a2 2 0 012-2zm8-2v2H7V7a3 3 0 016 0z" clip-rule="evenodd"/>
+              </svg>
+              <span>Reservada</span>
+            </span>
+          `;
+        } else {
+          const isSelected = selectedSlotUtc === slot.startAt;
+          applySlotButtonClasses(btn, isSelected);
 
-        btn.addEventListener('click', () => {
-          selectedSlotUtc = slot.startAt;
-          updateSlotButtons(slot.startAt);
-          updateStep2NextButton();
-        });
+          btn.innerHTML = `
+            <span class="text-sm font-bold leading-tight">${timeStr} hrs</span>
+          `;
+
+          btn.addEventListener('click', () => {
+            selectedSlotUtc = slot.startAt;
+            updateSlotButtons(slot.startAt);
+            updateStep2NextButton();
+          });
+        }
 
         slotsButtonsGrid.appendChild(btn);
       });

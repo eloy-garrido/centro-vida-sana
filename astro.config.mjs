@@ -8,7 +8,7 @@ function apiDevPlugin() {
       server.middlewares.use(async (req, res, next) => {
         if (req.url && (req.url.startsWith('/api/') || req.url.startsWith('/auth/'))) {
           try {
-            const { handleDevApiRequest } = await import('./src/server/dev-middleware.ts');
+            const { handleDevApiRequest } = await server.ssrLoadModule('./src/server/dev-middleware.ts');
             await handleDevApiRequest(req, res);
           } catch (err) {
             console.error('Dev API Middleware Error:', err);
