@@ -33,7 +33,8 @@ const isHome = activePage === 'home';
       <li><a href="/acupuntura" class={`nav-link ${activePage === 'acupuntura' ? 'active' : ''}`}>Acupuntura</a></li>
       <li><a href={isHome ? "#profesionales" : "/#profesionales"} class={`nav-link ${activePage === 'profesionales' ? 'active' : ''}`}>Profesionales</a></li>
       <li><a href={isHome ? "#patologias" : "/#patologias"} class="nav-link">Patologías</a></li>
-      <li><a href={isHome ? "#contacto" : "/#contacto"} class="nav-link nav-link-cta">Contacto</a></li>
+      <li><a href={isHome ? "#contacto" : "/#contacto"} class="nav-link">Contacto</a></li>
+      <li><a href="/reservar" class="nav-link nav-link-cta">Reservar Hora</a></li>
     </ul>
   </div>
 </nav>
