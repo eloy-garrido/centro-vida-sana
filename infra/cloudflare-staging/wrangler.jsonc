@@ -3,8 +3,12 @@
   "account_id": "21c858ed53ec9083b6fcd89d18c27372",
   "main": "worker.js",
   "compatibility_date": "2026-11-05",
-  "workers_dev": false,
+  "workers_dev": true,
   "preview_urls": false,
+  "assets": {
+    "directory": "../../dist",
+    "binding": "ASSETS"
+  },
   "observability": {
     "enabled": false
   },
