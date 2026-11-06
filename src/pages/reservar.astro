@@ -55,7 +55,7 @@ import { professionals } from '../data/professionals';
           Reserva tu Atención
         </h1>
         <p class="mt-2 text-sm sm:text-base text-slate-600 max-w-xl mx-auto leading-relaxed">
-          Atención personalizada en Box clínico privado en Los Armiños 1620, Temuco.
+          Atención personalizada en Los Armiños 1620, Temuco.
         </p>
       </header>
 
@@ -125,7 +125,7 @@ import { professionals } from '../data/professionals';
                   />
                   <div class="min-w-0">
                     <span class="inline-block px-2.5 py-0.5 rounded-full text-[10px] font-bold bg-[#EBF5F8] text-[#134E5E] border border-[#C2DFE8] mb-1">
-                      Box 1 · Quiropraxia & Kine
+                      Quiropraxia & Kinesiología
                     </span>
                     <h3 class="font-serif text-lg text-slate-900 font-bold leading-tight group-hover:text-slate-900 transition-colors">{professionals.felipe.name}</h3>
                     <p class="text-xs text-slate-600 font-medium">{professionals.felipe.title}</p>
@@ -136,7 +136,7 @@ import { professionals } from '../data/professionals';
                 </p>
               </div>
               <div class="pt-3 border-t border-slate-100 flex items-center justify-between text-xs">
-                <span class="text-slate-500 font-medium">Box 1 · Atención privada</span>
+                <span class="text-slate-500 font-medium">Atención personalizada</span>
                 <span class="select-indicator font-bold text-slate-600 opacity-75 group-hover:opacity-100 group-hover:translate-x-0.5 transition-all duration-150">Seleccionar →</span>
               </div>
             </label>
@@ -157,7 +157,7 @@ import { professionals } from '../data/professionals';
                   />
                   <div class="min-w-0">
                     <span class="inline-block px-2.5 py-0.5 rounded-full text-[10px] font-bold bg-[#EEF5F0] text-[#2E4D38] border border-[#CCE2D2] mb-1">
-                      Box 2 · Acupuntura & MTC
+                      Acupuntura & Medicina China
                     </span>
                     <h3 class="font-serif text-lg text-slate-900 font-bold leading-tight group-hover:text-slate-900 transition-colors">{professionals.eduardo.name}</h3>
                     <p class="text-xs text-slate-600 font-medium">{professionals.eduardo.title}</p>
@@ -168,7 +168,7 @@ import { professionals } from '../data/professionals';
                 </p>
               </div>
               <div class="pt-3 border-t border-slate-100 flex items-center justify-between text-xs">
-                <span class="text-slate-500 font-medium">Box 2 · Atención privada</span>
+                <span class="text-slate-500 font-medium">Atención personalizada</span>
                 <span class="select-indicator font-bold text-slate-600 opacity-75 group-hover:opacity-100 group-hover:translate-x-0.5 transition-all duration-150">Seleccionar →</span>
               </div>
             </label>
@@ -335,7 +335,7 @@ import { professionals } from '../data/professionals';
             <!-- Nombre Completo -->
             <div>
               <label for="step-input-name" class="block text-xs font-semibold text-slate-700 uppercase tracking-wider mb-1">
-                Nombre Completo del Paciente *
+                Nombre y Apellido del Paciente *
               </label>
               <input
                 type="text"
@@ -344,6 +344,7 @@ import { professionals } from '../data/professionals';
                 placeholder="Ej: Camila González Soto"
                 class="w-full px-3.5 py-2.5 rounded-xl border border-slate-300 text-slate-900 text-xs font-medium focus:outline-none focus:ring-2 focus:ring-slate-900 focus:border-slate-900 transition-colors"
               />
+              <p class="text-[11px] text-slate-500 mt-1">Ingresa al menos un nombre y un apellido para tu ficha clínica.</p>
               <p id="err-step-name" class="hidden text-xs text-red-600 mt-1 font-medium"></p>
             </div>
 
@@ -454,7 +455,7 @@ import { professionals } from '../data/professionals';
           <!-- Tarjeta de Resumen Clínico -->
           <div class="bg-slate-50 rounded-2xl p-5 border border-slate-200/80 space-y-4 mb-6 text-xs">
             <div class="flex items-center justify-between pb-3 border-b border-slate-200/60">
-              <span class="text-slate-500">Profesional y Box:</span>
+              <span class="text-slate-500">Profesional:</span>
               <span id="final-summary-pro" class="font-bold text-slate-900 text-sm">—</span>
             </div>
 
@@ -587,7 +588,7 @@ import { professionals } from '../data/professionals';
                   </svg>
                 </div>
                 <div class="min-w-0">
-                  <p class="text-[11px] font-semibold text-slate-500 uppercase tracking-wider">Especialista y Box</p>
+                  <p class="text-[11px] font-semibold text-slate-500 uppercase tracking-wider">Profesional</p>
                   <p id="success-pro" class="text-sm font-bold text-slate-900 mt-0.5">—</p>
                 </div>
               </div>
@@ -615,7 +616,7 @@ import { professionals } from '../data/professionals';
                 </div>
                 <div class="min-w-0">
                   <p class="text-[11px] font-semibold text-slate-500 uppercase tracking-wider">Lugar de Atención</p>
-                  <p class="text-xs font-medium text-slate-700 mt-0.5">{clinicInfo.address.street}, Temuco (Box Clínico Privado)</p>
+                  <p class="text-xs font-medium text-slate-700 mt-0.5">{clinicInfo.address.street}, Temuco</p>
                 </div>
               </div>
             </div>
@@ -873,8 +874,8 @@ import { professionals } from '../data/professionals';
     step2ProChip.className = 'hidden sm:inline-flex items-center gap-2 px-3 py-1 rounded-full text-xs font-semibold bg-slate-100 text-slate-800 border border-slate-200';
     if (step2ProDot) step2ProDot.className = 'w-2 h-2 rounded-full bg-slate-600';
     step2ProName.textContent = selectedProfessionalId === 'felipe'
-      ? 'Felipe Méndez · Box 1 (Quiropraxia & Kine)'
-      : 'Eduardo Lagos · Box 2 (Acupuntura & MTC)';
+      ? 'Felipe Méndez · Quiropraxia & Kinesiología'
+      : 'Eduardo Lagos · Acupuntura & Medicina China';
     step2ProChip.classList.remove('hidden');
 
     // Resetear hora al entrar al paso 2 y bloquear botón continuar
@@ -1318,8 +1319,14 @@ import { professionals } from '../data/professionals';
     // Validar campos
     let valid = true;
 
-    if (!stepInputName.value.trim()) {
-      errStepName.textContent = 'Ingresa el nombre completo.';
+    const nameVal = stepInputName.value.trim();
+    if (!nameVal) {
+      errStepName.textContent = 'Ingresa el nombre y apellido del paciente.';
+      errStepName.classList.remove('hidden');
+      stepInputName.classList.add('border-red-400');
+      valid = false;
+    } else if (nameVal.split(/\s+/).length < 2) {
+      errStepName.textContent = 'Ingresa al menos un nombre y un apellido (ej: Eloy Garrido).';
       errStepName.classList.remove('hidden');
       stepInputName.classList.add('border-red-400');
       valid = false;
@@ -1393,8 +1400,8 @@ import { professionals } from '../data/professionals';
 
     // Actualizar Resumen en Paso 4
     finalSummaryPro.textContent = selectedProfessionalId === 'felipe'
-      ? 'Felipe Méndez · Box 1 (Quiropraxia & Kinesiología)'
-      : 'Eduardo Lagos · Box 2 (Acupuntura & MTC)';
+      ? 'Felipe Méndez · Quiropraxia & Kinesiología'
+      : 'Eduardo Lagos · Acupuntura & Medicina China';
     finalSummaryPro.className = 'font-bold text-slate-900 text-sm';
 
     const d = new Date(selectedSlotUtc!);

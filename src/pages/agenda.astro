@@ -211,7 +211,7 @@ import { professionals } from '../data/professionals';
             class="flex-1 flex items-center justify-center gap-3 py-3 px-4 rounded-xl text-sm font-semibold transition-all select-none border-2 border-slate-900 bg-slate-900 text-white shadow-sm"
           >
             <span class="w-2.5 h-2.5 rounded-full bg-cyan-400"></span>
-            <span>Felipe Méndez (Box 1 · Quiropraxia)</span>
+            <span>Felipe Méndez (Quiropraxia & Kinesiología)</span>
           </button>
 
           <!-- Pestaña Eduardo -->
@@ -221,7 +221,7 @@ import { professionals } from '../data/professionals';
             class="flex-1 flex items-center justify-center gap-3 py-3 px-4 rounded-xl text-sm font-semibold transition-all select-none border-2 border-transparent text-slate-700 hover:bg-slate-100"
           >
             <span class="w-2.5 h-2.5 rounded-full bg-emerald-500"></span>
-            <span>Eduardo Lagos (Box 2 · Acupuntura)</span>
+            <span>Eduardo Lagos (Acupuntura & Medicina China)</span>
           </button>
         </div>
 
@@ -797,7 +797,7 @@ import { professionals } from '../data/professionals';
   // MODAL DE AGENDAR
   function openBookingModal(hour: number, timeLabel: string) {
     pendingSlotTime = `${activeDateString} ${timeLabel}`;
-    modalBookPro.textContent = activeProfessional === 'felipe' ? 'Felipe Méndez (Box 1)' : 'Eduardo Lagos (Box 2)';
+    modalBookPro.textContent = activeProfessional === 'felipe' ? 'Felipe Méndez (Quiropraxia & Kinesiología)' : 'Eduardo Lagos (Acupuntura & Medicina China)';
     modalBookTime.textContent = `${activeDateString}, ${timeLabel}`;
     formTeamBooking.reset();
     modalBookError.classList.add('hidden');
