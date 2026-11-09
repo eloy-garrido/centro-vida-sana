@@ -76,7 +76,7 @@ import { professionals } from '../data/professionals';
         </div>
 
         <!-- Perfil / Sesión Equipo -->
-        <div id="team-session-box" class="flex items-center gap-3 bg-white px-4 py-2.5 rounded-xl border border-slate-200 shadow-sm">
+        <div id="team-session-box" class="hidden flex items-center gap-3 bg-white px-4 py-2.5 rounded-xl border border-slate-200 shadow-sm">
           <div class="w-8 h-8 rounded-full bg-slate-900 text-white flex items-center justify-center font-bold text-xs" id="team-user-avatar">
             E
           </div>
@@ -125,7 +125,7 @@ import { professionals } from '../data/professionals';
             <button
               type="button"
               id="btn-dev-quick-team"
-              class="w-full py-2.5 px-4 rounded-xl bg-emerald-50 hover:bg-emerald-100 text-emerald-800 text-xs font-semibold border border-emerald-300 transition-colors"
+              class="hidden w-full py-2.5 px-4 rounded-xl bg-emerald-50 hover:bg-emerald-100 text-emerald-800 text-xs font-semibold border border-emerald-300 transition-colors"
             >
               ⚡ Acceso Rápido de Prueba (Administrador / Equipo)
             </button>
@@ -200,7 +200,7 @@ import { professionals } from '../data/professionals';
       </div>
 
       <!-- CONTENEDOR PRINCIPAL DEL PANEL -->
-      <div id="team-app-content" class="space-y-6">
+      <div id="team-app-content" class="hidden space-y-6">
 
         <!-- Selector de Pestañas Superiores (S05: Felipe Méndez y Eduardo Lagos) -->
         <div class="bg-white rounded-2xl p-2 shadow-sm border border-slate-200 flex flex-col sm:flex-row gap-2">
@@ -243,6 +243,7 @@ import { professionals } from '../data/professionals';
             <input
               type="date"
               id="input-date-picker"
+              aria-label="Seleccionar fecha de agenda"
               class="px-3.5 py-2 rounded-xl border border-slate-300 text-xs sm:text-sm text-slate-800 font-semibold focus:ring-2 focus:ring-slate-900 focus:border-slate-900 bg-white shadow-xs transition-colors cursor-pointer"
             />
 
@@ -539,6 +540,46 @@ import { professionals } from '../data/professionals';
   });
 
   // 4. CARGAR AGENDA DEL DÍA (GET /api/team/schedule)
+  /**
+   * Convierte una fecha y hora local de Chile (America/Santiago) a su instante RFC3339 UTC ISO exacto.
+   * Determina dinámicamente si la fecha corresponde a UTC-3 o UTC-4 sin suposiciones fijas.
+   */
+  function chileHourToUtcIso(dateStr: string, hour: number): string {
+    const [y, m, d] = dateStr.split('-').map(Number);
+    let guess = Date.UTC(y, m - 1, d, hour + 3, 0, 0);
+
+    const dtf = new Intl.DateTimeFormat('en-US', {
+      timeZone: 'America/Santiago',
+      year: 'numeric',
+      month: 'numeric',
+      day: 'numeric',
+      hour: 'numeric',
+      minute: 'numeric',
+      second: 'numeric',
+      hour12: false
+    });
+
+    const getChileUtc = (timeMs: number) => {
+      const parts = dtf.formatToParts(new Date(timeMs));
+      const p: Record<string, number> = {};
+      for (const part of parts) {
+        if (part.type !== 'literal') p[part.type] = parseInt(part.value, 10);
+      }
+      const h = p.hour === 24 ? 0 : p.hour;
+      return Date.UTC(p.year, p.month - 1, p.day, h, p.minute, p.second);
+    };
+
+    const targetChileUtc = Date.UTC(y, m - 1, d, hour, 0, 0);
+    let diff = targetChileUtc - getChileUtc(guess);
+    guess += diff;
+
+    // Refinamiento en segunda pasada por posible borde DST
+    diff = targetChileUtc - getChileUtc(guess);
+    guess += diff;
+
+    return new Date(guess).toISOString();
+  }
+
   async function loadSchedule() {
     scheduleLoading.classList.remove('hidden');
     scheduleSlotsContainer.innerHTML = '';
@@ -587,14 +628,16 @@ import { professionals } from '../data/professionals';
       const slotStartIso = `${activeDateString}T${String(h).padStart(2, '0')}:00:00`;
       const isLunch = h === 13;
 
-      // Buscar si existe entrada en entries
+      // Buscar si existe entrada en entries para este día y hora
       const entry = schedule.entries?.find((e: any) => {
-        const entryHour = new Date(e.startAt).toLocaleTimeString('es-CL', {
+        const entryDate = new Date(e.startAt);
+        const entryDateStr = entryDate.toLocaleDateString('en-CA', { timeZone: 'America/Santiago' });
+        const entryHour = entryDate.toLocaleTimeString('es-CL', {
           timeZone: 'America/Santiago',
           hour: 'numeric',
           hour12: false
         });
-        return parseInt(entryHour, 10) === h && e.status === 'confirmed';
+        return entryDateStr === activeDateString && parseInt(entryHour, 10) === h && e.status === 'confirmed';
       });
 
       const row = document.createElement('div');
@@ -807,15 +850,8 @@ import { professionals } from '../data/professionals';
       e.preventDefault();
       modalBookError.classList.add('hidden');
 
-      // Calcular timestamp UTC exacto
-      const parts = activeDateString.split('-');
-      const y = parseInt(parts[0], 10);
-      const m = parseInt(parts[1], 10);
-      const day = parseInt(parts[2], 10);
-
-      // Usar fecha UTC correspondiente
-      const slotDate = new Date(Date.UTC(y, m - 1, day, hour + 3, 0, 0));
-      const startAtUtc = slotDate.toISOString();
+      // Calcular timestamp UTC exacto dinámico para America/Santiago
+      const startAtUtc = chileHourToUtcIso(activeDateString, hour);
       const idempKey = 'team_bk_' + Math.random().toString(36).substring(2, 10);
 
       try {
@@ -849,13 +885,8 @@ import { professionals } from '../data/professionals';
   async function createBlockDirect(hour: number) {
     if (!confirm(`¿Bloquear la hora de las ${hour}:00 a ${hour + 1}:00 en la agenda de ${activeProfessional}?`)) return;
 
-    const parts = activeDateString.split('-');
-    const y = parseInt(parts[0], 10);
-    const m = parseInt(parts[1], 10);
-    const day = parseInt(parts[2], 10);
-
-    const startUtc = new Date(Date.UTC(y, m - 1, day, hour + 3, 0, 0)).toISOString();
-    const endUtc = new Date(Date.UTC(y, m - 1, day, hour + 4, 0, 0)).toISOString();
+    const startUtc = chileHourToUtcIso(activeDateString, hour);
+    const endUtc = chileHourToUtcIso(activeDateString, hour + 1);
     const idempKey = 'blk_' + Math.random().toString(36).substring(2, 10);
 
     try {
@@ -907,6 +938,14 @@ import { professionals } from '../data/professionals';
     });
   });
 
+  // Cerrar modales con tecla Escape (A11y)
+  window.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape') {
+      modalTeamBooking.classList.add('hidden');
+      modalCancelBooking.classList.add('hidden');
+    }
+  });
+
   // LOGOUT EQUIPO
   btnTeamLogout.addEventListener('click', async () => {
     if (currentSession && currentSession.csrfToken) {
@@ -938,16 +977,19 @@ import { professionals } from '../data/professionals';
     });
   }
 
-  // DEV LOGIN EQUIPO
+  // DEV LOGIN EQUIPO (Solo visible en entornos de desarrollo local)
   if (btnDevQuickTeam) {
-    btnDevQuickTeam.addEventListener('click', async () => {
-      try {
-        await AgendamientoClient.mockLogin('team');
-        window.location.reload();
-      } catch (err) {
-        console.error('Error al iniciar sesión de equipo:', err);
-      }
-    });
+    if (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1') {
+      btnDevQuickTeam.classList.remove('hidden');
+      btnDevQuickTeam.addEventListener('click', async () => {
+        try {
+          await AgendamientoClient.mockLogin('team');
+          window.location.reload();
+        } catch (err) {
+          console.error('Error al iniciar sesión de equipo:', err);
+        }
+      });
+    }
   }
 
   // Inicializar

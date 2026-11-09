@@ -34,7 +34,17 @@ const isHome = activePage === 'home';
       <li><a href={isHome ? "#profesionales" : "/#profesionales"} class={`nav-link ${activePage === 'profesionales' ? 'active' : ''}`}>Profesionales</a></li>
       <li><a href={isHome ? "#patologias" : "/#patologias"} class="nav-link">Patologías</a></li>
       <li><a href={isHome ? "#contacto" : "/#contacto"} class="nav-link">Contacto</a></li>
-      <li><a href="/reservar" class="nav-link nav-link-cta">Reservar Hora</a></li>
+      <li>
+        <a href="/reservar" class="nav-link nav-link-cta" aria-label="Reservar hora médica en línea">
+          <svg class="nav-cta-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" aria-hidden="true">
+            <rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect>
+            <line x1="16" y1="2" x2="16" y2="6"></line>
+            <line x1="8" y1="2" x2="8" y2="6"></line>
+            <line x1="3" y1="10" x2="21" y2="10"></line>
+          </svg>
+          <span>Reservar Hora</span>
+        </a>
+      </li>
     </ul>
   </div>
 </nav>
@@ -166,8 +176,29 @@ const isHome = activePage === 'home';
   }
 
   .nav-link-cta {
-    background: linear-gradient(135deg, var(--dark-green, #7a9872), var(--primary-green, #a8c5a0));
-    color: white !important;
+    background: #2E4D38;
+    background: linear-gradient(180deg, #355740 0%, #24412D 100%);
+    color: #ffffff !important;
+    font-weight: 700;
+    letter-spacing: -0.01em;
+    padding: 8px 18px;
+    border-radius: 9999px;
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    box-shadow: 0 2px 8px rgba(46, 77, 56, 0.22), inset 0 1px 0 rgba(255, 255, 255, 0.2);
+    display: inline-flex;
+    align-items: center;
+    gap: 7px;
+    line-height: 1;
+    text-decoration: none;
+    transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+  }
+
+  .nav-link-cta .nav-cta-icon {
+    width: 15px;
+    height: 15px;
+    color: #A8E5BA;
+    flex-shrink: 0;
+    transition: transform 0.2s ease;
   }
 
   .nav-link-cta::before {
@@ -175,9 +206,24 @@ const isHome = activePage === 'home';
   }
 
   .nav-link-cta:hover {
-    color: white !important;
-    transform: translateY(-2px);
-    box-shadow: 0 5px 15px rgba(122, 152, 114, 0.25);
+    color: #ffffff !important;
+    background: linear-gradient(180deg, #3C634A 0%, #2B4C35 100%);
+    transform: translateY(-1.5px);
+    box-shadow: 0 6px 16px rgba(46, 77, 56, 0.28), inset 0 1px 0 rgba(255, 255, 255, 0.25);
+  }
+
+  .nav-link-cta:hover .nav-cta-icon {
+    transform: scale(1.1);
+  }
+
+  .nav-link-cta:active {
+    transform: translateY(0);
+    box-shadow: 0 2px 6px rgba(46, 77, 56, 0.2);
+  }
+
+  .nav-link-cta:focus-visible {
+    outline: 2px solid #2E4D38;
+    outline-offset: 2px;
   }
 
   .nav-toggle {
@@ -256,6 +302,15 @@ const isHome = activePage === 'home';
       transform: translateY(0);
       opacity: 1;
       pointer-events: auto;
+    }
+
+    .nav-menu .nav-link-cta {
+      justify-content: center;
+      width: 100%;
+      padding: 13px 20px;
+      font-size: 15.5px;
+      margin-top: 6px;
+      box-sizing: border-box;
     }
   }
 </style>

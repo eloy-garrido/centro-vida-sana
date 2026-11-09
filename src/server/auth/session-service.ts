@@ -35,11 +35,12 @@ export async function createOAuthAttempt(
     codeVerifier: string;
     nonce: string;
     ttlSeconds?: number;
+    nowSeconds?: number;
   }
 ): Promise<{ state: string; nonce: string; codeVerifier: string; expiresAt: number }> {
   const state = generateRandomString(32);
   const stateHash = await sha256Hex(state);
-  const now = Math.floor(Date.now() / 1000);
+  const now = params.nowSeconds !== undefined ? params.nowSeconds : Math.floor(Date.now() / 1000);
   const expiresAt = now + (params.ttlSeconds ?? OAUTH_ATTEMPT_TTL_SECONDS);
 
   await db.run(
@@ -67,10 +68,11 @@ export async function createOAuthAttempt(
  */
 export async function consumeOAuthAttempt(
   db: DatabaseAdapter,
-  state: string
+  state: string,
+  nowSeconds?: number
 ): Promise<{ codeVerifier: string; nonce: string; returnTo: string } | null> {
   const stateHash = await sha256Hex(state);
-  const now = Math.floor(Date.now() / 1000);
+  const now = nowSeconds !== undefined ? nowSeconds : Math.floor(Date.now() / 1000);
 
   const attempt = await db.first<{
     code_verifier: string;
@@ -140,17 +142,23 @@ export async function findOrCreateUser(
     };
   }
 
-  // Crear nuevo usuario
+  // Crear nuevo usuario con manejo de colisión
   const newId = `usr_${generateRandomString(12)}`;
   await db.run(
     `INSERT INTO users (id, google_sub, name, email, created_at, updated_at)
-     VALUES (?, ?, ?, ?, ?, ?)`,
+     VALUES (?, ?, ?, ?, ?, ?)
+     ON CONFLICT(google_sub) DO UPDATE SET name = excluded.name, email = excluded.email, updated_at = excluded.updated_at`,
     newId,
     params.googleSub,
     params.name,
     params.email,
     now,
     now
+  );
+
+  const finalUser = await db.first<{ id: string; name: string; email: string }>(
+    'SELECT id, name, email FROM users WHERE google_sub = ?',
+    params.googleSub
   );
 
   // Vincular a team_members si el correo está autorizado
@@ -161,9 +169,9 @@ export async function findOrCreateUser(
   );
 
   return {
-    id: newId,
-    name: params.name,
-    email: params.email
+    id: finalUser?.id || newId,
+    name: finalUser?.name || params.name,
+    email: finalUser?.email || params.email
   };
 }
 
@@ -173,12 +181,15 @@ export async function findOrCreateUser(
 export async function createSession(
   db: DatabaseAdapter,
   userId: string,
-  ttlSeconds = SESSION_TTL_SECONDS
+  options: number | { ttlSeconds?: number; nowSeconds?: number } = SESSION_TTL_SECONDS
 ): Promise<{ rawToken: string; csrfToken: string; expiresAt: number }> {
+  const ttlSeconds = typeof options === 'number' ? options : (options?.ttlSeconds ?? SESSION_TTL_SECONDS);
+  const now = typeof options === 'object' && options?.nowSeconds !== undefined
+    ? options.nowSeconds
+    : Math.floor(Date.now() / 1000);
   const rawToken = generateRandomString(32);
   const tokenHash = await sha256Hex(rawToken);
-  const now = Math.floor(Date.now() / 1000);
-  const expiresAt = now + ttlSeconds;
+  const expiresAt = Math.floor(now + ttlSeconds);
 
   await db.run(
     `INSERT INTO sessions (token_hash, user_id, expires_at, revoked_at, created_at)
@@ -204,14 +215,15 @@ export async function createSession(
  */
 export async function validateSession(
   db: DatabaseAdapter,
-  rawToken: string
+  rawToken: string,
+  nowSeconds?: number
 ): Promise<ValidatedSessionData | null> {
   if (!rawToken || typeof rawToken !== 'string') {
     return null;
   }
 
   const tokenHash = await sha256Hex(rawToken);
-  const now = Math.floor(Date.now() / 1000);
+  const now = nowSeconds !== undefined ? nowSeconds : Math.floor(Date.now() / 1000);
 
   const sessionRow = await db.first<{
     user_id: string;
@@ -260,11 +272,12 @@ export async function validateSession(
  */
 export async function revokeSession(
   db: DatabaseAdapter,
-  rawToken: string
+  rawToken: string,
+  nowSeconds?: number
 ): Promise<boolean> {
   if (!rawToken) return false;
   const tokenHash = await sha256Hex(rawToken);
-  const now = Math.floor(Date.now() / 1000);
+  const now = nowSeconds !== undefined ? nowSeconds : Math.floor(Date.now() / 1000);
 
   const result = await db.run(
     'UPDATE sessions SET revoked_at = ? WHERE token_hash = ? AND revoked_at IS NULL',

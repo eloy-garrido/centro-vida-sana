@@ -332,7 +332,7 @@ import { professionals } from '../data/professionals';
                 <button
                   type="button"
                   id="btn-step-3-quick-login"
-                  class="px-3.5 py-2 rounded-xl bg-emerald-50 hover:bg-emerald-100 text-emerald-800 text-xs font-semibold border border-emerald-300"
+                  class="hidden px-3.5 py-2 rounded-xl bg-emerald-50 hover:bg-emerald-100 text-emerald-800 text-xs font-semibold border border-emerald-300"
                 >
                   ⚡ Acceso Rápido de Prueba (Dev)
                 </button>
@@ -647,17 +647,18 @@ import { professionals } from '../data/professionals';
           </div>
 
           <!-- Acciones de Calendario Personal S06 -->
-          <div class="mt-8 pt-6 border-t border-slate-100 max-w-md mx-auto">
+          <div class="mt-8 pt-6 border-t border-slate-100 max-w-md mx-auto" id="calendar-export-section">
             <p class="text-xs font-semibold text-slate-700 uppercase tracking-wider mb-3">
               Guarda un recordatorio en tu calendario:
             </p>
-            <div class="flex flex-col sm:flex-row items-center justify-center gap-2.5">
+            <div id="calendar-buttons-container" class="flex flex-col sm:flex-row items-center justify-center gap-2.5">
               <a
                 id="btn-google-calendar"
                 href="#"
                 target="_blank"
                 rel="noopener noreferrer"
                 class="w-full sm:w-auto inline-flex items-center justify-center gap-2.5 px-5 py-3 rounded-xl bg-slate-900 hover:bg-slate-800 active:scale-[0.97] text-white text-xs font-semibold shadow-xs transition-all duration-150 ease-out"
+                aria-label="Guardar recordatorio en Google Calendar"
               >
                 <svg class="w-4 h-4 shrink-0" viewBox="0 0 24 24">
                   <path fill="#EA4335" d="M12 5c1.6 0 3 .6 4.1 1.6l3.1-3.1C17.3 1.8 14.8 1 12 1 7.5 1 3.7 3.6 1.9 7.3l3.7 2.9C6.5 7.4 9 5 12 5z"/>
@@ -665,7 +666,7 @@ import { professionals } from '../data/professionals';
                   <path fill="#FBBC05" d="M5.6 14.8c-.2-.7-.4-1.5-.4-2.3 0-.8.2-1.6.4-2.3L1.9 7.3C.7 9.7 0 12.3 0 15.2s.7 5.5 1.9 7.9l3.7-2.9z"/>
                   <path fill="#34A853" d="M12 23.5c3.2 0 6-1.1 8-3l-3.7-2.9c-1.1.7-2.5 1.2-4.3 1.2-3 0-5.5-2.4-6.4-5.2L1.9 16.5C3.7 20.2 7.5 23.5 12 23.5z"/>
                 </svg>
-                <span>Google Calendar</span>
+                <span id="btn-google-text">Google Calendar</span>
               </a>
 
               <a
@@ -673,11 +674,27 @@ import { professionals } from '../data/professionals';
                 href="#"
                 download="cita-vidasana.ics"
                 class="w-full sm:w-auto inline-flex items-center justify-center gap-2 px-5 py-3 rounded-xl border border-slate-300 hover:bg-slate-50 active:scale-[0.97] text-slate-700 text-xs font-semibold shadow-2xs transition-all duration-150 ease-out"
+                aria-label="Guardar recordatorio en Apple Calendar u Outlook"
               >
-                <svg class="w-4 h-4 text-slate-600 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <svg id="btn-ics-icon-calendar" class="w-4 h-4 text-slate-600 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"/>
                 </svg>
-                <span>Descargar .ics (Apple / Outlook)</span>
+                <svg id="btn-ics-icon-apple" class="w-4 h-4 shrink-0 hidden" viewBox="0 0 24 24" fill="currentColor">
+                  <path d="M18.71 19.5c-.83 1.24-1.71 2.45-3.05 2.47-1.34.03-1.77-.79-3.29-.79-1.53 0-2 .77-3.27.82-1.31.05-2.3-1.32-3.14-2.53C4.25 17 2.94 12.45 4.7 9.39c.87-1.52 2.43-2.48 4.12-2.51 1.28-.02 2.5.87 3.29.87.78 0 2.26-1.07 3.81-.91.65.03 2.47.26 3.64 1.98-.09.06-2.17 1.28-2.15 3.81.03 3.02 2.65 4.03 2.68 4.04-.03.07-.42 1.44-1.38 2.83M15.97 6.42c.62-.75 1.04-1.8 0.93-2.85-.9.04-1.99.6-2.63 1.35-.57.65-1.07 1.71-.93 2.73 1 .08 2.01-.48 2.63-1.23z"/>
+                </svg>
+                <span id="btn-ics-text">Apple Calendar / Outlook</span>
+              </a>
+            </div>
+
+            <!-- Enlace alternativo discreto para móvil -->
+            <div id="calendar-secondary-wrap" class="mt-3 text-center hidden">
+              <span id="calendar-secondary-intro" class="text-xs text-slate-500">¿Prefieres otro calendario? </span>
+              <a
+                id="btn-calendar-secondary-link"
+                href="#"
+                class="text-xs font-semibold text-slate-700 hover:text-slate-900 underline underline-offset-2 transition-colors"
+              >
+                Opción alternativa
               </a>
             </div>
 
@@ -721,6 +738,10 @@ import { professionals } from '../data/professionals';
   let selectedDateString: string | null = null;
   let selectedSlotUtc: string | null = null;
   let currentIdempotencyKey = 'idemp_' + Math.random().toString(36).substring(2, 12) + Date.now().toString(36);
+
+  function regenerateIdempotencyKey() {
+    currentIdempotencyKey = 'idemp_' + Math.random().toString(36).substring(2, 12) + Date.now().toString(36);
+  }
 
   // VISTAS DEL WIZARD
   const stepView1 = document.getElementById('step-view-1')!;
@@ -879,6 +900,9 @@ import { professionals } from '../data/professionals';
   // PASO 1: SELECCIÓN DE ESPECIALISTA
   // ==========================================================================
   function selectProfessional(pro: 'felipe' | 'eduardo') {
+    if (selectedProfessionalId !== pro) {
+      regenerateIdempotencyKey();
+    }
     selectedProfessionalId = pro;
 
     proCards.forEach((c) => {
@@ -1159,6 +1183,7 @@ import { professionals } from '../data/professionals';
 
         btn.addEventListener('click', () => {
           selectedSlotUtc = slot.startAt;
+          regenerateIdempotencyKey();
           updateSlotButtons(slot.startAt);
           updateStep2NextButton();
         });
@@ -1530,6 +1555,7 @@ import { professionals } from '../data/professionals';
     finalSummaryPatient.textContent = `${stepInputName.value.trim()} (${stepInputRut.value.trim()})`;
     finalSummaryContact.textContent = `${stepInputPhone.value.trim()} · ${stepInputEmail.value.trim()}`;
 
+    regenerateIdempotencyKey();
     goToStep(4);
   });
 
@@ -1604,6 +1630,10 @@ import { professionals } from '../data/professionals';
       btnFinalSpinner.classList.add('hidden');
 
       if (err instanceof ApiError && err.code === 'SLOT_CONFLICT') {
+        loadedAvailabilityForPro = null;
+        slotsByDate.clear();
+        selectedSlotUtc = null;
+        regenerateIdempotencyKey();
         finalBookingError.textContent = 'El horario seleccionado ya no está disponible. Por favor regresa al paso 2 y elige otro cupo.';
       } else {
         finalBookingError.textContent = err.message || 'Error al confirmar la reserva. Intenta nuevamente.';
@@ -1615,6 +1645,91 @@ import { professionals } from '../data/professionals';
   // ==========================================================================
   // PASO 5: ÉXITO Y COPIA A CALENDARIO
   // ==========================================================================
+  function setupCalendarExportUI(googleUrl: string, icsUrl: string) {
+    const ua = navigator.userAgent || '';
+    const platform = (navigator as any).userAgentData?.platform || navigator.platform || '';
+    const isIOS = /iPhone|iPad|iPod/i.test(ua) || (platform === 'MacIntel' && navigator.maxTouchPoints > 1);
+    const isMac = (/Macintosh|Mac OS X/i.test(ua) || platform === 'macOS') && !isIOS;
+    const isApple = isIOS || isMac;
+    const isAndroid = /Android/i.test(ua);
+    const isMobile = isIOS || isAndroid || /Mobile|Tablet/i.test(ua);
+
+    const btnGoogle = document.getElementById('btn-google-calendar') as HTMLAnchorElement | null;
+    const btnGoogleText = document.getElementById('btn-google-text');
+    const btnIcs = document.getElementById('btn-ics-calendar') as HTMLAnchorElement | null;
+    const btnIcsText = document.getElementById('btn-ics-text');
+    const btnIcsIconCalendar = document.getElementById('btn-ics-icon-calendar');
+    const btnIcsIconApple = document.getElementById('btn-ics-icon-apple');
+
+    const secondaryWrap = document.getElementById('calendar-secondary-wrap');
+    const secondaryIntro = document.getElementById('calendar-secondary-intro');
+    const secondaryLink = document.getElementById('btn-calendar-secondary-link') as HTMLAnchorElement | null;
+
+    if (!btnGoogle || !btnIcs) return;
+
+    btnGoogle.href = googleUrl;
+    btnIcs.href = icsUrl;
+
+    if (isApple) {
+      // Dispositivos Apple: abrir directamente la hoja de evento sin forzar descarga a archivo
+      btnIcs.removeAttribute('download');
+      btnIcs.setAttribute('rel', 'noopener');
+      if (btnIcsIconApple) btnIcsIconApple.classList.remove('hidden');
+      if (btnIcsIconCalendar) btnIcsIconCalendar.classList.add('hidden');
+      if (btnIcsText) btnIcsText.textContent = isIOS ? 'Añadir a Apple Calendar' : 'Guardar en Apple Calendar';
+
+      if (isIOS || isMobile) {
+        // En iOS / móvil Apple: Apple Calendar como botón principal destacado
+        btnIcs.className = 'w-full sm:w-auto inline-flex items-center justify-center gap-2.5 px-6 py-3.5 rounded-xl bg-slate-900 hover:bg-slate-800 active:scale-[0.97] text-white text-xs font-semibold shadow-xs transition-all duration-150 ease-out';
+        btnGoogle.classList.add('hidden');
+        btnIcs.classList.remove('hidden');
+
+        if (secondaryWrap && secondaryIntro && secondaryLink) {
+          secondaryWrap.classList.remove('hidden');
+          secondaryIntro.textContent = '¿Prefieres Google Calendar? ';
+          secondaryLink.textContent = 'Guardar en Google';
+          secondaryLink.href = googleUrl;
+          secondaryLink.target = '_blank';
+          secondaryLink.rel = 'noopener noreferrer';
+          secondaryLink.removeAttribute('download');
+        }
+      } else {
+        // Mac desktop: mostrar ambos botones ordenados
+        btnGoogle.classList.remove('hidden');
+        btnIcs.classList.remove('hidden');
+        if (btnGoogleText) btnGoogleText.textContent = 'Google Calendar';
+        btnIcs.className = 'w-full sm:w-auto inline-flex items-center justify-center gap-2 px-5 py-3 rounded-xl border border-slate-300 hover:bg-slate-50 active:scale-[0.97] text-slate-700 text-xs font-semibold shadow-2xs transition-all duration-150 ease-out';
+        if (secondaryWrap) secondaryWrap.classList.add('hidden');
+      }
+    } else if (isAndroid) {
+      // Dispositivos Android: Google Calendar como botón principal
+      btnIcs.setAttribute('download', 'cita-vidasana.ics');
+      if (btnGoogleText) btnGoogleText.textContent = 'Guardar en Google Calendar';
+      btnGoogle.className = 'w-full sm:w-auto inline-flex items-center justify-center gap-2.5 px-6 py-3.5 rounded-xl bg-slate-900 hover:bg-slate-800 active:scale-[0.97] text-white text-xs font-semibold shadow-xs transition-all duration-150 ease-out';
+      btnGoogle.classList.remove('hidden');
+      btnIcs.classList.add('hidden');
+
+      if (secondaryWrap && secondaryIntro && secondaryLink) {
+        secondaryWrap.classList.remove('hidden');
+        secondaryIntro.textContent = '¿Usas otro calendario? ';
+        secondaryLink.textContent = 'Guardar en Outlook / otro';
+        secondaryLink.href = icsUrl;
+        secondaryLink.removeAttribute('target');
+        secondaryLink.setAttribute('download', 'cita-vidasana.ics');
+      }
+    } else {
+      // Escritorio / Windows / Otros
+      btnIcs.setAttribute('download', 'cita-vidasana.ics');
+      btnGoogle.classList.remove('hidden');
+      btnIcs.classList.remove('hidden');
+      if (btnGoogleText) btnGoogleText.textContent = 'Google Calendar';
+      if (btnIcsText) btnIcsText.textContent = 'Apple Calendar / Outlook';
+      if (btnIcsIconApple) btnIcsIconApple.classList.add('hidden');
+      if (btnIcsIconCalendar) btnIcsIconCalendar.classList.remove('hidden');
+      if (secondaryWrap) secondaryWrap.classList.add('hidden');
+    }
+  }
+
   async function showSuccessView(bookingId: string) {
     successPro.textContent = finalSummaryPro.textContent;
     successTime.textContent = finalSummaryTime.textContent;
@@ -1628,10 +1743,7 @@ import { professionals } from '../data/professionals';
 
     try {
       const cal = await AgendamientoClient.getCalendarExport(bookingId);
-      btnGoogleCalendar.href = cal.googleUrl;
-      if (btnIcsCalendar) {
-        btnIcsCalendar.href = `/api/bookings/${bookingId}/calendar?format=ics`;
-      }
+      setupCalendarExportUI(cal.googleUrl, `/api/bookings/${bookingId}/calendar?format=ics`);
     } catch (err) {
       console.error('Error al obtener enlaces de calendario:', err);
     }
@@ -1694,14 +1806,17 @@ import { professionals } from '../data/professionals';
   }
 
   if (btnStep3QuickLogin) {
-    btnStep3QuickLogin.addEventListener('click', async () => {
-      try {
-        await AgendamientoClient.mockLogin('patient');
-        await initSession();
-      } catch (err) {
-        console.error('Error en quick login:', err);
-      }
-    });
+    if (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1') {
+      btnStep3QuickLogin.classList.remove('hidden');
+      btnStep3QuickLogin.addEventListener('click', async () => {
+        try {
+          await AgendamientoClient.mockLogin('patient');
+          await initSession();
+        } catch (err) {
+          console.error('Error en quick login:', err);
+        }
+      });
+    }
   }
 
   // Inicialización de sesión y paso inicial

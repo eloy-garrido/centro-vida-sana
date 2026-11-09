@@ -1,0 +1,174 @@
+---
+// ScrollReveal.astro - Sistema de Animaciones de Entrada Editorial & Cinemática Emil Kowalski
+// Alta artesanía: Easing con curvas físicas de desaceleración (cubic-bezier 0.16, 1, 0.3, 1),
+// aceleración por hardware (GPU), escalado orgánico (desde 0.97, nunca 0),
+// respeto estricto a prefers-reduced-motion y cero CLS / cero bloqueo sin JavaScript.
+---
+
+<!-- Inicialización anticipada progresiva: activa las clases solo si hay soporte y el usuario no prefiere reducción de movimiento -->
+<script is:inline>
+  (() => {
+    try {
+      const prefersReduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+      if (!prefersReduced && 'IntersectionObserver' in window) {
+        document.documentElement.classList.add('motion-ready');
+      }
+    } catch (e) {}
+  })();
+</script>
+
+<style is:global>
+  /* ==========================================================================
+     CINEMÁTICA Y CURVAS DE ENTRADA (EMIL KOWALSKI / AWWWARDS-TIER)
+     ========================================================================== */
+
+  :root {
+    --reveal-ease: cubic-bezier(0.16, 1, 0.3, 1);
+    --reveal-duration: 680ms;
+    --reveal-scale-duration: 720ms;
+  }
+
+  /* Estado Oculto Inicial (Solo activo cuando JS y movimiento están habilitados) */
+  html.motion-ready [data-reveal] {
+    opacity: 0;
+    transform: translateY(22px);
+    transition:
+      opacity var(--reveal-duration) var(--reveal-ease),
+      transform var(--reveal-duration) var(--reveal-ease);
+    will-change: opacity, transform;
+  }
+
+  /* Variante Scale: Para tarjetas, perfiles y fotografías (nunca desde scale 0) */
+  html.motion-ready [data-reveal="scale"] {
+    opacity: 0;
+    transform: translateY(16px) scale(0.97);
+    transition:
+      opacity var(--reveal-scale-duration) var(--reveal-ease),
+      transform var(--reveal-scale-duration) var(--reveal-ease);
+    will-change: opacity, transform;
+  }
+
+  /* Variante Fade: Para separadores o auras sutiles */
+  html.motion-ready [data-reveal="fade"] {
+    opacity: 0;
+    transform: none;
+    transition: opacity var(--reveal-duration) var(--reveal-ease);
+    will-change: opacity;
+  }
+
+  /* Variante Lateral Izquierda */
+  html.motion-ready [data-reveal="slide-left"] {
+    opacity: 0;
+    transform: translateX(-24px);
+    transition:
+      opacity var(--reveal-duration) var(--reveal-ease),
+      transform var(--reveal-duration) var(--reveal-ease);
+    will-change: opacity, transform;
+  }
+
+  /* Variante Lateral Derecha */
+  html.motion-ready [data-reveal="slide-right"] {
+    opacity: 0;
+    transform: translateX(24px);
+    transition:
+      opacity var(--reveal-duration) var(--reveal-ease),
+      transform var(--reveal-duration) var(--reveal-ease);
+    will-change: opacity, transform;
+  }
+
+  /* ==========================================================================
+     ESTADO ACTIVO REVELADO
+     ========================================================================== */
+  html.motion-ready [data-reveal].is-revealed {
+    opacity: 1;
+    transform: translateY(0) scale(1) translateX(0);
+  }
+
+  /* Liberar capas de composición GPU tras finalizar la transición */
+  html.motion-ready [data-reveal].is-finished {
+    will-change: auto;
+  }
+
+  /* ==========================================================================
+     STAGGER DELAYS (Intervalos rítmicos de 40ms a 70ms entre elementos hermanos)
+     ========================================================================== */
+  html.motion-ready [data-reveal-delay="40"]  { transition-delay: 40ms; }
+  html.motion-ready [data-reveal-delay="60"]  { transition-delay: 60ms; }
+  html.motion-ready [data-reveal-delay="70"]  { transition-delay: 70ms; }
+  html.motion-ready [data-reveal-delay="80"]  { transition-delay: 80ms; }
+  html.motion-ready [data-reveal-delay="100"] { transition-delay: 100ms; }
+  html.motion-ready [data-reveal-delay="120"] { transition-delay: 120ms; }
+  html.motion-ready [data-reveal-delay="140"] { transition-delay: 140ms; }
+  html.motion-ready [data-reveal-delay="160"] { transition-delay: 160ms; }
+  html.motion-ready [data-reveal-delay="180"] { transition-delay: 180ms; }
+  html.motion-ready [data-reveal-delay="200"] { transition-delay: 200ms; }
+  html.motion-ready [data-reveal-delay="210"] { transition-delay: 210ms; }
+  html.motion-ready [data-reveal-delay="240"] { transition-delay: 240ms; }
+  html.motion-ready [data-reveal-delay="280"] { transition-delay: 280ms; }
+  html.motion-ready [data-reveal-delay="320"] { transition-delay: 320ms; }
+
+  /* ==========================================================================
+     ACCESIBILIDAD PREFERS-REDUCED-MOTION (WCAG AAA)
+     ========================================================================== */
+  @media (prefers-reduced-motion: reduce) {
+    html.motion-ready [data-reveal] {
+      opacity: 1 !important;
+      transform: none !important;
+      transition: none !important;
+      will-change: auto !important;
+    }
+  }
+</style>
+
+<script>
+  function setupScrollObserver() {
+    if (!document.documentElement.classList.contains('motion-ready')) return;
+
+    const revealElements = document.querySelectorAll<HTMLElement>('[data-reveal]');
+    if (!revealElements.length) return;
+
+    const observer = new IntersectionObserver((entries, obs) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          const el = entry.target as HTMLElement;
+          el.classList.add('is-revealed');
+
+          // Limpiar will-change cuando la transición concluya
+          const onTransitionEnd = (e: TransitionEvent) => {
+            if (e.target === el) {
+              el.classList.add('is-finished');
+              el.removeEventListener('transitionend', onTransitionEnd);
+            }
+          };
+          el.addEventListener('transitionend', onTransitionEnd);
+
+          obs.unobserve(el);
+        }
+      });
+    }, {
+      root: null,
+      rootMargin: '0px 0px -48px 0px',
+      threshold: 0.1
+    });
+
+    const vh = window.innerHeight || document.documentElement.clientHeight;
+
+    revealElements.forEach(el => {
+      const rect = el.getBoundingClientRect();
+      // Si el elemento ya está visible en la vista inicial, revelarlo de inmediato
+      if (rect.top < vh && rect.bottom > 0) {
+        el.classList.add('is-revealed');
+      } else {
+        observer.observe(el);
+      }
+    });
+  }
+
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', setupScrollObserver);
+  } else {
+    setupScrollObserver();
+  }
+
+  document.addEventListener('astro:page-load', setupScrollObserver);
+</script>

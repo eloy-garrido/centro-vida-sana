@@ -7,6 +7,7 @@ import type { DatabaseAdapter } from '../db/adapter.ts';
 import { ApiCommandError } from './commands.ts';
 import { validateDocument, validateEmail } from '../../lib/agendamiento/validation.ts';
 import type { PatientProfilePayload } from '../../lib/agendamiento/types.ts';
+import { encryptPiiJson, decryptPiiJson } from '../auth/crypto.ts';
 
 export interface StoredProfileResult {
   profile: PatientProfilePayload | null;
@@ -32,21 +33,21 @@ export async function getPatientProfile(
     return { profile: null, version: null };
   }
 
-  try {
-    const parsed = JSON.parse(row.encrypted_payload);
-    return {
-      profile: {
-        name: parsed.name,
-        email: parsed.email,
-        rut: parsed.rut,
-        documentType: parsed.documentType || 'rut',
-        phone: parsed.phone || ''
-      },
-      version: row.version
-    };
-  } catch {
+  const parsed = await decryptPiiJson<PatientProfilePayload>(row.encrypted_payload);
+  if (!parsed) {
     return { profile: null, version: null };
   }
+
+  return {
+    profile: {
+      name: parsed.name,
+      email: parsed.email,
+      rut: parsed.rut,
+      documentType: parsed.documentType || 'rut',
+      phone: parsed.phone || ''
+    },
+    version: row.version
+  };
 }
 
 /**
@@ -91,7 +92,7 @@ export async function savePatientProfile(
     phone: payload.phone ? payload.phone.trim() : ''
   };
 
-  const payloadJson = JSON.stringify(cleanPayload);
+  const encryptedPayload = await encryptPiiJson(cleanPayload);
 
   // 2. Comprobar existencia actual
   const existing = await db.first<{
@@ -105,7 +106,7 @@ export async function savePatientProfile(
       `INSERT INTO patient_profiles (user_id, encrypted_payload, version, consent_version, updated_at)
        VALUES (?, ?, ?, ?, ?)`,
       userId,
-      payloadJson,
+      encryptedPayload,
       version,
       consentVersion,
       nowSeconds
@@ -131,7 +132,9 @@ export async function savePatientProfile(
     );
   }
 
-  if (existing.version !== options.ifMatch) {
+  const normExpected = (options.ifMatch || '').replace(/^"|"$/g, '').trim();
+  const normExisting = (existing.version || '').replace(/^"|"$/g, '').trim();
+  if (normExisting !== normExpected) {
     throw new ApiCommandError(
       'VERSION_CONFLICT',
       'El perfil ha sido modificado por otra operación. Actualice la página e intente de nuevo.',
@@ -146,7 +149,7 @@ export async function savePatientProfile(
     `UPDATE patient_profiles
      SET encrypted_payload = ?, version = ?, consent_version = ?, updated_at = ?
      WHERE user_id = ? AND version = ?`,
-    payloadJson,
+    encryptedPayload,
     nextVersion,
     consentVersion,
     nowSeconds,

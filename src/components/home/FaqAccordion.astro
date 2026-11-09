@@ -82,7 +82,7 @@ const displayCtaTitle = ctaTitle === "¿Tienes una consulta específica sobre tu
   <div class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
 
     <!-- Section Header Editorial -->
-    <div class="text-center max-w-2xl mx-auto mb-12 sm:mb-14">
+    <div class="text-center max-w-2xl mx-auto mb-12 sm:mb-14" data-reveal>
       <span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-bold uppercase tracking-wider bg-white border border-[#E5E8E2] text-[#4A564D] shadow-soft-sm mb-3">
         <span class={`w-1.5 h-1.5 rounded-full ${accentDotClass}`}></span>
         {eyebrow}
@@ -97,7 +97,7 @@ const displayCtaTitle = ctaTitle === "¿Tienes una consulta específica sobre tu
 
     <!-- Accordion Grid: 2 Columnas alineadas en PC (3 filas x 2 columnas) y 1 columna en móvil -->
     <div class="faq-list grid grid-cols-1 md:grid-cols-2 gap-4 lg:gap-5 items-start" role="region" aria-label="Preguntas frecuentes">
-      {items.map((faq) => {
+      {items.map((faq, idx) => {
         const isQuiro = faq.category === 'quiropraxia';
         const isAcup = faq.category === 'acupuntura';
         const badgeClasses = isQuiro
@@ -110,6 +110,8 @@ const displayCtaTitle = ctaTitle === "¿Tienes una consulta específica sobre tu
           <div
             id={`faq-card-${faq.id}`}
             class={`faq-card group bg-white rounded-2xl border border-[#E5E8E2] shadow-[0_2px_8px_rgba(0,0,0,0.02)] transition-all duration-250 ${cardHoverClasses}`}
+            data-reveal
+            data-reveal-delay={String((idx % 2) * 80)}
           >
             <!-- Accessible Accordion Button -->
             <button
@@ -168,7 +170,7 @@ const displayCtaTitle = ctaTitle === "¿Tienes una consulta específica sobre tu
     </div>
 
     <!-- Personalized WhatsApp Consultation Card -->
-    <div class="mt-12 sm:mt-16 p-6 sm:p-8 rounded-2xl bg-white border border-[#E5E8E2] shadow-soft-sm flex flex-col sm:flex-row items-center justify-between gap-6 text-center sm:text-left">
+    <div class="mt-12 sm:mt-16 p-6 sm:p-8 rounded-2xl bg-white border border-[#E5E8E2] shadow-soft-sm flex flex-col sm:flex-row items-center justify-between gap-6 text-center sm:text-left" data-reveal>
       <div class="space-y-1">
         <h4 class="font-serif text-lg sm:text-xl font-bold text-[#151C17]">
           <Fragment set:html={displayCtaTitle} />

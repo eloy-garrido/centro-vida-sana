@@ -337,3 +337,81 @@ test('AUTH-05: Flujo HTTP de inicio y callback Google OAuth', async () => {
   });
   assert.strictEqual(resCallbackBadState.status, 400);
 });
+
+// ============================================================================
+// 8. TESTS DE SEGURIDAD, SESIONES NUMÉRICAS, OAUTH XSS Y COOKIES (Task 1)
+// ============================================================================
+
+test('AUTH-SEC: Endurecimiento de seguridad, sesiones numéricas, OAuth XSS y control de cookies', async () => {
+  const { db, adapter } = createTestDatabase();
+  const { handleApiRequest } = await import('../../src/server/router.ts');
+
+  // 1. createSession con nowSeconds numérico y expiración exacta
+  const user = await findOrCreateUser(adapter, {
+    googleSub: 'sub_numeric_exp_123',
+    name: 'Paciente Temporal',
+    email: 'temporal@gmail.com'
+  });
+  const nowFixed = 1762440000;
+  const session = await createSession(adapter, user.id, { nowSeconds: nowFixed });
+  assert.strictEqual(session.expiresAt, nowFixed + 28800);
+
+  // Verificar en la DB directamente que expires_at es exactamente nowFixed + 28800
+  const sessionDbRow = await adapter.first<{ expires_at: number }>(
+    'SELECT expires_at FROM sessions WHERE user_id = ?',
+    user.id
+  );
+  assert.strictEqual(sessionDbRow?.expires_at, nowFixed + 28800);
+
+  // Sesión válida antes de expirar
+  const validBefore = await validateSession(adapter, session.rawToken, nowFixed + 100);
+  assert.ok(validBefore !== null);
+
+  // Sesión expirada después de 28800s
+  const expiredAfter = await validateSession(adapter, session.rawToken, nowFixed + 28801);
+  assert.strictEqual(expiredAfter, null, 'Sesión expirada debe retornar null al pasar su tiempo');
+
+  // 2. POST /api/mock-login con isDev: false retorna 403 FORBIDDEN
+  const reqMockProd = new Request('http://localhost:4321/api/mock-login', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ role: 'team' })
+  });
+  const resMockProd = await handleApiRequest(reqMockProd, adapter, { isDev: false });
+  assert.strictEqual(resMockProd.status, 403);
+  const mockErrBody = await resMockProd.json() as any;
+  assert.strictEqual(mockErrBody.error.code, 'FORBIDDEN');
+
+  // 3. GET /auth/google/callback con error reflejado previene XSS
+  const reqXss = new Request('http://localhost:4321/auth/google/callback?error=<script>alert(1)</script>');
+  const resXss = await handleApiRequest(reqXss, adapter, {});
+  assert.strictEqual(resXss.status, 400);
+  const xssText = await resXss.text();
+  assert.ok(xssText.includes('&lt;script&gt;alert(1)&lt;/script&gt;'));
+  assert.ok(!xssText.includes('<script>alert(1)</script>'));
+  assert.ok(resXss.headers.get('Content-Security-Policy')?.includes("default-src 'none'"));
+
+  // 4. POST /api/logout sobre HTTPS emite Set-Cookie seguro __Host-
+  const logoutReq = new Request('https://centrovidasana.cl/api/logout', {
+    method: 'POST',
+    headers: {
+      cookie: `__Host-vsa_session=${session.rawToken}`,
+      'x-csrf-token': session.csrfToken,
+      origin: 'https://centrovidasana.cl'
+    }
+  });
+  const logoutRes = await handleApiRequest(logoutReq, adapter, { nowSeconds: nowFixed });
+  assert.strictEqual(logoutRes.status, 200);
+  const setCookie = logoutRes.headers.get('Set-Cookie') || '';
+  assert.ok(setCookie.includes('__Host-vsa_session=;'));
+  assert.ok(setCookie.includes('Secure'));
+  assert.ok(setCookie.includes('Max-Age=0'));
+
+  // 5. validateSafeReturnUrl previene bypass de dominios y caracteres de control
+  assert.strictEqual(validateSafeReturnUrl('/reservar.evil.com'), '/reservar');
+  assert.strictEqual(validateSafeReturnUrl('/reservar\r\nSet-Cookie: x=1'), '/reservar');
+  assert.strictEqual(validateSafeReturnUrl('/agenda@evil.com'), '/reservar');
+
+  db.close();
+});
+

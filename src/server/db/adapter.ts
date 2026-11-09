@@ -9,6 +9,7 @@ export interface DatabaseAdapter {
   all<T = Record<string, any>>(sql: string, ...params: any[]): Promise<T[]>;
   run(sql: string, ...params: any[]): Promise<{ changes: number }>;
   exec(sql: string): Promise<void>;
+  batch(statements: Array<{ sql: string; params?: any[] }>): Promise<void>;
 }
 
 /**
@@ -33,6 +34,10 @@ export function createD1Adapter(d1: any): DatabaseAdapter {
     },
     async exec(sql: string): Promise<void> {
       await d1.exec(sql);
+    },
+    async batch(statements: Array<{ sql: string; params?: any[] }>): Promise<void> {
+      const prepared = statements.map(s => d1.prepare(s.sql).bind(...(s.params ?? [])));
+      await d1.batch(prepared);
     }
   };
 }
@@ -59,6 +64,19 @@ export function createSqliteAdapter(sqliteDb: any): DatabaseAdapter {
     },
     async exec(sql: string): Promise<void> {
       sqliteDb.exec(sql);
+    },
+    async batch(statements: Array<{ sql: string; params?: any[] }>): Promise<void> {
+      sqliteDb.exec('BEGIN IMMEDIATE;');
+      try {
+        for (const s of statements) {
+          const stmt = sqliteDb.prepare(s.sql);
+          stmt.run(...(s.params ?? []));
+        }
+        sqliteDb.exec('COMMIT;');
+      } catch (err) {
+        sqliteDb.exec('ROLLBACK;');
+        throw err;
+      }
     }
   };
 }

@@ -27,7 +27,7 @@ import { pathologiesData } from '../../data/pathologies';
   <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-8 sm:pt-12 pb-20 sm:pb-28 relative z-20">
 
     <!-- Encabezado Editorial de Sección -->
-    <div class="text-center max-w-3xl mx-auto mb-14 sm:mb-18">
+    <div class="text-center max-w-3xl mx-auto mb-14 sm:mb-18" data-reveal>
       <span class="inline-flex items-center gap-2 text-[11.5px] font-bold uppercase tracking-[0.14em] text-[#005a26] bg-white/85 border border-[#007231]/20 px-3.5 py-1 rounded-full mb-3.5 shadow-sm backdrop-blur-sm">
         <span class="w-1.5 h-1.5 rounded-full bg-[#007231]" aria-hidden="true"></span>
         Enfoque Terapéutico Integral
@@ -42,12 +42,14 @@ import { pathologiesData } from '../../data/pathologies';
 
     <!-- Grilla de Tarjetas (3 Columnas en Desktop) -->
     <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-7 items-stretch">
-      {pathologiesData.map((item) => {
+      {pathologiesData.map((item, idx) => {
         const waUrl = `https://wa.me/${item.phone.replace('+', '')}?text=${encodeURIComponent(item.whatsappMessage)}`;
 
         return (
           <article
             class="pathology-item group"
+            data-reveal
+            data-reveal-delay={String((idx % 3) * 70)}
             itemscope
             itemtype="https://schema.org/MedicalCondition"
           >
@@ -108,7 +110,7 @@ import { pathologiesData } from '../../data/pathologies';
     </div>
 
     <!-- Banner Inferior de Consulta Empática -->
-    <div class="pathologies-footer">
+    <div class="pathologies-footer" data-reveal>
       <div class="pathologies-footer-inner">
         <!-- Ícono de información / orientación médica -->
         <div class="pathologies-footer-icon" aria-hidden="true">

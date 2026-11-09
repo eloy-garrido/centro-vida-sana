@@ -5,7 +5,7 @@
 
 import type { DatabaseAdapter } from '../db/adapter.ts';
 import { ApiCommandError, calculatePayloadFingerprint } from './commands.ts';
-import { generateRandomString } from '../auth/crypto.ts';
+import { generateRandomString, encryptPiiJson, decryptPiiJson } from '../auth/crypto.ts';
 import {
   type ProfessionalId,
   type CreateBookingRequest,
@@ -16,13 +16,16 @@ import {
   isAlignedToHour,
   isValidRfc3339Utc,
   validateDocument,
-  validateEmail
+  validateEmail,
+  validatePhone,
+  isAllowedProfessional
 } from '../../lib/agendamiento/validation.ts';
 import {
   getChileDateString,
   getChileTime,
   isValidWorkingSlot,
-  isWithinTeamBookingWindow
+  isWithinTeamBookingWindow,
+  validateDateRange
 } from './policy.ts';
 import { getAvailableSlots } from './availability.ts';
 
@@ -67,15 +70,18 @@ export async function getTeamSchedule(
   toDate: string,
   nowSeconds = Math.floor(Date.now() / 1000)
 ): Promise<TeamScheduleResult> {
-  // 1. Obtener slots disponibles
+  const { fromSec, toSec } = validateDateRange(fromDate, toDate, 35);
+
+  // 1. Obtener slots disponibles pasando forTeam: true (para incluir cupos de hoy D+0)
   const availability = await getAvailableSlots(db, {
     professionalId,
     fromDate,
     toDate,
-    nowSeconds
+    nowSeconds,
+    forTeam: true
   });
 
-  // 2. Obtener todas las entradas de agenda del intervalo
+  // 2. Obtener las entradas de agenda del intervalo acotado [fromSec, toSec) en SQL
   const rows = await db.all<{
     id: string;
     kind: string;
@@ -89,29 +95,27 @@ export async function getTeamSchedule(
     `SELECT id, kind, professional_id, start_at, end_at, status, version, encrypted_snapshot
      FROM agenda_entries
      WHERE professional_id = ?
+       AND start_at >= ?
+       AND start_at < ?
      ORDER BY start_at ASC`,
-    professionalId
+    professionalId,
+    fromSec,
+    toSec
   );
 
   const entries: TeamScheduleEntry[] = [];
 
   for (const r of rows) {
-    const entryDate = getChileDateString(r.start_at);
-    // Filtrar al rango solicitado [fromDate, toDate]
-    if (entryDate < fromDate || entryDate > toDate) {
-      continue;
-    }
-
     let patientSummary: { name: string; email: string; phone?: string } | undefined;
     if (r.kind === 'appointment' && r.encrypted_snapshot) {
-      try {
-        const snap = JSON.parse(r.encrypted_snapshot);
+      const snap = await decryptPiiJson<{ name?: string; email?: string; phone?: string }>(r.encrypted_snapshot);
+      if (snap) {
         patientSummary = {
           name: snap.name || 'Paciente',
           email: snap.email || '',
           phone: snap.phone || ''
         };
-      } catch {
+      } else {
         patientSummary = { name: 'Paciente', email: '' };
       }
     }
@@ -206,6 +210,10 @@ export async function executeTeamBookingCommand(
   }
 
   // 2. Validación de reglas de negocio para el equipo (D04)
+  if (!isAllowedProfessional(request.professionalId)) {
+    throw new ApiCommandError('VALIDATION_ERROR', 'Profesional no válido.', 400);
+  }
+
   if (!isValidRfc3339Utc(request.startAt) || !isAlignedToHour(request.startAt)) {
     throw new ApiCommandError('VALIDATION_ERROR', 'Timestamp UTC alineado a la hora requerido.', 400);
   }
@@ -225,6 +233,15 @@ export async function executeTeamBookingCommand(
     );
   }
 
+  if (!request.patient || typeof request.patient !== 'object') {
+    throw new ApiCommandError('VALIDATION_ERROR', 'Datos del paciente requeridos.', 422);
+  }
+
+  const trimmedName = (request.patient.name || '').trim();
+  if (trimmedName.length < 2 || trimmedName.length > 120) {
+    throw new ApiCommandError('VALIDATION_ERROR', 'Nombre debe tener entre 2 y 120 caracteres.', 422);
+  }
+
   const docVal = validateDocument(request.patient.rut, request.patient.documentType);
   if (!docVal.valid) {
     throw new ApiCommandError('VALIDATION_ERROR', 'Documento no válido.', 422);
@@ -234,11 +251,16 @@ export async function executeTeamBookingCommand(
     throw new ApiCommandError('VALIDATION_ERROR', 'Email no válido.', 422);
   }
 
+  if (!validatePhone(request.patient.phone)) {
+    throw new ApiCommandError('VALIDATION_ERROR', 'Teléfono no válido.', 422);
+  }
+
   const bookingId = `bkg_${generateRandomString(16)}`;
   const version = '"v1"';
+  const auditId = `aud_${generateRandomString(12)}`;
 
-  const snapshotJson = JSON.stringify({
-    name: request.patient.name,
+  const snapshotJson = await encryptPiiJson({
+    name: trimmedName,
     email: request.patient.email,
     rut: docVal.formatted,
     documentType: request.patient.documentType,
@@ -246,48 +268,47 @@ export async function executeTeamBookingCommand(
   });
 
   try {
-    await db.run(
-      `INSERT INTO agenda_entries (
-        id, kind, professional_id, start_at, end_at, status, version,
-        booked_by_user_id, encrypted_snapshot, created_at, updated_at
-      ) VALUES (?, 'appointment', ?, ?, ?, 'confirmed', ?, ?, ?, ?, ?)`,
-      bookingId,
-      request.professionalId,
-      startSeconds,
-      endSeconds,
-      version,
-      null, // En agendamiento de equipo, no se vincula como cuenta de paciente
-      snapshotJson,
-      nowSeconds,
-      nowSeconds
-    );
-
-    const auditId = `aud_${generateRandomString(12)}`;
-    await db.run(
-      `INSERT INTO audit_events (
-        id, actor_id, action, entity_type, entity_id, version, created_at
-      ) VALUES (?, ?, 'create_team_booking', 'appointment', ?, ?, ?)`,
-      auditId,
-      actor.id,
-      bookingId,
-      version,
-      nowSeconds
-    );
-
-    await db.run(
-      `INSERT INTO command_results (
-        actor_id, idempotency_key, method, path, payload_fingerprint,
-        http_status, resource_id, kind, version, created_at
-      ) VALUES (?, ?, ?, ?, ?, 201, ?, 'appointment', ?, ?)`,
-      actor.id,
-      idempotencyKey,
-      method,
-      path,
-      fingerprint,
-      bookingId,
-      version,
-      nowSeconds
-    );
+    await db.batch([
+      {
+        sql: `INSERT INTO agenda_entries (
+          id, kind, professional_id, start_at, end_at, status, version,
+          booked_by_user_id, encrypted_snapshot, created_at, updated_at
+        ) VALUES (?, 'appointment', ?, ?, ?, 'confirmed', ?, ?, ?, ?, ?)`,
+        params: [
+          bookingId,
+          request.professionalId,
+          startSeconds,
+          endSeconds,
+          version,
+          null,
+          snapshotJson,
+          nowSeconds,
+          nowSeconds
+        ]
+      },
+      {
+        sql: `INSERT INTO audit_events (
+          id, actor_id, action, entity_type, entity_id, version, created_at
+        ) VALUES (?, ?, 'create_team_booking', 'appointment', ?, ?, ?)`,
+        params: [auditId, actor.id, bookingId, version, nowSeconds]
+      },
+      {
+        sql: `INSERT INTO command_results (
+          actor_id, idempotency_key, method, path, payload_fingerprint,
+          http_status, resource_id, kind, version, created_at
+        ) VALUES (?, ?, ?, ?, ?, 201, ?, 'appointment', ?, ?)`,
+        params: [
+          actor.id,
+          idempotencyKey,
+          method,
+          path,
+          fingerprint,
+          bookingId,
+          version,
+          nowSeconds
+        ]
+      }
+    ]);
   } catch (err: any) {
     if (err.message && err.message.includes('SLOT_CONFLICT')) {
       throw new ApiCommandError('SLOT_CONFLICT', 'El horario seleccionado ya no está disponible.', 409);
@@ -330,17 +351,65 @@ export async function executeEditTeamBookingCommand(
       phone?: string;
     };
   },
-  nowSeconds = Math.floor(Date.now() / 1000)
+  nowSeconds = Math.floor(Date.now() / 1000),
+  idempotencyKey?: string
 ): Promise<MutationResult> {
+  let fingerprint = '';
+  if (idempotencyKey) {
+    fingerprint = await calculatePayloadFingerprint({ bookingId, expectedVersion, update });
+    const existingReceipt = await db.first<{
+      http_status: number;
+      resource_id: string;
+      kind: string;
+      version: string;
+      payload_fingerprint: string;
+      start_at: number;
+      end_at: number;
+      status: string;
+      professional_id: string;
+    }>(
+      `SELECT c.http_status, c.resource_id, c.kind, c.version, c.payload_fingerprint,
+              a.start_at, a.end_at, a.status, a.professional_id
+       FROM command_results c
+       LEFT JOIN agenda_entries a ON c.resource_id = a.id
+       WHERE c.actor_id = ? AND c.idempotency_key = ?`,
+      actor.id,
+      idempotencyKey
+    );
+
+    if (existingReceipt) {
+      if (existingReceipt.payload_fingerprint !== fingerprint) {
+        throw new ApiCommandError(
+          'IDEMPOTENCY_MISMATCH',
+          'La clave de idempotencia ya fue utilizada con un cuerpo diferente.',
+          409
+        );
+      }
+      return {
+        command: { id: idempotencyKey, status: 'committed' },
+        result: {
+          resourceId: existingReceipt.resource_id,
+          kind: 'appointment',
+          professionalId: existingReceipt.professional_id as ProfessionalId,
+          startAt: new Date(existingReceipt.start_at * 1000).toISOString(),
+          endAt: new Date(existingReceipt.end_at * 1000).toISOString(),
+          status: existingReceipt.status as any,
+          version: existingReceipt.version
+        }
+      };
+    }
+  }
+
   const existing = await db.first<{
     id: string;
+    kind: string;
     professional_id: string;
     start_at: number;
     end_at: number;
     status: string;
     version: string;
     encrypted_snapshot: string;
-  }>('SELECT * FROM agenda_entries WHERE id = ?', bookingId);
+  }>("SELECT * FROM agenda_entries WHERE id = ? AND kind = 'appointment'", bookingId);
 
   if (!existing) {
     throw new ApiCommandError('NOT_FOUND', 'Cita no encontrada.', 404);
@@ -384,7 +453,7 @@ export async function executeEditTeamBookingCommand(
     if (!validateEmail(update.patient.email)) {
       throw new ApiCommandError('VALIDATION_ERROR', 'Email del paciente no válido.', 422);
     }
-    newSnapshot = JSON.stringify({
+    newSnapshot = await encryptPiiJson({
       name: update.patient.name,
       email: update.patient.email,
       rut: docVal.formatted,
@@ -395,32 +464,51 @@ export async function executeEditTeamBookingCommand(
 
   const nextVersionNum = parseInt(existing.version.replace(/[^0-9]/g, '') || '1', 10) + 1;
   const nextVersion = `"v${nextVersionNum}"`;
+  const auditId = `aud_${generateRandomString(12)}`;
 
   try {
-    await db.run(
-      `UPDATE agenda_entries
-       SET start_at = ?, end_at = ?, encrypted_snapshot = ?, version = ?, updated_at = ?
-       WHERE id = ? AND version = ?`,
-      newStart,
-      newEnd,
-      newSnapshot,
-      nextVersion,
-      nowSeconds,
-      bookingId,
-      existing.version
-    );
+    const batchStmts: Array<{ sql: string; params?: any[] }> = [
+      {
+        sql: `UPDATE agenda_entries
+         SET start_at = ?, end_at = ?, encrypted_snapshot = ?, version = ?, updated_at = ?
+         WHERE id = ? AND version = ?`,
+        params: [
+          newStart,
+          newEnd,
+          newSnapshot,
+          nextVersion,
+          nowSeconds,
+          bookingId,
+          existing.version
+        ]
+      },
+      {
+        sql: `INSERT INTO audit_events (
+          id, actor_id, action, entity_type, entity_id, version, created_at
+        ) VALUES (?, ?, 'edit_team_booking', 'appointment', ?, ?, ?)`,
+        params: [auditId, actor.id, bookingId, nextVersion, nowSeconds]
+      }
+    ];
 
-    const auditId = `aud_${generateRandomString(12)}`;
-    await db.run(
-      `INSERT INTO audit_events (
-        id, actor_id, action, entity_type, entity_id, version, created_at
-      ) VALUES (?, ?, 'edit_team_booking', 'appointment', ?, ?, ?)`,
-      auditId,
-      actor.id,
-      bookingId,
-      nextVersion,
-      nowSeconds
-    );
+    if (idempotencyKey) {
+      batchStmts.push({
+        sql: `INSERT INTO command_results (
+          actor_id, idempotency_key, method, path, payload_fingerprint,
+          http_status, resource_id, kind, version, created_at
+        ) VALUES (?, ?, 'PATCH', ?, ?, 200, ?, 'appointment', ?, ?)`,
+        params: [
+          actor.id,
+          idempotencyKey,
+          `/api/team/bookings/${bookingId}`,
+          fingerprint,
+          bookingId,
+          nextVersion,
+          nowSeconds
+        ]
+      });
+    }
+
+    await db.batch(batchStmts);
   } catch (err: any) {
     if (err.message && err.message.includes('SLOT_CONFLICT')) {
       throw new ApiCommandError('SLOT_CONFLICT', 'El nuevo horario ya se encuentra ocupado.', 409);
@@ -477,28 +565,22 @@ export async function executeDeleteBlockCommand(
 
   const nextVersionNum = parseInt(existing.version.replace(/[^0-9]/g, '') || '1', 10) + 1;
   const nextVersion = `"v${nextVersionNum}"`;
-
-  await db.run(
-    `UPDATE agenda_entries
-     SET status = 'cancelled', version = ?, updated_at = ?
-     WHERE id = ? AND version = ?`,
-    nextVersion,
-    nowSeconds,
-    blockId,
-    existing.version
-  );
-
   const auditId = `aud_${generateRandomString(12)}`;
-  await db.run(
-    `INSERT INTO audit_events (
-      id, actor_id, action, entity_type, entity_id, version, created_at
-    ) VALUES (?, ?, 'delete_team_block', 'block', ?, ?, ?)`,
-    auditId,
-    actor.id,
-    blockId,
-    nextVersion,
-    nowSeconds
-  );
+
+  await db.batch([
+    {
+      sql: `UPDATE agenda_entries
+       SET status = 'cancelled', version = ?, updated_at = ?
+       WHERE id = ? AND version = ?`,
+      params: [nextVersion, nowSeconds, blockId, existing.version]
+    },
+    {
+      sql: `INSERT INTO audit_events (
+        id, actor_id, action, entity_type, entity_id, version, created_at
+      ) VALUES (?, ?, 'delete_team_block', 'block', ?, ?, ?)`,
+      params: [auditId, actor.id, blockId, nextVersion, nowSeconds]
+    }
+  ]);
 
   return {
     command: { id: generateRandomString(16), status: 'committed' },

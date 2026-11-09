@@ -1,5 +1,6 @@
 ---
 // Hero Section - Exact Original Design (Centro Vida Sana Austral)
+import { professionals } from '../../data/professionals';
 ---
 
 <section class="hero" id="hero">
@@ -50,7 +51,80 @@
         Unimos la precisión de la biomecánica con la sabiduría de la medicina tradicional china para devolverle a tu cuerpo su balance natural, sin tratamientos invasivos.
       </p>
       <div class="hero-actions">
-        <a href="/reservar" class="btn btn-primary">Reservar Hora en Línea</a>
+        <!-- CTA Principal: Reservar Hora en Línea -->
+        <a href="/reservar" class="hero-btn hero-btn-primary" aria-label="Reservar hora médica en línea">
+          <svg class="hero-btn-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" aria-hidden="true">
+            <rect x="3" y="4" width="18" height="18" rx="2" ry="2"/>
+            <line x1="16" y1="2" x2="16" y2="6"/>
+            <line x1="8" y1="2" x2="8" y2="6"/>
+            <line x1="3" y1="10" x2="21" y2="10"/>
+          </svg>
+          <span>Reservar Hora en Línea</span>
+        </a>
+
+        <!-- CTA Secundario: Reservar por WhatsApp -->
+        <div class="hero-wsp-wrapper" id="heroWspWrapper">
+          <button
+            type="button"
+            class="hero-btn hero-btn-secondary"
+            id="heroWspTrigger"
+            aria-expanded="false"
+            aria-haspopup="true"
+            aria-controls="heroWspMenu"
+            aria-label="Elegir especialista para reservar por WhatsApp"
+          >
+            <svg class="hero-btn-icon hero-btn-icon-wsp" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+              <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413Z"/>
+            </svg>
+            <span>Reservar por WhatsApp</span>
+            <svg class="hero-btn-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" aria-hidden="true">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M19 9l-7 7-7-7"/>
+            </svg>
+          </button>
+
+          <!-- Dropdown con selección de especialista -->
+          <div class="hero-wsp-menu" id="heroWspMenu" role="menu" aria-label="Especialistas disponibles para reserva por WhatsApp">
+            <div class="hero-wsp-menu-header">
+              <span>¿Con quién deseas agendar?</span>
+            </div>
+
+            <!-- Opción Felipe Méndez -->
+            <a
+              href={`https://wa.me/56973700616?text=${encodeURIComponent(professionals.felipe.whatsappMessage)}`}
+              target="_blank"
+              rel="noopener noreferrer"
+              class="hero-wsp-menu-item"
+              role="menuitem"
+            >
+              <img src={professionals.felipe.photoUrl} alt="Felipe Méndez" class="hero-wsp-avatar" width="38" height="38" loading="lazy" />
+              <div class="hero-wsp-info">
+                <span class="hero-wsp-name">Felipe Méndez</span>
+                <span class="hero-wsp-role">Quiropraxia &amp; Kinesiología</span>
+              </div>
+              <svg class="hero-wsp-arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" aria-hidden="true">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M5 12h14M12 5l7 7-7 7"/>
+              </svg>
+            </a>
+
+            <!-- Opción Eduardo Lagos -->
+            <a
+              href={`https://wa.me/56973888910?text=${encodeURIComponent(professionals.eduardo.whatsappMessage)}`}
+              target="_blank"
+              rel="noopener noreferrer"
+              class="hero-wsp-menu-item"
+              role="menuitem"
+            >
+              <img src={professionals.eduardo.photoUrl} alt="Eduardo Lagos" class="hero-wsp-avatar" width="38" height="38" loading="lazy" />
+              <div class="hero-wsp-info">
+                <span class="hero-wsp-name">Eduardo Lagos</span>
+                <span class="hero-wsp-role">Acupuntura &amp; Medicina China</span>
+              </div>
+              <svg class="hero-wsp-arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" aria-hidden="true">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M5 12h14M12 5l7 7-7 7"/>
+              </svg>
+            </a>
+          </div>
+        </div>
       </div>
     </div>
   </div>
@@ -90,6 +164,7 @@
     --bg-light: #f8faf8;
     --shadow: rgba(122, 152, 114, 0.15);
     --shadow-hover: rgba(122, 152, 114, 0.25);
+    --hero-ease: cubic-bezier(0.16, 1, 0.3, 1);
   }
 
   /* ============================================
@@ -127,7 +202,6 @@
     text-align: left;
     position: relative;
     z-index: 10;
-    animation: fadeInUp 0.8s ease-out;
     margin-top: 60px;
   }
 
@@ -231,6 +305,7 @@
     margin-bottom: 18px;
     line-height: 1.08;
     letter-spacing: -0.5px;
+    animation: heroItemFadeUp 0.75s var(--hero-ease) 0.08s both;
   }
 
   .hero-word-sage {
@@ -263,6 +338,7 @@
     color: #4D6D47;
     margin-bottom: 15px;
     display: block;
+    animation: heroItemFadeUp 0.75s var(--hero-ease) 0.16s both;
   }
 
   .hero-subtitle .subtitle-serif-accent {
@@ -276,6 +352,7 @@
     background: linear-gradient(90deg, #134E5E 0%, #2E4D38 100%);
     border-radius: 3px;
     margin: 18px 0 25px;
+    animation: heroDividerExpand 0.7s var(--hero-ease) 0.24s both;
   }
 
   .hero-description {
@@ -284,6 +361,7 @@
     margin-bottom: 40px;
     max-width: 520px;
     line-height: 1.65;
+    animation: heroItemFadeUp 0.75s var(--hero-ease) 0.32s both;
   }
 
   .desc-sage {
@@ -298,63 +376,225 @@
 
   .hero-actions {
     display: flex;
-    gap: 20px;
+    gap: 14px;
     justify-content: flex-start;
-    align-items: flex-start;
+    align-items: center;
     flex-direction: row;
-    margin-bottom: 50px;
+    margin-bottom: 45px;
     flex-wrap: wrap;
-  }
-
-  .hero-actions .btn {
-    width: auto;
-  }
-
-  /* Botones Originales */
-  .btn {
-    border-radius: 50px;
-    font-size: 18px;
-    font-weight: 600;
-    overflow: hidden;
-    padding: 16px 40px;
     position: relative;
+    z-index: 30;
+    animation: heroItemFadeUp 0.75s var(--hero-ease) 0.40s both;
+  }
+
+  /* Botones Hero Rediseñados */
+  .hero-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    padding: 13.5px 26px;
+    border-radius: 14px;
+    font-family: 'DM Sans', -apple-system, BlinkMacSystemFont, sans-serif;
+    font-size: 15px;
+    font-weight: 700;
+    letter-spacing: -0.01em;
     text-decoration: none;
-    transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+    cursor: pointer;
+    transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+    white-space: nowrap;
+    line-height: 1.2;
+    border: none;
+  }
+
+  /* CTA Principal: Reservar Hora en Línea */
+  .hero-btn-primary {
+    background: #244932;
+    background: linear-gradient(180deg, #2E523A 0%, #1F3A28 100%);
+    color: #ffffff !important;
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    box-shadow: 0 4px 14px rgba(31, 58, 40, 0.24), inset 0 1px 0 rgba(255, 255, 255, 0.22);
+  }
+
+  .hero-btn-primary:hover {
+    color: #ffffff !important;
+    background: linear-gradient(180deg, #366044 0%, #25442F 100%);
+    transform: translateY(-2px);
+    box-shadow: 0 8px 22px rgba(31, 58, 40, 0.32), inset 0 1px 0 rgba(255, 255, 255, 0.3);
+  }
+
+  .hero-btn-primary:active {
+    transform: translateY(0);
+    box-shadow: 0 2px 8px rgba(31, 58, 40, 0.2);
+  }
+
+  /* CTA Secundario: Reservar por WhatsApp */
+  .hero-btn-secondary {
+    background: rgba(255, 255, 255, 0.95);
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
+    color: #1F3626;
+    border: 1.5px solid #CCDED1;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
+  }
+
+  .hero-btn-secondary:hover {
+    background: #F4F8F5;
+    border-color: #2E4D38;
+    color: #122418;
+    transform: translateY(-2px);
+    box-shadow: 0 6px 16px rgba(46, 77, 56, 0.1);
+  }
+
+  .hero-btn-secondary:active {
+    transform: translateY(0);
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.04);
+  }
+
+  .hero-btn-primary .hero-btn-icon {
+    width: 17px;
+    height: 17px;
+    color: #A8E5BA;
+    flex-shrink: 0;
+  }
+
+  .hero-btn-secondary .hero-btn-icon-wsp {
+    width: 17px;
+    height: 17px;
+    color: #25D366;
+    flex-shrink: 0;
+  }
+
+  .hero-btn-chevron {
+    width: 14px;
+    height: 14px;
+    color: #6C8272;
+    transition: transform 0.2s ease;
+    margin-left: -2px;
+  }
+
+  .hero-wsp-wrapper {
+    position: relative;
+    display: inline-block;
+  }
+
+  .hero-wsp-wrapper.open .hero-btn-chevron {
+    transform: rotate(180deg);
+  }
+
+  .hero-wsp-menu {
+    position: absolute;
+    top: calc(100% + 8px);
+    left: 0;
+    width: 295px;
+    background: rgba(255, 255, 255, 0.98);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    border-radius: 16px;
+    border: 1px solid #CCDED1;
+    box-shadow: 0 12px 32px rgba(18, 38, 25, 0.14);
+    padding: 8px;
+    z-index: 50;
+    display: none;
+    animation: fadeInMenu 0.2s ease-out;
+    box-sizing: border-box;
+  }
+
+  .hero-wsp-wrapper.open .hero-wsp-menu {
+    display: block;
+  }
+
+  @keyframes fadeInMenu {
+    from {
+      opacity: 0;
+      transform: translateY(-6px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+  .hero-wsp-menu-header {
+    padding: 8px 12px 6px;
+    border-bottom: 1px solid #EEF3F0;
+    margin-bottom: 4px;
+  }
+
+  .hero-wsp-menu-header span {
+    font-size: 11px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    color: #4A6350;
+    display: block;
+  }
+
+  .hero-wsp-menu-item {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 9px 12px;
+    border-radius: 12px;
+    text-decoration: none;
+    transition: background-color 0.15s ease, transform 0.15s ease;
+    color: inherit;
+  }
+
+  .hero-wsp-menu-item:hover {
+    background: #F2F7F4;
+    transform: translateX(2px);
+  }
+
+  .hero-wsp-avatar {
+    width: 36px;
+    height: 36px;
+    border-radius: 10px;
+    object-fit: cover;
+    flex-shrink: 0;
+    border: 1px solid rgba(0, 0, 0, 0.08);
+  }
+
+  .hero-wsp-info {
+    flex: 1;
+    min-width: 0;
+    text-align: left;
+  }
+
+  .hero-wsp-name {
+    display: block;
+    font-size: 13.5px;
+    font-weight: 700;
+    color: #152219;
+    line-height: 1.25;
+  }
+
+  .hero-wsp-role {
+    display: block;
+    font-size: 11px;
+    color: #556D5B;
+    margin-top: 1px;
+  }
+
+  .hero-wsp-arrow {
+    width: 14px;
+    height: 14px;
+    color: #25D366;
+    flex-shrink: 0;
+  }
+
+  /* Botones Originales de compatibilidad */
+  .btn {
+    border-radius: 14px;
+    font-size: 15px;
+    font-weight: 700;
+    padding: 13.5px 26px;
+    text-decoration: none;
     display: inline-block;
   }
 
   .btn-primary {
-    background: linear-gradient(135deg, #004d20, #007231 40%, #3a7d44 60%, #5a9c55);
-    background-size: 300% 300%;
-    box-shadow: 0 8px 25px rgba(0, 90, 38, 0.4), inset 0 1px 0 rgba(255, 255, 255, 0.15);
-    color: #fff;
-    position: relative;
-    overflow: hidden;
-    transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
-    animation: btnGradient 3s ease infinite;
-  }
-
-  @keyframes btnGradient {
-    0%, 100% { background-position: 0% 50%; }
-    50% { background-position: 100% 50%; }
-  }
-
-  .btn-primary::before {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    background: linear-gradient(180deg, rgba(255, 255, 255, 0.15) 0%, transparent 50%);
-    pointer-events: none;
-  }
-
-  .btn-primary:hover {
-    box-shadow: 0 15px 45px rgba(0, 114, 49, 0.5), 0 0 30px rgba(0, 114, 49, 0.2);
-    transform: translateY(-4px) scale(1.02);
-    animation: none;
-    background-position: 100% 50%;
+    background: linear-gradient(180deg, #2E523A 0%, #1F3A28 100%);
     color: #fff;
   }
 
@@ -398,11 +638,12 @@
     z-index: 4;
     pointer-events: none;
     filter: drop-shadow(0 15px 35px rgba(0, 0, 0, 0.12));
+    animation: heroDuoFadeUp 0.9s var(--hero-ease) 0.22s both;
   }
 
   .scroll-indicator {
     align-items: center;
-    animation: bounce 2s infinite;
+    animation: heroFadeOnly 0.7s ease-out 0.65s both, bounce 2s infinite 1.4s;
     backdrop-filter: blur(5px);
     background: hsla(0, 0%, 100%, 0.6);
     border-radius: 30px;
@@ -434,15 +675,57 @@
     display: none;
   }
 
-  /* Animaciones Exactas */
-  @keyframes fadeInUp {
+  /* Animaciones Exactas & Cinemática Emil Kowalski */
+  @keyframes heroItemFadeUp {
     from {
       opacity: 0;
-      transform: translateY(40px);
+      transform: translateY(22px);
     }
     to {
       opacity: 1;
       transform: translateY(0);
+    }
+  }
+
+  @keyframes heroDividerExpand {
+    from {
+      opacity: 0;
+      width: 0px;
+    }
+    to {
+      opacity: 1;
+      width: 75px;
+    }
+  }
+
+  @keyframes heroDuoFadeUp {
+    from {
+      opacity: 0;
+      transform: translateY(28px) scale(0.98);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0) scale(1);
+    }
+  }
+
+  @keyframes heroDuoFadeUpMobile {
+    from {
+      opacity: 0;
+      transform: translateX(-50%) translateY(24px) scale(0.98);
+    }
+    to {
+      opacity: 1;
+      transform: translateX(-50%) translateY(0) scale(1);
+    }
+  }
+
+  @keyframes heroFadeOnly {
+    from {
+      opacity: 0;
+    }
+    to {
+      opacity: 1;
     }
   }
 
@@ -542,6 +825,7 @@
       height: clamp(260px, 40vh, 360px);
       width: auto;
       z-index: 4;
+      animation: heroDuoFadeUpMobile 0.9s var(--hero-ease) 0.22s both;
     }
 
     .hero-bg-img {
@@ -575,9 +859,35 @@
       margin-bottom: 14px;
     }
 
-    /* Ocultar botón dentro del contenido en móvil */
     .hero-actions {
-      display: none;
+      display: flex;
+      flex-direction: column;
+      align-items: stretch;
+      gap: 10px;
+      width: 100%;
+      max-width: 320px;
+      margin: 22px auto 28px;
+      position: relative;
+      z-index: 25;
+    }
+
+    .hero-btn {
+      width: 100%;
+      padding: 13px 20px;
+      font-size: 14.5px;
+      border-radius: 12px;
+      box-sizing: border-box;
+    }
+
+    .hero-wsp-wrapper {
+      width: 100%;
+    }
+
+    .hero-wsp-menu {
+      left: 50%;
+      transform: translateX(-50%);
+      width: 100%;
+      max-width: 320px;
     }
 
     .hero-title {
@@ -632,4 +942,84 @@
       font-size: clamp(13.5px, 3.2vw, 15px);
     }
   }
+
+  @media (prefers-reduced-motion: reduce) {
+    .hero-title,
+    .hero-subtitle,
+    .hero-divider,
+    .hero-description,
+    .hero-actions,
+    .hero-duo,
+    .scroll-indicator,
+    .leaf-float {
+      animation: none !important;
+      opacity: 1 !important;
+    }
+    .hero-title,
+    .hero-subtitle,
+    .hero-description,
+    .hero-actions {
+      transform: none !important;
+    }
+    .hero-divider {
+      width: 75px !important;
+    }
+    .hero-duo {
+      transform: none !important;
+    }
+    @media (max-width: 768px) {
+      .hero-duo {
+        transform: translateX(-50%) !important;
+      }
+    }
+  }
 </style>
+
+<script>
+  function initHeroWspDropdown() {
+    const wrapper = document.getElementById('heroWspWrapper');
+    const trigger = document.getElementById('heroWspTrigger');
+    const menu = document.getElementById('heroWspMenu');
+
+    if (!wrapper || !trigger || !menu) return;
+
+    function toggleMenu(show?: boolean) {
+      const isOpen = wrapper?.classList.contains('open');
+      const targetState = typeof show === 'boolean' ? show : !isOpen;
+
+      if (targetState) {
+        wrapper?.classList.add('open');
+        trigger?.setAttribute('aria-expanded', 'true');
+      } else {
+        wrapper?.classList.remove('open');
+        trigger?.setAttribute('aria-expanded', 'false');
+      }
+    }
+
+    trigger.addEventListener('click', (e) => {
+      e.stopPropagation();
+      toggleMenu();
+    });
+
+    document.addEventListener('click', (e) => {
+      if (!wrapper.contains(e.target as Node)) {
+        toggleMenu(false);
+      }
+    });
+
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape') {
+        toggleMenu(false);
+      }
+    });
+
+    menu.querySelectorAll('a').forEach((link) => {
+      link.addEventListener('click', () => {
+        toggleMenu(false);
+      });
+    });
+  }
+
+  initHeroWspDropdown();
+  document.addEventListener('astro:page-load', initHeroWspDropdown);
+</script>

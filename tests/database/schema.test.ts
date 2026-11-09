@@ -9,6 +9,12 @@ import { readFileSync } from 'node:fs';
 import { resolve } from 'node:path';
 import { DatabaseSync } from 'node:sqlite';
 
+import { createSqliteAdapter } from '../../src/server/db/adapter.ts';
+import { savePatientProfile, getPatientProfile } from '../../src/server/agenda/profile.ts';
+import { executeCreateBookingCommand } from '../../src/server/agenda/commands.ts';
+import { getBookingDetails } from '../../src/server/agenda/details.ts';
+import { chileLocalToUtcSeconds } from '../../src/server/agenda/policy.ts';
+
 function createTestDatabase(): DatabaseSync {
   const db = new DatabaseSync(':memory:');
   db.exec('PRAGMA foreign_keys = ON;');
@@ -231,3 +237,87 @@ test('Idempotencia: unicidad de (actor_id, idempotency_key)', () => {
 
   db.close();
 });
+
+// ============================================================================
+// 6. CIFRADO EN REPOSO AES-256-GCM PARA PII Y RUT (Task 2)
+// ============================================================================
+
+test('SEC-ENC: Cifrado en reposo AES-256-GCM para PII y RUT en patient_profiles y agenda_entries', async () => {
+  const db = createTestDatabase();
+  const adapter = createSqliteAdapter(db);
+
+  const userId = 'usr_test_pii_123';
+  const patientRut = '16.789.012-1';
+  const patientName = 'Camila González';
+
+  // Insertar usuario
+  db.prepare(`
+    INSERT INTO users (id, google_sub, name, email, created_at, updated_at)
+    VALUES (?, 'sub_pii_123', ?, 'camila@gmail.com', 1730890000, 1730890000)
+  `).run(userId, patientName);
+
+  // 1. Guardar perfil de paciente
+  await savePatientProfile(
+    adapter,
+    userId,
+    {
+      name: patientName,
+      email: 'camila@gmail.com',
+      rut: patientRut,
+      documentType: 'rut',
+      phone: '+56912345678'
+    },
+    'v1.0',
+    {}
+  );
+
+  // 2. Crear una reserva
+  const nowChile = chileLocalToUtcSeconds(2026, 11, 5, 12, 0);
+  const slot10Sec = chileLocalToUtcSeconds(2026, 11, 6, 10, 0);
+  const startAtIso = new Date(slot10Sec * 1000).toISOString();
+
+  const bookingRes = await executeCreateBookingCommand(
+    adapter,
+    { id: userId, email: 'camila@gmail.com' },
+    'idem_key_enc_pii',
+    {
+      professionalId: 'felipe',
+      startAt: startAtIso,
+      patient: {
+        name: patientName,
+        email: 'camila@gmail.com',
+        rut: patientRut,
+        documentType: 'rut',
+        phone: '+56912345678'
+      },
+      consentVersion: 'v1.0'
+    },
+    nowChile
+  );
+
+  // 3. Consultar directamente las columnas crudas en la base de datos SQL
+  const profileRow = db.prepare('SELECT encrypted_payload FROM patient_profiles WHERE user_id = ?').get(userId) as { encrypted_payload: string };
+  const entryRow = db.prepare('SELECT encrypted_snapshot FROM agenda_entries WHERE id = ?').get(bookingRes.result.result.resourceId) as { encrypted_snapshot: string };
+
+  // Comprobar que ambas comienzan con enc:v1:
+  assert.ok(profileRow.encrypted_payload.startsWith('enc:v1:'), 'El payload del perfil debe estar cifrado con prefijo enc:v1:');
+  assert.ok(entryRow.encrypted_snapshot.startsWith('enc:v1:'), 'El snapshot de la entrada debe estar cifrado con prefijo enc:v1:');
+
+  // Comprobar que NO contienen el RUT ni el nombre en texto claro
+  assert.ok(!profileRow.encrypted_payload.includes(patientRut), 'El payload del perfil no debe contener el RUT en texto plano');
+  assert.ok(!profileRow.encrypted_payload.includes(patientName), 'El payload del perfil no debe contener el nombre en texto plano');
+  assert.ok(!entryRow.encrypted_snapshot.includes(patientRut), 'El snapshot no debe contener el RUT en texto plano');
+  assert.ok(!entryRow.encrypted_snapshot.includes(patientName), 'El snapshot no debe contener el nombre en texto plano');
+
+  // 4. Comprobar que getPatientProfile y getBookingDetails descifran de forma transparente
+  const readProfile = await getPatientProfile(adapter, userId);
+  assert.strictEqual(readProfile.profile?.rut, patientRut);
+  assert.strictEqual(readProfile.profile?.name, patientName);
+
+  const readDetails = await getBookingDetails(adapter, bookingRes.result.result.resourceId, { id: userId, isTeam: false });
+  assert.strictEqual(readDetails.booking.patient?.rut, patientRut);
+  assert.strictEqual(readDetails.booking.patient?.name, patientName);
+
+  db.close();
+});
+

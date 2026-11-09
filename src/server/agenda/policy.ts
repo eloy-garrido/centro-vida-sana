@@ -8,6 +8,7 @@ import {
   SLOT_DURATION_SECONDS,
   type ProfessionalId
 } from '../../lib/agendamiento/types.ts';
+import { ApiCommandError } from './errors.ts';
 
 const CHILE_FORMATTER = new Intl.DateTimeFormat('en-US', {
   timeZone: CLINIC_TIMEZONE,
@@ -71,7 +72,7 @@ export function getChileDateString(utcSeconds: number): string {
 
 /**
  * Convierte una fecha y hora local de Chile a un Unix timestamp UTC (en segundos).
- * Usa aproximación segura y refinamiento con Intl para garantizar exactitud con DST.
+ * Usa aproximación segura y refinamiento de dos pasadas con Intl para garantizar exactitud con DST e invierno UTC-4.
  */
 export function chileLocalToUtcSeconds(
   year: number,
@@ -80,15 +81,24 @@ export function chileLocalToUtcSeconds(
   hour: number,
   minute = 0
 ): number {
-  // En Chile el huso horario es UTC-3 (verano) o UTC-4 (invierno).
-  // Estimamos con UTC-3 y ajustamos la diferencia horaria exacta.
+  // Estimación inicial en UTC+0
   let guessDate = new Date(Date.UTC(year, month - 1, day, hour + 3, minute, 0));
-  let localParts = getChileTime(guessDate);
+  const targetUtc = Date.UTC(year, month - 1, day, hour, minute, 0);
 
-  // Ajustar si la diferencia es distinta debido a horario de invierno
-  const diffHours = hour - localParts.hour;
-  if (diffHours !== 0) {
-    guessDate = new Date(guessDate.getTime() + diffHours * 3600 * 1000);
+  // Pasada 1 de alineación de desfase horario
+  let localParts = getChileTime(guessDate);
+  let currentLocalUtc = Date.UTC(localParts.year, localParts.month - 1, localParts.day, localParts.hour, localParts.minute, 0);
+  let diffMs = targetUtc - currentLocalUtc;
+  if (diffMs !== 0) {
+    guessDate = new Date(guessDate.getTime() + diffMs);
+  }
+
+  // Pasada 2 de refinamiento (por si el salto cruza una transición de cambio de hora DST)
+  localParts = getChileTime(guessDate);
+  currentLocalUtc = Date.UTC(localParts.year, localParts.month - 1, localParts.day, localParts.hour, localParts.minute, 0);
+  diffMs = targetUtc - currentLocalUtc;
+  if (diffMs !== 0) {
+    guessDate = new Date(guessDate.getTime() + diffMs);
   }
 
   return Math.floor(guessDate.getTime() / 1000);
@@ -158,7 +168,7 @@ export function isWithinPatientBookingWindow(
 
 /**
  * Verifica si la fecha está dentro de la ventana autorizada para el equipo (D04):
- * - Permite agendar hoy (D+0) y dentro del mes corriente.
+ * - Permite agendar hoy (D+0) y dentro del mes corriente (o primeros 7 días del mes siguiente, hasta 31 días hacia adelante).
  */
 export function isWithinTeamBookingWindow(
   slotSeconds: number,
@@ -174,17 +184,66 @@ export function isWithinTeamBookingWindow(
   const startOfNowChile = new Date(Date.UTC(nowLocal.year, nowLocal.month - 1, nowLocal.day, 0, 0, 0));
   const startOfSlotChile = new Date(Date.UTC(slotLocal.year, slotLocal.month - 1, slotLocal.day, 0, 0, 0));
 
-  if (startOfSlotChile.getTime() < startOfNowChile.getTime()) {
+  const diffDays = Math.round(
+    (startOfSlotChile.getTime() - startOfNowChile.getTime()) / (24 * 60 * 60 * 1000)
+  );
+
+  if (diffDays < 0 || diffDays > 31) {
     return false;
   }
 
-  // Mismo año y mes corriente (o hasta 31 días hacia adelante)
+  // Mismo año y mes corriente, o primeros 7 días del mes siguiente inmediato
   const isSameMonth = slotLocal.year === nowLocal.year && slotLocal.month === nowLocal.month;
   const isNextMonthNear =
-    (slotLocal.month === nowLocal.month + 1 || (nowLocal.month === 12 && slotLocal.month === 1)) &&
+    ((slotLocal.year === nowLocal.year && slotLocal.month === nowLocal.month + 1) ||
+      (slotLocal.year === nowLocal.year + 1 && nowLocal.month === 12 && slotLocal.month === 1)) &&
     slotLocal.day <= 7;
 
   return isSameMonth || isNextMonthNear;
+}
+
+/**
+ * Valida un rango de fechas [fromDate, toDate] verificando formato YYYY-MM-DD,
+ * que toDate > fromDate y que el rango no supere maxDays días.
+ * Retorna los límites de tiempo Unix en segundos calculados con precisión local de Chile.
+ */
+export function validateDateRange(
+  fromDate: string,
+  toDate: string,
+  maxDays = 35
+): { fromSec: number; toSec: number } {
+  if (!fromDate || !toDate || typeof fromDate !== 'string' || typeof toDate !== 'string') {
+    throw new ApiCommandError('VALIDATION_ERROR', 'Parámetros fromDate y toDate requeridos.', 400);
+  }
+
+  const dateRegex = /^\d{4}-\d{2}-\d{2}$/;
+  if (!dateRegex.test(fromDate) || !dateRegex.test(toDate)) {
+    throw new ApiCommandError('VALIDATION_ERROR', 'Formato de fecha inválido. Debe ser YYYY-MM-DD.', 400);
+  }
+
+  const [fY, fM, fD] = fromDate.split('-').map(Number);
+  const [tY, tM, tD] = toDate.split('-').map(Number);
+
+  const fUtc = Date.UTC(fY, fM - 1, fD);
+  const tUtc = Date.UTC(tY, tM - 1, tD);
+  const diffDays = Math.round((tUtc - fUtc) / (24 * 3600 * 1000));
+
+  if (diffDays <= 0) {
+    throw new ApiCommandError('VALIDATION_ERROR', 'toDate debe ser estrictamente posterior a fromDate.', 400);
+  }
+
+  if (diffDays > maxDays) {
+    throw new ApiCommandError(
+      'VALIDATION_ERROR',
+      `El rango de fechas no puede exceder ${maxDays} días.`,
+      400
+    );
+  }
+
+  const fromSec = chileLocalToUtcSeconds(fY, fM, fD, 0, 0);
+  const toSec = chileLocalToUtcSeconds(tY, tM, tD, 0, 0);
+
+  return { fromSec, toSec };
 }
 
 /**

@@ -1,6 +1,7 @@
 /.vscode
 /.claude
 .claude
+.superpowers/
 
 # Dependencies
 node_modules/

@@ -29,7 +29,8 @@ async function loginUser(adapter: any, role: 'patient' | 'team', email: string, 
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ role, email, name })
     }),
-    adapter
+    adapter,
+    { isDev: true }
   );
   const data = await loginRes.json() as any;
   const cookieMatch = loginRes.headers.get('Set-Cookie')!.match(/vsa_session=([^;]+)/);

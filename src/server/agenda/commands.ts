@@ -13,12 +13,14 @@ import {
   type UserSession
 } from '../../lib/agendamiento/types.ts';
 import type { DatabaseAdapter } from '../db/adapter.ts';
-import { generateRandomString, sha256Hex } from '../auth/crypto.ts';
+import { generateRandomString, sha256Hex, encryptPiiJson } from '../auth/crypto.ts';
 import {
   isAlignedToHour,
   isValidRfc3339Utc,
   validateDocument,
-  validateEmail
+  validateEmail,
+  validatePhone,
+  isAllowedProfessional
 } from '../../lib/agendamiento/validation.ts';
 import {
   isValidWorkingSlot,
@@ -26,18 +28,8 @@ import {
   isWithinTeamBookingWindow
 } from './policy.ts';
 
-export class ApiCommandError extends Error {
-  code: string;
-  status: number;
-  fields?: Record<string, string>;
-
-  constructor(code: string, message: string, status: number, fields?: Record<string, string>) {
-    super(message);
-    this.code = code;
-    this.status = status;
-    this.fields = fields;
-  }
-}
+import { ApiCommandError } from './errors.ts';
+export { ApiCommandError };
 
 /**
  * Serializa canónicamente un objeto JSON ordenando las claves a todos los niveles de anidación.
@@ -182,6 +174,15 @@ export async function executeCreateBookingCommand(
   }
 
   // 2. Validación de reglas de negocio para nuevo comando
+  if (!isAllowedProfessional(request.professionalId)) {
+    throw new ApiCommandError(
+      'VALIDATION_ERROR',
+      'El profesional especificado no es válido.',
+      400,
+      { professionalId: 'INVALID_PROFESSIONAL' }
+    );
+  }
+
   if (!isValidRfc3339Utc(request.startAt) || !isAlignedToHour(request.startAt)) {
     throw new ApiCommandError(
       'VALIDATION_ERROR',
@@ -215,6 +216,25 @@ export async function executeCreateBookingCommand(
   }
 
   // Validar datos de paciente y RUT
+  if (!request.patient || typeof request.patient !== 'object') {
+    throw new ApiCommandError(
+      'VALIDATION_ERROR',
+      'Los datos del paciente son obligatorios.',
+      422,
+      { patient: 'PATIENT_REQUIRED' }
+    );
+  }
+
+  const trimmedName = (request.patient.name || '').trim();
+  if (trimmedName.length < 2 || trimmedName.length > 120) {
+    throw new ApiCommandError(
+      'VALIDATION_ERROR',
+      'El nombre del paciente debe tener entre 2 y 120 caracteres.',
+      422,
+      { name: 'INVALID_NAME_LENGTH' }
+    );
+  }
+
   const docVal = validateDocument(request.patient.rut, request.patient.documentType);
   if (!docVal.valid) {
     throw new ApiCommandError(
@@ -234,12 +254,22 @@ export async function executeCreateBookingCommand(
     );
   }
 
+  if (!validatePhone(request.patient.phone)) {
+    throw new ApiCommandError(
+      'VALIDATION_ERROR',
+      'El número telefónico ingresado no es válido.',
+      422,
+      { phone: 'INVALID_PHONE' }
+    );
+  }
+
   // 3. Ejecutar transacción atómica
   const bookingId = `bkg_${generateRandomString(16)}`;
   const version = '"v1"';
+  const auditId = `aud_${generateRandomString(12)}`;
 
-  const snapshotJson = JSON.stringify({
-    name: request.patient.name,
+  const snapshotJson = await encryptPiiJson({
+    name: trimmedName,
     email: request.patient.email,
     rut: docVal.formatted,
     documentType: request.patient.documentType,
@@ -247,51 +277,48 @@ export async function executeCreateBookingCommand(
   });
 
   try {
-    // Inserción en agenda_entries (protegida por el trigger atómico trg_agenda_entries_no_overlap_insert)
-    await db.run(
-      `INSERT INTO agenda_entries (
-        id, kind, professional_id, start_at, end_at, status, version,
-        booked_by_user_id, encrypted_snapshot, created_at, updated_at
-      ) VALUES (?, 'appointment', ?, ?, ?, 'confirmed', ?, ?, ?, ?, ?)`,
-      bookingId,
-      request.professionalId,
-      startSeconds,
-      endSeconds,
-      version,
-      actor.id,
-      snapshotJson,
-      nowSeconds,
-      nowSeconds
-    );
-
-    // Registro de auditoría (sin PII)
-    const auditId = `aud_${generateRandomString(12)}`;
-    await db.run(
-      `INSERT INTO audit_events (
-        id, actor_id, action, entity_type, entity_id, version, created_at
-      ) VALUES (?, ?, 'create_booking', 'appointment', ?, ?, ?)`,
-      auditId,
-      actor.id,
-      bookingId,
-      version,
-      nowSeconds
-    );
-
-    // Registro del recibo de idempotencia
-    await db.run(
-      `INSERT INTO command_results (
-        actor_id, idempotency_key, method, path, payload_fingerprint,
-        http_status, resource_id, kind, version, created_at
-      ) VALUES (?, ?, ?, ?, ?, 201, ?, 'appointment', ?, ?)`,
-      actor.id,
-      idempotencyKey,
-      method,
-      path,
-      fingerprint,
-      bookingId,
-      version,
-      nowSeconds
-    );
+    // Inserción atómica por lotes (db.batch) en agenda_entries, audit_events y command_results
+    await db.batch([
+      {
+        sql: `INSERT INTO agenda_entries (
+          id, kind, professional_id, start_at, end_at, status, version,
+          booked_by_user_id, encrypted_snapshot, created_at, updated_at
+        ) VALUES (?, 'appointment', ?, ?, ?, 'confirmed', ?, ?, ?, ?, ?)`,
+        params: [
+          bookingId,
+          request.professionalId,
+          startSeconds,
+          endSeconds,
+          version,
+          actor.id,
+          snapshotJson,
+          nowSeconds,
+          nowSeconds
+        ]
+      },
+      {
+        sql: `INSERT INTO audit_events (
+          id, actor_id, action, entity_type, entity_id, version, created_at
+        ) VALUES (?, ?, 'create_booking', 'appointment', ?, ?, ?)`,
+        params: [auditId, actor.id, bookingId, version, nowSeconds]
+      },
+      {
+        sql: `INSERT INTO command_results (
+          actor_id, idempotency_key, method, path, payload_fingerprint,
+          http_status, resource_id, kind, version, created_at
+        ) VALUES (?, ?, ?, ?, ?, 201, ?, 'appointment', ?, ?)`,
+        params: [
+          actor.id,
+          idempotencyKey,
+          method,
+          path,
+          fingerprint,
+          bookingId,
+          version,
+          nowSeconds
+        ]
+      }
+    ]);
   } catch (err: any) {
     if (err.message && err.message.includes('SLOT_CONFLICT')) {
       throw new ApiCommandError(
@@ -342,7 +369,7 @@ export async function executeCancelBookingCommand(
     version: string;
     booked_by_user_id: string | null;
   }>(
-    'SELECT id, professional_id, start_at, end_at, status, version, booked_by_user_id FROM agenda_entries WHERE id = ?',
+    "SELECT id, professional_id, start_at, end_at, status, version, booked_by_user_id FROM agenda_entries WHERE id = ? AND kind = 'appointment'",
     bookingId
   );
 
@@ -372,30 +399,23 @@ export async function executeCancelBookingCommand(
 
   const nextVersionNum = parseInt(existing.version.replace(/[^0-9]/g, '') || '1', 10) + 1;
   const nextVersion = `"v${nextVersionNum}"`;
-
-  // Actualización lógica en D1 (soft-delete sin hard-delete de historia)
-  await db.run(
-    `UPDATE agenda_entries
-     SET status = 'cancelled', version = ?, updated_at = ?
-     WHERE id = ? AND version = ?`,
-    nextVersion,
-    nowSeconds,
-    bookingId,
-    expectedVersion
-  );
-
-  // Registro de auditoría
   const auditId = `aud_${generateRandomString(12)}`;
-  await db.run(
-    `INSERT INTO audit_events (
-      id, actor_id, action, entity_type, entity_id, version, created_at
-    ) VALUES (?, ?, 'cancel_booking', 'appointment', ?, ?, ?)`,
-    auditId,
-    actor.id,
-    bookingId,
-    nextVersion,
-    nowSeconds
-  );
+
+  // Actualización lógica y auditoría atómica mediante db.batch
+  await db.batch([
+    {
+      sql: `UPDATE agenda_entries
+       SET status = 'cancelled', version = ?, updated_at = ?
+       WHERE id = ? AND version = ?`,
+      params: [nextVersion, nowSeconds, bookingId, existing.version]
+    },
+    {
+      sql: `INSERT INTO audit_events (
+        id, actor_id, action, entity_type, entity_id, version, created_at
+      ) VALUES (?, ?, 'cancel_booking', 'appointment', ?, ?, ?)`,
+      params: [auditId, actor.id, bookingId, nextVersion, nowSeconds]
+    }
+  ]);
 
   return {
     command: {
@@ -415,7 +435,7 @@ export async function executeCancelBookingCommand(
 }
 
 /**
- * Crea un bloqueo de 60 minutos en la agenda del equipo (S05 / D04).
+ * Crea un bloqueo de 60 minutos en la agenda del equipo con soporte completo de idempotencia y validación (S05 / D04).
  */
 export async function executeCreateBlockCommand(
   db: DatabaseAdapter,
@@ -423,31 +443,135 @@ export async function executeCreateBlockCommand(
   idempotencyKey: string,
   request: CreateBlockRequest,
   nowSeconds = Math.floor(Date.now() / 1000)
-): Promise<MutationResult> {
+): Promise<{ result: MutationResult; isReplay: boolean }> {
+  // 1. Validar profesional
+  if (!isAllowedProfessional(request.professionalId)) {
+    throw new ApiCommandError(
+      'VALIDATION_ERROR',
+      'El profesional especificado no es válido.',
+      400,
+      { professionalId: 'INVALID_PROFESSIONAL' }
+    );
+  }
+
+  // 2. Validar timestamps RFC3339 UTC alineados a la hora
+  if (!isValidRfc3339Utc(request.startAt) || !isAlignedToHour(request.startAt)) {
+    throw new ApiCommandError(
+      'VALIDATION_ERROR',
+      'La hora de inicio debe ser un timestamp RFC3339 UTC alineado a la hora exacta (:00:00Z).',
+      400,
+      { startAt: 'INVALID_TIMESTAMP' }
+    );
+  }
+
+  if (!isValidRfc3339Utc(request.endAt)) {
+    throw new ApiCommandError(
+      'VALIDATION_ERROR',
+      'La hora de término debe ser un timestamp RFC3339 UTC válido.',
+      400,
+      { endAt: 'INVALID_TIMESTAMP' }
+    );
+  }
+
   const startSeconds = Math.floor(new Date(request.startAt).getTime() / 1000);
   const endSeconds = Math.floor(new Date(request.endAt).getTime() / 1000);
 
-  if (endSeconds <= startSeconds) {
-    throw new ApiCommandError('VALIDATION_ERROR', 'El fin del bloqueo debe ser posterior al inicio.', 400);
+  if (endSeconds - startSeconds !== SLOT_DURATION_SECONDS) {
+    throw new ApiCommandError(
+      'VALIDATION_ERROR',
+      'Los bloqueos deben tener una duración exacta de 60 minutos (3600 segundos).',
+      400,
+      { duration: 'INVALID_DURATION' }
+    );
+  }
+
+  // 3. Verificación de Idempotencia (S09 / P03)
+  const fingerprint = await calculatePayloadFingerprint(request);
+  const method = 'POST';
+  const path = '/api/team/blocks';
+
+  const existingReceipt = await db.first<{
+    payload_fingerprint: string;
+    resource_id: string;
+    version: string;
+    start_at: number;
+    end_at: number;
+    professional_id: string;
+    status: string;
+  }>(
+    `SELECT c.payload_fingerprint, c.resource_id, c.version,
+            a.start_at, a.end_at, a.professional_id, a.status
+     FROM command_results c
+     LEFT JOIN agenda_entries a ON c.resource_id = a.id
+     WHERE c.actor_id = ? AND c.idempotency_key = ?`,
+    actor.id,
+    idempotencyKey
+  );
+
+  if (existingReceipt) {
+    if (existingReceipt.payload_fingerprint !== fingerprint) {
+      throw new ApiCommandError(
+        'IDEMPOTENCY_MISMATCH',
+        'La clave de idempotencia ya fue utilizada con un cuerpo de solicitud diferente.',
+        409
+      );
+    }
+
+    return {
+      isReplay: true,
+      result: {
+        command: {
+          id: idempotencyKey,
+          status: 'committed'
+        },
+        result: {
+          resourceId: existingReceipt.resource_id,
+          kind: 'block',
+          professionalId: existingReceipt.professional_id as ProfessionalId,
+          startAt: new Date(existingReceipt.start_at * 1000).toISOString(),
+          endAt: new Date(existingReceipt.end_at * 1000).toISOString(),
+          status: existingReceipt.status as any,
+          version: existingReceipt.version
+        }
+      }
+    };
   }
 
   const blockId = `blk_${generateRandomString(16)}`;
   const version = '"v1"';
+  const auditId = `aud_${generateRandomString(12)}`;
 
   try {
-    await db.run(
-      `INSERT INTO agenda_entries (
-        id, kind, professional_id, start_at, end_at, status, version,
-        created_at, updated_at
-      ) VALUES (?, 'block', ?, ?, ?, 'confirmed', ?, ?, ?)`,
-      blockId,
-      request.professionalId,
-      startSeconds,
-      endSeconds,
-      version,
-      nowSeconds,
-      nowSeconds
-    );
+    await db.batch([
+      {
+        sql: `INSERT INTO agenda_entries (
+          id, kind, professional_id, start_at, end_at, status, version,
+          created_at, updated_at
+        ) VALUES (?, 'block', ?, ?, ?, 'confirmed', ?, ?, ?)`,
+        params: [
+          blockId,
+          request.professionalId,
+          startSeconds,
+          endSeconds,
+          version,
+          nowSeconds,
+          nowSeconds
+        ]
+      },
+      {
+        sql: `INSERT INTO audit_events (
+          id, actor_id, action, entity_type, entity_id, version, created_at
+        ) VALUES (?, ?, 'create_team_block', 'block', ?, ?, ?)`,
+        params: [auditId, actor.id, blockId, version, nowSeconds]
+      },
+      {
+        sql: `INSERT INTO command_results (
+          actor_id, idempotency_key, method, path, payload_fingerprint,
+          http_status, resource_id, kind, version, created_at
+        ) VALUES (?, ?, ?, ?, ?, 201, ?, 'block', ?, ?)`,
+        params: [actor.id, idempotencyKey, method, path, fingerprint, blockId, version, nowSeconds]
+      }
+    ]);
   } catch (err: any) {
     if (err.message && err.message.includes('SLOT_CONFLICT')) {
       throw new ApiCommandError(
@@ -460,18 +584,21 @@ export async function executeCreateBlockCommand(
   }
 
   return {
-    command: {
-      id: idempotencyKey,
-      status: 'committed'
-    },
+    isReplay: false,
     result: {
-      resourceId: blockId,
-      kind: 'block',
-      professionalId: request.professionalId,
-      startAt: new Date(startSeconds * 1000).toISOString(),
-      endAt: new Date(endSeconds * 1000).toISOString(),
-      status: 'confirmed',
-      version
+      command: {
+        id: idempotencyKey,
+        status: 'committed'
+      },
+      result: {
+        resourceId: blockId,
+        kind: 'block',
+        professionalId: request.professionalId,
+        startAt: new Date(startSeconds * 1000).toISOString(),
+        endAt: new Date(endSeconds * 1000).toISOString(),
+        status: 'confirmed',
+        version
+      }
     }
   };
 }

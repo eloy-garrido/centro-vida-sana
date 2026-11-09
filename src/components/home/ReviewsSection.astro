@@ -7,7 +7,7 @@ import { clinicInfo } from '../../data/clinic';
   <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
 
     <!-- Section Header Sobrio -->
-    <div class="text-center max-w-2xl mx-auto mb-12 sm:mb-14">
+    <div class="text-center max-w-2xl mx-auto mb-12 sm:mb-14" data-reveal>
       <div class="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-white border border-[#007231]/15 shadow-xs mb-4">
         <svg class="w-4 h-4" viewBox="0 0 24 24" aria-hidden="true">
           <path fill="#4285F4" d="M23.745 12.27c0-.7-.06-1.4-.19-2.07H12v4.51h6.6c-.29 1.52-1.14 2.82-2.4 3.68v3.05h3.88c2.27-2.09 3.665-5.17 3.665-9.17Z"/>
@@ -30,8 +30,12 @@ import { clinicInfo } from '../../data/clinic';
 
     <!-- Grid de Tarjetas de Testimonios Directas (6 Tarjetas con Simetría Perfecta) -->
     <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 max-w-6xl mx-auto">
-      {reviewsData.map((rev) => (
-        <article class="rounded-2xl bg-white border border-[#007231]/12 p-6 shadow-soft hover:shadow-soft-lg hover:-translate-y-1 transition-all duration-300 flex flex-col justify-between">
+      {reviewsData.map((rev, idx) => (
+        <article
+          class="rounded-2xl bg-white border border-[#007231]/12 p-6 shadow-soft hover:shadow-soft-lg hover:-translate-y-1 transition-all duration-300 flex flex-col justify-between"
+          data-reveal
+          data-reveal-delay={String((idx % 3) * 70)}
+        >
           <div>
             <div class="flex items-center justify-between text-xs mb-3">
               <span class="text-amber-500 font-bold tracking-wider">★★★★★</span>
@@ -65,7 +69,11 @@ import { clinicInfo } from '../../data/clinic';
       ))}
 
       <!-- Tarjeta 6: Invitación a Dejar Reseña & Ver Más (CTA) -->
-      <article class="rounded-2xl bg-gradient-to-br from-white via-[#f4faf6] to-[#e8f5ec] border border-[#007231]/22 p-6 shadow-soft hover:shadow-soft-lg hover:-translate-y-1 transition-all duration-300 flex flex-col justify-between relative overflow-hidden group">
+      <article
+        class="rounded-2xl bg-gradient-to-br from-white via-[#f4faf6] to-[#e8f5ec] border border-[#007231]/22 p-6 shadow-soft hover:shadow-soft-lg hover:-translate-y-1 transition-all duration-300 flex flex-col justify-between relative overflow-hidden group"
+        data-reveal
+        data-reveal-delay="140"
+      >
         <!-- Decoración botánica de fondo sutil -->
         <div class="absolute -right-6 -bottom-6 w-28 h-28 bg-[#007231]/5 rounded-full blur-xl pointer-events-none group-hover:bg-[#007231]/10 transition-colors duration-500"></div>
 

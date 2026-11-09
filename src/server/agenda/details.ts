@@ -6,6 +6,7 @@ import type { DatabaseAdapter } from '../db/adapter.ts';
 import { ApiCommandError } from './commands.ts';
 import { generateCalendarExportUrls } from '../../lib/agendamiento/mocks.ts';
 import type { ProfessionalId } from '../../lib/agendamiento/types.ts';
+import { decryptPiiJson } from '../auth/crypto.ts';
 
 const CALENDAR_DISCLAIMER =
   'Se añadirá una copia. Si la hora cambia o se cancela, debes actualizar tu calendario personal.';
@@ -53,7 +54,7 @@ export async function getBookingDetails(
     version: string;
     booked_by_user_id: string | null;
     encrypted_snapshot: string | null;
-  }>('SELECT * FROM agenda_entries WHERE id = ?', bookingId);
+  }>("SELECT * FROM agenda_entries WHERE id = ? AND kind = 'appointment'", bookingId);
 
   // Aislamiento: Si no existe, o si no es equipo y no es el dueño reservante -> 404
   if (!row || (!actor.isTeam && row.booked_by_user_id !== actor.id)) {
@@ -62,11 +63,7 @@ export async function getBookingDetails(
 
   let patientData: any = undefined;
   if (row.encrypted_snapshot) {
-    try {
-      patientData = JSON.parse(row.encrypted_snapshot);
-    } catch {
-      patientData = undefined;
-    }
+    patientData = (await decryptPiiJson(row.encrypted_snapshot)) ?? undefined;
   }
 
   return {

@@ -12,7 +12,8 @@ import {
 import type { DatabaseAdapter } from '../db/adapter.ts';
 import {
   generateDaySlotsUtc,
-  isWithinPatientBookingWindow
+  isWithinPatientBookingWindow,
+  validateDateRange
 } from './policy.ts';
 
 /**
@@ -31,6 +32,8 @@ export async function getAvailableSlots(
     forTeam?: boolean;
   }
 ): Promise<AvailabilityResponse> {
+  validateDateRange(params.fromDate, params.toDate, 35);
+
   const now = params.nowSeconds ?? Math.floor(Date.now() / 1000);
 
   // 1. Iterar sobre los días del rango [fromDate, toDate)

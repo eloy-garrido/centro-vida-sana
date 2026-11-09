@@ -9,7 +9,9 @@ import {
   createSessionCookie,
   createClearSessionCookie,
   validateCsrfHeader,
-  validateSafeReturnUrl
+  validateSafeReturnUrl,
+  validateSameOrigin,
+  escapeHtml
 } from './auth/middleware.ts';
 import {
   validateSession,
@@ -21,7 +23,9 @@ import {
 } from './auth/session-service.ts';
 import {
   generateRandomString,
-  sha256Base64Url
+  sha256Base64Url,
+  sha256Hex,
+  setPiiEncryptionSecret
 } from './auth/crypto.ts';
 import {
   validateGoogleIdTokenClaims
@@ -99,9 +103,13 @@ export async function handleApiRequest(
   const method = request.method;
   const nowSeconds = options.nowSeconds || Math.floor(Date.now() / 1000);
 
+  if (options.env?.PII_ENCRYPTION_SECRET || options.env?.PII_ENCRYPTION_KEY) {
+    setPiiEncryptionSecret(options.env.PII_ENCRYPTION_SECRET || options.env.PII_ENCRYPTION_KEY);
+  }
+
   // 1. Identificar sesión si existe
   const sessionToken = extractSessionToken(request.headers);
-  const sessionData = sessionToken ? await validateSession(db, sessionToken) : null;
+  const sessionData = sessionToken ? await validateSession(db, sessionToken, nowSeconds) : null;
   const user = sessionData ? sessionData.user : null;
   const isTeam = sessionData ? sessionData.capabilities.teamAgenda : false;
 
@@ -109,6 +117,9 @@ export async function handleApiRequest(
   function requireCsrf() {
     if (!sessionToken || !sessionData) {
       throw new ApiCommandError('UNAUTHORIZED', 'Sesión no iniciada.', 401);
+    }
+    if (!validateSameOrigin(request.headers, url.origin)) {
+      throw new ApiCommandError('INVALID_CSRF', 'Origen de petición no autorizado.', 403);
     }
     if (!validateCsrfHeader(request.headers, sessionData.csrfToken)) {
       throw new ApiCommandError('INVALID_CSRF', 'Token CSRF inválido o ausente.', 403);
@@ -146,17 +157,23 @@ export async function handleApiRequest(
     if (method === 'POST' && path === '/api/logout') {
       requireCsrf();
       if (sessionToken) {
-        await revokeSession(db, sessionToken);
+        await revokeSession(db, sessionToken, nowSeconds);
       }
+      const isHttps = url.protocol === 'https:';
       return jsonResponse(
         { loggedOut: true },
         200,
-        { 'Set-Cookie': createClearSessionCookie(false) }
+        { 'Set-Cookie': createClearSessionCookie(isHttps) }
       );
     }
 
     // Endpoint de autenticación simulada para desarrollo local (D08 / E5)
     if (method === 'POST' && path === '/api/mock-login') {
+      const allowMock = options.isDev === true;
+      if (!allowMock) {
+        return errorResponse('FORBIDDEN', 'Mock login deshabilitado en este entorno.', 403);
+      }
+
       const body = await request.json() as any;
       const targetRole = body.role === 'team' ? 'team' : 'patient';
       const email = targetRole === 'team'
@@ -166,10 +183,12 @@ export async function handleApiRequest(
         ? 'Equipo Vida Sana'
         : (body.name || 'Paciente Ficticio');
 
-      const mockSub = `mock_sub_${Buffer.from(email).toString('hex')}`;
+      const emailHash = (await sha256Hex(email)).slice(0, 24);
+      const mockSub = `mock_sub_${emailHash}`;
       const dbUser = await findOrCreateUser(db, { googleSub: mockSub, name, email });
-      const newSession = await createSession(db, dbUser.id);
+      const newSession = await createSession(db, dbUser.id, { nowSeconds });
 
+      const isHttps = url.protocol === 'https:';
       return jsonResponse(
         {
           success: true,
@@ -178,7 +197,7 @@ export async function handleApiRequest(
           csrfToken: newSession.csrfToken
         },
         200,
-        { 'Set-Cookie': createSessionCookie(newSession.rawToken, { isHttps: false }) }
+        { 'Set-Cookie': createSessionCookie(newSession.rawToken, { isHttps }) }
       );
     }
 
@@ -231,17 +250,24 @@ export async function handleApiRequest(
       const error = url.searchParams.get('error');
 
       if (error || !code || !state) {
-        return new Response(`Error de autenticación con Google: ${error || 'código o estado ausente'}. <a href="/">Volver al inicio</a>`, {
+        const safeError = escapeHtml(error || 'código o estado ausente');
+        return new Response(`Error de autenticación con Google: ${safeError}. <a href="/">Volver al inicio</a>`, {
           status: 400,
-          headers: { 'Content-Type': 'text/html; charset=utf-8' }
+          headers: {
+            'Content-Type': 'text/html; charset=utf-8',
+            'Content-Security-Policy': "default-src 'none'; style-src 'unsafe-inline'"
+          }
         });
       }
 
-      const attempt = await consumeOAuthAttempt(db, state);
+      const attempt = await consumeOAuthAttempt(db, state, nowSeconds);
       if (!attempt) {
         return new Response('El intento de inicio de sesión ha expirado o ya fue utilizado. Por favor intenta nuevamente. <a href="/">Volver al inicio</a>', {
           status: 400,
-          headers: { 'Content-Type': 'text/html; charset=utf-8' }
+          headers: {
+            'Content-Type': 'text/html; charset=utf-8',
+            'Content-Security-Policy': "default-src 'none'; style-src 'unsafe-inline'"
+          }
         });
       }
 
@@ -274,7 +300,10 @@ export async function handleApiRequest(
         console.error('Error al intercambiar código con Google:', errBody);
         return new Response('Error al verificar las credenciales con Google. <a href="/">Volver al inicio</a>', {
           status: 502,
-          headers: { 'Content-Type': 'text/html; charset=utf-8' }
+          headers: {
+            'Content-Type': 'text/html; charset=utf-8',
+            'Content-Security-Policy': "default-src 'none'; style-src 'unsafe-inline'"
+          }
         });
       }
 
@@ -282,7 +311,10 @@ export async function handleApiRequest(
       if (!tokenData.id_token) {
         return new Response('Google no retornó un id_token válido. <a href="/">Volver al inicio</a>', {
           status: 502,
-          headers: { 'Content-Type': 'text/html; charset=utf-8' }
+          headers: {
+            'Content-Type': 'text/html; charset=utf-8',
+            'Content-Security-Policy': "default-src 'none'; style-src 'unsafe-inline'"
+          }
         });
       }
 
@@ -292,7 +324,10 @@ export async function handleApiRequest(
       } catch {
         return new Response('No se pudieron leer los datos del token de Google. <a href="/">Volver al inicio</a>', {
           status: 400,
-          headers: { 'Content-Type': 'text/html; charset=utf-8' }
+          headers: {
+            'Content-Type': 'text/html; charset=utf-8',
+            'Content-Security-Policy': "default-src 'none'; style-src 'unsafe-inline'"
+          }
         });
       }
 
@@ -303,9 +338,13 @@ export async function handleApiRequest(
       });
 
       if (!validation.valid || !validation.user) {
-        return new Response(`Token de Google rechazado por seguridad: ${validation.error}. <a href="/">Volver al inicio</a>`, {
+        const safeError = escapeHtml(validation.error || 'error desconocido');
+        return new Response(`Token de Google rechazado por seguridad: ${safeError}. <a href="/">Volver al inicio</a>`, {
           status: 403,
-          headers: { 'Content-Type': 'text/html; charset=utf-8' }
+          headers: {
+            'Content-Type': 'text/html; charset=utf-8',
+            'Content-Security-Policy': "default-src 'none'; style-src 'unsafe-inline'"
+          }
         });
       }
 
@@ -532,6 +571,7 @@ export async function handleApiRequest(
         if (!ifMatch) {
           return errorResponse('VERSION_REQUIRED', 'Cabecera If-Match requerida para modificar.', 428);
         }
+        const idempotencyKey = request.headers.get('Idempotency-Key') || undefined;
         const body = await request.json() as any;
         const result = await executeEditTeamBookingCommand(
           db,
@@ -539,7 +579,8 @@ export async function handleApiRequest(
           bookingId,
           ifMatch,
           body,
-          nowSeconds
+          nowSeconds,
+          idempotencyKey
         );
         return jsonResponse(result, 200);
       }
@@ -577,7 +618,7 @@ export async function handleApiRequest(
           body,
           nowSeconds
         );
-        return jsonResponse(result, 201);
+        return jsonResponse(result.result, result.isReplay ? 200 : 201);
       }
 
       // 6. Eliminación de bloqueo de agenda

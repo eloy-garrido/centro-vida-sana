@@ -14,6 +14,7 @@ import {
   getChileTime,
   isValidWorkingSlot,
   isWithinPatientBookingWindow,
+  isWithinTeamBookingWindow,
   chileLocalToUtcSeconds
 } from '../../src/server/agenda/policy.ts';
 
@@ -26,6 +27,14 @@ import {
   resolveCommand,
   ApiCommandError
 } from '../../src/server/agenda/commands.ts';
+
+import {
+  executeEditTeamBookingCommand,
+  executeDeleteBlockCommand,
+  getTeamSchedule
+} from '../../src/server/agenda/team.ts';
+import { savePatientProfile, getPatientProfile } from '../../src/server/agenda/profile.ts';
+import { setPiiEncryptionSecret, encryptPiiJson, decryptPiiJson } from '../../src/server/auth/crypto.ts';
 
 function createTestDatabase() {
   const db = new DatabaseSync(':memory:');
@@ -428,6 +437,351 @@ test('D04: Bloqueos de equipo excluyen disponibilidad', async () => {
     (s) => new Date(s.startAt).getTime() / 1000 === slot15Sec
   );
   assert.strictEqual(slot15Found, false, 'El slot bloqueado no debe aparecer disponible');
+
+  db.close();
+});
+
+test('SLOT-TX: Transacciones atómicas, validación estricta, idempotencia de bloqueos e If-Match sin comillas', async () => {
+  const { db, adapter } = createTestDatabase();
+  const nowChile = chileLocalToUtcSeconds(2026, 11, 5, 12, 0);
+
+  await insertTestUser(adapter, 'usr_test_tx', 'carlos@example.com', 'Carlos Ruiz');
+
+  // 1. Cancelación con If-Match sin comillas (v1) actualiza la DB a cancelled
+  const slot10Sec = chileLocalToUtcSeconds(2026, 11, 6, 10, 0);
+  const slot10Iso = new Date(slot10Sec * 1000).toISOString();
+  const bkgRes = await executeCreateBookingCommand(
+    adapter,
+    { id: 'usr_test_tx', email: 'carlos@example.com' },
+    'key_tx_001',
+    {
+      professionalId: 'felipe',
+      startAt: slot10Iso,
+      patient: {
+        name: 'Carlos Ruiz',
+        email: 'carlos@example.com',
+        rut: '12.345.678-5'
+      },
+      consentVersion: 'v1.0'
+    },
+    nowChile
+  );
+  const bookingId = bkgRes.result.result.resourceId;
+
+  // Cancelar enviando 'v1' sin comillas
+  await executeCancelBookingCommand(adapter, { id: 'usr_test_tx', email: 'carlos@example.com' }, bookingId, 'v1', nowChile);
+
+  const dbEntry = await adapter.first<{ status: string; version: string }>(
+    'SELECT status, version FROM agenda_entries WHERE id = ?',
+    bookingId
+  );
+  assert.strictEqual(dbEntry?.status, 'cancelled', 'La fila en la DB debe haber cambiado a cancelled');
+  assert.strictEqual(dbEntry?.version, '"v2"');
+
+  // 2. Idempotencia de executeCreateBlockCommand
+  const slot16Sec = chileLocalToUtcSeconds(2026, 11, 6, 16, 0);
+  const blockStartIso = new Date(slot16Sec * 1000).toISOString();
+  const blockEndIso = new Date((slot16Sec + 3600) * 1000).toISOString();
+  const blockIdemKey = 'key_block_idem_001';
+
+  const blockRes1 = await executeCreateBlockCommand(
+    adapter,
+    { id: 'usr_admin' },
+    blockIdemKey,
+    {
+      professionalId: 'felipe',
+      startAt: blockStartIso,
+      endAt: blockEndIso
+    },
+    nowChile
+  );
+
+  const blockId = blockRes1.result.result.resourceId;
+  const auditRow = await adapter.first<{ action: string; entity_type: string }>(
+    'SELECT action, entity_type FROM audit_events WHERE entity_id = ?',
+    blockId
+  );
+  assert.strictEqual(auditRow?.action, 'create_team_block');
+
+  const cmdRow = await adapter.first<{ idempotency_key: string }>(
+    'SELECT idempotency_key FROM command_results WHERE idempotency_key = ?',
+    blockIdemKey
+  );
+  assert.strictEqual(cmdRow?.idempotency_key, blockIdemKey);
+
+  // Replay con misma clave y mismo payload: debe devolver isReplay: true y el mismo resourceId
+  const blockResReplay = await executeCreateBlockCommand(
+    adapter,
+    { id: 'usr_admin' },
+    blockIdemKey,
+    {
+      professionalId: 'felipe',
+      startAt: blockStartIso,
+      endAt: blockEndIso
+    },
+    nowChile
+  );
+  assert.strictEqual(blockResReplay.isReplay, true);
+  assert.strictEqual(blockResReplay.result.result.resourceId, blockId);
+
+  // 3. Reintento con distinta hora lanza 409 IDEMPOTENCY_MISMATCH
+  const slot17Sec = chileLocalToUtcSeconds(2026, 11, 6, 17, 0);
+  await assert.rejects(
+    async () => {
+      await executeCreateBlockCommand(
+        adapter,
+        { id: 'usr_admin' },
+        blockIdemKey,
+        {
+          professionalId: 'felipe',
+          startAt: new Date(slot17Sec * 1000).toISOString(),
+          endAt: new Date((slot17Sec + 3600) * 1000).toISOString()
+        },
+        nowChile
+      );
+    },
+    (err: any) => err instanceof ApiCommandError && err.code === 'IDEMPOTENCY_MISMATCH' && err.status === 409
+  );
+
+  // 4. Validaciones estrictas: profesional inválido y nombre inválido
+  await assert.rejects(
+    async () => {
+      await executeCreateBookingCommand(
+        adapter,
+        { id: 'usr_test_tx', email: 'carlos@example.com' },
+        'key_invalid_pro',
+        {
+          professionalId: 'otro_medico' as any,
+          startAt: slot10Iso,
+          patient: { name: 'Juan Pérez', email: 'juan@test.com', rut: '12.345.678-5' },
+          consentVersion: 'v1.0'
+        },
+        nowChile
+      );
+    },
+    (err: any) => err instanceof ApiCommandError && err.code === 'VALIDATION_ERROR' && err.status === 400
+  );
+
+  await assert.rejects(
+    async () => {
+      await executeCreateBookingCommand(
+        adapter,
+        { id: 'usr_test_tx', email: 'carlos@example.com' },
+        'key_invalid_name',
+        {
+          professionalId: 'felipe',
+          startAt: slot10Iso,
+          patient: { name: 'J', email: 'juan@test.com', rut: '12.345.678-5' },
+          consentVersion: 'v1.0'
+        },
+        nowChile
+      );
+    },
+    (err: any) => err instanceof ApiCommandError && err.code === 'VALIDATION_ERROR' && err.status === 422
+  );
+
+  // 5. Intentar cancelar o editar un 'block' como si fuera cita retorna 404 NOT_FOUND
+  await assert.rejects(
+    async () => {
+      await executeCancelBookingCommand(adapter, { id: 'usr_test_tx', email: 'carlos@example.com' }, blockId, '"v1"', nowChile);
+    },
+    (err: any) => err instanceof ApiCommandError && err.code === 'NOT_FOUND' && err.status === 404
+  );
+
+  db.close();
+});
+
+test('POLICY-TZ: Horario de invierno UTC-4, ventana de equipo D04, y getTeamSchedule semiabierto [from, to)', async () => {
+  const { db, adapter } = createTestDatabase();
+
+  // 1. Invierno en Chile (julio UTC-4)
+  const winterMidnightUtc = chileLocalToUtcSeconds(2026, 7, 15, 0, 0);
+  assert.strictEqual(
+    new Date(winterMidnightUtc * 1000).toISOString(),
+    '2026-07-15T04:00:00.000Z',
+    'Medianoche en invierno chileno debe ser 04:00Z'
+  );
+
+  const winter9amUtc = chileLocalToUtcSeconds(2026, 7, 15, 9, 0);
+  assert.strictEqual(
+    new Date(winter9amUtc * 1000).toISOString(),
+    '2026-07-15T13:00:00.000Z',
+    'Las 09:00 en invierno chileno debe ser 13:00Z'
+  );
+
+  // 2. isWithinTeamBookingWindow
+  const nowNov25 = chileLocalToUtcSeconds(2026, 11, 25, 12, 0);
+  const farFutureSlot = chileLocalToUtcSeconds(2027, 12, 3, 10, 0);
+  assert.strictEqual(
+    isWithinTeamBookingWindow(farFutureSlot, nowNov25),
+    false,
+    'Debe rechazar citas a más de un año de distancia'
+  );
+
+  const nearFutureSlot = chileLocalToUtcSeconds(2026, 11, 30, 10, 0);
+  assert.strictEqual(
+    isWithinTeamBookingWindow(nearFutureSlot, nowNov25),
+    true,
+    'Debe permitir citas dentro de los 31 días autorizados'
+  );
+
+  // 3. getTeamSchedule con hoy D+0 (2026-11-06)
+  const nowFriNov6 = chileLocalToUtcSeconds(2026, 11, 6, 8, 0);
+  const slotSat10 = chileLocalToUtcSeconds(2026, 11, 7, 10, 0);
+  await adapter.run(
+    `INSERT INTO agenda_entries (
+      id, kind, professional_id, start_at, end_at, status, version, encrypted_snapshot, created_at, updated_at
+    ) VALUES ('bkg_sat_test', 'appointment', 'felipe', ?, ?, 'confirmed', 'v1', '{"name":"Sábado"}', 1730890000, 1730890000)`,
+    slotSat10,
+    slotSat10 + 3600
+  );
+
+  const teamSched = await getTeamSchedule(adapter, 'felipe', '2026-11-06', '2026-11-07', nowFriNov6);
+  assert.strictEqual(teamSched.availableSlots.length, 11, 'El equipo debe ver los turnos disponibles de hoy D+0');
+  const hasSatEntry = teamSched.entries.some((e) => e.id === 'bkg_sat_test');
+  assert.strictEqual(hasSatEntry, false, 'El rango semiabierto [from, to) no debe incluir citas del día toDate');
+
+  // 4. getAvailableSlots con rango > 35 días lanza 400 VALIDATION_ERROR
+  await assert.rejects(
+    async () => {
+      await getAvailableSlots(adapter, {
+        professionalId: 'felipe',
+        fromDate: '2026-01-01',
+        toDate: '2028-01-01',
+        nowSeconds: nowFriNov6
+      });
+    },
+    (err: any) => err instanceof ApiCommandError && err.code === 'VALIDATION_ERROR' && err.status === 400
+  );
+
+  db.close();
+});
+
+test('AUDIT-FIX: Subsanación de hallazgos de auditoría (Batch en Delete Block, If-Match en Perfil, Idempotencia en Edit Team, Secreto PII)', async () => {
+  const { db, adapter } = createTestDatabase();
+  const now = chileLocalToUtcSeconds(2026, 11, 5, 12, 0);
+
+  // 1. Inyección y derivación de clave con setPiiEncryptionSecret
+  const testSecret = 'cf-staging-super-secret-pii-key-999';
+  setPiiEncryptionSecret(testSecret);
+  const encrypted = await encryptPiiJson({ rut: '12.345.678-5', name: 'Paciente Cifrado' });
+  assert.match(encrypted, /^enc:v1:/);
+  const decrypted = await decryptPiiJson<{ rut: string; name: string }>(encrypted);
+  assert.strictEqual(decrypted?.rut, '12.345.678-5');
+  assert.strictEqual(decrypted?.name, 'Paciente Cifrado');
+
+  // 2. Normalización de If-Match sin comillas en savePatientProfile
+  await insertTestUser(adapter, 'usr_prof_test', 'prof@test.com', 'Usuario Perfil');
+  await savePatientProfile(adapter, 'usr_prof_test', {
+    name: 'Nombre Original',
+    email: 'prof@test.com',
+    rut: '12.345.678-5'
+  }, 'v1.0', {}, now);
+
+  const initialProfile = await getPatientProfile(adapter, 'usr_prof_test');
+  assert.strictEqual(initialProfile.version, '"v1"');
+
+  const updateRes = await savePatientProfile(adapter, 'usr_prof_test', {
+    name: 'Nombre Actualizado',
+    email: 'prof@test.com',
+    rut: '12.345.678-5'
+  }, 'v1.0', { ifMatch: 'v1' }, now);
+  assert.strictEqual(updateRes.version, '"v2"');
+
+  const updatedProfile = await getPatientProfile(adapter, 'usr_prof_test');
+  assert.strictEqual(updatedProfile.profile?.name, 'Nombre Actualizado');
+  assert.strictEqual(updatedProfile.version, '"v2"');
+
+  // 3. executeDeleteBlockCommand con db.batch atómico
+  const blockStartSec = chileLocalToUtcSeconds(2026, 11, 6, 15, 0);
+  const blockStartIso = new Date(blockStartSec * 1000).toISOString();
+  const blockEndIso = new Date((blockStartSec + 3600) * 1000).toISOString();
+  const createBlockRes = await executeCreateBlockCommand(
+    adapter,
+    { id: 'usr_admin' },
+    'idem_del_block_1',
+    { professionalId: 'felipe', startAt: blockStartIso, endAt: blockEndIso },
+    now
+  );
+  const blockId = createBlockRes.result.result.resourceId;
+
+  const delBlockRes = await executeDeleteBlockCommand(
+    adapter,
+    { id: 'usr_admin' },
+    blockId,
+    'v1',
+    now
+  );
+  assert.strictEqual(delBlockRes.result.status, 'cancelled');
+  assert.strictEqual(delBlockRes.result.version, '"v2"');
+
+  const auditDel = await adapter.first<{ action: string }>(
+    'SELECT action FROM audit_events WHERE entity_id = ? AND action = ?',
+    blockId,
+    'delete_team_block'
+  );
+  assert.strictEqual(auditDel?.action, 'delete_team_block');
+
+  // 4. Idempotencia en executeEditTeamBookingCommand
+  await insertTestUser(adapter, 'usr_pat_edit', 'edit@gmail.com', 'Paciente Edit');
+  const slotSec = chileLocalToUtcSeconds(2026, 11, 6, 10, 0);
+  const slotIso = new Date(slotSec * 1000).toISOString();
+  const bkgRes = await executeCreateBookingCommand(
+    adapter,
+    { id: 'usr_pat_edit', email: 'edit@gmail.com' },
+    'idem_bkg_edit_1',
+    {
+      professionalId: 'felipe',
+      startAt: slotIso,
+      patient: { name: 'Paciente Inicial', email: 'edit@gmail.com', rut: '12.345.678-5' },
+      consentVersion: 'v1.0'
+    },
+    now
+  );
+  const bkgId = bkgRes.result.result.resourceId;
+
+  const editIdemKey = 'idem_team_edit_key_44';
+  const editUpdate = {
+    patient: { name: 'Paciente Nombre Editado', email: 'edit_new@gmail.com', rut: '12.345.678-5' }
+  };
+
+  const editRes1 = await executeEditTeamBookingCommand(
+    adapter,
+    { id: 'usr_admin' },
+    bkgId,
+    '"v1"',
+    editUpdate,
+    now,
+    editIdemKey
+  );
+  assert.strictEqual(editRes1.result.version, '"v2"');
+
+  const editReplay = await executeEditTeamBookingCommand(
+    adapter,
+    { id: 'usr_admin' },
+    bkgId,
+    '"v1"',
+    editUpdate,
+    now,
+    editIdemKey
+  );
+  assert.strictEqual(editReplay.result.version, '"v2"');
+  assert.strictEqual(editReplay.result.resourceId, bkgId);
+
+  await assert.rejects(
+    async () => {
+      await executeEditTeamBookingCommand(
+        adapter,
+        { id: 'usr_admin' },
+        bkgId,
+        '"v1"',
+        { patient: { name: 'Otro Nombre Distinto', email: 'edit_new@gmail.com', rut: '12.345.678-5' } },
+        now,
+        editIdemKey
+      );
+    },
+    (err: any) => err instanceof ApiCommandError && err.code === 'IDEMPOTENCY_MISMATCH' && err.status === 409
+  );
 
   db.close();
 });

@@ -39,7 +39,7 @@ test('API-01 / S09: Sesión y autenticación (Anónimo y Mock Login)', async () 
     headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify({ email: 'camila@gmail.com', name: 'Camila González', role: 'patient' })
   });
-  const loginRes = await handleApiRequest(loginReq, adapter, { nowSeconds: now });
+  const loginRes = await handleApiRequest(loginReq, adapter, { nowSeconds: now, isDev: true });
   assert.strictEqual(loginRes.status, 200);
   const loginBody = await loginRes.json() as any;
   assert.strictEqual(loginBody.role, 'patient');
@@ -77,7 +77,7 @@ test('API-02 / S09: Perfil recordado de paciente con ETag/If-Match', async () =>
     headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify({ email: 'pat@example.com', name: 'Paciente Prueba' })
   });
-  const loginRes = await handleApiRequest(loginReq, adapter, { nowSeconds: now });
+  const loginRes = await handleApiRequest(loginReq, adapter, { nowSeconds: now, isDev: true });
   const loginData = await loginRes.json() as any;
   const cookie = `vsa_session=${loginRes.headers.get('Set-Cookie')!.match(/vsa_session=([^;]+)/)![1]}`;
   const csrfToken = loginData.csrfToken;
@@ -169,7 +169,7 @@ test('API-03 / S09: Disponibilidad, Reserva, Replay, Resolve y Calendar Export',
       body: JSON.stringify({ email: 'reservante@gmail.com', name: 'Reservante' })
     }),
     adapter,
-    { nowSeconds: now }
+    { nowSeconds: now, isDev: true }
   );
   const loginData = await loginRes.json() as any;
   const cookie = `vsa_session=${loginRes.headers.get('Set-Cookie')!.match(/vsa_session=([^;]+)/)![1]}`;
@@ -297,7 +297,7 @@ test('API-04 / S09: Control de acceso y operaciones de Equipo (S05)', async () =
       body: JSON.stringify({ email: 'pat@gmail.com', name: 'Paciente', role: 'patient' })
     }),
     adapter,
-    { nowSeconds: now }
+    { nowSeconds: now, isDev: true }
   );
   const patCookie = `vsa_session=${patLogin.headers.get('Set-Cookie')!.match(/vsa_session=([^;]+)/)![1]}`;
 
@@ -318,7 +318,7 @@ test('API-04 / S09: Control de acceso y operaciones de Equipo (S05)', async () =
       body: JSON.stringify({ role: 'team' })
     }),
     adapter,
-    { nowSeconds: now }
+    { nowSeconds: now, isDev: true }
   );
   const teamData = await teamLogin.json() as any;
   const teamCookie = `vsa_session=${teamLogin.headers.get('Set-Cookie')!.match(/vsa_session=([^;]+)/)![1]}`;

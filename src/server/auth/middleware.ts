@@ -9,12 +9,29 @@ export const SESSION_COOKIE_NAME = 'vsa_session';
 export const SECURE_HOST_COOKIE_NAME = '__Host-vsa_session';
 
 /**
+ * Escapa caracteres HTML peligrosos para prevenir ataques de Cross-Site Scripting (XSS).
+ */
+export function escapeHtml(str: string): string {
+  return str
+    .replace(/&/g, '&amp;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;')
+    .replace(/"/g, '&quot;')
+    .replace(/'/g, '&#39;');
+}
+
+/**
  * Valida y normaliza la URL de retorno tras autenticarse con OAuth.
  * PREVENCIÓN DE OPEN REDIRECT (S01 L30):
  * Solo se admiten rutas relativas locales que comiencen con '/' (y no '//').
  */
 export function validateSafeReturnUrl(rawUrl: string | null | undefined): string {
   if (!rawUrl || typeof rawUrl !== 'string') {
+    return '/reservar';
+  }
+
+  // Rechazar caracteres de control y CRLF para prevenir inyección de cabeceras HTTP
+  if (/[\r\n\0]/.test(rawUrl)) {
     return '/reservar';
   }
 
@@ -31,14 +48,22 @@ export function validateSafeReturnUrl(rawUrl: string | null | undefined): string
   }
 
   // Rutas conocidas y autorizadas del sitio
-  if (
-    trimmed === '/' ||
-    trimmed.startsWith('/reservar') ||
-    trimmed.startsWith('/agenda') ||
-    trimmed.startsWith('/quiropraxia') ||
-    trimmed.startsWith('/acupuntura')
-  ) {
+  if (trimmed === '/') {
+    return '/';
+  }
+  if (trimmed.startsWith('/?') || trimmed.startsWith('/#')) {
     return trimmed;
+  }
+
+  const allowedPrefixes = ['/reservar', '/agenda', '/quiropraxia', '/acupuntura'];
+  for (const prefix of allowedPrefixes) {
+    if (trimmed === prefix) {
+      return trimmed;
+    }
+    const nextChar = trimmed.charAt(prefix.length);
+    if (nextChar === '/' || nextChar === '?' || nextChar === '#') {
+      return trimmed;
+    }
   }
 
   return '/reservar';
@@ -95,7 +120,7 @@ export function validateSameOrigin(headers: Headers, allowedOrigin: string): boo
   if (!origin) {
     // Si no hay Origin, revisar Referer
     const referer = headers.get('referer');
-    if (!referer) return true; // Peticiones locales en tests
+    if (!referer) return true; // Peticiones programáticas / tests sin navegador
     try {
       const refUrl = new URL(referer);
       return refUrl.origin === allowedOrigin;
