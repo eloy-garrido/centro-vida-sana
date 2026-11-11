@@ -296,51 +296,114 @@ import { professionals } from '../data/professionals';
         <!-- PASO 3: IDENTIFICACIÓN Y DATOS DEL PACIENTE                       -->
         <!-- ================================================================== -->
         <section id="step-view-3" class="wizard-step hidden bg-white rounded-2xl p-6 sm:p-8 shadow-sm border border-slate-200 animate-step">
-          <div class="border-b border-slate-100 pb-4 mb-6">
-            <h2 class="text-xl font-serif text-slate-900 font-medium">3. Tus Datos y Contacto</h2>
-            <p class="text-xs text-slate-500 mt-1">Ingresa la información de la persona que recibirá la atención clínica.</p>
+          
+          <!-- SUB-PASO 3A: PANTALLA DE IDENTIFICACIÓN (ALTA JERARQUÍA GOOGLE) -->
+          <div id="step-3-gate" class="py-4 sm:py-6 max-w-lg mx-auto text-center space-y-6">
+            <div class="w-16 h-16 mx-auto rounded-2xl bg-white border border-slate-200 shadow-sm flex items-center justify-center p-3">
+              <svg class="w-9 h-9" viewBox="0 0 24 24">
+                <path fill="#EA4335" d="M12 5c1.6 0 3 .6 4.1 1.6l3.1-3.1C17.3 1.8 14.8 1 12 1 7.5 1 3.7 3.6 1.9 7.3l3.7 2.9C6.5 7.4 9 5 12 5z"/>
+                <path fill="#4285F4" d="M23.5 12.3c0-.8-.1-1.7-.2-2.3H12v4.5h6.5c-.3 1.5-1.1 2.8-2.4 3.7l3.7 2.9c2.2-2 3.7-5.1 3.7-8.8z"/>
+                <path fill="#FBBC05" d="M5.6 14.8c-.2-.7-.4-1.5-.4-2.3 0-.8.2-1.6.4-2.3L1.9 7.3C.7 9.7 0 12.3 0 15.2s.7 5.5 1.9 7.9l3.7-2.9z"/>
+                <path fill="#34A853" d="M12 23.5c3.2 0 6-1.1 8-3l-3.7-2.9c-1.1.7-2.5 1.2-4.3 1.2-3 0-5.5-2.4-6.4-5.2L1.9 16.5C3.7 20.2 7.5 23.5 12 23.5z"/>
+              </svg>
+            </div>
+
+            <div class="space-y-2">
+              <h2 class="text-2xl font-serif text-slate-900 font-bold tracking-tight">Identifícate para continuar</h2>
+              <p class="text-xs sm:text-sm text-slate-600 max-w-sm mx-auto leading-relaxed">
+                Inicia sesión con tu cuenta de Google para asegurar tu cupo en la agenda médica y recibir tu confirmación.
+              </p>
+            </div>
+
+            <!-- Botón Principal Destacado (Alta Jerarquía Visual) -->
+            <div class="pt-2 space-y-3">
+              <button
+                type="button"
+                id="btn-gate-google"
+                class="w-full inline-flex items-center justify-center gap-3 px-6 py-3.5 rounded-xl bg-slate-900 hover:bg-slate-800 active:scale-[0.98] text-white text-sm font-semibold shadow-md hover:shadow-lg transition-all cursor-pointer"
+              >
+                <svg class="w-4 h-4 shrink-0" viewBox="0 0 24 24">
+                  <path fill="#EA4335" d="M12 5c1.6 0 3 .6 4.1 1.6l3.1-3.1C17.3 1.8 14.8 1 12 1 7.5 1 3.7 3.6 1.9 7.3l3.7 2.9C6.5 7.4 9 5 12 5z"/>
+                  <path fill="#4285F4" d="M23.5 12.3c0-.8-.1-1.7-.2-2.3H12v4.5h6.5c-.3 1.5-1.1 2.8-2.4 3.7l3.7 2.9c2.2-2 3.7-5.1 3.7-8.8z"/>
+                  <path fill="#FBBC05" d="M5.6 14.8c-.2-.7-.4-1.5-.4-2.3 0-.8.2-1.6.4-2.3L1.9 7.3C.7 9.7 0 12.3 0 15.2s.7 5.5 1.9 7.9l3.7-2.9z"/>
+                  <path fill="#34A853" d="M12 23.5c3.2 0 6-1.1 8-3l-3.7-2.9c-1.1.7-2.5 1.2-4.3 1.2-3 0-5.5-2.4-6.4-5.2L1.9 16.5C3.7 20.2 7.5 23.5 12 23.5z"/>
+                </svg>
+                <span>Continuar con Google</span>
+              </button>
+
+              <button
+                type="button"
+                id="btn-gate-quick-login"
+                class="hidden mx-auto px-3.5 py-1.5 rounded-xl bg-emerald-50 hover:bg-emerald-100 text-emerald-800 text-xs font-semibold border border-emerald-300"
+              >
+                ⚡ Acceso Rápido de Prueba (Dev)
+              </button>
+            </div>
+
+            <!-- Opción Secundaria (Baja Jerarquía Visual) -->
+            <div class="pt-4 border-t border-slate-100 flex flex-col items-center gap-3">
+              <button
+                type="button"
+                id="btn-gate-unverified"
+                class="text-xs text-slate-400 hover:text-slate-600 underline decoration-slate-300 underline-offset-4 font-medium transition-colors cursor-pointer"
+              >
+                Continuar sin verificación
+              </button>
+
+              <button
+                type="button"
+                id="btn-gate-back"
+                class="inline-flex items-center gap-1.5 text-xs text-slate-500 hover:text-slate-800 font-medium py-1 px-3 rounded-lg hover:bg-slate-100/70 transition-colors"
+              >
+                <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18"/>
+                </svg>
+                <span>Volver a Horarios</span>
+              </button>
+            </div>
           </div>
 
-          <!-- Estado de Cuenta / Sesión -->
-          <div class="mb-6 p-4 rounded-xl bg-slate-50 border border-slate-200">
-            <!-- No autenticado -->
-            <div id="step-3-auth-out" class="space-y-3">
+          <!-- SUB-PASO 3B: FORMULARIO DE DATOS DEL PACIENTE -->
+          <div id="step-3-form-wrapper" class="hidden">
+            <div class="border-b border-slate-100 pb-4 mb-6">
+              <h2 class="text-xl font-serif text-slate-900 font-medium">3. Tus Datos y Contacto</h2>
+              <p class="text-xs text-slate-500 mt-1">Ingresa la información de la persona que recibirá la atención clínica.</p>
+            </div>
+
+            <!-- Banner de Advertencia si está sin verificar -->
+            <div id="step-3-unverified-banner" class="hidden mb-6 p-4 sm:p-5 rounded-2xl bg-amber-50/90 border border-amber-200/90 text-amber-950">
               <div class="flex items-start gap-3">
-                <div class="w-8 h-8 rounded-full bg-slate-900 text-white flex items-center justify-center shrink-0 text-xs font-bold">
-                  G
+                <svg class="w-5 h-5 text-amber-600 shrink-0 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"/>
+                </svg>
+                <div class="flex-1 space-y-2">
+                  <div>
+                    <h3 class="text-xs font-bold uppercase tracking-wider text-amber-900">Estás utilizando el sistema sin verificar</h3>
+                    <p class="text-xs text-amber-800/90 mt-1 leading-relaxed">
+                      Te recomendamos encarecidamente identificarte con tu cuenta de Google para garantizar la seguridad de tu reserva, evitar duplicidades y tener una mejor experiencia clínica.
+                    </p>
+                  </div>
+                  <div>
+                    <button
+                      type="button"
+                      id="btn-banner-google"
+                      class="inline-flex items-center gap-2 px-3.5 py-2 rounded-xl bg-slate-900 hover:bg-slate-800 active:scale-[0.98] text-white text-xs font-semibold shadow-xs transition-colors cursor-pointer"
+                    >
+                      <svg class="w-3.5 h-3.5" viewBox="0 0 24 24">
+                        <path fill="#EA4335" d="M12 5c1.6 0 3 .6 4.1 1.6l3.1-3.1C17.3 1.8 14.8 1 12 1 7.5 1 3.7 3.6 1.9 7.3l3.7 2.9C6.5 7.4 9 5 12 5z"/>
+                        <path fill="#4285F4" d="M23.5 12.3c0-.8-.1-1.7-.2-2.3H12v4.5h6.5c-.3 1.5-1.1 2.8-2.4 3.7l3.7 2.9c2.2-2 3.7-5.1 3.7-8.8z"/>
+                        <path fill="#FBBC05" d="M5.6 14.8c-.2-.7-.4-1.5-.4-2.3 0-.8.2-1.6.4-2.3L1.9 7.3C.7 9.7 0 12.3 0 15.2s.7 5.5 1.9 7.9l3.7-2.9z"/>
+                        <path fill="#34A853" d="M12 23.5c3.2 0 6-1.1 8-3l-3.7-2.9c-1.1.7-2.5 1.2-4.3 1.2-3 0-5.5-2.4-6.4-5.2L1.9 16.5C3.7 20.2 7.5 23.5 12 23.5z"/>
+                      </svg>
+                      <span>Continuar con Google</span>
+                    </button>
+                  </div>
                 </div>
-                <div>
-                  <h3 class="text-xs font-bold text-slate-900">Identificación con Google requerida</h3>
-                  <p class="text-[11px] text-slate-500 leading-relaxed mt-0.5">
-                    Permite proteger tu cita contra dobles reservas y recordar tus datos. No enviamos correos ni solicitamos acceso a tu calendario.
-                  </p>
-                </div>
-              </div>
-              <div class="flex flex-wrap gap-2 pt-1">
-                <a
-                  href="/auth/google/start?returnTo=/reservar"
-                  class="inline-flex items-center gap-2 px-4 py-2 rounded-xl bg-slate-900 hover:bg-slate-800 text-white text-xs font-semibold shadow-xs"
-                >
-                  <svg class="w-3.5 h-3.5" viewBox="0 0 24 24">
-                    <path fill="#EA4335" d="M12 5c1.6 0 3 .6 4.1 1.6l3.1-3.1C17.3 1.8 14.8 1 12 1 7.5 1 3.7 3.6 1.9 7.3l3.7 2.9C6.5 7.4 9 5 12 5z"/>
-                    <path fill="#4285F4" d="M23.5 12.3c0-.8-.1-1.7-.2-2.3H12v4.5h6.5c-.3 1.5-1.1 2.8-2.4 3.7l3.7 2.9c2.2-2 3.7-5.1 3.7-8.8z"/>
-                    <path fill="#FBBC05" d="M5.6 14.8c-.2-.7-.4-1.5-.4-2.3 0-.8.2-1.6.4-2.3L1.9 7.3C.7 9.7 0 12.3 0 15.2s.7 5.5 1.9 7.9l3.7-2.9z"/>
-                    <path fill="#34A853" d="M12 23.5c3.2 0 6-1.1 8-3l-3.7-2.9c-1.1.7-2.5 1.2-4.3 1.2-3 0-5.5-2.4-6.4-5.2L1.9 16.5C3.7 20.2 7.5 23.5 12 23.5z"/>
-                  </svg>
-                  <span>Identificarme con Google</span>
-                </a>
-                <button
-                  type="button"
-                  id="btn-step-3-quick-login"
-                  class="hidden px-3.5 py-2 rounded-xl bg-emerald-50 hover:bg-emerald-100 text-emerald-800 text-xs font-semibold border border-emerald-300"
-                >
-                  ⚡ Acceso Rápido de Prueba (Dev)
-                </button>
               </div>
             </div>
 
-            <!-- Sí autenticado -->
-            <div id="step-3-auth-in" class="hidden flex items-center justify-between">
+            <!-- Sí autenticado con Google -->
+            <div id="step-3-auth-in" class="hidden mb-6 p-4 rounded-xl bg-emerald-50/70 border border-emerald-200/80 flex items-center justify-between">
               <div class="flex items-center gap-3">
                 <div id="step-3-avatar" class="w-8 h-8 rounded-full bg-slate-900 text-white flex items-center justify-center font-bold text-xs">U</div>
                 <div>
@@ -348,14 +411,14 @@ import { professionals } from '../data/professionals';
                   <p id="step-3-email" class="text-[11px] text-slate-500">usuario@correo.com</p>
                 </div>
               </div>
-              <span class="inline-flex items-center px-2 py-0.5 rounded text-[10px] font-semibold bg-emerald-100 text-emerald-800">
-                ✓ Sesión Activa
+              <span class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-[10px] font-semibold bg-emerald-100 text-emerald-800">
+                <span class="w-1.5 h-1.5 rounded-full bg-emerald-600"></span>
+                Cuenta Verificada
               </span>
             </div>
-          </div>
 
-          <!-- Formulario de Datos del Paciente -->
-          <form id="step-3-form" class="space-y-4 mb-8" novalidate>
+            <!-- Formulario de Datos del Paciente -->
+            <form id="step-3-form" class="space-y-4 mb-8" novalidate>
             <!-- Nombre Completo -->
             <div>
               <label for="step-input-name" class="block text-xs font-semibold text-slate-700 uppercase tracking-wider mb-1">
@@ -464,6 +527,7 @@ import { professionals } from '../data/professionals';
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"/>
               </svg>
             </button>
+          </div>
           </div>
         </section>
 
@@ -788,15 +852,24 @@ import { professionals } from '../data/professionals';
   let slotsByDate: Map<string, Array<{ startAt: string; endAt: string; available?: boolean }>> = new Map();
   let loadedAvailabilityForPro: string | null = null;
 
-  // PASO 3 DOM
+  // PASO 3 DOM Y ESTADO DE VERIFICACIÓN
+  let isUnverifiedMode = false;
   const btnStep3Back = document.getElementById('btn-step-3-back')!;
   const btnStep3Next = document.getElementById('btn-step-3-next') as HTMLButtonElement;
-  const step3AuthOut = document.getElementById('step-3-auth-out')!;
+  
+  const step3Gate = document.getElementById('step-3-gate')!;
+  const step3FormWrapper = document.getElementById('step-3-form-wrapper')!;
+  const step3UnverifiedBanner = document.getElementById('step-3-unverified-banner')!;
+  const btnGateGoogle = document.getElementById('btn-gate-google')!;
+  const btnBannerGoogle = document.getElementById('btn-banner-google')!;
+  const btnGateUnverified = document.getElementById('btn-gate-unverified')!;
+  const btnGateBack = document.getElementById('btn-gate-back')!;
+  const btnGateQuickLogin = document.getElementById('btn-gate-quick-login');
+
   const step3AuthIn = document.getElementById('step-3-auth-in')!;
   const step3Avatar = document.getElementById('step-3-avatar')!;
   const step3Name = document.getElementById('step-3-name')!;
   const step3Email = document.getElementById('step-3-email')!;
-  const btnStep3QuickLogin = document.getElementById('btn-step-3-quick-login');
 
   const stepInputName = document.getElementById('step-input-name') as HTMLInputElement;
   const stepInputDocType = document.getElementById('step-input-doc-type') as HTMLSelectElement;
@@ -893,6 +966,10 @@ import { professionals } from '../data/professionals';
 
     if (!isInitial) {
       window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+
+    if (step === 3) {
+      renderStep3State();
     }
   }
 
@@ -1281,11 +1358,100 @@ import { professionals } from '../data/professionals';
   });
 
   // ==========================================================================
-  // PASO 3: TUS DATOS Y CONTACTO (FORMATEO EN VIVO Y VALIDACIÓN ROBUSTA)
+  // PASO 3: TUS DATOS Y CONTACTO (ESTADO DE IDENTIFICACIÓN Y VALIDACIÓN)
   // ==========================================================================
-  btnStep3Back.addEventListener('click', () => {
+  function renderStep3State() {
+    const isGoogleAuth = Boolean(currentSession?.authenticated && !currentSession?.user?.isGuest);
+
+    if (isGoogleAuth) {
+      step3Gate.classList.add('hidden');
+      step3FormWrapper.classList.remove('hidden');
+      step3UnverifiedBanner.classList.add('hidden');
+      step3AuthIn.classList.remove('hidden');
+
+      if (currentSession?.user?.name) {
+        step3Name.textContent = currentSession.user.name;
+        step3Avatar.textContent = (currentSession.user.name[0] || 'U').toUpperCase();
+        if (!stepInputName.value.trim()) {
+          stepInputName.value = currentSession.user.name;
+        }
+      }
+      if (currentSession?.user?.email) {
+        step3Email.textContent = currentSession.user.email;
+        if (!stepInputEmail.value.trim()) {
+          stepInputEmail.value = currentSession.user.email;
+        }
+      }
+    } else if (isUnverifiedMode) {
+      step3Gate.classList.add('hidden');
+      step3FormWrapper.classList.remove('hidden');
+      step3UnverifiedBanner.classList.remove('hidden');
+      step3AuthIn.classList.add('hidden');
+    } else {
+      step3Gate.classList.remove('hidden');
+      step3FormWrapper.classList.add('hidden');
+      step3UnverifiedBanner.classList.add('hidden');
+      step3AuthIn.classList.add('hidden');
+    }
+  }
+
+  function handleGoogleLogin() {
+    const wizardState = {
+      pro: selectedProfessionalId,
+      date: selectedDateString,
+      slot: selectedSlotUtc,
+      patientName: stepInputName.value.trim(),
+      patientDocType: stepInputDocType.value,
+      patientRut: stepInputRut.value.trim(),
+      patientEmail: stepInputEmail.value.trim(),
+      patientPhone: stepInputPhone.value.trim(),
+      timestamp: Date.now()
+    };
+    try {
+      sessionStorage.setItem('vsa_booking_wizard_state', JSON.stringify(wizardState));
+    } catch (e) {
+      console.warn('No se pudo guardar el estado en sessionStorage:', e);
+    }
+    window.location.href = '/auth/google/start?returnTo=' + encodeURIComponent('/reservar?resume=1');
+  }
+
+  btnGateGoogle.addEventListener('click', handleGoogleLogin);
+  btnBannerGoogle.addEventListener('click', handleGoogleLogin);
+
+  btnGateUnverified.addEventListener('click', async () => {
+    btnGateUnverified.classList.add('opacity-50', 'pointer-events-none');
+    try {
+      const res = await AgendamientoClient.createGuestSession();
+      currentSession = {
+        authenticated: true,
+        user: res.user,
+        role: 'patient',
+        csrfToken: res.csrfToken,
+        capabilities: { canBook: true, canViewTeam: false, canManageTeam: false }
+      };
+    } catch (err) {
+      console.error('Error al iniciar sesión de invitado:', err);
+    } finally {
+      btnGateUnverified.classList.remove('opacity-50', 'pointer-events-none');
+      isUnverifiedMode = true;
+      renderStep3State();
+    }
+  });
+
+  btnGateBack.addEventListener('click', () => {
     updateStep2NextButton();
     goToStep(2);
+  });
+
+  btnStep3Back.addEventListener('click', () => {
+    const isGoogleAuth = Boolean(currentSession?.authenticated && !currentSession?.user?.isGuest);
+    if (isUnverifiedMode && !isGoogleAuth) {
+      isUnverifiedMode = false;
+      renderStep3State();
+    } else {
+      updateStep2NextButton();
+      goToStep(2);
+    }
   });
 
   /**
@@ -1458,7 +1624,7 @@ import { professionals } from '../data/professionals';
     }
   });
 
-  btnStep3Next.addEventListener('click', () => {
+  btnStep3Next.addEventListener('click', async () => {
     // Validar campos
     let valid = true;
 
@@ -1534,12 +1700,28 @@ import { professionals } from '../data/professionals';
       }
     }
 
-    if (!currentSession || !currentSession.authenticated) {
-      alert('Debes identificarte con tu cuenta Google para continuar.');
-      return;
-    }
-
     if (!valid) return;
+
+    if (!currentSession || !currentSession.authenticated) {
+      if (isUnverifiedMode) {
+        try {
+          const res = await AgendamientoClient.createGuestSession();
+          currentSession = {
+            authenticated: true,
+            user: res.user,
+            role: 'patient',
+            csrfToken: res.csrfToken,
+            capabilities: { canBook: true, canViewTeam: false, canManageTeam: false }
+          };
+        } catch (e) {
+          alert('Hubo un problema al conectar con el servidor. Por favor intenta nuevamente.');
+          return;
+        }
+      } else {
+        renderStep3State();
+        return;
+      }
+    }
 
     // Actualizar Resumen en Paso 4
     finalSummaryPro.textContent = selectedProfessionalId === 'felipe'
@@ -1731,6 +1913,11 @@ import { professionals } from '../data/professionals';
   }
 
   async function showSuccessView(bookingId: string) {
+    try {
+      sessionStorage.removeItem('vsa_booking_wizard_state');
+    } catch {
+      // ignore
+    }
     successPro.textContent = finalSummaryPro.textContent;
     successTime.textContent = finalSummaryTime.textContent;
     successPatient.textContent = finalSummaryPatient.textContent;
@@ -1756,14 +1943,14 @@ import { professionals } from '../data/professionals';
   });
 
   // ==========================================================================
-  // INICIALIZACIÓN DE SESIÓN
+  // INICIALIZACIÓN DE SESIÓN Y RESTAURACIÓN DE ESTADO
   // ==========================================================================
   async function initSession() {
     try {
       const session = await AgendamientoClient.getSession();
       currentSession = session;
-      renderSessionState();
-      if (session.authenticated) {
+      renderStep3State();
+      if (session.authenticated && !session.user?.isGuest) {
         await loadProfile();
       }
     } catch (err) {
@@ -1771,47 +1958,37 @@ import { professionals } from '../data/professionals';
     }
   }
 
-  function renderSessionState() {
-    if (currentSession && currentSession.authenticated) {
-      step3AuthOut.classList.add('hidden');
-      step3AuthIn.classList.remove('hidden');
-      step3Name.textContent = currentSession.user.name;
-      step3Email.textContent = currentSession.user.email;
-      step3Avatar.textContent = (currentSession.user.name[0] || 'U').toUpperCase();
-    } else {
-      step3AuthOut.classList.remove('hidden');
-      step3AuthIn.classList.add('hidden');
-    }
-  }
-
   async function loadProfile() {
     try {
       const p = await AgendamientoClient.getPatientProfile();
       if (p.profile) {
-        stepInputName.value = p.profile.name || '';
+        if (!stepInputName.value.trim()) stepInputName.value = p.profile.name || '';
         stepInputDocType.value = p.profile.documentType || 'rut';
-        stepInputRut.value = p.profile.rut
-          ? (p.profile.documentType === 'rut' ? formatChileanRut(p.profile.rut) : p.profile.rut)
-          : '';
-        stepInputEmail.value = p.profile.email || '';
-        stepInputPhone.value = p.profile.phone ? formatPhoneLive(p.profile.phone) : '';
+        if (!stepInputRut.value.trim()) {
+          stepInputRut.value = p.profile.rut
+            ? (p.profile.documentType === 'rut' ? formatChileanRut(p.profile.rut) : p.profile.rut)
+            : '';
+        }
+        if (!stepInputEmail.value.trim()) stepInputEmail.value = p.profile.email || '';
+        if (!stepInputPhone.value.trim()) stepInputPhone.value = p.profile.phone ? formatPhoneLive(p.profile.phone) : '';
         rememberedProfileVersion = p.version;
-      } else if (currentSession && currentSession.user) {
-        stepInputName.value = currentSession.user.name || '';
-        stepInputEmail.value = currentSession.user.email || '';
+      } else if (currentSession && currentSession.user && !currentSession.user.isGuest) {
+        if (!stepInputName.value.trim()) stepInputName.value = currentSession.user.name || '';
+        if (!stepInputEmail.value.trim()) stepInputEmail.value = currentSession.user.email || '';
       }
     } catch (err) {
       console.error('Error al precargar perfil:', err);
     }
   }
 
-  if (btnStep3QuickLogin) {
+  if (btnGateQuickLogin) {
     if (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1') {
-      btnStep3QuickLogin.classList.remove('hidden');
-      btnStep3QuickLogin.addEventListener('click', async () => {
+      btnGateQuickLogin.classList.remove('hidden');
+      btnGateQuickLogin.addEventListener('click', async () => {
         try {
           await AgendamientoClient.mockLogin('patient');
           await initSession();
+          renderStep3State();
         } catch (err) {
           console.error('Error en quick login:', err);
         }
@@ -1819,18 +1996,78 @@ import { professionals } from '../data/professionals';
     }
   }
 
-  // Inicialización de sesión y paso inicial
-  initSession();
+  async function restoreWizardStateIfAny(): Promise<boolean> {
+    const raw = sessionStorage.getItem('vsa_booking_wizard_state');
+    if (!raw) return false;
 
-  const urlParams = new URLSearchParams(window.location.search);
-  const paramPro = urlParams.get('pro');
-  if (paramPro === 'felipe' || paramPro === 'eduardo') {
-    selectProfessional(paramPro);
-    goToStep(2, true);
-    loadWeekAvailability(paramPro);
-  } else {
-    goToStep(1, true);
+    try {
+      const saved = JSON.parse(raw);
+      // Validar expiración de 2 horas (7200000 ms)
+      if (!saved || !saved.timestamp || (Date.now() - saved.timestamp > 7200000)) {
+        sessionStorage.removeItem('vsa_booking_wizard_state');
+        return false;
+      }
+
+      if (saved.pro === 'felipe' || saved.pro === 'eduardo') {
+        selectProfessional(saved.pro);
+        await loadWeekAvailability(saved.pro);
+
+        if (saved.date) {
+          selectedDateString = saved.date;
+          renderDatePills();
+          renderSlotsForSelectedDate();
+        }
+
+        if (saved.slot) {
+          selectedSlotUtc = saved.slot;
+          updateSlotButtons(saved.slot);
+          updateStep2NextButton();
+        }
+
+        if (saved.patientName) stepInputName.value = saved.patientName;
+        if (saved.patientDocType) stepInputDocType.value = saved.patientDocType;
+        if (saved.patientRut) stepInputRut.value = saved.patientRut;
+        if (saved.patientEmail) stepInputEmail.value = saved.patientEmail;
+        if (saved.patientPhone) stepInputPhone.value = saved.patientPhone;
+
+        sessionStorage.removeItem('vsa_booking_wizard_state');
+
+        if (saved.slot) {
+          goToStep(3, true);
+          renderStep3State();
+          return true;
+        } else {
+          goToStep(2, true);
+          return true;
+        }
+      }
+    } catch (err) {
+      console.error('Error al restaurar estado de agendamiento:', err);
+      sessionStorage.removeItem('vsa_booking_wizard_state');
+    }
+    return false;
   }
+
+  async function startup() {
+    await initSession();
+
+    const restored = await restoreWizardStateIfAny();
+    if (restored) {
+      return;
+    }
+
+    const urlParams = new URLSearchParams(window.location.search);
+    const paramPro = urlParams.get('pro');
+    if (paramPro === 'felipe' || paramPro === 'eduardo') {
+      selectProfessional(paramPro);
+      goToStep(2, true);
+      loadWeekAvailability(paramPro);
+    } else {
+      goToStep(1, true);
+    }
+  }
+
+  startup();
 </script>
 
 <style>

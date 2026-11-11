@@ -65,6 +65,16 @@ export const AgendamientoClient = {
   },
 
   /**
+   * Inicia una sesión de invitado temporal sin verificación para agendamiento directo.
+   */
+  async createGuestSession(): Promise<any> {
+    return requestJson('/api/guest-session', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' }
+    });
+  },
+
+  /**
    * Login simulado para entorno de desarrollo local.
    */
   async mockLogin(role: 'patient' | 'team', email?: string, name?: string): Promise<any> {

@@ -141,12 +141,15 @@ export async function handleApiRequest(
         });
       }
 
+      const isGuest = user.email.startsWith('guest_') || user.name === 'Paciente No Verificado';
+
       return jsonResponse({
         authenticated: true,
         user: {
           id: user.id,
           name: user.name,
-          email: user.email
+          email: user.email,
+          isGuest
         },
         role: isTeam ? 'team' : 'patient',
         capabilities: {
@@ -154,6 +157,28 @@ export async function handleApiRequest(
         },
         csrfToken: sessionData.csrfToken
       });
+    }
+
+    // Endpoint para iniciar sesión temporal como invitado no verificado
+    if (method === 'POST' && path === '/api/guest-session') {
+      const anonSub = `guest_${generateRandomString(16)}`;
+      const dbUser = await findOrCreateUser(db, {
+        googleSub: anonSub,
+        name: 'Paciente No Verificado',
+        email: `guest_${anonSub.slice(6)}@centrovidasana.cl`
+      });
+      const newSession = await createSession(db, dbUser.id, { nowSeconds });
+      const isHttps = url.protocol === 'https:';
+      return jsonResponse(
+        {
+          success: true,
+          user: { id: dbUser.id, name: dbUser.name, email: dbUser.email, isGuest: true },
+          role: 'patient',
+          csrfToken: newSession.csrfToken
+        },
+        200,
+        { 'Set-Cookie': createSessionCookie(newSession.rawToken, { isHttps }) }
+      );
     }
 
     if (method === 'POST' && path === '/api/logout') {

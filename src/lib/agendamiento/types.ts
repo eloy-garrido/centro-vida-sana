@@ -52,6 +52,7 @@ export interface UserSession {
   id: string; // ID opaco de usuario (hash/sub)
   name: string;
   email: string;
+  isGuest?: boolean;
 }
 
 export interface SessionCapabilities {
