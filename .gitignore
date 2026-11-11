@@ -11,6 +11,8 @@ package-lock.json
 .env
 .env.local
 .env.*
+.dev.vars
+*.dev.vars
 !.env.example
 
 # Astro & Build output

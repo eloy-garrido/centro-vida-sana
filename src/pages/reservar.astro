@@ -59,6 +59,33 @@ import { professionals } from '../data/professionals';
         </p>
       </header>
 
+      <!-- Script de precarga ultra-rápido para evitar cualquier parpadeo al reanudar desde OAuth -->
+      <script is:inline>
+        (function() {
+          try {
+            var raw = sessionStorage.getItem('vsa_booking_wizard_state');
+            if (raw) {
+              var s = JSON.parse(raw);
+              if (s && s.slot && (Date.now() - s.timestamp <= 7200000)) {
+                var style = document.createElement('style');
+                style.id = 'vsa-resume-preload-style';
+                style.textContent = `
+                  #step-view-1 { display: none !important; }
+                  #step-view-3 { display: block !important; }
+                  #step-nav-1 { background-color: #ECFDF5 !important; color: #065F46 !important; border-color: #A7F3D0 !important; }
+                  #step-nav-1 .step-nav-number { background-color: #059669 !important; color: white !important; }
+                  #step-nav-2 { background-color: #ECFDF5 !important; color: #065F46 !important; border-color: #A7F3D0 !important; }
+                  #step-nav-2 .step-nav-number { background-color: #059669 !important; color: white !important; }
+                  #step-nav-3 { background-color: #0F172A !important; color: white !important; }
+                  #step-nav-3 .step-nav-number { background-color: rgba(255,255,255,0.2) !important; color: white !important; }
+                `;
+                document.head.appendChild(style);
+              }
+            }
+          } catch (e) {}
+        })();
+      </script>
+
       <!-- BARRA DE PROGRESO DEL WIZARD (1 -> 2 -> 3 -> 4) -->
       <nav aria-label="Progreso de la reserva" class="mb-8">
         <!-- Vista Desktop / Tablet -->
@@ -911,13 +938,14 @@ import { professionals } from '../data/professionals';
 
     const views = [stepView1, stepView2, stepView3, stepView4, stepViewSuccess];
 
-    if (isInitial && step === 1) {
-      // Entrada inicial sin pestañeo ni salto de opacidad sobre el HTML estático
+    if (isInitial) {
+      // Entrada inicial sin pestañeo ni salto de opacidad
       views.forEach((v, idx) => {
-        if (idx !== 0) v.classList.add('hidden');
+        if (idx !== step - 1) v.classList.add('hidden');
         v.classList.remove('animate-step');
       });
-      stepView1.classList.remove('hidden');
+      const activeView = views[step - 1];
+      if (activeView) activeView.classList.remove('hidden');
     } else {
       views.forEach((v) => {
         v.classList.add('hidden');
@@ -1362,8 +1390,9 @@ import { professionals } from '../data/professionals';
   // ==========================================================================
   function renderStep3State() {
     const isGoogleAuth = Boolean(currentSession?.authenticated && !currentSession?.user?.isGuest);
+    const isResumingFromOAuth = Boolean(rawSavedWizard && !currentSession);
 
-    if (isGoogleAuth) {
+    if (isGoogleAuth || isResumingFromOAuth) {
       step3Gate.classList.add('hidden');
       step3FormWrapper.classList.remove('hidden');
       step3UnverifiedBanner.classList.add('hidden');
@@ -1375,12 +1404,16 @@ import { professionals } from '../data/professionals';
         if (!stepInputName.value.trim()) {
           stepInputName.value = currentSession.user.name;
         }
+      } else if (rawSavedWizard?.patientName) {
+        step3Name.textContent = rawSavedWizard.patientName;
       }
       if (currentSession?.user?.email) {
         step3Email.textContent = currentSession.user.email;
         if (!stepInputEmail.value.trim()) {
           stepInputEmail.value = currentSession.user.email;
         }
+      } else if (rawSavedWizard?.patientEmail) {
+        step3Email.textContent = rawSavedWizard.patientEmail;
       }
     } else if (isUnverifiedMode) {
       step3Gate.classList.add('hidden');
@@ -1453,6 +1486,42 @@ import { professionals } from '../data/professionals';
       goToStep(2);
     }
   });
+
+  // ==========================================================================
+  // RESTAURACIÓN SINCRÓNICA INMEDIATA TRAS OAUTH (CERO PARPADEO VISUAL)
+  // ==========================================================================
+  const rawSavedWizard = (function() {
+    try {
+      const item = sessionStorage.getItem('vsa_booking_wizard_state');
+      if (!item) return null;
+      const parsed = JSON.parse(item);
+      if (parsed && parsed.slot && (Date.now() - parsed.timestamp <= 7200000)) {
+        return parsed;
+      }
+    } catch {}
+    return null;
+  })();
+
+  if (rawSavedWizard) {
+    if (rawSavedWizard.pro === 'felipe' || rawSavedWizard.pro === 'eduardo') {
+      selectProfessional(rawSavedWizard.pro);
+    }
+    if (rawSavedWizard.date) {
+      selectedDateString = rawSavedWizard.date;
+    }
+    if (rawSavedWizard.slot) {
+      selectedSlotUtc = rawSavedWizard.slot;
+    }
+    if (rawSavedWizard.patientName) stepInputName.value = rawSavedWizard.patientName;
+    if (rawSavedWizard.patientDocType) stepInputDocType.value = rawSavedWizard.patientDocType;
+    if (rawSavedWizard.patientRut) stepInputRut.value = rawSavedWizard.patientRut;
+    if (rawSavedWizard.patientEmail) stepInputEmail.value = rawSavedWizard.patientEmail;
+    if (rawSavedWizard.patientPhone) stepInputPhone.value = rawSavedWizard.patientPhone;
+
+    // Ir a Paso 3 sincrónicamente antes de cualquier fetch
+    goToStep(3, true);
+    renderStep3State();
+  }
 
   /**
    * Formatea un RUT en tiempo real agregando puntos y guion mientras el usuario escribe.
@@ -1996,65 +2065,31 @@ import { professionals } from '../data/professionals';
     }
   }
 
-  async function restoreWizardStateIfAny(): Promise<boolean> {
-    const raw = sessionStorage.getItem('vsa_booking_wizard_state');
-    if (!raw) return false;
-
-    try {
-      const saved = JSON.parse(raw);
-      // Validar expiración de 2 horas (7200000 ms)
-      if (!saved || !saved.timestamp || (Date.now() - saved.timestamp > 7200000)) {
-        sessionStorage.removeItem('vsa_booking_wizard_state');
-        return false;
-      }
-
-      if (saved.pro === 'felipe' || saved.pro === 'eduardo') {
-        selectProfessional(saved.pro);
-        await loadWeekAvailability(saved.pro);
-
-        if (saved.date) {
-          selectedDateString = saved.date;
-          renderDatePills();
-          renderSlotsForSelectedDate();
-        }
-
-        if (saved.slot) {
-          selectedSlotUtc = saved.slot;
-          updateSlotButtons(saved.slot);
-          updateStep2NextButton();
-        }
-
-        if (saved.patientName) stepInputName.value = saved.patientName;
-        if (saved.patientDocType) stepInputDocType.value = saved.patientDocType;
-        if (saved.patientRut) stepInputRut.value = saved.patientRut;
-        if (saved.patientEmail) stepInputEmail.value = saved.patientEmail;
-        if (saved.patientPhone) stepInputPhone.value = saved.patientPhone;
-
-        sessionStorage.removeItem('vsa_booking_wizard_state');
-
-        if (saved.slot) {
-          goToStep(3, true);
-          renderStep3State();
-          return true;
-        } else {
-          goToStep(2, true);
-          return true;
-        }
-      }
-    } catch (err) {
-      console.error('Error al restaurar estado de agendamiento:', err);
-      sessionStorage.removeItem('vsa_booking_wizard_state');
-    }
-    return false;
-  }
-
   async function startup() {
-    await initSession();
+    if (rawSavedWizard) {
+      // Iniciar sesión y disponibilidad en paralelo en segundo plano sin bloquear la UI
+      const [session] = await Promise.all([
+        AgendamientoClient.getSession().catch(() => null),
+        rawSavedWizard.pro ? loadWeekAvailability(rawSavedWizard.pro).catch(() => null) : null
+      ]);
 
-    const restored = await restoreWizardStateIfAny();
-    if (restored) {
+      if (session) {
+        currentSession = session;
+        renderStep3State();
+        if (session.authenticated && !session.user?.isGuest) {
+          await loadProfile();
+        }
+      }
+
+      // Remover estilo temporal de precarga para que la reactividad tome el control normal
+      const preloadStyle = document.getElementById('vsa-resume-preload-style');
+      if (preloadStyle) preloadStyle.remove();
+
       return;
     }
+
+    // Flujo normal sin reanudación
+    await initSession();
 
     const urlParams = new URLSearchParams(window.location.search);
     const paramPro = urlParams.get('pro');

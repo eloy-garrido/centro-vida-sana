@@ -46,7 +46,7 @@ import {
   executeDeleteBlockCommand
 } from './agenda/team.ts';
 import { getBookingDetails, getCalendarExportData, generateIcsFileContent } from './agenda/details.ts';
-import { sendBookingNotificationEmail } from './notifications/email.ts';
+import { sendBookingNotificationEmail, sendPatientConfirmationEmail } from './notifications/email.ts';
 import type { ProfessionalId } from '../lib/agendamiento/types.ts';
 
 function jsonResponse(data: unknown, status = 200, extraHeaders: Record<string, string> = {}): Response {
@@ -476,22 +476,24 @@ export async function handleApiRequest(
       );
 
       if (!result.isReplay && result.result?.result?.resourceId) {
-        sendBookingNotificationEmail(
-          {
-            bookingId: result.result.result.resourceId,
-            professionalId: body.professionalId,
-            startAt: body.startAt,
-            patient: {
-              name: (body.patient?.name || '').trim(),
-              phone: body.patient?.phone || '',
-              email: body.patient?.email || '',
-              rut: body.patient?.rut,
-              documentType: body.patient?.documentType
-            }
-          },
-          options.env,
-          options.ctx
-        );
+        const notificationData = {
+          bookingId: result.result.result.resourceId,
+          professionalId: body.professionalId,
+          startAt: body.startAt,
+          patient: {
+            name: (body.patient?.name || '').trim(),
+            phone: body.patient?.phone || '',
+            email: body.patient?.email || '',
+            rut: body.patient?.rut,
+            documentType: body.patient?.documentType
+          }
+        };
+
+        // 1. Notificación operativa para el profesional (Cloudflare Email Routing)
+        sendBookingNotificationEmail(notificationData, options.env, options.ctx);
+
+        // 2. Comprobante exclusivo para el paciente con alta jerarquía visual (Resend API)
+        sendPatientConfirmationEmail(notificationData, options.env, options.ctx);
       }
 
       const status = result.isReplay ? 200 : 201;
