@@ -18,5 +18,10 @@
       "database_name": "vida-sana-reservas-staging",
       "database_id": "3d91d453-2ef5-4601-80cf-27622a0787bf"
     }
+  ],
+  "send_email": [
+    {
+      "name": "EMAIL"
+    }
   ]
 }

@@ -46,6 +46,7 @@ import {
   executeDeleteBlockCommand
 } from './agenda/team.ts';
 import { getBookingDetails, getCalendarExportData, generateIcsFileContent } from './agenda/details.ts';
+import { sendBookingNotificationEmail } from './notifications/email.ts';
 import type { ProfessionalId } from '../lib/agendamiento/types.ts';
 
 function jsonResponse(data: unknown, status = 200, extraHeaders: Record<string, string> = {}): Response {
@@ -91,6 +92,7 @@ export interface RouterOptions {
   googleClientSecret?: string;
   googleRedirectUri?: string;
   env?: Record<string, any>;
+  ctx?: { waitUntil?: (promise: Promise<any>) => void };
 }
 
 export async function handleApiRequest(
@@ -447,6 +449,25 @@ export async function handleApiRequest(
         body,
         nowSeconds
       );
+
+      if (!result.isReplay && result.result?.result?.resourceId) {
+        sendBookingNotificationEmail(
+          {
+            bookingId: result.result.result.resourceId,
+            professionalId: body.professionalId,
+            startAt: body.startAt,
+            patient: {
+              name: (body.patient?.name || '').trim(),
+              phone: body.patient?.phone || '',
+              email: body.patient?.email || '',
+              rut: body.patient?.rut,
+              documentType: body.patient?.documentType
+            }
+          },
+          options.env,
+          options.ctx
+        );
+      }
 
       const status = result.isReplay ? 200 : 201;
       const headers = result.isReplay ? { 'Idempotent-Replay': 'true' } : {};

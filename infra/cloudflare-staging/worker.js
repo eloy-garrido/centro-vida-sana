@@ -20,7 +20,7 @@ export default {
         });
       }
       const db = createD1Adapter(env.DB);
-      return handleApiRequest(request, db, { env, isDev: false });
+      return handleApiRequest(request, db, { env, isDev: false, ctx });
     }
 
     // 2. Activos y páginas estáticas compiladas de Astro
