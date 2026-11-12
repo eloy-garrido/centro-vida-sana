@@ -430,18 +430,28 @@ import { professionals } from '../data/professionals';
             </div>
 
             <!-- Sí autenticado con Google -->
-            <div id="step-3-auth-in" class="hidden mb-6 p-4 rounded-xl bg-emerald-50/70 border border-emerald-200/80 flex items-center justify-between">
-              <div class="flex items-center gap-3">
-                <div id="step-3-avatar" class="w-8 h-8 rounded-full bg-slate-900 text-white flex items-center justify-center font-bold text-xs">U</div>
-                <div>
-                  <p id="step-3-name" class="text-xs font-bold text-slate-900">Usuario Identificado</p>
-                  <p id="step-3-email" class="text-[11px] text-slate-500">usuario@correo.com</p>
+            <div id="step-3-auth-in" class="hidden mb-6 p-4 rounded-xl bg-emerald-50/70 border border-emerald-200/80 flex flex-wrap items-center justify-between gap-3">
+              <div class="flex items-center gap-3 min-w-0">
+                <div id="step-3-avatar" class="w-8 h-8 rounded-full bg-slate-900 text-white flex items-center justify-center font-bold text-xs shrink-0">U</div>
+                <div class="min-w-0">
+                  <p id="step-3-name" class="text-xs font-bold text-slate-900 truncate">Usuario Identificado</p>
+                  <p id="step-3-email" class="text-[11px] text-slate-500 truncate">usuario@correo.com</p>
                 </div>
               </div>
-              <span class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-[10px] font-semibold bg-emerald-100 text-emerald-800">
-                <span class="w-1.5 h-1.5 rounded-full bg-emerald-600"></span>
-                Cuenta Verificada
-              </span>
+              <div class="flex items-center gap-2.5 shrink-0">
+                <span class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-[10px] font-semibold bg-emerald-100 text-emerald-800">
+                  <span class="w-1.5 h-1.5 rounded-full bg-emerald-600"></span>
+                  Cuenta Verificada
+                </span>
+                <button
+                  type="button"
+                  id="btn-step3-logout"
+                  class="text-[11px] text-slate-500 hover:text-red-700 hover:underline font-medium px-2 py-1 rounded transition-colors cursor-pointer"
+                  title="Cerrar sesión de esta cuenta"
+                >
+                  Cerrar sesión
+                </button>
+              </div>
             </div>
 
             <!-- Formulario de Datos del Paciente -->
@@ -897,6 +907,7 @@ import { professionals } from '../data/professionals';
   const step3Avatar = document.getElementById('step-3-avatar')!;
   const step3Name = document.getElementById('step-3-name')!;
   const step3Email = document.getElementById('step-3-email')!;
+  const btnStep3Logout = document.getElementById('btn-step3-logout') as HTMLButtonElement | null;
 
   const stepInputName = document.getElementById('step-input-name') as HTMLInputElement;
   const stepInputDocType = document.getElementById('step-input-doc-type') as HTMLSelectElement;
@@ -1487,10 +1498,45 @@ import { professionals } from '../data/professionals';
     }
   });
 
+  if (btnStep3Logout) {
+    btnStep3Logout.addEventListener('click', async () => {
+      btnStep3Logout.disabled = true;
+      btnStep3Logout.classList.add('opacity-50', 'pointer-events-none');
+      try {
+        if (currentSession && currentSession.csrfToken) {
+          await AgendamientoClient.logout(currentSession.csrfToken);
+        }
+      } catch (err) {
+        console.error('Error al cerrar sesión:', err);
+      } finally {
+        currentSession = null;
+        rawSavedWizard = null;
+        rememberedProfileVersion = null;
+        isUnverifiedMode = false;
+        try {
+          sessionStorage.removeItem('vsa_booking_wizard_state');
+        } catch (_) {}
+        if (window.history && window.history.replaceState) {
+          window.history.replaceState({}, document.title, window.location.pathname);
+        }
+        stepInputName.value = '';
+        stepInputEmail.value = '';
+        stepInputPhone.value = '';
+        stepInputRut.value = '';
+        if (stepCheckRemember) {
+          stepCheckRemember.checked = false;
+        }
+        renderStep3State();
+        btnStep3Logout.disabled = false;
+        btnStep3Logout.classList.remove('opacity-50', 'pointer-events-none');
+      }
+    });
+  }
+
   // ==========================================================================
   // RESTAURACIÓN SINCRÓNICA INMEDIATA TRAS OAUTH (CERO PARPADEO VISUAL)
   // ==========================================================================
-  const rawSavedWizard = (function() {
+  let rawSavedWizard: any = (function() {
     try {
       const item = sessionStorage.getItem('vsa_booking_wizard_state');
       if (!item) return null;
