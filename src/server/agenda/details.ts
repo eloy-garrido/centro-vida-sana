@@ -18,6 +18,8 @@ export interface BookingDetailResult {
     startAt: string;
     endAt: string;
     status: 'confirmed' | 'cancelled';
+    attendanceStatus?: 'pending' | 'attended' | 'no_show';
+    attendanceUpdatedAt?: string;
     version: string;
     patient?: {
       name: string;
@@ -51,6 +53,8 @@ export async function getBookingDetails(
     start_at: number;
     end_at: number;
     status: string;
+    attendance_status: string | null;
+    attendance_updated_at: number | null;
     version: string;
     booked_by_user_id: string | null;
     encrypted_snapshot: string | null;
@@ -73,6 +77,8 @@ export async function getBookingDetails(
       startAt: new Date(row.start_at * 1000).toISOString(),
       endAt: new Date(row.end_at * 1000).toISOString(),
       status: row.status as any,
+      attendanceStatus: (row.attendance_status as any) || 'pending',
+      attendanceUpdatedAt: row.attendance_updated_at ? new Date(row.attendance_updated_at * 1000).toISOString() : undefined,
       version: row.version,
       patient: patientData
     }

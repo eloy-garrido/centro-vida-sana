@@ -134,12 +134,46 @@ export interface AvailabilityResponse {
 // ============================================================================
 
 export type BookingStatus = 'confirmed' | 'cancelled';
+export type AttendanceStatus = 'pending' | 'attended' | 'no_show';
+
+export interface PatientSearchResultItem {
+  id: string;
+  professionalId: ProfessionalId;
+  startAt: string;
+  endAt: string;
+  status: BookingStatus;
+  attendanceStatus: AttendanceStatus;
+  version: string;
+  patient: {
+    name: string;
+    email: string;
+    phone?: string;
+    rut?: string;
+    documentType?: string;
+  };
+}
+
+export interface PatientSearchStats {
+  totalAppointments: number;
+  attendedCount: number;
+  noShowCount: number;
+  cancelledCount: number;
+  upcomingCount: number;
+}
+
+export interface PatientSearchResult {
+  query: string;
+  totalMatches: number;
+  stats: PatientSearchStats;
+  results: PatientSearchResultItem[];
+}
 
 export interface CreateBookingRequest {
   professionalId: ProfessionalId;
   startAt: string; // RFC3339 UTC
   patient: PatientSnapshot;
   consentVersion: string;
+  notifyPatient?: boolean;
 }
 
 export interface BookingDetail {
@@ -148,6 +182,8 @@ export interface BookingDetail {
   startAt: string; // RFC3339 UTC
   endAt: string;   // RFC3339 UTC
   status: BookingStatus;
+  attendanceStatus?: AttendanceStatus;
+  attendanceUpdatedAt?: string;
   version: string; // ETag / versión para control de concurrencia
   patient: PatientSnapshot;
   createdAt: string; // Fecha de creación para trazabilidad y auditoría
@@ -211,6 +247,7 @@ export interface TeamScheduleEntry {
   startAt: string;
   endAt: string;
   status: BookingStatus;
+  attendanceStatus?: AttendanceStatus;
   version: string;
   patient?: {
     name: string;
@@ -218,6 +255,10 @@ export interface TeamScheduleEntry {
     email?: string;
     // S09 L38: No se expone el RUT en listados generales de equipo
   };
+}
+
+export interface UpdateAttendanceRequest {
+  attendanceStatus: AttendanceStatus;
 }
 
 export interface TeamScheduleQuery {
@@ -262,6 +303,35 @@ export interface CreateBlockRequest {
 export interface CalendarExportUrls {
   googleUrl: string;
   icsDownloadUrl: string;
+}
+
+// ============================================================================
+// FICHA Y NOTAS DE EVOLUCIÓN DE PACIENTES
+// ============================================================================
+
+export interface PatientNoteItem {
+  id: string;
+  patientKey: string;
+  bookingId?: string | null;
+  professionalId: ProfessionalId;
+  professionalName: string;
+  authorName: string;
+  content: string;
+  createdAt: string;
+  updatedAt: string;
+  isEdited: boolean;
+}
+
+export interface BookingNotesResponse {
+  patient: PatientSnapshot;
+  patientKey: string;
+  notes: PatientNoteItem[];
+}
+
+export interface CreatePatientNoteRequest {
+  content: string;
+  professionalId: ProfessionalId;
+  bookingId?: string;
 }
 
 // ============================================================================

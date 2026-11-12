@@ -31,17 +31,22 @@ import {
 import {
   executeEditTeamBookingCommand,
   executeDeleteBlockCommand,
-  getTeamSchedule
+  getTeamSchedule,
+  executeRecordAttendanceCommand
 } from '../../src/server/agenda/team.ts';
+import { getBookingDetails } from '../../src/server/agenda/details.ts';
 import { savePatientProfile, getPatientProfile } from '../../src/server/agenda/profile.ts';
 import { setPiiEncryptionSecret, encryptPiiJson, decryptPiiJson } from '../../src/server/auth/crypto.ts';
 
 function createTestDatabase() {
   const db = new DatabaseSync(':memory:');
   db.exec('PRAGMA foreign_keys = ON;');
-  const migrationPath = resolve(process.cwd(), 'migrations/0001_initial_schema.sql');
-  const sql = readFileSync(migrationPath, 'utf-8');
-  db.exec(sql);
+  const migrationFiles = ['0001_initial_schema.sql', '0002_attendance_tracking.sql', '0003_patient_notes.sql'];
+  for (const file of migrationFiles) {
+    const migrationPath = resolve(process.cwd(), 'migrations', file);
+    const sql = readFileSync(migrationPath, 'utf-8');
+    db.exec(sql);
+  }
   return { db, adapter: createSqliteAdapter(db) };
 }
 
@@ -782,6 +787,137 @@ test('AUDIT-FIX: Subsanación de hallazgos de auditoría (Batch en Delete Block,
     },
     (err: any) => err instanceof ApiCommandError && err.code === 'IDEMPOTENCY_MISMATCH' && err.status === 409
   );
+
+  db.close();
+});
+
+test('ATTENDANCE-01: Registro y verificación de asistencia de pacientes (attended, no_show, pending)', async () => {
+  const { db, adapter } = createTestDatabase();
+  const now = chileLocalToUtcSeconds(2026, 11, 5, 12, 0);
+  const targetUtc = new Date(chileLocalToUtcSeconds(2026, 11, 6, 10, 0) * 1000).toISOString();
+
+  await insertTestUser(adapter, 'usr_patient_1', 'paciente@gmail.com', 'Paciente Uno');
+  await insertTestUser(adapter, 'usr_felipe_prof', 'felipe.prof@gmail.com', 'Felipe Méndez');
+  await insertTestUser(adapter, 'usr_admin', 'centrovida.sanaaustral@gmail.com', 'Admin Centro');
+
+  // 1. Crear una cita confirmada
+  const createRes = await executeCreateBookingCommand(
+    adapter,
+    { id: 'usr_patient_1', email: 'paciente@gmail.com' },
+    'idem_att_test_1',
+    {
+      professionalId: 'felipe',
+      startAt: targetUtc,
+      patient: {
+        name: 'Carlos Asistencia',
+        email: 'carlos@gmail.com',
+        rut: '12.345.678-5',
+        phone: '+56911223344',
+        documentType: 'rut'
+      },
+      consentVersion: 'v1.0'
+    },
+    now
+  );
+  const bookingId = createRes.result.result.resourceId;
+
+  // Verificar que inicialmente nace con attendanceStatus = 'attended' (asistió por defecto)
+  const scheduleInitial = await getTeamSchedule(adapter, 'felipe', '2026-11-06', '2026-11-07', now);
+  const entryInitial = scheduleInitial.entries.find(e => e.id === bookingId);
+  assert.ok(entryInitial, 'La cita debe aparecer en getTeamSchedule');
+  assert.strictEqual(entryInitial.attendanceStatus, 'attended');
+
+  const detailsInitial = await getBookingDetails(adapter, bookingId, { id: 'usr_admin', isTeam: true });
+  assert.strictEqual(detailsInitial.booking.attendanceStatus, 'attended');
+
+  // 2. Conmutar a 'no_show' (inasistencia)
+  const recordNoShow = await executeRecordAttendanceCommand(
+    adapter,
+    { id: 'usr_felipe_prof' },
+    bookingId,
+    'no_show',
+    now + 3600
+  );
+  assert.strictEqual(recordNoShow.ok, true);
+  assert.strictEqual(recordNoShow.bookingId, bookingId);
+  assert.strictEqual(recordNoShow.attendanceStatus, 'no_show');
+  assert.strictEqual(recordNoShow.attendanceUpdatedAt, new Date((now + 3600) * 1000).toISOString());
+
+  // Verificar que la consulta del equipo refleje 'no_show'
+  const scheduleNoShow = await getTeamSchedule(adapter, 'felipe', '2026-11-06', '2026-11-07', now);
+  const entryNoShow = scheduleNoShow.entries.find(e => e.id === bookingId);
+  assert.strictEqual(entryNoShow?.attendanceStatus, 'no_show');
+
+  // 3. Conmutar de regreso a 'attended'
+  const recordAtt = await executeRecordAttendanceCommand(
+    adapter,
+    { id: 'usr_felipe_prof' },
+    bookingId,
+    'attended',
+    now + 4000
+  );
+  assert.strictEqual(recordAtt.attendanceStatus, 'attended');
+
+  const scheduleAtt = await getTeamSchedule(adapter, 'felipe', '2026-11-06', '2026-11-07', now);
+  const entryAtt = scheduleAtt.entries.find(e => e.id === bookingId);
+  assert.strictEqual(entryAtt?.attendanceStatus, 'attended');
+
+  // 4. Rectificar de regreso a 'pending'
+  const recordPending = await executeRecordAttendanceCommand(
+    adapter,
+    { id: 'usr_felipe_prof' },
+    bookingId,
+    'pending',
+    now + 4500
+  );
+  assert.strictEqual(recordPending.attendanceStatus, 'pending');
+
+  // 5. Rechazo con estado inválido
+  await assert.rejects(
+    async () => {
+      await executeRecordAttendanceCommand(
+        adapter,
+        { id: 'usr_felipe_prof' },
+        bookingId,
+        'other_status' as any,
+        now
+      );
+    },
+    (err: any) => err instanceof ApiCommandError && err.code === 'VALIDATION_ERROR' && err.status === 400
+  );
+
+  // 6. Rechazo con cita inexistente
+  await assert.rejects(
+    async () => {
+      await executeRecordAttendanceCommand(
+        adapter,
+        { id: 'usr_felipe_prof' },
+        'bkg_inexistente_999',
+        'attended',
+        now
+      );
+    },
+    (err: any) => err instanceof ApiCommandError && err.code === 'NOT_FOUND' && err.status === 404
+  );
+
+  // 7. Rechazo si la cita está cancelada
+  await executeCancelBookingCommand(adapter, { id: 'usr_admin', isTeam: true }, bookingId, '"v1"', now + 5000);
+  await assert.rejects(
+    async () => {
+      await executeRecordAttendanceCommand(
+        adapter,
+        { id: 'usr_felipe_prof' },
+        bookingId,
+        'attended',
+        now + 6000
+      );
+    },
+    (err: any) => err instanceof ApiCommandError && err.code === 'BOOKING_CANCELLED' && err.status === 409
+  );
+
+  // 8. Verificar que se registraron los eventos en audit_events
+  const audits = db.prepare("SELECT action, entity_id FROM audit_events WHERE action = 'record_attendance' AND entity_id = ?").all(bookingId) as any[];
+  assert.strictEqual(audits.length, 3, 'Debe haber 3 registros de auditoría por los cambios de asistencia');
 
   db.close();
 });

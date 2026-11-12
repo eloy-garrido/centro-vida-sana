@@ -10,6 +10,7 @@ import {
   type ProfessionalId,
   type CreateBookingRequest,
   type MutationResult,
+  type AttendanceStatus,
   SLOT_DURATION_SECONDS
 } from '../../lib/agendamiento/types.ts';
 import {
@@ -36,6 +37,7 @@ export interface TeamScheduleEntry {
   startAt: string;
   endAt: string;
   status: 'confirmed' | 'cancelled';
+  attendanceStatus?: AttendanceStatus;
   version: string;
   patient?: {
     name: string;
@@ -91,8 +93,9 @@ export async function getTeamSchedule(
     status: string;
     version: string;
     encrypted_snapshot: string | null;
+    attendance_status: string | null;
   }>(
-    `SELECT id, kind, professional_id, start_at, end_at, status, version, encrypted_snapshot
+    `SELECT id, kind, professional_id, start_at, end_at, status, version, encrypted_snapshot, attendance_status
      FROM agenda_entries
      WHERE professional_id = ?
        AND start_at >= ?
@@ -127,6 +130,7 @@ export async function getTeamSchedule(
       startAt: new Date(r.start_at * 1000).toISOString(),
       endAt: new Date(r.end_at * 1000).toISOString(),
       status: r.status as any,
+      attendanceStatus: (r.attendance_status as AttendanceStatus) || 'pending',
       version: r.version,
       patient: patientSummary
     });
@@ -593,5 +597,242 @@ export async function executeDeleteBlockCommand(
       status: 'cancelled',
       version: nextVersion
     }
+  };
+}
+
+/**
+ * Registra o actualiza la asistencia de un paciente a su cita programada.
+ * Exclusivo para miembros del equipo (S05).
+ */
+export async function executeRecordAttendanceCommand(
+  db: DatabaseAdapter,
+  actor: { id: string },
+  bookingId: string,
+  attendanceStatus: AttendanceStatus,
+  nowSeconds = Math.floor(Date.now() / 1000)
+): Promise<{ ok: boolean; bookingId: string; attendanceStatus: AttendanceStatus; attendanceUpdatedAt: string }> {
+  // 1. Validar estado permitido
+  if (!['pending', 'attended', 'no_show'].includes(attendanceStatus)) {
+    throw new ApiCommandError(
+      'VALIDATION_ERROR',
+      'El estado de asistencia debe ser pending, attended o no_show.',
+      400,
+      { attendanceStatus: 'INVALID_STATUS' }
+    );
+  }
+
+  // 2. Verificar existencia de la cita
+  const existing = await db.first<{
+    id: string;
+    status: string;
+    kind: string;
+    version: string;
+  }>("SELECT id, status, kind, version FROM agenda_entries WHERE id = ? AND kind = 'appointment'", bookingId);
+
+  if (!existing) {
+    throw new ApiCommandError('NOT_FOUND', 'Cita médica no encontrada.', 404);
+  }
+
+  if (existing.status === 'cancelled') {
+    throw new ApiCommandError(
+      'BOOKING_CANCELLED',
+      'No es posible registrar o modificar la asistencia en una cita cancelada.',
+      409
+    );
+  }
+
+  const auditId = `aud_${generateRandomString(12)}`;
+  const updatedAtIso = new Date(nowSeconds * 1000).toISOString();
+
+  await db.batch([
+    {
+      sql: `UPDATE agenda_entries
+            SET attendance_status = ?,
+                attendance_updated_at = ?,
+                attendance_updated_by = ?,
+                updated_at = ?
+            WHERE id = ?`,
+      params: [attendanceStatus, nowSeconds, actor.id, nowSeconds, bookingId]
+    },
+    {
+      sql: `INSERT INTO audit_events (
+              id, actor_id, action, entity_type, entity_id, version, created_at
+            ) VALUES (?, ?, 'record_attendance', 'appointment', ?, ?, ?)`,
+      params: [auditId, actor.id, bookingId, existing.version, nowSeconds]
+    }
+  ]);
+
+  return {
+    ok: true,
+    bookingId,
+    attendanceStatus,
+    attendanceUpdatedAt: updatedAtIso
+  };
+}
+
+export interface PatientSearchResultItem {
+  id: string;
+  professionalId: ProfessionalId;
+  startAt: string;
+  endAt: string;
+  status: 'confirmed' | 'cancelled';
+  attendanceStatus: AttendanceStatus;
+  version: string;
+  patient: {
+    name: string;
+    email: string;
+    phone?: string;
+    rut?: string;
+    documentType?: string;
+  };
+}
+
+export interface PatientSearchStats {
+  totalAppointments: number;
+  attendedCount: number;
+  noShowCount: number;
+  cancelledCount: number;
+  upcomingCount: number;
+}
+
+export interface PatientSearchResult {
+  query: string;
+  totalMatches: number;
+  stats: PatientSearchStats;
+  results: PatientSearchResultItem[];
+}
+
+function normalizeSearchText(str: string): string {
+  return (str || '')
+    .normalize('NFD')
+    .replace(/[\u0300-\u036f]/g, '')
+    .toLowerCase()
+    .trim();
+}
+
+function normalizeSearchRut(rut: string): string {
+  return (rut || '').replace(/[^0-9kK]/g, '').toLowerCase();
+}
+
+/**
+ * Busca atenciones agendadas de pacientes por nombre, email o RUT en toda la historia clínica.
+ * Exclusivo para equipo clínico. Descifra los snapshots en memoria de forma segura.
+ */
+export async function searchPatientAppointments(
+  db: DatabaseAdapter,
+  rawQuery: string,
+  nowSeconds = Math.floor(Date.now() / 1000)
+): Promise<PatientSearchResult> {
+  const query = (rawQuery || '').trim();
+  const normalizedQuery = normalizeSearchText(query);
+  const cleanRutQuery = normalizeSearchRut(query);
+
+  const emptyStats: PatientSearchStats = {
+    totalAppointments: 0,
+    attendedCount: 0,
+    noShowCount: 0,
+    cancelledCount: 0,
+    upcomingCount: 0
+  };
+
+  if (!normalizedQuery || normalizedQuery.length < 2) {
+    return {
+      query,
+      totalMatches: 0,
+      stats: emptyStats,
+      results: []
+    };
+  }
+
+  // Consultar todas las citas de la agenda ordenadas descendentemente por fecha
+  const rows = await db.all<{
+    id: string;
+    professional_id: string;
+    start_at: number;
+    end_at: number;
+    status: string;
+    version: string;
+    encrypted_snapshot: string | null;
+    attendance_status: string | null;
+  }>(
+    `SELECT id, professional_id, start_at, end_at, status, version, encrypted_snapshot, attendance_status
+     FROM agenda_entries
+     WHERE kind = 'appointment'
+     ORDER BY start_at DESC`
+  );
+
+  const results: PatientSearchResultItem[] = [];
+  const stats: PatientSearchStats = { ...emptyStats };
+
+  for (const r of rows) {
+    if (!r.encrypted_snapshot) continue;
+
+    const snap = await decryptPiiJson<{
+      name?: string;
+      email?: string;
+      phone?: string;
+      rut?: string;
+      documentType?: string;
+    }>(r.encrypted_snapshot);
+
+    if (!snap) continue;
+
+    const patientName = snap.name || '';
+    const patientEmail = snap.email || '';
+    const patientRut = snap.rut || '';
+
+    const normName = normalizeSearchText(patientName);
+    const normEmail = (patientEmail || '').toLowerCase();
+    const normRut = normalizeSearchRut(patientRut);
+
+    // Coincidencia por nombre (parcial, sin tildes)
+    const matchName = normName.includes(normalizedQuery);
+    // Coincidencia por email (parcial)
+    const matchEmail = normEmail.includes(normalizedQuery);
+    // Coincidencia por RUT (si la consulta tiene al menos 3 dígitos/caracteres válidos de RUT)
+    const matchRut = cleanRutQuery.length >= 3 && normRut.includes(cleanRutQuery);
+
+    if (matchName || matchEmail || matchRut) {
+      const attendanceStatus = (r.attendance_status as AttendanceStatus) || 'pending';
+      const isConfirmed = r.status === 'confirmed';
+
+      stats.totalAppointments++;
+      if (r.status === 'cancelled') {
+        stats.cancelledCount++;
+      } else {
+        if (r.start_at >= nowSeconds) {
+          stats.upcomingCount++;
+        }
+        if (attendanceStatus === 'no_show') {
+          stats.noShowCount++;
+        } else if (attendanceStatus === 'attended') {
+          stats.attendedCount++;
+        }
+      }
+
+      results.push({
+        id: r.id,
+        professionalId: r.professional_id as ProfessionalId,
+        startAt: new Date(r.start_at * 1000).toISOString(),
+        endAt: new Date(r.end_at * 1000).toISOString(),
+        status: r.status as any,
+        attendanceStatus,
+        version: r.version,
+        patient: {
+          name: patientName,
+          email: patientEmail,
+          phone: snap.phone || '',
+          rut: patientRut,
+          documentType: snap.documentType || 'rut'
+        }
+      });
+    }
+  }
+
+  return {
+    query,
+    totalMatches: results.length,
+    stats,
+    results
   };
 }

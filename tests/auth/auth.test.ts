@@ -37,9 +37,12 @@ import {
 function createTestDatabase() {
   const db = new DatabaseSync(':memory:');
   db.exec('PRAGMA foreign_keys = ON;');
-  const migrationPath = resolve(process.cwd(), 'migrations/0001_initial_schema.sql');
-  const sql = readFileSync(migrationPath, 'utf-8');
-  db.exec(sql);
+  const migrationFiles = ['0001_initial_schema.sql', '0002_attendance_tracking.sql', '0003_patient_notes.sql'];
+  for (const file of migrationFiles) {
+    const migrationPath = resolve(process.cwd(), 'migrations', file);
+    const sql = readFileSync(migrationPath, 'utf-8');
+    db.exec(sql);
+  }
   return { db, adapter: createSqliteAdapter(db) };
 }
 

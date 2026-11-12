@@ -16,9 +16,12 @@ import { chileLocalToUtcSeconds } from '../../src/server/agenda/policy.ts';
 function createTestDatabase() {
   const db = new DatabaseSync(':memory:');
   db.exec('PRAGMA foreign_keys = ON;');
-  const migrationPath = resolve(process.cwd(), 'migrations/0001_initial_schema.sql');
-  const sql = readFileSync(migrationPath, 'utf-8');
-  db.exec(sql);
+  const migrationFiles = ['0001_initial_schema.sql', '0002_attendance_tracking.sql', '0003_patient_notes.sql'];
+  for (const file of migrationFiles) {
+    const migrationPath = resolve(process.cwd(), 'migrations', file);
+    const sql = readFileSync(migrationPath, 'utf-8');
+    db.exec(sql);
+  }
   return { db, adapter: createSqliteAdapter(db) };
 }
 
@@ -293,6 +296,147 @@ test('QA-14 / QA-17: Control de versión If-Match y ausencia de PII en errores',
     { nowSeconds: now }
   );
   assert.strictEqual(cancelOk.status, 200);
+
+  db.close();
+});
+
+test('QA-18: Flujo E2E de verificación manual de asistencia de pacientes (pending -> attended -> no_show -> cancel conflict)', async () => {
+  const { db, adapter } = createTestDatabase();
+  const now = chileLocalToUtcSeconds(2026, 11, 5, 12, 0);
+
+  const patient = await loginUser(adapter, 'patient', 'paciente.e2e@gmail.com', 'Mariana Paz');
+  const team = await loginUser(adapter, 'team', 'centrovida.sanaaustral@gmail.com', 'Admin Centro');
+
+  // 1. Paciente reserva cita
+  const slotUtc = new Date(chileLocalToUtcSeconds(2026, 11, 6, 11, 0) * 1000).toISOString();
+  const bookRes = await handleApiRequest(
+    new Request('http://localhost/api/bookings', {
+      method: 'POST',
+      headers: {
+        Cookie: patient.cookie,
+        'Content-Type': 'application/json',
+        'X-CSRF-Token': patient.csrfToken,
+        'Idempotency-Key': 'key_e2e_att_1'
+      },
+      body: JSON.stringify({
+        professionalId: 'eduardo',
+        startAt: slotUtc,
+        patient: {
+          name: 'Mariana Paz',
+          email: 'mariana.paz@gmail.com',
+          rut: '12.345.678-5',
+          documentType: 'rut',
+          phone: '+56987654321'
+        },
+        consentVersion: 'v1.0'
+      })
+    }),
+    adapter,
+    { nowSeconds: now }
+  );
+  assert.strictEqual(bookRes.status, 201);
+  const bookData = await bookRes.json() as any;
+  const bookingId = bookData.result.resourceId;
+
+  // 2. Profesional consulta agenda y la cita nace por defecto como 'attended' (asistió)
+  const scheduleInitial = await handleApiRequest(
+    new Request('http://localhost/api/team/schedule?professionalId=eduardo&from=2026-11-06&to=2026-11-07', {
+      headers: { Cookie: team.cookie }
+    }),
+    adapter,
+    { nowSeconds: now }
+  );
+  assert.strictEqual(scheduleInitial.status, 200);
+  const initialData = await scheduleInitial.json() as any;
+  const initialEntry = initialData.entries.find((e: any) => e.id === bookingId);
+  assert.ok(initialEntry, 'La cita debe listarse en la agenda');
+  assert.strictEqual(initialEntry.attendanceStatus, 'attended');
+
+  // 3. Profesional marca inasistencia al hacer toggle: 'no_show'
+  const markNoShowRes = await handleApiRequest(
+    new Request(`http://localhost/api/team/bookings/${bookingId}/attendance`, {
+      method: 'POST',
+      headers: {
+        Cookie: team.cookie,
+        'Content-Type': 'application/json',
+        'X-CSRF-Token': team.csrfToken
+      },
+      body: JSON.stringify({ attendanceStatus: 'no_show' })
+    }),
+    adapter,
+    { nowSeconds: now + 3600 }
+  );
+  assert.strictEqual(markNoShowRes.status, 200);
+
+  // Comprobar que el detalle y la agenda reflejan 'no_show'
+  const detailRes1 = await handleApiRequest(
+    new Request(`http://localhost/api/bookings/${bookingId}`, {
+      headers: { Cookie: team.cookie }
+    }),
+    adapter,
+    { nowSeconds: now }
+  );
+  const detailData1 = await detailRes1.json() as any;
+  assert.strictEqual(detailData1.booking.attendanceStatus, 'no_show');
+
+  // 4. Profesional vuelve a hacer toggle y reestablece 'attended'
+  const toggleBackRes = await handleApiRequest(
+    new Request(`http://localhost/api/team/bookings/${bookingId}/attendance`, {
+      method: 'POST',
+      headers: {
+        Cookie: team.cookie,
+        'Content-Type': 'application/json',
+        'X-CSRF-Token': team.csrfToken
+      },
+      body: JSON.stringify({ attendanceStatus: 'attended' })
+    }),
+    adapter,
+    { nowSeconds: now + 4000 }
+  );
+  assert.strictEqual(toggleBackRes.status, 200);
+
+  const detailRes2 = await handleApiRequest(
+    new Request(`http://localhost/api/bookings/${bookingId}`, {
+      headers: { Cookie: team.cookie }
+    }),
+    adapter,
+    { nowSeconds: now }
+  );
+  const detailData2 = await detailRes2.json() as any;
+  assert.strictEqual(detailData2.booking.attendanceStatus, 'attended');
+
+  // 5. Cancelar la cita con DELETE
+  const cancelRes = await handleApiRequest(
+    new Request(`http://localhost/api/team/bookings/${bookingId}`, {
+      method: 'DELETE',
+      headers: {
+        Cookie: team.cookie,
+        'X-CSRF-Token': team.csrfToken,
+        'If-Match': '"v1"'
+      }
+    }),
+    adapter,
+    { nowSeconds: now }
+  );
+  assert.strictEqual(cancelRes.status, 200);
+
+  // 6. Intentar registrar asistencia sobre una cita cancelada debe ser rechazado con 409
+  const attOnCancelledRes = await handleApiRequest(
+    new Request(`http://localhost/api/team/bookings/${bookingId}/attendance`, {
+      method: 'POST',
+      headers: {
+        Cookie: team.cookie,
+        'Content-Type': 'application/json',
+        'X-CSRF-Token': team.csrfToken
+      },
+      body: JSON.stringify({ attendanceStatus: 'attended' })
+    }),
+    adapter,
+    { nowSeconds: now + 5000 }
+  );
+  assert.strictEqual(attOnCancelledRes.status, 409);
+  const cancelErr = await attOnCancelledRes.json() as any;
+  assert.strictEqual(cancelErr.error.code, 'BOOKING_CANCELLED');
 
   db.close();
 });

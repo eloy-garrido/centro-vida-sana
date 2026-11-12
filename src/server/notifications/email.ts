@@ -5,6 +5,7 @@
  */
 
 import { CLINIC_TIMEZONE, type ProfessionalId } from '../../lib/agendamiento/types.ts';
+import { clinicInfo } from '../../data/clinic.ts';
 
 export interface BookingNotificationData {
   bookingId: string;
@@ -644,5 +645,234 @@ export async function sendBookingNotificationEmail(
     ctx.waitUntil(promise);
   } else {
     promise.catch(() => {});
+  }
+}
+
+export interface ReviewInviteData {
+  bookingId?: string;
+  professionalId: ProfessionalId;
+  patient: {
+    name: string;
+    email: string;
+  };
+}
+
+/**
+ * Genera la plantilla HTML para invitar al PACIENTE a calificar en Google.
+ * Enfocada en calidez humana, reconocimiento de su atención y llamada a la acción directa en Google Reviews.
+ */
+export function renderPatientReviewInviteEmailHtml(data: ReviewInviteData): string {
+  const prof = CLINIC_PROFESSIONALS[data.professionalId] || {
+    name: 'Felipe y Eduardo',
+    discipline: 'Quiropraxia, Acupuntura & Kinesiología',
+    title: 'Profesionales de Salud',
+    phoneFormatted: '+569 7370 0616',
+    phoneRaw: '56973700616',
+    accentColor: '#134E5E',
+    lightColor: '#EBF4F6',
+    borderColor: '#C9DFE6'
+  };
+
+  const patientFirstName = data.patient.name ? data.patient.name.trim().split(' ')[0] : 'Estimado/a paciente';
+  const googleReviewUrl = clinicInfo.social.googleReviews || 'https://search.google.com/local/writereview?placeid=ChIJM0LHMS_VFJYRdPlffqEIVW8';
+
+  return `<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>¿Cómo fue tu experiencia? — Centro Vida Sana Austral</title>
+</head>
+<body style="margin: 0; padding: 24px 12px; background-color: #F4F6F2; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif; color: #151C17; -webkit-font-smoothing: antialiased;">
+  <table width="100%" border="0" cellspacing="0" cellpadding="0" style="max-width: 600px; margin: 0 auto; background-color: #ffffff; border-radius: 16px; overflow: hidden; border: 1px solid #E2E8F0; box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.06);">
+    
+    <!-- Header Institucional -->
+    <tr>
+      <td style="background-color: #2E4D38; padding: 32px 32px 28px 32px; text-align: center;">
+        <span style="display: inline-block; font-size: 11px; font-weight: 800; text-transform: uppercase; letter-spacing: 0.15em; color: #A3D9A5; margin-bottom: 8px;">Centro Vida Sana Austral · Temuco</span>
+        <h1 style="margin: 0; font-size: 24px; font-weight: 800; color: #ffffff; letter-spacing: -0.02em;">Tu opinión es muy valiosa para nosotros</h1>
+        <p style="margin: 8px 0 0 0; font-size: 14px; color: #E0EADE;">Esperamos que tu atención haya sido una excelente experiencia.</p>
+      </td>
+    </tr>
+
+    <!-- Saludo y Mensaje Personal -->
+    <tr>
+      <td style="padding: 28px 28px 16px 28px;">
+        <p style="margin: 0 0 16px 0; font-size: 16px; line-height: 1.6; color: #151C17;">
+          Hola <strong>${patientFirstName}</strong>,
+        </p>
+        <p style="margin: 0 0 16px 0; font-size: 15px; line-height: 1.6; color: #4A5568;">
+          Esperamos que te encuentres muy bien tras tu atención con <strong>${prof.name}</strong> (${prof.discipline}).
+        </p>
+        <p style="margin: 0 0 20px 0; font-size: 15px; line-height: 1.6; color: #4A5568;">
+          En Centro Vida Sana Austral trabajamos día a día con total dedicación para ayudarte a recuperar tu bienestar, aliviar tus molestias y mejorar tu calidad de vida. Tu opinión nos ayuda enormemente a seguir perfeccionándonos y permite que más personas de Temuco y la región conozcan nuestra labor de salud integral.
+        </p>
+      </td>
+    </tr>
+
+    <!-- Tarjeta Destacada de Calificación Google con 5 Estrellas -->
+    <tr>
+      <td style="padding: 0 28px 24px 28px;">
+        <table width="100%" border="0" cellspacing="0" cellpadding="0" style="background: linear-gradient(180deg, #FFFFFF 0%, #F9FAF8 100%); border: 2px solid #E2E8F0; border-radius: 14px; overflow: hidden; text-align: center; box-shadow: 0 4px 12px rgba(0, 0, 0, 0.04);">
+          <tr>
+            <td style="padding: 28px 20px;">
+              <!-- Estrellas doradas -->
+              <div style="font-size: 28px; line-height: 1; margin-bottom: 12px; letter-spacing: 4px; color: #F59E0B;">
+                ★ ★ ★ ★ ★
+              </div>
+              <h2 style="margin: 0 0 8px 0; font-size: 18px; font-weight: 800; color: #151C17;">
+                ¿Nos regalarías 1 minuto en Google?
+              </h2>
+              <p style="margin: 0 0 20px 0; font-size: 13px; color: #718096; line-height: 1.5; max-width: 420px; margin-left: auto; margin-right: auto;">
+                Solo toma un momento calificar y compartir unas palabras sobre tu experiencia, la comodidad del centro o el trato recibido.
+              </p>
+
+              <!-- Botón CTA Google Reviews -->
+              <table border="0" cellspacing="0" cellpadding="0" align="center" style="margin: 0 auto;">
+                <tr>
+                  <td align="center" style="border-radius: 50px; background-color: #1A73E8;">
+                    <a href="${googleReviewUrl}" target="_blank" rel="noopener noreferrer" style="display: inline-block; padding: 15px 32px; font-size: 15px; font-weight: 800; color: #ffffff; text-decoration: none; border-radius: 50px; letter-spacing: 0.02em; border: 1px solid #1A73E8;">
+                      ⭐ Calificar en Google
+                    </a>
+                  </td>
+                </tr>
+              </table>
+
+              <div style="margin-top: 16px; font-size: 12px; color: #A0AEC0;">
+                (Se abrirá directamente la ventana de reseñas de Google Maps de nuestro centro)
+              </div>
+            </td>
+          </tr>
+        </table>
+      </td>
+    </tr>
+
+    <!-- Sugerencias de qué comentar -->
+    <tr>
+      <td style="padding: 0 28px 24px 28px;">
+        <table width="100%" border="0" cellspacing="0" cellpadding="0" style="background-color: #F8FAF7; border-left: 4px solid #2E4D38; border-radius: 8px;">
+          <tr>
+            <td style="padding: 16px 20px;">
+              <div style="font-size: 12px; font-weight: 800; text-transform: uppercase; letter-spacing: 0.06em; color: #2E4D38; margin-bottom: 6px;">
+                💡 Ideas para tu reseña
+              </div>
+              <ul style="margin: 0; padding-left: 18px; font-size: 13px; color: #4A5568; line-height: 1.6;">
+                <li>¿Cómo te sentiste durante la atención de ${prof.name}?</li>
+                <li>¿Sentiste alivio o mejoría en tu motivo de consulta?</li>
+                <li>¿Qué te pareció la puntualidad, comodidad y atención del centro?</li>
+              </ul>
+            </td>
+          </tr>
+        </table>
+      </td>
+    </tr>
+
+    <!-- Enlace de respaldo plano -->
+    <tr>
+      <td style="padding: 0 28px 24px 28px; text-align: center;">
+        <p style="margin: 0; font-size: 12px; color: #718096; line-height: 1.5;">
+          Si el botón no abre automáticamente, puedes copiar y pegar este enlace en tu navegador:<br>
+          <a href="${googleReviewUrl}" target="_blank" rel="noopener noreferrer" style="color: #1A73E8; text-decoration: underline; word-break: break-all; font-size: 11px;">
+            ${googleReviewUrl}
+          </a>
+        </p>
+      </td>
+    </tr>
+
+    <!-- Despedida y Firma -->
+    <tr>
+      <td style="padding: 0 28px 28px 28px;">
+        <p style="margin: 0; font-size: 14px; color: #4A5568; line-height: 1.5;">
+          ¡Muchísimas gracias por tu tiempo, tu apoyo y por confiar tu salud en nuestras manos!
+        </p>
+        <p style="margin: 14px 0 0 0; font-size: 14px; font-weight: 700; color: #151C17;">
+          ${prof.name}<br>
+          <span style="font-weight: 400; color: #718096; font-size: 13px;">${prof.title} · Centro Vida Sana Austral</span>
+        </p>
+      </td>
+    </tr>
+
+    <!-- Footer Institucional -->
+    <tr>
+      <td style="background-color: #F8F9F6; border-top: 1px solid #E2E8F0; padding: 24px 32px; text-align: center;">
+        <p style="margin: 0 0 6px 0; font-size: 13px; font-weight: 700; color: #151C17;">
+          Centro Vida Sana Austral
+        </p>
+        <p style="margin: 0 0 10px 0; font-size: 12px; color: #718096; line-height: 1.4;">
+          📍 Los Armiños 1620, Temuco, Chile<br>
+          📞 Quiropraxia: +56 9 7370 0616 · Acupuntura: +56 9 7388 8910
+        </p>
+        <p style="margin: 0; font-size: 11px; color: #A0AEC0;">
+          <a href="https://centrovidasana.cl" target="_blank" rel="noopener noreferrer" style="color: #134E5E; text-decoration: none; font-weight: 600;">centrovidasana.cl</a> · Este mensaje fue enviado a solicitud del profesional tratante en Centro Vida Sana Austral.
+        </p>
+      </td>
+    </tr>
+
+  </table>
+</body>
+</html>`;
+}
+
+/**
+ * Despacha la invitación a calificar en Google al correo del PACIENTE vía Resend API.
+ * Retorna estado para informar al profesional en el panel de agenda.
+ */
+export async function sendPatientReviewInviteEmail(
+  data: ReviewInviteData,
+  env?: Record<string, any>,
+  ctx?: { waitUntil?: (promise: Promise<any>) => void }
+): Promise<{ ok: boolean; messageId?: string; error?: string }> {
+  try {
+    if (!data.patient.email || !data.patient.email.includes('@')) {
+      console.warn('[INVITACIÓN RESEÑA] Correo de paciente no disponible o inválido. Omitiendo.');
+      return { ok: false, error: 'El paciente no tiene un correo válido registrado.' };
+    }
+
+    // Obtener API Key de Resend (desde env Worker o process.env)
+    const apiKey = env?.RESEND_API_KEY || (typeof process !== 'undefined' ? process.env?.RESEND_API_KEY : undefined);
+
+    if (!apiKey) {
+      console.log(`[INVITACIÓN RESEÑA MOCK] Sin RESEND_API_KEY. Correo simulado a ${data.patient.email}:`, {
+        paciente: data.patient.name,
+        profesional: data.professionalId
+      });
+      return { ok: true, messageId: 'mock_review_invite_id' };
+    }
+
+    const prof = CLINIC_PROFESSIONALS[data.professionalId] || {
+      name: data.professionalId,
+      title: 'Profesional de Salud'
+    };
+
+    const fromAddress = env?.RESEND_FROM_EMAIL || 'Centro Vida Sana <reservas@centrovidasana.cl>';
+    const subject = `🌿 ¿Cómo fue tu experiencia con ${prof.name}? Califícanos en Google ⭐`;
+    const html = renderPatientReviewInviteEmailHtml(data);
+
+    const response = await fetch('https://api.resend.com/emails', {
+      method: 'POST',
+      headers: {
+        'Authorization': `Bearer ${apiKey}`,
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({
+        from: fromAddress,
+        to: [data.patient.email],
+        subject: subject,
+        html: html
+      })
+    });
+
+    if (!response.ok) {
+      const errorText = await response.text();
+      console.error('[RESEND RESEÑA ERROR] Falló el envío del correo:', response.status, errorText);
+      return { ok: false, error: `Error del proveedor de correo (HTTP ${response.status})` };
+    }
+
+    const resData: any = await response.json();
+    console.log(`[RESEND RESEÑA ÉXITO] Correo entregado a ${data.patient.email}. Resend ID:`, resData?.id);
+    return { ok: true, messageId: resData?.id };
+  } catch (err: any) {
+    console.error('[INVITACIÓN RESEÑA ERROR] Excepción al procesar correo:', err?.message || err);
+    return { ok: false, error: err?.message || 'Error inesperado al enviar correo' };
   }
 }

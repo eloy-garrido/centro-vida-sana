@@ -42,10 +42,38 @@ export function getDevDatabase(): DatabaseAdapter {
     const isNew = !existsSync(dbPath);
     const db = new DatabaseSync(dbPath);
     db.exec('PRAGMA foreign_keys = ON;');
+    const migrationFiles = ['0001_initial_schema.sql', '0002_attendance_tracking.sql', '0003_patient_notes.sql'];
     if (isNew) {
-      const migrationPath = resolve(process.cwd(), 'migrations/0001_initial_schema.sql');
-      const sql = readFileSync(migrationPath, 'utf-8');
-      db.exec(sql);
+      for (const file of migrationFiles) {
+        const migrationPath = resolve(process.cwd(), 'migrations', file);
+        const sql = readFileSync(migrationPath, 'utf-8');
+        db.exec(sql);
+      }
+    } else {
+      // Verificar si ya se aplicó la migración 0002 (attendance_status)
+      try {
+        const cols = db.prepare("PRAGMA table_info('agenda_entries')").all() as { name: string }[];
+        if (!cols.some(c => c.name === 'attendance_status')) {
+          const migrationPath = resolve(process.cwd(), 'migrations/0002_attendance_tracking.sql');
+          const sql = readFileSync(migrationPath, 'utf-8');
+          db.exec(sql);
+        }
+        db.prepare("UPDATE agenda_entries SET attendance_status = 'attended' WHERE attendance_status = 'pending'").run();
+      } catch (err) {
+        console.warn('Advertencia al verificar columnas de asistencia en dev DB:', err);
+      }
+
+      // Verificar si ya se aplicó la migración 0003 (patient_notes)
+      try {
+        const tables = db.prepare("SELECT name FROM sqlite_master WHERE type='table' AND name='patient_notes'").all() as { name: string }[];
+        if (tables.length === 0) {
+          const migrationPath = resolve(process.cwd(), 'migrations/0003_patient_notes.sql');
+          const sql = readFileSync(migrationPath, 'utf-8');
+          db.exec(sql);
+        }
+      } catch (err) {
+        console.warn('Advertencia al verificar patient_notes en dev DB:', err);
+      }
     }
     devDbAdapter = createSqliteAdapter(db);
   }

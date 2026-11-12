@@ -43,10 +43,13 @@ import {
   getTeamSchedule,
   executeTeamBookingCommand,
   executeEditTeamBookingCommand,
-  executeDeleteBlockCommand
+  executeDeleteBlockCommand,
+  executeRecordAttendanceCommand,
+  searchPatientAppointments
 } from './agenda/team.ts';
 import { getBookingDetails, getCalendarExportData, generateIcsFileContent } from './agenda/details.ts';
-import { sendBookingNotificationEmail, sendPatientConfirmationEmail } from './notifications/email.ts';
+import { getPatientNotesByBooking, createPatientNote, updatePatientNote } from './agenda/notes.ts';
+import { sendBookingNotificationEmail, sendPatientConfirmationEmail, sendPatientReviewInviteEmail } from './notifications/email.ts';
 import type { ProfessionalId } from '../lib/agendamiento/types.ts';
 
 function jsonResponse(data: unknown, status = 200, extraHeaders: Record<string, string> = {}): Response {
@@ -607,6 +610,28 @@ export async function handleApiRequest(
           body,
           nowSeconds
         );
+
+        // Envío condicional de comprobante al paciente si notifyPatient es true (o no viene false explícito)
+        const shouldNotify = body.notifyPatient !== false;
+        if (shouldNotify && !result.isReplay && result.result?.result?.resourceId) {
+          sendPatientConfirmationEmail(
+            {
+              bookingId: result.result.result.resourceId,
+              professionalId: body.professionalId,
+              startAt: body.startAt,
+              patient: {
+                name: (body.patient?.name || '').trim(),
+                phone: body.patient?.phone || '',
+                email: body.patient?.email || '',
+                rut: body.patient?.rut,
+                documentType: body.patient?.documentType
+              }
+            },
+            options.env,
+            options.ctx
+          );
+        }
+
         return jsonResponse(result.result, result.isReplay ? 200 : 201);
       }
 
@@ -686,6 +711,111 @@ export async function handleApiRequest(
           nowSeconds
         );
         return jsonResponse(result, 200);
+      }
+
+      // 7. Envío manual de invitación a calificar en Google por correo (POST /api/team/bookings/:id/send-review-invite)
+      const teamReviewInviteMatch = path.match(/^\/api\/team\/bookings\/([^/]+)\/send-review-invite$/);
+      if (method === 'POST' && teamReviewInviteMatch) {
+        requireCsrf();
+        const bookingId = teamReviewInviteMatch[1];
+
+        // Obtener detalles de la cita con autorización de equipo
+        const bookingData = await getBookingDetails(db, bookingId, { id: user.id, isTeam: true });
+        if (!bookingData || !bookingData.booking) {
+          return errorResponse('NOT_FOUND', 'Cita no encontrada.', 404);
+        }
+
+        const patient = bookingData.booking.patient;
+        if (!patient || !patient.email || !patient.email.includes('@')) {
+          return errorResponse(
+            'VALIDATION_ERROR',
+            'El paciente no tiene un correo electrónico válido registrado para recibir la invitación.',
+            400
+          );
+        }
+
+        const result = await sendPatientReviewInviteEmail(
+          {
+            bookingId: bookingData.booking.id,
+            professionalId: bookingData.booking.professionalId,
+            patient: {
+              name: (patient.name || 'Paciente').trim(),
+              email: patient.email.trim()
+            }
+          },
+          options.env,
+          options.ctx
+        );
+
+        if (!result.ok) {
+          return errorResponse('EMAIL_ERROR', result.error || 'No se pudo enviar el correo de calificación.', 500);
+        }
+
+        return jsonResponse({
+          ok: true,
+          message: `Invitación enviada con éxito a ${patient.email}`,
+          messageId: result.messageId
+        }, 200);
+      }
+
+      // 8. Registro manual de asistencia del paciente (POST /api/team/bookings/:id/attendance)
+      const teamAttendanceMatch = path.match(/^\/api\/team\/bookings\/([^/]+)\/attendance$/);
+      if (method === 'POST' && teamAttendanceMatch) {
+        requireCsrf();
+        const bookingId = teamAttendanceMatch[1];
+        const body = await request.json() as any;
+        const result = await executeRecordAttendanceCommand(
+          db,
+          { id: user.id },
+          bookingId,
+          body.attendanceStatus,
+          nowSeconds
+        );
+        return jsonResponse(result, 200);
+      }
+
+      // 9. Búsqueda de pacientes e historial clínico (POST /api/team/patients/search)
+      if (method === 'POST' && path === '/api/team/patients/search') {
+        requireCsrf();
+        const body = await request.json().catch(() => ({})) as any;
+        const query = typeof body?.query === 'string' ? body.query : '';
+        const searchResult = await searchPatientAppointments(db, query, nowSeconds);
+        return jsonResponse(searchResult, 200);
+      }
+
+      // 10. Consulta de Ficha y Notas de Paciente (GET /api/team/bookings/:id/notes)
+      const bookingNotesMatch = path.match(/^\/api\/team\/bookings\/([^/]+)\/notes$/);
+      if (method === 'GET' && bookingNotesMatch) {
+        const bookingId = bookingNotesMatch[1];
+        const result = await getPatientNotesByBooking(db, bookingId, { id: user.id, isTeam: true });
+        return jsonResponse(result, 200);
+      }
+
+      // 11. Creación de Nota de Paciente (POST /api/team/patients/:patientKey/notes)
+      const createNoteMatch = path.match(/^\/api\/team\/patients\/([^/]+)\/notes$/);
+      if (method === 'POST' && createNoteMatch) {
+        requireCsrf();
+        const rawPatientKey = decodeURIComponent(createNoteMatch[1]);
+        const body = await request.json() as any;
+        const result = await createPatientNote(db, {
+          patientKey: rawPatientKey,
+          bookingId: body.bookingId,
+          professionalId: body.professionalId,
+          content: body.content,
+          actor: { id: user.id, name: user.name, isTeam: true },
+          nowSeconds
+        });
+        return jsonResponse({ note: result }, 201);
+      }
+
+      // 12. Edición de Nota de Paciente (PATCH /api/team/notes/:id)
+      const updateNoteMatch = path.match(/^\/api\/team\/notes\/([^/]+)$/);
+      if (method === 'PATCH' && updateNoteMatch) {
+        requireCsrf();
+        const noteId = updateNoteMatch[1];
+        const body = await request.json() as any;
+        const result = await updatePatientNote(db, noteId, body.content, { id: user.id, isTeam: true }, nowSeconds);
+        return jsonResponse({ note: result }, 200);
       }
     }
 

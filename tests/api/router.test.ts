@@ -16,9 +16,12 @@ import { chileLocalToUtcSeconds } from '../../src/server/agenda/policy.ts';
 function createTestDatabase() {
   const db = new DatabaseSync(':memory:');
   db.exec('PRAGMA foreign_keys = ON;');
-  const migrationPath = resolve(process.cwd(), 'migrations/0001_initial_schema.sql');
-  const sql = readFileSync(migrationPath, 'utf-8');
-  db.exec(sql);
+  const migrationFiles = ['0001_initial_schema.sql', '0002_attendance_tracking.sql', '0003_patient_notes.sql'];
+  for (const file of migrationFiles) {
+    const migrationPath = resolve(process.cwd(), 'migrations', file);
+    const sql = readFileSync(migrationPath, 'utf-8');
+    db.exec(sql);
+  }
   return { db, adapter: createSqliteAdapter(db) };
 }
 
@@ -374,6 +377,146 @@ test('API-04 / S09: Control de acceso y operaciones de Equipo (S05)', async () =
     { nowSeconds: now }
   );
   assert.strictEqual(deleteBlockRes.status, 200);
+
+  db.close();
+});
+
+test('API-ATTENDANCE: Endpoint POST /api/team/bookings/:id/attendance y autorización de roles', async () => {
+  const { db, adapter } = createTestDatabase();
+  const now = chileLocalToUtcSeconds(2026, 11, 5, 12, 0);
+
+  // 1. Iniciar sesión como Paciente
+  const patLoginRes = await handleApiRequest(
+    new Request('http://localhost/api/mock-login', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ email: 'paciente.att@gmail.com', name: 'Paciente Asistencia', role: 'patient' })
+    }),
+    adapter,
+    { nowSeconds: now, isDev: true }
+  );
+  const patCookie = patLoginRes.headers.get('Set-Cookie')!;
+  const patSession = await patLoginRes.json() as any;
+
+  // 2. Iniciar sesión como Equipo
+  const teamLoginRes = await handleApiRequest(
+    new Request('http://localhost/api/mock-login', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ email: 'centrovida.sanaaustral@gmail.com', name: 'Admin', role: 'admin' })
+    }),
+    adapter,
+    { nowSeconds: now, isDev: true }
+  );
+  const teamCookie = teamLoginRes.headers.get('Set-Cookie')!;
+  const teamSession = await teamLoginRes.json() as any;
+
+  // 3. Paciente crea una reserva
+  const slotUtc = new Date(chileLocalToUtcSeconds(2026, 11, 6, 10, 0) * 1000).toISOString();
+  const bkgRes = await handleApiRequest(
+    new Request('http://localhost/api/bookings', {
+      method: 'POST',
+      headers: {
+        Cookie: patCookie,
+        'Content-Type': 'application/json',
+        'X-CSRF-Token': patSession.csrfToken,
+        'Idempotency-Key': 'key_att_api_bkg_1'
+      },
+      body: JSON.stringify({
+        professionalId: 'felipe',
+        startAt: slotUtc,
+        patient: {
+          name: 'Paciente Test',
+          email: 'paciente.att@gmail.com',
+          rut: '12.345.678-5',
+          documentType: 'rut',
+          phone: '+56911223344'
+        },
+        consentVersion: 'v1.0'
+      })
+    }),
+    adapter,
+    { nowSeconds: now }
+  );
+  assert.strictEqual(bkgRes.status, 201);
+  const bkgData = await bkgRes.json() as any;
+  const bookingId = bkgData.result.resourceId;
+
+  // 4. Intento sin autenticación -> 401
+  const noAuthRes = await handleApiRequest(
+    new Request(`http://localhost/api/team/bookings/${bookingId}/attendance`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ attendanceStatus: 'attended' })
+    }),
+    adapter,
+    { nowSeconds: now }
+  );
+  assert.strictEqual(noAuthRes.status, 401);
+
+  // 5. Intento con cuenta de paciente común -> 403
+  const patAuthRes = await handleApiRequest(
+    new Request(`http://localhost/api/team/bookings/${bookingId}/attendance`, {
+      method: 'POST',
+      headers: {
+        Cookie: patCookie,
+        'Content-Type': 'application/json',
+        'X-CSRF-Token': patSession.csrfToken
+      },
+      body: JSON.stringify({ attendanceStatus: 'attended' })
+    }),
+    adapter,
+    { nowSeconds: now }
+  );
+  assert.strictEqual(patAuthRes.status, 403);
+
+  // 6. Intento con equipo pero sin CSRF -> 403
+  const noCsrfRes = await handleApiRequest(
+    new Request(`http://localhost/api/team/bookings/${bookingId}/attendance`, {
+      method: 'POST',
+      headers: {
+        Cookie: teamCookie,
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({ attendanceStatus: 'attended' })
+    }),
+    adapter,
+    { nowSeconds: now }
+  );
+  assert.strictEqual(noCsrfRes.status, 403);
+
+  // 7. Intento válido con equipo y CSRF -> cambiar a 'no_show'
+  const validRes = await handleApiRequest(
+    new Request(`http://localhost/api/team/bookings/${bookingId}/attendance`, {
+      method: 'POST',
+      headers: {
+        Cookie: teamCookie,
+        'Content-Type': 'application/json',
+        'X-CSRF-Token': teamSession.csrfToken
+      },
+      body: JSON.stringify({ attendanceStatus: 'no_show' })
+    }),
+    adapter,
+    { nowSeconds: now + 3600 }
+  );
+  assert.strictEqual(validRes.status, 200);
+  const validData = await validRes.json() as any;
+  assert.strictEqual(validData.ok, true);
+  assert.strictEqual(validData.bookingId, bookingId);
+  assert.strictEqual(validData.attendanceStatus, 'no_show');
+
+  // 8. Verificar que getTeamSchedule ahora reporte 'no_show'
+  const scheduleRes = await handleApiRequest(
+    new Request('http://localhost/api/team/schedule?professionalId=felipe&from=2026-11-06&to=2026-11-07', {
+      headers: { Cookie: teamCookie }
+    }),
+    adapter,
+    { nowSeconds: now }
+  );
+  assert.strictEqual(scheduleRes.status, 200);
+  const scheduleData = await scheduleRes.json() as any;
+  const entry = scheduleData.entries.find((e: any) => e.id === bookingId);
+  assert.strictEqual(entry?.attendanceStatus, 'no_show');
 
   db.close();
 });

@@ -225,9 +225,10 @@ import { professionals } from '../data/professionals';
           </button>
         </div>
 
-        <!-- Barra de Controles de Fecha (D04: Hoy y dentro del mes) -->
-        <div class="bg-white rounded-2xl p-4 sm:p-5 shadow-sm border border-slate-200 flex flex-wrap items-center justify-between gap-4">
-          <div class="flex items-center gap-1.5 sm:gap-2">
+        <!-- Barra de Controles de Fecha e Historial Clínico -->
+        <div class="bg-white rounded-2xl p-4 sm:p-5 shadow-sm border border-slate-200 flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+          <!-- Navegación rápida (Día anterior, Hoy, Día siguiente) -->
+          <div class="flex items-center gap-2">
             <button
               type="button"
               id="btn-prev-day"
@@ -240,12 +241,15 @@ import { professionals } from '../data/professionals';
               </svg>
             </button>
 
-            <input
-              type="date"
-              id="input-date-picker"
-              aria-label="Seleccionar fecha de agenda"
-              class="px-3.5 py-2 rounded-xl border border-slate-300 text-xs sm:text-sm text-slate-800 font-semibold focus:ring-2 focus:ring-slate-900 focus:border-slate-900 bg-white shadow-xs transition-colors cursor-pointer"
-            />
+            <button
+              type="button"
+              id="btn-today"
+              class="px-3 py-2 rounded-xl border border-slate-200 hover:bg-slate-50 text-xs font-semibold text-slate-700 transition-all shadow-xs active:scale-95 flex items-center gap-1.5 cursor-pointer"
+              title="Ir a la fecha de hoy"
+            >
+              <span class="w-2 h-2 rounded-full bg-emerald-500"></span>
+              <span>Hoy</span>
+            </button>
 
             <button
               type="button"
@@ -260,19 +264,87 @@ import { professionals } from '../data/professionals';
             </button>
           </div>
 
-          <div class="text-right">
-            <p id="schedule-active-date-label" class="text-sm font-serif text-slate-900 font-bold capitalize">
-              Cargando fecha...
-            </p>
-            <p class="text-[11px] text-slate-500 font-medium">11 turnos disponibles de 60 minutos</p>
+          <!-- Selector Interactivo de Fecha / Calendario (Lado Derecho) -->
+          <div class="relative self-stretch sm:self-auto">
+            <button
+              type="button"
+              id="date-picker-trigger"
+              class="w-full sm:w-auto flex items-center justify-between sm:justify-end gap-3 px-3.5 py-2.5 rounded-xl border border-slate-200 hover:border-slate-400 bg-white hover:bg-slate-50/80 active:bg-slate-100 transition-all shadow-2xs select-none cursor-pointer focus:outline-none focus:ring-2 focus:ring-slate-900 focus:ring-offset-2 group text-left"
+              title="Hacer clic para abrir el calendario y cambiar de día, mes o año"
+              aria-label="Abrir calendario para seleccionar día, mes o año"
+              aria-haspopup="dialog"
+            >
+              <div class="w-9 h-9 rounded-lg bg-emerald-50 text-emerald-800 border border-emerald-200 flex items-center justify-center shrink-0 group-hover:scale-105 transition-transform">
+                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"/>
+                </svg>
+              </div>
+
+              <div class="text-right">
+                <div class="flex items-center justify-end gap-1.5">
+                  <p id="schedule-active-date-label" class="text-sm sm:text-base font-serif text-slate-900 font-bold capitalize leading-snug">
+                    Cargando fecha...
+                  </p>
+                  <svg class="w-3.5 h-3.5 text-slate-400 group-hover:text-slate-800 transition-colors shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/>
+                  </svg>
+                </div>
+                <p id="schedule-active-date-sublabel" class="text-[11px] text-slate-500 font-medium">
+                  Clic para abrir calendario (mes / año)
+                </p>
+              </div>
+            </button>
+
+            <!-- Input nativo tipo date anclado al contenedor para disparar el selector nativo -->
+            <input
+              type="date"
+              id="input-date-picker"
+              tabindex="-1"
+              aria-hidden="true"
+              class="absolute inset-0 w-full h-full opacity-0 pointer-events-none -z-10"
+            />
+          </div>
+        </div>
+
+        <!-- Barra de Búsqueda de Pacientes e Historial Clínico -->
+        <div class="bg-white rounded-2xl p-3 sm:p-4 shadow-sm border border-slate-200">
+          <div class="relative flex items-center">
+            <div class="absolute inset-y-0 left-0 pl-3.5 flex items-center pointer-events-none text-slate-400">
+              <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/>
+              </svg>
+            </div>
+            <input
+              type="search"
+              id="input-patient-search"
+              placeholder="Buscar paciente por nombre, RUT (ej. 12345678-5) o correo electrónico..."
+              autocomplete="off"
+              class="w-full pl-10 pr-24 py-2.5 rounded-xl border border-slate-200 hover:border-slate-300 focus:border-slate-900 focus:ring-2 focus:ring-slate-900/10 text-xs sm:text-sm text-slate-900 placeholder:text-slate-400 bg-slate-50/50 focus:bg-white transition-all outline-none"
+            />
+            <div class="absolute inset-y-0 right-0 pr-2 flex items-center gap-1.5">
+              <button
+                type="button"
+                id="btn-clear-search"
+                class="hidden px-2.5 py-1 rounded-lg text-xs font-semibold text-slate-500 hover:text-slate-800 hover:bg-slate-100 transition-colors cursor-pointer"
+                title="Limpiar búsqueda y volver a la jornada del día"
+              >
+                Limpiar ✕
+              </button>
+              <span id="search-spinner" class="hidden pr-2 text-slate-400">
+                <svg class="animate-spin w-4 h-4" fill="none" viewBox="0 0 24 24">
+                  <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+                  <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                </svg>
+              </span>
+            </div>
           </div>
         </div>
 
         <!-- Tabla / Timeline de Horarios del Día -->
         <section class="bg-white rounded-2xl shadow-sm border border-slate-200 overflow-hidden">
-          <div class="px-6 py-4 border-b border-slate-100 flex items-center justify-between">
-            <h2 class="text-base font-serif text-slate-900 font-medium">Jornada de Atención</h2>
-            <div class="flex items-center gap-3 text-xs">
+          <div class="px-4 sm:px-6 py-3.5 sm:py-4 border-b border-slate-100 flex flex-col sm:flex-row sm:items-center justify-between gap-2.5">
+            <h2 id="schedule-section-title" class="text-base font-serif text-slate-900 font-medium">Jornada de Atención</h2>
+            <div class="flex items-center gap-3 text-xs flex-wrap">
               <span class="flex items-center gap-1.5 text-slate-600">
                 <span class="w-2.5 h-2.5 rounded-full bg-emerald-500"></span> Disponible
               </span>
@@ -283,6 +355,45 @@ import { professionals } from '../data/professionals';
                 <span class="w-2.5 h-2.5 rounded-full bg-amber-500"></span> Bloqueo
               </span>
             </div>
+          </div>
+
+          <!-- Banner Informativo de Métricas de Búsqueda -->
+          <div id="search-metrics-banner" class="hidden px-4 sm:px-6 py-3 bg-emerald-50/90 border-b border-emerald-200 text-xs text-emerald-950 flex flex-wrap items-center justify-between gap-2.5 animate-fade-in">
+            <div class="flex items-center gap-2 flex-wrap">
+              <span class="font-bold text-emerald-900 flex items-center gap-1">
+                <span>📋</span>
+                <span>Contexto de Atenciones:</span>
+              </span>
+              <span id="search-metric-total" class="px-2.5 py-0.5 rounded-full bg-white font-semibold text-slate-800 border border-emerald-200 shadow-2xs">Total: 0 citas</span>
+              <span id="search-metric-attended" class="px-2.5 py-0.5 rounded-full bg-emerald-100 font-semibold text-emerald-900 border border-emerald-300 shadow-2xs">✓ Asistidas: 0</span>
+              <span id="search-metric-noshow" class="px-2.5 py-0.5 rounded-full bg-rose-100 font-semibold text-rose-900 border border-rose-300 shadow-2xs">✕ Inasistencias: 0</span>
+              <span id="search-metric-upcoming" class="px-2.5 py-0.5 rounded-full bg-blue-100 font-semibold text-blue-900 border border-blue-300 shadow-2xs">🗓️ Próximas: 0</span>
+            </div>
+            <button
+              type="button"
+              id="btn-banner-clear-search"
+              class="inline-flex items-center gap-1 text-xs font-bold text-emerald-950 bg-white hover:bg-emerald-100 border border-emerald-300 px-3 py-1 rounded-lg transition-colors cursor-pointer shadow-2xs"
+            >
+              <span>✕ Volver a la jornada del día</span>
+            </button>
+          </div>
+
+          <!-- Banner Informativo de Modo Historial (cuando se consulta fecha anterior) -->
+          <div id="historical-banner" class="hidden px-6 py-3 bg-amber-50/90 border-b border-amber-200/80 text-xs text-amber-900 flex flex-wrap items-center justify-between gap-2 animate-fade-in">
+            <div class="flex items-center gap-2">
+              <span class="text-base">📜</span>
+              <span class="font-medium">Estás revisando el <strong>historial retroactivo de pacientes</strong> de una fecha anterior.</span>
+            </div>
+            <button
+              type="button"
+              id="btn-banner-today"
+              class="inline-flex items-center gap-1 text-xs font-bold text-amber-950 bg-amber-100 hover:bg-amber-200 border border-amber-300 px-2.5 py-1 rounded-lg transition-colors cursor-pointer"
+            >
+              <span>Volver a Hoy</span>
+              <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"/>
+              </svg>
+            </button>
           </div>
 
           <!-- Loading State -->
@@ -341,6 +452,26 @@ import { professionals } from '../data/professionals';
                 <input type="tel" id="team-input-phone" required placeholder="+56 9 1234 5678" class="w-full px-3 py-2 rounded-xl border border-slate-300 text-xs" />
               </div>
             </div>
+
+            <!-- Checkbox Enviar Comprobante al Paciente -->
+            <div class="p-3 bg-emerald-50/70 rounded-xl border border-emerald-200/80">
+              <label class="flex items-start gap-2.5 cursor-pointer select-none">
+                <input
+                  type="checkbox"
+                  id="team-input-notify-patient"
+                  checked
+                  class="w-4 h-4 mt-0.5 rounded text-emerald-800 border-slate-300 focus:ring-emerald-700 cursor-pointer"
+                />
+                <div>
+                  <span class="block text-xs font-semibold text-slate-800">
+                    Enviar comprobante por correo al paciente
+                  </span>
+                  <span class="block text-[11px] text-slate-500 mt-0.5 leading-snug">
+                    Despacha el correo oficial con fecha, hora destacada, profesional y enlace a Google Calendar.
+                  </span>
+                </div>
+              </label>
+            </div>
             <p id="modal-book-error" class="hidden text-xs text-red-600 font-medium"></p>
             <div class="flex justify-end gap-2 pt-2 border-t border-slate-100">
               <button type="button" class="btn-close-modal px-4 py-2 rounded-xl border border-slate-200 text-xs font-medium text-slate-600 hover:bg-slate-50">Cancelar</button>
@@ -376,6 +507,103 @@ import { professionals } from '../data/professionals';
         </div>
       </div>
 
+      <!-- MODAL 3: FICHA CLÍNICA Y NOTAS DE EVOLUCIÓN (S05 / PATIENT NOTES) -->
+      <div id="modal-patient-notes" class="hidden fixed inset-0 z-50 flex items-center justify-center p-3 sm:p-4 bg-slate-900/60 backdrop-blur-xs">
+        <div class="bg-white rounded-2xl max-w-2xl w-full p-5 sm:p-7 shadow-2xl border border-slate-200 animate-fade-in flex flex-col max-h-[90vh]">
+          <!-- Encabezado de la Ficha -->
+          <div class="flex items-start justify-between gap-4 border-b border-slate-200 pb-4 shrink-0">
+            <div class="min-w-0 flex-1">
+              <div class="flex items-center gap-2 mb-1">
+                <span class="inline-flex items-center px-2 py-0.5 rounded text-[10px] font-bold uppercase tracking-wider bg-slate-900 text-white">
+                  Ficha de Paciente
+                </span>
+                <span id="notes-modal-pro-tag" class="text-xs text-slate-500 font-medium"></span>
+              </div>
+              <h3 id="notes-modal-patient-name" class="font-serif text-xl sm:text-2xl text-slate-900 font-bold truncate">
+                Cargando paciente...
+              </h3>
+              <!-- Chips de contacto y RUT -->
+              <div class="flex items-center gap-2 flex-wrap text-xs text-slate-600 mt-2">
+                <span id="notes-modal-rut-badge" class="font-mono bg-slate-100 text-slate-700 px-2 py-0.5 rounded font-semibold text-[11px] border border-slate-200"></span>
+                <span id="notes-modal-phone-wrap"></span>
+                <span id="notes-modal-email-wrap"></span>
+              </div>
+            </div>
+            <button
+              type="button"
+              id="btn-close-notes-modal"
+              class="text-slate-400 hover:text-slate-700 text-xl font-bold p-1 rounded-lg hover:bg-slate-100 transition-colors cursor-pointer shrink-0"
+              aria-label="Cerrar ficha"
+            >
+              ✕
+            </button>
+          </div>
+
+          <!-- Contenido scrolleable -->
+          <div class="overflow-y-auto flex-1 py-4 pr-1 space-y-6">
+            <!-- 1. Formulario Superior: Redacción de Nueva Nota de Hoy -->
+            <div class="bg-slate-50/80 rounded-xl p-4 border border-slate-200/90 shadow-2xs">
+              <div class="flex items-center justify-between mb-2">
+                <label for="input-new-note" class="text-xs font-bold text-slate-800 flex items-center gap-1.5">
+                  <span>✍️</span>
+                  <span>Nota de atención de hoy</span>
+                </label>
+                <span id="new-note-pro-label" class="text-[11px] font-semibold text-slate-500"></span>
+              </div>
+              <textarea
+                id="input-new-note"
+                rows="3"
+                class="w-full text-xs text-slate-900 bg-white border border-slate-300 rounded-xl p-3 focus:ring-2 focus:ring-emerald-500/20 focus:border-emerald-600 outline-none transition-all placeholder:text-slate-400 resize-y"
+                placeholder="Escribe la evolución clínica, indicaciones o antecedentes para próximas sesiones..."
+              ></textarea>
+              <div class="flex items-center justify-between mt-2.5">
+                <p id="new-note-error" class="hidden text-xs text-red-600 font-medium"></p>
+                <div class="ml-auto">
+                  <button
+                    type="button"
+                    id="btn-save-new-note"
+                    class="inline-flex items-center gap-1.5 px-4 py-2 rounded-xl bg-slate-900 hover:bg-emerald-800 text-white text-xs font-semibold shadow-xs transition-all active:scale-95 cursor-pointer disabled:opacity-50"
+                  >
+                    <span>Guardar Nota</span>
+                  </button>
+                </div>
+              </div>
+            </div>
+
+            <!-- 2. Historial Inferior: Acordeón de Notas Anteriores Colapsables -->
+            <div>
+              <div class="flex items-center justify-between mb-3 border-b border-slate-200 pb-1.5">
+                <h4 class="text-xs font-bold uppercase tracking-wider text-slate-700 flex items-center gap-1.5">
+                  <span>📂</span>
+                  <span>Historial de Notas Previas</span>
+                  <span id="notes-count-badge" class="ml-1 text-[10px] font-bold px-2 py-0.5 rounded-full bg-slate-100 text-slate-700">0</span>
+                </h4>
+                <span class="text-[11px] text-slate-400">Clic en una fecha para expandir</span>
+              </div>
+
+              <!-- Spinner de carga -->
+              <div id="notes-loading-spinner" class="py-8 text-center text-slate-400 text-xs">
+                <svg class="w-5 h-5 mx-auto animate-spin mb-2 text-slate-500" fill="none" viewBox="0 0 24 24">
+                  <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+                  <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8v8H4z"></path>
+                </svg>
+                <span>Cargando historial del paciente...</span>
+              </div>
+
+              <!-- Estado Vacío -->
+              <div id="notes-empty-state" class="hidden py-8 text-center text-slate-400 text-xs">
+                <span class="text-2xl block mb-1">📝</span>
+                <p class="font-medium text-slate-600">Sin notas anteriores para este paciente</p>
+                <p class="text-[11px] text-slate-400 mt-0.5">Usa el campo superior para registrar la primera nota.</p>
+              </div>
+
+              <!-- Lista Acordeón de Notas -->
+              <div id="notes-accordion-list" class="space-y-2.5"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+
       <!-- Pie de página discreto y minimalista -->
       <footer class="mt-16 text-center text-xs text-slate-400 border-t border-slate-200/60 pt-6">
         <p class="font-medium text-slate-500">Centro Vida Sana Austral · Gestión de Agendas Clínicas</p>
@@ -403,6 +631,11 @@ import { professionals } from '../data/professionals';
   let activeDateString = new Date().toLocaleDateString('en-CA', { timeZone: 'America/Santiago' });
   let currentScheduleData: any = null;
 
+  // Estado de Búsqueda
+  let isSearchMode = false;
+  let currentSearchQuery = '';
+  let searchDebounceTimer: any = null;
+
   // Variables de modal
   let pendingSlotTime: string | null = null;
   let pendingCancelBookingId: string | null = null;
@@ -429,9 +662,26 @@ import { professionals } from '../data/professionals';
   const tabEduardo = document.getElementById('tab-eduardo')!;
 
   const btnPrevDay = document.getElementById('btn-prev-day')!;
+  const btnToday = document.getElementById('btn-today');
   const btnNextDay = document.getElementById('btn-next-day')!;
   const inputDatePicker = document.getElementById('input-date-picker') as HTMLInputElement;
+  const datePickerTrigger = document.getElementById('date-picker-trigger');
   const scheduleActiveDateLabel = document.getElementById('schedule-active-date-label')!;
+  const scheduleActiveDateSublabel = document.getElementById('schedule-active-date-sublabel');
+  const historicalBanner = document.getElementById('historical-banner');
+  const btnBannerToday = document.getElementById('btn-banner-today');
+
+  // DOM Búsqueda
+  const inputPatientSearch = document.getElementById('input-patient-search') as HTMLInputElement | null;
+  const btnClearSearch = document.getElementById('btn-clear-search');
+  const searchSpinner = document.getElementById('search-spinner');
+  const scheduleSectionTitle = document.getElementById('schedule-section-title');
+  const searchMetricsBanner = document.getElementById('search-metrics-banner');
+  const searchMetricTotal = document.getElementById('search-metric-total');
+  const searchMetricAttended = document.getElementById('search-metric-attended');
+  const searchMetricNoshow = document.getElementById('search-metric-noshow');
+  const searchMetricUpcoming = document.getElementById('search-metric-upcoming');
+  const btnBannerClearSearch = document.getElementById('btn-banner-clear-search');
 
   const scheduleLoading = document.getElementById('schedule-loading')!;
   const scheduleSlotsContainer = document.getElementById('schedule-slots-container')!;
@@ -445,6 +695,7 @@ import { professionals } from '../data/professionals';
   const teamInputRut = document.getElementById('team-input-rut') as HTMLInputElement;
   const teamInputEmail = document.getElementById('team-input-email') as HTMLInputElement;
   const teamInputPhone = document.getElementById('team-input-phone') as HTMLInputElement;
+  const teamInputNotifyPatient = document.getElementById('team-input-notify-patient') as HTMLInputElement;
   const modalBookError = document.getElementById('modal-book-error')!;
 
   const modalCancelBooking = document.getElementById('modal-cancel-booking')!;
@@ -453,6 +704,27 @@ import { professionals } from '../data/professionals';
   const cancelModalVersion = document.getElementById('cancel-modal-version')!;
   const cancelModalError = document.getElementById('cancel-modal-error')!;
   const btnConfirmCancelAction = document.getElementById('btn-confirm-cancel-action')!;
+
+  // DOM Modal 3: Ficha y Notas de Paciente
+  const modalPatientNotes = document.getElementById('modal-patient-notes')!;
+  const btnCloseNotesModal = document.getElementById('btn-close-notes-modal')!;
+  const notesModalProTag = document.getElementById('notes-modal-pro-tag')!;
+  const notesModalPatientName = document.getElementById('notes-modal-patient-name')!;
+  const notesModalRutBadge = document.getElementById('notes-modal-rut-badge')!;
+  const notesModalPhoneWrap = document.getElementById('notes-modal-phone-wrap')!;
+  const notesModalEmailWrap = document.getElementById('notes-modal-email-wrap')!;
+  const newNoteProLabel = document.getElementById('new-note-pro-label')!;
+  const inputNewNote = document.getElementById('input-new-note') as HTMLTextAreaElement;
+  const btnSaveNewNote = document.getElementById('btn-save-new-note') as HTMLButtonElement;
+  const newNoteError = document.getElementById('new-note-error')!;
+  const notesCountBadge = document.getElementById('notes-count-badge')!;
+  const notesLoadingSpinner = document.getElementById('notes-loading-spinner')!;
+  const notesEmptyState = document.getElementById('notes-empty-state')!;
+  const notesAccordionList = document.getElementById('notes-accordion-list')!;
+
+  let currentNotesBookingId: string | null = null;
+  let currentNotesPatientKey: string | null = null;
+  let currentNotesList: any[] = [];
 
   // 1. INICIALIZAR SESIÓN DE EQUIPO
   async function initTeamSession() {
@@ -491,8 +763,27 @@ import { professionals } from '../data/professionals';
   }
 
   // 2. CAMBIO DE PESTAÑAS (Felipe / Eduardo)
+  function clearSearchState() {
+    isSearchMode = false;
+    currentSearchQuery = '';
+    if (inputPatientSearch) inputPatientSearch.value = '';
+    if (btnClearSearch) btnClearSearch.classList.add('hidden');
+    if (searchSpinner) searchSpinner.classList.add('hidden');
+    if (searchMetricsBanner) searchMetricsBanner.classList.add('hidden');
+    if (scheduleSectionTitle) scheduleSectionTitle.textContent = 'Jornada de Atención';
+  }
+
+  function refreshCurrentView() {
+    if (isSearchMode && currentSearchQuery) {
+      performSearch(currentSearchQuery);
+    } else {
+      loadSchedule();
+    }
+  }
+
   tabFelipe.addEventListener('click', () => {
     if (activeProfessional === 'felipe') return;
+    clearSearchState();
     activeProfessional = 'felipe';
     tabFelipe.className = 'flex-1 flex items-center justify-center gap-3 py-3 px-4 rounded-xl text-sm font-semibold transition-all select-none border-2 border-slate-900 bg-slate-900 text-white shadow-sm';
     tabEduardo.className = 'flex-1 flex items-center justify-center gap-3 py-3 px-4 rounded-xl text-sm font-semibold transition-all select-none border-2 border-transparent text-slate-700 hover:bg-slate-100';
@@ -501,14 +792,20 @@ import { professionals } from '../data/professionals';
 
   tabEduardo.addEventListener('click', () => {
     if (activeProfessional === 'eduardo') return;
+    clearSearchState();
     activeProfessional = 'eduardo';
     tabEduardo.className = 'flex-1 flex items-center justify-center gap-3 py-3 px-4 rounded-xl text-sm font-semibold transition-all select-none border-2 border-slate-900 bg-slate-900 text-white shadow-sm';
     tabFelipe.className = 'flex-1 flex items-center justify-center gap-3 py-3 px-4 rounded-xl text-sm font-semibold transition-all select-none border-2 border-transparent text-slate-700 hover:bg-slate-100';
     loadSchedule();
   });
 
-  // 3. CONTROLES DE FECHA
+  // 3. CONTROLES DE FECHA E HISTORIAL RETROACTIVO
+  function getTodayChile(): string {
+    return new Date().toLocaleDateString('en-CA', { timeZone: 'America/Santiago' });
+  }
+
   function setDate(dateStr: string) {
+    clearSearchState();
     activeDateString = dateStr;
     inputDatePicker.value = dateStr;
     const d = new Date(dateStr + 'T12:00:00Z');
@@ -518,6 +815,16 @@ import { professionals } from '../data/professionals';
       month: 'long',
       year: 'numeric'
     });
+
+    const todayChile = getTodayChile();
+    if (btnToday) {
+      if (dateStr === todayChile) {
+        btnToday.className = 'px-3 py-2 rounded-xl border border-emerald-300 bg-emerald-50 text-xs font-bold text-emerald-800 transition-all shadow-xs flex items-center gap-1.5 cursor-default select-none';
+      } else {
+        btnToday.className = 'px-3 py-2 rounded-xl border border-slate-200 hover:bg-slate-100 active:scale-95 text-xs font-semibold text-slate-700 transition-all shadow-xs flex items-center gap-1.5 cursor-pointer';
+      }
+    }
+
     loadSchedule();
   }
 
@@ -526,6 +833,18 @@ import { professionals } from '../data/professionals';
     const prev = new Date(cur.getTime() - 24 * 3600 * 1000);
     setDate(prev.toLocaleDateString('en-CA', { timeZone: 'America/Santiago' }));
   });
+
+  if (btnToday) {
+    btnToday.addEventListener('click', () => {
+      setDate(getTodayChile());
+    });
+  }
+
+  if (btnBannerToday) {
+    btnBannerToday.addEventListener('click', () => {
+      setDate(getTodayChile());
+    });
+  }
 
   btnNextDay.addEventListener('click', () => {
     const cur = new Date(activeDateString + 'T12:00:00Z');
@@ -538,6 +857,30 @@ import { professionals } from '../data/professionals';
       setDate(inputDatePicker.value);
     }
   });
+
+  // Activa el selector nativo de calendario al interactuar con el botón
+  function triggerCalendarPicker() {
+    if (!inputDatePicker) return;
+    try {
+      if ('showPicker' in HTMLInputElement.prototype) {
+        inputDatePicker.showPicker();
+      } else {
+        inputDatePicker.focus();
+      }
+    } catch (_) {
+      inputDatePicker.focus();
+    }
+  }
+
+  if (datePickerTrigger) {
+    datePickerTrigger.addEventListener('click', triggerCalendarPicker);
+  }
+
+  // Soporte de respaldo: si el navegador no tiene showPicker, permite interacción directa con el input
+  if (inputDatePicker && !('showPicker' in HTMLInputElement.prototype)) {
+    inputDatePicker.classList.remove('pointer-events-none', '-z-10', 'opacity-0');
+    inputDatePicker.classList.add('z-10');
+  }
 
   // 4. CARGAR AGENDA DEL DÍA (GET /api/team/schedule)
   /**
@@ -607,19 +950,83 @@ import { professionals } from '../data/professionals';
   function renderScheduleRows(schedule: any) {
     scheduleSlotsContainer.innerHTML = '';
 
+    const todayChile = getTodayChile();
+    const isPastDate = activeDateString < todayChile;
+    const isToday = activeDateString === todayChile;
+
     // Horarios oficiales de L-V: 09:00 a 21:00 (Sábados 09:00 a 14:00)
     const hours = [9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20];
     const d = new Date(activeDateString + 'T12:00:00Z');
     const isSaturday = d.getUTCDay() === 6;
     const isSunday = d.getUTCDay() === 0;
 
+    // Control del banner contextual de fecha pasada
+    if (historicalBanner) {
+      if (isPastDate && !isSunday) {
+        historicalBanner.classList.remove('hidden');
+      } else {
+        historicalBanner.classList.add('hidden');
+      }
+    }
+
     if (isSunday) {
+      if (scheduleActiveDateSublabel) {
+        scheduleActiveDateSublabel.textContent = 'Domingo · Centro cerrado (D01)';
+      }
       scheduleSlotsContainer.innerHTML = `
         <div class="p-8 text-center bg-slate-50 text-slate-500 text-xs italic">
           El centro médico permanece cerrado los días domingo según política oficial D01.
         </div>
       `;
       return;
+    }
+
+    // Calcular estadísticas del día para el sublabel
+    let totalSlots = 0;
+    let appointmentCount = 0;
+    let blockCount = 0;
+
+    hours.forEach((h) => {
+      if (isSaturday && h >= 14) return;
+      if (h === 13) return;
+      totalSlots++;
+
+      const entry = schedule.entries?.find((e: any) => {
+        const entryDate = new Date(e.startAt);
+        const entryDateStr = entryDate.toLocaleDateString('en-CA', { timeZone: 'America/Santiago' });
+        const entryHour = entryDate.toLocaleTimeString('es-CL', {
+          timeZone: 'America/Santiago',
+          hour: 'numeric',
+          hour12: false
+        });
+        return entryDateStr === activeDateString && parseInt(entryHour, 10) === h && e.status === 'confirmed';
+      });
+
+      if (entry) {
+        if (entry.kind === 'appointment') {
+          appointmentCount++;
+        } else {
+          blockCount++;
+        }
+      }
+    });
+
+    if (scheduleActiveDateSublabel) {
+      if (isPastDate) {
+        scheduleActiveDateSublabel.innerHTML = `
+          <span class="text-amber-800 font-medium">📜 Historial: ${appointmentCount} ${appointmentCount === 1 ? 'paciente registrado' : 'pacientes registrados'}</span> · <span class="text-slate-400">Clic para cambiar</span>
+        `;
+      } else if (isToday) {
+        const availableCount = totalSlots - appointmentCount - blockCount;
+        scheduleActiveDateSublabel.innerHTML = `
+          <span class="text-emerald-700 font-semibold">🟢 Hoy:</span> ${availableCount} disponibles · ${appointmentCount} citas · <span class="text-slate-400">Clic para cambiar</span>
+        `;
+      } else {
+        const availableCount = totalSlots - appointmentCount - blockCount;
+        scheduleActiveDateSublabel.innerHTML = `
+          <span class="text-blue-700 font-medium">🗓️ ${availableCount} disponibles · ${appointmentCount} agendadas</span> · <span class="text-slate-400">Clic para cambiar</span>
+        `;
+      }
     }
 
     hours.forEach((h) => {
@@ -641,17 +1048,17 @@ import { professionals } from '../data/professionals';
       });
 
       const row = document.createElement('div');
-      row.className = 'p-4 sm:p-5 flex flex-col sm:flex-row sm:items-center justify-between gap-3 hover:bg-slate-50/60 transition-colors';
+      row.className = 'p-4 sm:p-5 flex flex-col sm:flex-row sm:items-center justify-between gap-3.5 sm:gap-3 hover:bg-slate-50/60 transition-colors';
 
       const timeLabel = `${String(h).padStart(2, '0')}:00 - ${String(h + 1).padStart(2, '0')}:00 hrs`;
 
       if (isLunch) {
         // Pausa de colación oficial D01
         row.innerHTML = `
-          <div class="flex items-center gap-3">
-            <span class="font-mono text-xs font-bold text-slate-400 w-32">${timeLabel}</span>
-            <span class="px-2.5 py-1 rounded-md text-[11px] font-medium bg-slate-100 text-slate-500">
-              ☕ Pausa de Colación / Almuerzo
+          <div class="flex items-center justify-between gap-2 w-full sm:w-auto">
+            <span class="font-mono text-xs font-bold text-slate-400 sm:w-32 shrink-0">${timeLabel}</span>
+            <span class="px-2.5 py-0.5 rounded-full text-[11px] font-medium bg-slate-100 text-slate-500 border border-slate-200 shrink-0">
+              ☕ Colación / Almuerzo
             </span>
           </div>
           <span class="text-[11px] text-slate-400 italic">No disponible para agendamiento</span>
@@ -666,122 +1073,216 @@ import { professionals } from '../data/professionals';
           const greeting = firstName ? `Hola ${firstName}, ` : 'Hola, ';
           const waMessage = `${greeting}te escribimos de Centro Vida Sana Austral respecto a tu hora de atención agendada.`;
           const waUrl = buildWhatsAppLink(patientPhone, waMessage);
+
+          const googleReviewsUrl = 'https://search.google.com/local/writereview?placeid=ChIJM0LHMS_VFJYRdPlffqEIVW8';
+          const waReviewMessage = `${greeting}esperamos que te encuentres muy bien tras tu atención en Centro Vida Sana Austral 🌿\n\nTu opinión es muy importante para nosotros y nos ayuda a que más personas encuentren atención de salud integral en Temuco. ¿Nos regalarías 1 minuto para dejarnos tu calificación y comentario en Google? ⭐⭐⭐⭐⭐\n\nPuedes hacerlo directamente aquí: ${googleReviewsUrl}\n\n¡Muchas gracias por tu confianza!`;
+          const waReviewUrl = buildWhatsAppLink(patientPhone, waReviewMessage);
+
           const rawVersion = (entry.version || 'v1').replace(/"/g, '');
 
+          const isAttended = (entry.attendanceStatus || 'attended') !== 'no_show';
+
           row.innerHTML = `
-            <div class="flex items-start sm:items-center gap-3 flex-1 min-w-0">
-              <span class="font-mono text-xs font-bold text-slate-900 w-32 shrink-0">${timeLabel}</span>
-              <span class="px-2 py-0.5 rounded text-[11px] font-semibold bg-blue-50 text-blue-800 border border-blue-200 shrink-0">
-                Cita Agendada
-              </span>
-              <div class="min-w-0">
-                <p class="text-xs font-semibold text-slate-900 truncate">${escapeHtml(patientName)}</p>
-                <p class="text-[11px] text-slate-500 truncate flex items-center gap-1.5 flex-wrap">
-                  ${waUrl ? `
+            <!-- Información Principal de la Cita -->
+            <div class="flex flex-col sm:flex-row sm:items-center gap-2 sm:gap-4 flex-1 min-w-0 w-full sm:w-auto">
+              <!-- Franja de Hora y Estado (En móvil: extremos opuestos; En escritorio: en línea) -->
+              <div class="flex items-center justify-between sm:justify-start gap-2.5 shrink-0">
+                <span class="font-mono text-xs sm:text-sm font-bold text-slate-900 sm:w-32 shrink-0">${timeLabel}</span>
+                <button
+                  type="button"
+                  class="btn-toggle-attendance inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-bold transition-all duration-150 active:scale-95 cursor-pointer select-none shadow-2xs shrink-0 ${isAttended ? 'bg-emerald-100 hover:bg-emerald-200 text-emerald-900 border border-emerald-300' : 'bg-rose-100 hover:bg-rose-200 text-rose-900 border border-rose-300'}"
+                  data-id="${entry.id}"
+                  data-next-status="${isAttended ? 'no_show' : 'attended'}"
+                  title="${isAttended ? 'El paciente asistió. Clic para marcar Inasistencia.' : 'Inasistencia registrada. Clic para marcar que Asistió.'}"
+                >
+                  <span class="w-2 h-2 rounded-full ${isAttended ? 'bg-emerald-600' : 'bg-rose-600'}"></span>
+                  <span>${isAttended ? 'Asistió' : 'Inasistencia'}</span>
+                </button>
+              </div>
+
+              <!-- Datos de Contacto del Paciente -->
+              <div class="min-w-0 flex-1">
+                <button
+                  type="button"
+                  class="btn-open-patient-notes group text-left cursor-pointer transition-colors max-w-full"
+                  data-booking-id="${entry.id}"
+                  title="Ver ficha clínica y notas de evolución de ${escapeHtml(patientName)}"
+                >
+                  <p class="text-sm font-semibold text-slate-900 group-hover:text-emerald-800 flex items-center gap-1.5 truncate">
+                    <span>${escapeHtml(patientName)}</span>
+                    <span class="inline-flex items-center px-1.5 py-0.5 rounded text-[10px] font-medium bg-slate-100 group-hover:bg-emerald-50 group-hover:text-emerald-800 text-slate-600 border border-slate-200 group-hover:border-emerald-300 transition-colors shrink-0">
+                      📋 Ficha y Notas
+                    </span>
+                  </p>
+                </button>
+                <div class="text-[11px] text-slate-500 flex items-center gap-x-3 gap-y-1 flex-wrap mt-0.5">
+                  ${patientPhone ? `
                     <a
-                      href="${waUrl}"
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      class="text-emerald-700 hover:text-emerald-800 hover:underline inline-flex items-center gap-1 font-medium transition-colors"
-                      title="Abrir chat de WhatsApp con el paciente"
-                      aria-label="Abrir chat de WhatsApp con ${escapeHtml(patientName)}"
+                      href="tel:${patientPhone.replace(/\s+/g, '')}"
+                      class="text-slate-600 hover:text-emerald-700 inline-flex items-center gap-1 font-medium transition-colors"
+                      title="Llamar a ${escapeHtml(patientName)}"
                     >
-                      <svg class="w-3 h-3 fill-current shrink-0" viewBox="0 0 24 24" aria-hidden="true">
-                        <path d="M.057 24l1.687-6.163c-1.041-1.804-1.588-3.849-1.587-5.946.003-6.556 5.338-11.891 11.893-11.891 3.181.001 6.167 1.24 8.413 3.488 2.245 2.248 3.481 5.236 3.48 8.414-.003 6.557-5.338 11.892-11.893 11.892-1.99-.001-3.951-.5-5.688-1.448l-6.305 1.654zm6.597-3.807c1.676.995 3.276 1.591 5.392 1.592 5.448 0 9.886-4.434 9.889-9.885.002-5.462-4.415-9.89-9.881-9.892-5.452 0-9.887 4.434-9.889 9.884-.001 2.225.651 3.891 1.746 5.634l-.999 3.648 3.742-.981zm11.387-5.464c-.074-.124-.272-.198-.57-.347-.297-.149-1.758-.868-2.031-.967-.272-.099-.47-.149-.669.149-.198.297-.768.967-.941 1.165-.173.198-.347.223-.644.074-.297-.149-1.255-.462-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.297-.347.446-.521.151-.172.2-.296.3-.495.099-.198.05-.372-.025-.521-.075-.148-.669-1.611-.916-2.206-.242-.579-.487-.501-.669-.51l-.57-.01c-.198 0-.52.074-.792.372s-1.04 1.016-1.04 2.479 1.065 2.876 1.213 3.074c.149.198 2.095 3.2 5.076 4.487.709.306 1.263.489 1.694.626.712.226 1.36.194 1.872.118.571-.085 1.758-.719 2.006-1.413.248-.695.248-1.29.173-1.414z"/>
+                      <svg class="w-3 h-3 text-slate-400 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z"/>
                       </svg>
                       <span>${escapeHtml(patientPhone)}</span>
                     </a>
                   ` : `
-                    <span>${escapeHtml(patientPhone || 'Sin teléfono')}</span>
+                    <span class="text-slate-400 italic">Sin teléfono</span>
                   `}
-                  ${patientEmail ? `<span>·</span><span>${escapeHtml(patientEmail)}</span>` : ''}
-                </p>
+                  ${patientEmail ? `
+                    <span class="hidden xs:inline text-slate-300">·</span>
+                    <a
+                      href="mailto:${patientEmail}"
+                      class="text-slate-500 hover:text-slate-800 inline-flex items-center gap-1 transition-colors truncate max-w-full"
+                      title="Enviar correo a ${escapeHtml(patientName)}"
+                    >
+                      <svg class="w-3 h-3 text-slate-400 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/>
+                      </svg>
+                      <span class="truncate">${escapeHtml(patientEmail)}</span>
+                    </a>
+                  ` : ''}
+                </div>
               </div>
             </div>
-            <div class="flex items-center gap-2 shrink-0 flex-wrap sm:flex-nowrap">
-              ${waUrl ? `
-                <a
-                  href="${waUrl}"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  class="btn-wsp-contact inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-emerald-600 hover:bg-emerald-700 text-white text-xs font-semibold shadow-xs transition-all duration-150 active:scale-95 cursor-pointer select-none"
-                  title="Enviar WhatsApp a ${escapeHtml(patientName)}"
-                  aria-label="Contactar a ${escapeHtml(patientName)} por WhatsApp"
+
+            <!-- Botones de Acción (Contacto, Reseñas y Cancelación) -->
+            <div class="flex items-center gap-2 shrink-0 flex-wrap sm:flex-nowrap pt-2.5 sm:pt-0 border-t border-slate-100 sm:border-0 w-full sm:w-auto justify-between sm:justify-end">
+              <div class="flex items-center gap-1.5 flex-wrap">
+                <!-- Enlace de WhatsApp para coordinación -->
+                ${waUrl ? `
+                  <a
+                    href="${waUrl}"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    class="btn-wsp-contact inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white text-xs font-semibold shadow-xs transition-all duration-150 active:scale-95 cursor-pointer select-none"
+                    title="Abrir chat de WhatsApp con el paciente"
+                    aria-label="Contactar a ${escapeHtml(patientName)} por WhatsApp"
+                  >
+                    <svg class="w-3.5 h-3.5 fill-current shrink-0" viewBox="0 0 24 24" aria-hidden="true">
+                      <path d="M.057 24l1.687-6.163c-1.041-1.804-1.588-3.849-1.587-5.946.003-6.556 5.338-11.891 11.893-11.891 3.181.001 6.167 1.24 8.413 3.488 2.245 2.248 3.481 5.236 3.48 8.414-.003 6.557-5.338 11.892-11.893 11.892-1.99-.001-3.951-.5-5.688-1.448l-6.305 1.654zm6.597-3.807c1.676.995 3.276 1.591 5.392 1.592 5.448 0 9.886-4.434 9.889-9.885.002-5.462-4.415-9.89-9.881-9.892-5.452 0-9.887 4.434-9.889 9.884-.001 2.225.651 3.891 1.746 5.634l-.999 3.648 3.742-.981zm11.387-5.464c-.074-.124-.272-.198-.57-.347-.297-.149-1.758-.868-2.031-.967-.272-.099-.47-.149-.669.149-.198.297-.768.967-.941 1.165-.173.198-.347.223-.644.074-.297-.149-1.255-.462-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.297-.347.446-.521.151-.172.2-.296.3-.495.099-.198.05-.372-.025-.521-.075-.148-.669-1.611-.916-2.206-.242-.579-.487-.501-.669-.51l-.57-.01c-.198 0-.52.074-.792.372s-1.04 1.016-1.04 2.479 1.065 2.876 1.213 3.074c.149.198 2.095 3.2 5.076 4.487.709.306 1.263.489 1.694.626.712.226 1.36.194 1.872.118.571-.085 1.758-.719 2.006-1.413.248-.695.248-1.29.173-1.414z"/>
+                    </svg>
+                    <span>WhatsApp</span>
+                  </a>
+                ` : `
+                  <span
+                    class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-slate-100 text-slate-400 text-xs font-medium cursor-not-allowed select-none opacity-60"
+                    title="Paciente sin teléfono registrado"
+                  >
+                    <span>WhatsApp</span>
+                  </span>
+                `}
+
+                <!-- Botón / Grupo Unificado para Invitación a Reseñas en Google -->
+                ${(waReviewUrl || patientEmail) ? `
+                  <div class="inline-flex items-center rounded-xl border border-amber-200 bg-amber-50/70 p-0.5 text-xs shadow-2xs">
+                    <span class="pl-2 pr-1.5 py-1 text-[11px] font-semibold text-amber-900 flex items-center gap-1 select-none">
+                      <span class="text-amber-500 font-bold">⭐</span>
+                      <span class="hidden sm:inline">Pedir Reseña:</span>
+                      <span class="sm:hidden">Reseña:</span>
+                    </span>
+                    ${waReviewUrl ? `
+                      <a
+                        href="${waReviewUrl}"
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        class="btn-wsp-review px-2.5 py-1 rounded-lg hover:bg-amber-100 text-emerald-800 hover:text-emerald-950 font-semibold transition-colors flex items-center gap-1"
+                        title="Enviar invitación de reseña por WhatsApp"
+                      >
+                        <span>WSP</span>
+                      </a>
+                    ` : ''}
+                    ${(waReviewUrl && patientEmail) ? `<span class="text-amber-300 text-[10px]">|</span>` : ''}
+                    ${patientEmail ? `
+                      <button
+                        type="button"
+                        class="btn-send-review-email px-2.5 py-1 rounded-lg hover:bg-amber-100 text-amber-900 hover:text-amber-950 font-semibold transition-colors flex items-center gap-1 cursor-pointer"
+                        data-id="${entry.id}"
+                        data-email="${escapeHtml(patientEmail)}"
+                        data-name="${escapeHtml(patientName)}"
+                        title="Enviar invitación de reseña por Correo"
+                      >
+                        <span>Correo</span>
+                      </button>
+                    ` : ''}
+                  </div>
+                ` : ''}
+
+                <!-- Botón Cancelar Cita -->
+                <button
+                  type="button"
+                  class="btn-cancel-entry px-3 py-1.5 rounded-xl border border-red-200 text-red-700 hover:bg-red-50 text-xs font-medium transition-colors cursor-pointer"
+                  data-id="${entry.id}"
+                  data-patient="${escapeHtml(patientName)}"
+                  data-version="${rawVersion}"
                 >
-                  <svg class="w-3.5 h-3.5 fill-current shrink-0" viewBox="0 0 24 24" aria-hidden="true">
-                    <path d="M.057 24l1.687-6.163c-1.041-1.804-1.588-3.849-1.587-5.946.003-6.556 5.338-11.891 11.893-11.891 3.181.001 6.167 1.24 8.413 3.488 2.245 2.248 3.481 5.236 3.48 8.414-.003 6.557-5.338 11.892-11.893 11.892-1.99-.001-3.951-.5-5.688-1.448l-6.305 1.654zm6.597-3.807c1.676.995 3.276 1.591 5.392 1.592 5.448 0 9.886-4.434 9.889-9.885.002-5.462-4.415-9.89-9.881-9.892-5.452 0-9.887 4.434-9.889 9.884-.001 2.225.651 3.891 1.746 5.634l-.999 3.648 3.742-.981zm11.387-5.464c-.074-.124-.272-.198-.57-.347-.297-.149-1.758-.868-2.031-.967-.272-.099-.47-.149-.669.149-.198.297-.768.967-.941 1.165-.173.198-.347.223-.644.074-.297-.149-1.255-.462-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.297-.347.446-.521.151-.172.2-.296.3-.495.099-.198.05-.372-.025-.521-.075-.148-.669-1.611-.916-2.206-.242-.579-.487-.501-.669-.51l-.57-.01c-.198 0-.52.074-.792.372s-1.04 1.016-1.04 2.479 1.065 2.876 1.213 3.074c.149.198 2.095 3.2 5.076 4.487.709.306 1.263.489 1.694.626.712.226 1.36.194 1.872.118.571-.085 1.758-.719 2.006-1.413.248-.695.248-1.29.173-1.414z"/>
-                  </svg>
-                  <span>WhatsApp</span>
-                </a>
-              ` : `
-                <span
-                  class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-slate-100 text-slate-400 text-xs font-medium cursor-not-allowed select-none opacity-60"
-                  title="Paciente sin teléfono registrado"
-                >
-                  <svg class="w-3.5 h-3.5 fill-current shrink-0" viewBox="0 0 24 24" aria-hidden="true">
-                    <path d="M.057 24l1.687-6.163c-1.041-1.804-1.588-3.849-1.587-5.946.003-6.556 5.338-11.891 11.893-11.891 3.181.001 6.167 1.24 8.413 3.488 2.245 2.248 3.481 5.236 3.48 8.414-.003 6.557-5.338 11.892-11.893 11.892-1.99-.001-3.951-.5-5.688-1.448l-6.305 1.654zm6.597-3.807c1.676.995 3.276 1.591 5.392 1.592 5.448 0 9.886-4.434 9.889-9.885.002-5.462-4.415-9.89-9.881-9.892-5.452 0-9.887 4.434-9.889 9.884-.001 2.225.651 3.891 1.746 5.634l-.999 3.648 3.742-.981zm11.387-5.464c-.074-.124-.272-.198-.57-.347-.297-.149-1.758-.868-2.031-.967-.272-.099-.47-.149-.669.149-.198.297-.768.967-.941 1.165-.173.198-.347.223-.644.074-.297-.149-1.255-.462-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.297-.347.446-.521.151-.172.2-.296.3-.495.099-.198.05-.372-.025-.521-.075-.148-.669-1.611-.916-2.206-.242-.579-.487-.501-.669-.51l-.57-.01c-.198 0-.52.074-.792.372s-1.04 1.016-1.04 2.479 1.065 2.876 1.213 3.074c.149.198 2.095 3.2 5.076 4.487.709.306 1.263.489 1.694.626.712.226 1.36.194 1.872.118.571-.085 1.758-.719 2.006-1.413.248-.695.248-1.29.173-1.414z"/>
-                  </svg>
-                  <span>WhatsApp</span>
-                </span>
-              `}
-              <span class="text-[10px] font-mono text-slate-400 bg-slate-100 px-1.5 py-0.5 rounded">${escapeHtml(entry.version)}</span>
-              <button
-                type="button"
-                class="btn-cancel-entry px-3 py-1.5 rounded-lg border border-red-200 text-red-700 hover:bg-red-50 text-xs font-medium transition-colors"
-                data-id="${entry.id}"
-                data-patient="${escapeHtml(patientName)}"
-                data-version="${rawVersion}"
-              >
-                Cancelar Cita
-              </button>
+                  Cancelar Cita
+                </button>
+              </div>
             </div>
           `;
         } else {
           // BLOQUEO ADMINISTRATIVO
           row.innerHTML = `
-            <div class="flex items-center gap-3">
-              <span class="font-mono text-xs font-bold text-slate-900 w-32">${timeLabel}</span>
-              <span class="px-2 py-0.5 rounded text-[11px] font-semibold bg-amber-50 text-amber-800 border border-amber-200">
-                Bloqueo Administrativo (Pausa)
+            <div class="flex items-center justify-between gap-2 w-full sm:w-auto">
+              <span class="font-mono text-xs sm:text-sm font-bold text-slate-900 sm:w-32 shrink-0">${timeLabel}</span>
+              <span class="px-2.5 py-0.5 rounded-full text-[11px] font-semibold bg-amber-50 text-amber-800 border border-amber-200 shrink-0">
+                Bloqueo Administrativo
               </span>
             </div>
-            <button
-              type="button"
-              class="btn-delete-block px-3 py-1.5 rounded-lg border border-slate-300 text-slate-700 hover:bg-slate-100 text-xs font-medium transition-colors"
-              data-id="${entry.id}"
-              data-version="${(entry.version || 'v1').replace(/"/g, '')}"
-            >
-              Liberar Horario
-            </button>
+            <div class="w-full sm:w-auto flex items-center justify-end pt-2 sm:pt-0 border-t border-slate-100 sm:border-0">
+              <button
+                type="button"
+                class="btn-delete-block px-3.5 py-1.5 rounded-xl border border-slate-300 text-slate-700 hover:bg-slate-100 text-xs font-medium transition-colors cursor-pointer"
+                data-id="${entry.id}"
+                data-version="${(entry.version || 'v1').replace(/"/g, '')}"
+              >
+                Liberar Horario
+              </button>
+            </div>
           `;
         }
       } else {
-        // CUPÓ DISPONIBLE
-        row.innerHTML = `
-          <div class="flex items-center gap-3">
-            <span class="font-mono text-xs font-bold text-slate-700 w-32">${timeLabel}</span>
-            <span class="px-2 py-0.5 rounded text-[11px] font-semibold bg-emerald-50 text-emerald-800 border border-emerald-200">
-              Disponible
-            </span>
-          </div>
-          <div class="flex items-center gap-2">
-            <button
-              type="button"
-              class="btn-open-booking px-3 py-1.5 rounded-lg bg-slate-900 hover:bg-slate-800 text-white text-xs font-semibold transition-colors"
-              data-hour="${h}"
-              data-timelabel="${timeLabel}"
-            >
-              + Agendar Paciente
-            </button>
-            <button
-              type="button"
-              class="btn-open-block px-3 py-1.5 rounded-lg border border-slate-200 hover:bg-slate-100 text-slate-600 text-xs font-medium transition-colors"
-              data-hour="${h}"
-            >
-              Bloquear
-            </button>
-          </div>
-        `;
+        if (isPastDate) {
+          // HORARIO PASADO SIN ATENCIÓN
+          row.innerHTML = `
+            <div class="flex items-center justify-between gap-2 w-full sm:w-auto">
+              <span class="font-mono text-xs sm:text-sm font-bold text-slate-400 sm:w-32 shrink-0">${timeLabel}</span>
+              <span class="px-2.5 py-0.5 rounded-full text-[11px] font-medium bg-slate-100 text-slate-500 border border-slate-200 shrink-0">
+                Sin atención registrada
+              </span>
+            </div>
+            <span class="text-[11px] text-slate-400 italic">Horario concluido</span>
+          `;
+        } else {
+          // CUPO DISPONIBLE (HOY O FUTURO)
+          row.innerHTML = `
+            <div class="flex items-center justify-between gap-2 w-full sm:w-auto">
+              <span class="font-mono text-xs sm:text-sm font-bold text-slate-700 sm:w-32 shrink-0">${timeLabel}</span>
+              <span class="px-2.5 py-0.5 rounded-full text-[11px] font-semibold bg-emerald-50 text-emerald-800 border border-emerald-200 shrink-0">
+                Disponible
+              </span>
+            </div>
+            <div class="w-full sm:w-auto flex items-center gap-2 pt-2 sm:pt-0 border-t border-slate-100 sm:border-0 justify-end">
+              <button
+                type="button"
+                class="btn-open-booking flex-1 sm:flex-initial px-3.5 py-1.5 rounded-xl bg-slate-900 hover:bg-slate-800 text-white text-xs font-semibold transition-all active:scale-95 shadow-xs cursor-pointer"
+                data-hour="${h}"
+                data-timelabel="${timeLabel}"
+              >
+                + Agendar Paciente
+              </button>
+              <button
+                type="button"
+                class="btn-open-block px-3 py-1.5 rounded-xl border border-slate-200 hover:bg-slate-100 text-slate-600 text-xs font-medium transition-colors cursor-pointer"
+                data-hour="${h}"
+              >
+                Bloquear
+              </button>
+            </div>
+          `;
+        }
       }
 
       scheduleSlotsContainer.appendChild(row);
@@ -790,7 +1291,293 @@ import { professionals } from '../data/professionals';
     bindRowActions();
   }
 
-  // 6. EVENTOS DE ACCIONES DE FILA
+  // 6. BÚSQUEDA DE PACIENTES E HISTORIAL CLÍNICO
+  async function performSearch(query: string) {
+    const q = (query || '').trim();
+    if (q.length < 2) {
+      clearSearchState();
+      loadSchedule();
+      return;
+    }
+
+    isSearchMode = true;
+    currentSearchQuery = q;
+    if (btnClearSearch) btnClearSearch.classList.remove('hidden');
+    if (searchSpinner) searchSpinner.classList.remove('hidden');
+    if (historicalBanner) historicalBanner.classList.add('hidden');
+
+    scheduleSlotsContainer.innerHTML = '';
+    scheduleLoading.classList.remove('hidden');
+    scheduleLoading.innerHTML = `
+      <svg class="animate-spin w-6 h-6 text-slate-800 mx-auto mb-2" fill="none" viewBox="0 0 24 24">
+        <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+        <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+      </svg>
+      Buscando atenciones en el historial clínico...
+    `;
+
+    try {
+      const res = await AgendamientoClient.searchPatientAppointments(q, currentSession.csrfToken);
+      scheduleLoading.classList.add('hidden');
+      if (searchSpinner) searchSpinner.classList.add('hidden');
+
+      if (scheduleSectionTitle) {
+        scheduleSectionTitle.textContent = `Historial de Atenciones: "${escapeHtml(q)}"`;
+      }
+
+      if (searchMetricsBanner && searchMetricTotal && searchMetricAttended && searchMetricNoshow && searchMetricUpcoming) {
+        searchMetricTotal.textContent = `Total: ${res.stats.totalAppointments} ${res.stats.totalAppointments === 1 ? 'cita' : 'citas'}`;
+        searchMetricAttended.textContent = `✓ Asistidas: ${res.stats.attendedCount}`;
+        searchMetricNoshow.textContent = `✕ Inasistencias: ${res.stats.noShowCount}`;
+        searchMetricUpcoming.textContent = `🗓️ Próximas: ${res.stats.upcomingCount}`;
+        searchMetricsBanner.classList.remove('hidden');
+      }
+
+      renderSearchResults(res);
+    } catch (err: any) {
+      scheduleLoading.classList.add('hidden');
+      if (searchSpinner) searchSpinner.classList.add('hidden');
+      scheduleSlotsContainer.innerHTML = `
+        <div class="p-8 text-center text-xs text-red-600 font-medium">
+          Error al buscar atenciones: ${escapeHtml(err.message || 'Error inesperado')}
+        </div>
+      `;
+    }
+  }
+
+  function renderSearchResults(searchData: any) {
+    scheduleSlotsContainer.innerHTML = '';
+
+    if (!searchData.results || searchData.results.length === 0) {
+      scheduleSlotsContainer.innerHTML = `
+        <div class="p-12 text-center text-slate-500 text-xs space-y-2 animate-fade-in">
+          <span class="text-3xl block mb-2">🔍</span>
+          <p class="text-base font-serif text-slate-800 font-medium">No se encontraron atenciones para "${escapeHtml(searchData.query)}"</p>
+          <p class="text-slate-500 max-w-md mx-auto leading-relaxed">
+            Comprueba que el nombre, correo o RUT esté bien escrito o prueba con menos caracteres.
+          </p>
+          <div class="pt-2">
+            <button
+              type="button"
+              class="btn-reset-search-empty inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl border border-slate-300 hover:bg-slate-100 text-xs font-semibold text-slate-700 transition-colors cursor-pointer"
+            >
+              <span>Volver a la jornada del día</span>
+            </button>
+          </div>
+        </div>
+      `;
+
+      const btnResetEmpty = scheduleSlotsContainer.querySelector('.btn-reset-search-empty');
+      if (btnResetEmpty) {
+        btnResetEmpty.addEventListener('click', () => {
+          clearSearchState();
+          loadSchedule();
+        });
+      }
+      return;
+    }
+
+    searchData.results.forEach((entry: any) => {
+      const row = document.createElement('div');
+      row.className = 'p-4 sm:p-5 flex flex-col sm:flex-row sm:items-center justify-between gap-3.5 sm:gap-3 hover:bg-slate-50/60 transition-colors animate-fade-in';
+
+      const startDate = new Date(entry.startAt);
+      const dateLabel = startDate.toLocaleDateString('es-CL', {
+        timeZone: 'America/Santiago',
+        weekday: 'short',
+        day: 'numeric',
+        month: 'short',
+        year: 'numeric'
+      });
+      const timeLabel = startDate.toLocaleTimeString('es-CL', {
+        timeZone: 'America/Santiago',
+        hour: '2-digit',
+        minute: '2-digit',
+        hour12: false
+      });
+      const fullTimeLabel = `${dateLabel} · ${timeLabel} hrs`;
+
+      const isFelipe = entry.professionalId === 'felipe';
+      const proBadge = isFelipe
+        ? `<span class="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full text-[11px] font-bold bg-cyan-50 text-cyan-900 border border-cyan-200">
+             <span class="w-2 h-2 rounded-full bg-cyan-500"></span>
+             <span>Felipe Méndez (Quiropraxia)</span>
+           </span>`
+        : `<span class="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full text-[11px] font-bold bg-emerald-50 text-emerald-900 border border-emerald-200">
+             <span class="w-2 h-2 rounded-full bg-emerald-500"></span>
+             <span>Eduardo Lagos (Acupuntura)</span>
+           </span>`;
+
+      const patientName = entry.patient?.name || 'Paciente';
+      const patientPhone = entry.patient?.phone || '';
+      const patientEmail = entry.patient?.email || '';
+      const patientRut = entry.patient?.rut || '';
+
+      const firstName = patientName !== 'Paciente' ? patientName.trim().split(' ')[0] : '';
+      const greeting = firstName ? `Hola ${firstName}, ` : 'Hola, ';
+      const waMessage = `${greeting}te escribimos de Centro Vida Sana Austral respecto a tu hora de atención.`;
+      const waUrl = buildWhatsAppLink(patientPhone, waMessage);
+
+      const googleReviewsUrl = 'https://search.google.com/local/writereview?placeid=ChIJM0LHMS_VFJYRdPlffqEIVW8';
+      const waReviewMessage = `${greeting}esperamos que te encuentres muy bien tras tu atención en Centro Vida Sana Austral 🌿\n\nTu opinión es muy importante para nosotros y nos ayuda a que más personas encuentren atención de salud integral en Temuco. ¿Nos regalarías 1 minuto para dejarnos tu calificación y comentario en Google? ⭐⭐⭐⭐⭐\n\nPuedes hacerlo directamente aquí: ${googleReviewsUrl}\n\n¡Muchas gracias por tu confianza!`;
+      const waReviewUrl = buildWhatsAppLink(patientPhone, waReviewMessage);
+
+      const isCancelled = entry.status === 'cancelled';
+      const isAttended = (entry.attendanceStatus || 'attended') !== 'no_show';
+      const rawVersion = (entry.version || 'v1').replace(/"/g, '');
+
+      row.innerHTML = `
+        <!-- Información Principal de la Cita -->
+        <div class="flex flex-col sm:flex-row sm:items-center gap-2 sm:gap-4 flex-1 min-w-0 w-full sm:w-auto">
+          <!-- Fecha, Horario y Profesional -->
+          <div class="flex flex-col sm:w-56 shrink-0">
+            <span class="font-serif text-xs sm:text-sm font-bold text-slate-900 capitalize">${escapeHtml(fullTimeLabel)}</span>
+            <div class="mt-1">${proBadge}</div>
+          </div>
+
+          <!-- Estado de la Cita / Asistencia -->
+          <div class="shrink-0 flex items-center gap-2">
+            ${isCancelled ? `
+              <span class="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full text-xs font-bold bg-slate-100 text-slate-600 border border-slate-200">
+                Cancelada
+              </span>
+            ` : `
+              <button
+                type="button"
+                class="btn-toggle-attendance inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-bold transition-all duration-150 active:scale-95 cursor-pointer select-none shadow-2xs shrink-0 ${isAttended ? 'bg-emerald-100 hover:bg-emerald-200 text-emerald-900 border border-emerald-300' : 'bg-rose-100 hover:bg-rose-200 text-rose-900 border border-rose-300'}"
+                data-id="${entry.id}"
+                data-next-status="${isAttended ? 'no_show' : 'attended'}"
+                title="${isAttended ? 'El paciente asistió. Clic para marcar Inasistencia.' : 'Inasistencia registrada. Clic para marcar que Asistió.'}"
+              >
+                <span class="w-2 h-2 rounded-full ${isAttended ? 'bg-emerald-600' : 'bg-rose-600'}"></span>
+                <span>${isAttended ? 'Asistió' : 'Inasistencia'}</span>
+              </button>
+            `}
+          </div>
+
+          <!-- Datos de Contacto del Paciente -->
+          <div class="min-w-0 flex-1">
+            <div class="flex items-center gap-2 flex-wrap">
+              <button
+                type="button"
+                class="btn-open-patient-notes group text-left cursor-pointer transition-colors max-w-full"
+                data-booking-id="${entry.id}"
+                title="Ver ficha clínica y notas de evolución de ${escapeHtml(patientName)}"
+              >
+                <p class="text-sm font-semibold text-slate-900 group-hover:text-emerald-800 flex items-center gap-1.5 truncate">
+                  <span>${escapeHtml(patientName)}</span>
+                  <span class="inline-flex items-center px-1.5 py-0.5 rounded text-[10px] font-medium bg-slate-100 group-hover:bg-emerald-50 group-hover:text-emerald-800 text-slate-600 border border-slate-200 group-hover:border-emerald-300 transition-colors shrink-0">
+                    📋 Ficha y Notas
+                  </span>
+                </p>
+              </button>
+              ${patientRut ? `<span class="px-2 py-0.5 rounded text-[10px] font-mono bg-slate-100 text-slate-700 border border-slate-200">RUT: ${escapeHtml(patientRut)}</span>` : ''}
+            </div>
+            <div class="text-[11px] text-slate-500 flex items-center gap-x-3 gap-y-1 flex-wrap mt-0.5">
+              ${patientPhone ? `
+                <a
+                  href="tel:${patientPhone.replace(/\s+/g, '')}"
+                  class="text-slate-600 hover:text-emerald-700 inline-flex items-center gap-1 font-medium transition-colors"
+                  title="Llamar a ${escapeHtml(patientName)}"
+                >
+                  <svg class="w-3 h-3 text-slate-400 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z"/>
+                  </svg>
+                  <span>${escapeHtml(patientPhone)}</span>
+                </a>
+              ` : `<span class="text-slate-400 italic">Sin teléfono</span>`}
+              ${patientEmail ? `
+                <span class="hidden xs:inline text-slate-300">·</span>
+                <a
+                  href="mailto:${patientEmail}"
+                  class="text-slate-500 hover:text-slate-800 inline-flex items-center gap-1 transition-colors truncate max-w-full"
+                  title="Enviar correo a ${escapeHtml(patientName)}"
+                >
+                  <svg class="w-3 h-3 text-slate-400 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/>
+                  </svg>
+                  <span class="truncate">${escapeHtml(patientEmail)}</span>
+                </a>
+              ` : ''}
+            </div>
+          </div>
+        </div>
+
+        <!-- Botones de Acción (WhatsApp / Reseña / Cancelar) -->
+        <div class="flex items-center gap-2 shrink-0 flex-wrap sm:flex-nowrap pt-2.5 sm:pt-0 border-t border-slate-100 sm:border-0 w-full sm:w-auto justify-between sm:justify-end">
+          <div class="flex items-center gap-1.5 flex-wrap">
+            ${waUrl ? `
+              <a
+                href="${waUrl}"
+                target="_blank"
+                rel="noopener noreferrer"
+                class="btn-wsp-contact inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white text-xs font-semibold shadow-xs transition-all duration-150 active:scale-95 cursor-pointer select-none"
+                title="Abrir chat de WhatsApp con el paciente"
+              >
+                <svg class="w-3.5 h-3.5 fill-current shrink-0" viewBox="0 0 24 24" aria-hidden="true">
+                  <path d="M.057 24l1.687-6.163c-1.041-1.804-1.588-3.849-1.587-5.946.003-6.556 5.338-11.891 11.893-11.891 3.181.001 6.167 1.24 8.413 3.488 2.245 2.248 3.481 5.236 3.48 8.414-.003 6.557-5.338 11.892-11.893 11.892-1.99-.001-3.951-.5-5.688-1.448l-6.305 1.654zm6.597-3.807c1.676.995 3.276 1.591 5.392 1.592 5.448 0 9.886-4.434 9.889-9.885.002-5.462-4.415-9.89-9.881-9.892-5.452 0-9.887 4.434-9.889 9.884-.001 2.225.651 3.891 1.746 5.634l-.999 3.648 3.742-.981zm11.387-5.464c-.074-.124-.272-.198-.57-.347-.297-.149-1.758-.868-2.031-.967-.272-.099-.47-.149-.669.149-.198.297-.768.967-.941 1.165-.173.198-.347.223-.644.074-.297-.149-1.255-.462-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.297-.347.446-.521.151-.172.2-.296.3-.495.099-.198.05-.372-.025-.521-.075-.148-.669-1.611-.916-2.206-.242-.579-.487-.501-.669-.51l-.57-.01c-.198 0-.52.074-.792.372s-1.04 1.016-1.04 2.479 1.065 2.876 1.213 3.074c.149.198 2.095 3.2 5.076 4.487.709.306 1.263.489 1.694.626.712.226 1.36.194 1.872.118.571-.085 1.758-.719 2.006-1.413.248-.695.248-1.29.173-1.414z"/>
+                </svg>
+                <span>WhatsApp</span>
+              </a>
+            ` : ''}
+
+            <!-- Grupo Unificado para Invitación a Reseñas -->
+            ${(waReviewUrl || patientEmail) ? `
+              <div class="inline-flex items-center rounded-xl border border-amber-200 bg-amber-50/70 p-0.5 text-xs shadow-2xs">
+                <span class="pl-2 pr-1.5 py-1 text-[11px] font-semibold text-amber-900 flex items-center gap-1 select-none">
+                  <span class="text-amber-500 font-bold">⭐</span>
+                  <span class="hidden sm:inline">Pedir Reseña:</span>
+                  <span class="sm:hidden">Reseña:</span>
+                </span>
+                ${waReviewUrl ? `
+                  <a
+                    href="${waReviewUrl}"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    class="btn-wsp-review px-2.5 py-1 rounded-lg hover:bg-amber-100 text-emerald-800 hover:text-emerald-950 font-semibold transition-colors flex items-center gap-1"
+                    title="Enviar invitación de reseña por WhatsApp"
+                  >
+                    <span>WSP</span>
+                  </a>
+                ` : ''}
+                ${(waReviewUrl && patientEmail) ? `<span class="text-amber-300 text-[10px]">|</span>` : ''}
+                ${patientEmail ? `
+                  <button
+                    type="button"
+                    class="btn-send-review-email px-2.5 py-1 rounded-lg hover:bg-amber-100 text-amber-900 hover:text-amber-950 font-semibold transition-colors flex items-center gap-1 cursor-pointer"
+                    data-id="${entry.id}"
+                    data-email="${escapeHtml(patientEmail)}"
+                    data-name="${escapeHtml(patientName)}"
+                    title="Enviar invitación de reseña por Correo"
+                  >
+                    <span>Correo</span>
+                  </button>
+                ` : ''}
+              </div>
+            ` : ''}
+
+            ${!isCancelled ? `
+              <button
+                type="button"
+                class="btn-cancel-entry px-3 py-1.5 rounded-xl border border-red-200 text-red-700 hover:bg-red-50 text-xs font-medium transition-colors cursor-pointer"
+                data-id="${entry.id}"
+                data-patient="${escapeHtml(patientName)}"
+                data-version="${rawVersion}"
+              >
+                Cancelar Cita
+              </button>
+            ` : ''}
+          </div>
+        </div>
+      `;
+
+      scheduleSlotsContainer.appendChild(row);
+    });
+
+    bindRowActions();
+  }
+
+  // 7. EVENTOS DE ACCIONES DE FILA
   function bindRowActions() {
     // Abrir modal de agendar paciente
     document.querySelectorAll('.btn-open-booking').forEach((btn) => {
@@ -829,10 +1616,85 @@ import { professionals } from '../data/professionals';
         if (!confirm('¿Liberar este horario bloqueado para permitir reservas?')) return;
         try {
           await AgendamientoClient.deleteTeamBlock(id, version, currentSession.csrfToken);
-          loadSchedule();
+          refreshCurrentView();
         } catch (err: any) {
           alert('Error al liberar bloqueo: ' + err.message);
         }
+      });
+    });
+
+    // Enviar correo de invitación a calificar en Google
+    document.querySelectorAll('.btn-send-review-email').forEach((btn) => {
+      btn.addEventListener('click', async () => {
+        const id = btn.getAttribute('data-id')!;
+        const name = btn.getAttribute('data-name') || 'el paciente';
+        const email = btn.getAttribute('data-email') || '';
+
+        if (!email) {
+          alert('Esta cita no tiene un correo electrónico registrado.');
+          return;
+        }
+
+        const confirmSend = confirm(
+          `¿Deseas enviar el correo de invitación para calificar en Google a ${name} (${email})?`
+        );
+        if (!confirmSend) return;
+
+        const buttonEl = btn as HTMLButtonElement;
+        const originalHtml = buttonEl.innerHTML;
+        buttonEl.disabled = true;
+        buttonEl.innerHTML = `
+          <svg class="w-3 h-3 animate-spin shrink-0 text-amber-600" viewBox="0 0 24 24" fill="none">
+            <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+            <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8v8H4z"></path>
+          </svg>
+          <span class="text-[11px]">Enviando...</span>
+        `;
+
+        try {
+          const res = await AgendamientoClient.sendReviewInviteEmail(id, currentSession.csrfToken);
+          buttonEl.classList.remove('text-amber-900', 'hover:bg-amber-100');
+          buttonEl.classList.add('bg-emerald-100', 'text-emerald-900');
+          buttonEl.innerHTML = `
+            <span class="text-emerald-700 font-bold">✓</span>
+            <span class="text-[11px]">¡Enviado!</span>
+          `;
+          alert(`¡Correo de calificación en Google enviado con éxito a ${name} (${email})!`);
+        } catch (err: any) {
+          buttonEl.disabled = false;
+          buttonEl.innerHTML = originalHtml;
+          alert('No se pudo enviar el correo de calificación: ' + (err.message || err));
+        }
+      });
+    });
+
+    // Alternar asistencia de pacientes (toggle Asistió <-> Inasistencia)
+    document.querySelectorAll('.btn-toggle-attendance').forEach((btn) => {
+      btn.addEventListener('click', async () => {
+        const id = btn.getAttribute('data-id')!;
+        const nextStatus = btn.getAttribute('data-next-status') as 'attended' | 'no_show';
+        const buttonEl = btn as HTMLButtonElement;
+        const originalHtml = buttonEl.innerHTML;
+        buttonEl.disabled = true;
+
+        try {
+          await AgendamientoClient.updateAttendance(id, nextStatus, currentSession.csrfToken);
+          // Recargar vista para actualizar visualmente la tarjeta
+          await refreshCurrentView();
+        } catch (err: any) {
+          buttonEl.disabled = false;
+          buttonEl.innerHTML = originalHtml;
+          alert('Error al actualizar la asistencia: ' + (err.message || err));
+        }
+      });
+    });
+
+    // Abrir Ficha y Notas de Paciente
+    document.querySelectorAll('.btn-open-patient-notes').forEach((btn) => {
+      btn.addEventListener('click', (e) => {
+        e.stopPropagation();
+        const bookingId = btn.getAttribute('data-booking-id')!;
+        openPatientNotesModal(bookingId);
       });
     });
   }
@@ -843,6 +1705,9 @@ import { professionals } from '../data/professionals';
     modalBookPro.textContent = activeProfessional === 'felipe' ? 'Felipe Méndez (Quiropraxia & Kinesiología)' : 'Eduardo Lagos (Acupuntura & Medicina China)';
     modalBookTime.textContent = `${activeDateString}, ${timeLabel}`;
     formTeamBooking.reset();
+    if (teamInputNotifyPatient) {
+      teamInputNotifyPatient.checked = true;
+    }
     modalBookError.classList.add('hidden');
     modalTeamBooking.classList.remove('hidden');
 
@@ -866,14 +1731,15 @@ import { professionals } from '../data/professionals';
               documentType: teamInputDocType.value as any,
               phone: teamInputPhone.value.trim()
             },
-            consentVersion: 'v1.0'
+            consentVersion: 'v1.0',
+            notifyPatient: teamInputNotifyPatient ? teamInputNotifyPatient.checked : true
           },
           idempKey,
           currentSession.csrfToken
         );
 
         modalTeamBooking.classList.add('hidden');
-        loadSchedule();
+        refreshCurrentView();
       } catch (err: any) {
         modalBookError.textContent = err.message || 'Error al agendar cita.';
         modalBookError.classList.remove('hidden');
@@ -891,7 +1757,7 @@ import { professionals } from '../data/professionals';
 
     try {
       await AgendamientoClient.createTeamBlock(activeProfessional, startUtc, endUtc, idempKey, currentSession.csrfToken);
-      loadSchedule();
+      refreshCurrentView();
     } catch (err: any) {
       alert('Error al crear bloqueo: ' + err.message);
     }
@@ -919,7 +1785,7 @@ import { professionals } from '../data/professionals';
         currentSession.csrfToken
       );
       modalCancelBooking.classList.add('hidden');
-      loadSchedule();
+      refreshCurrentView();
     } catch (err: any) {
       if (err instanceof ApiError && err.code === 'VERSION_CONFLICT') {
         cancelModalError.textContent = 'La cita fue modificada previamente por otro usuario. Recarga la agenda.';
@@ -930,11 +1796,340 @@ import { professionals } from '../data/professionals';
     }
   });
 
+  // ============================================================================
+  // GESTIÓN DE FICHA CLÍNICA Y NOTAS DE EVOLUCIÓN (MODAL 3)
+  // ============================================================================
+
+  async function openPatientNotesModal(bookingId: string) {
+    currentNotesBookingId = bookingId;
+    currentNotesPatientKey = null;
+    currentNotesList = [];
+
+    // Limpiar formulario y estados
+    inputNewNote.value = '';
+    newNoteError.classList.add('hidden');
+    newNoteError.textContent = '';
+    btnSaveNewNote.disabled = false;
+    btnSaveNewNote.innerHTML = '<span>Guardar Nota</span>';
+
+    notesModalPatientName.textContent = 'Cargando paciente...';
+    notesModalRutBadge.textContent = '';
+    notesModalRutBadge.classList.add('hidden');
+    notesModalPhoneWrap.innerHTML = '';
+    notesModalEmailWrap.innerHTML = '';
+    notesModalProTag.textContent = '';
+
+    notesLoadingSpinner.classList.remove('hidden');
+    notesEmptyState.classList.add('hidden');
+    notesAccordionList.innerHTML = '';
+    notesCountBadge.textContent = '0';
+
+    const proName = activeProfessional === 'felipe' ? 'Felipe Méndez (Quiropraxia & Kinesiología)' : 'Eduardo Lagos (Acupuntura & MTC)';
+    newNoteProLabel.textContent = `Registrando como: ${proName}`;
+
+    modalPatientNotes.classList.remove('hidden');
+
+    try {
+      const data = await AgendamientoClient.getBookingNotes(bookingId);
+      currentNotesPatientKey = data.patientKey;
+      currentNotesList = data.notes || [];
+
+      // Cabecera paciente
+      notesModalPatientName.textContent = data.patient.name || 'Paciente';
+      notesModalProTag.textContent = `Atención en Centro Vida Sana`;
+
+      if (data.patient.rut) {
+        notesModalRutBadge.textContent = `RUT: ${data.patient.rut}`;
+        notesModalRutBadge.classList.remove('hidden');
+      }
+
+      if (data.patient.phone) {
+        notesModalPhoneWrap.innerHTML = `
+          <a href="tel:${data.patient.phone.replace(/\s+/g, '')}" class="text-slate-600 hover:text-emerald-700 font-medium inline-flex items-center gap-1">
+            <svg class="w-3 h-3 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z"/></svg>
+            <span>${escapeHtml(data.patient.phone)}</span>
+          </a>
+        `;
+      }
+
+      if (data.patient.email) {
+        notesModalEmailWrap.innerHTML = `
+          <span class="text-slate-300">·</span>
+          <a href="mailto:${data.patient.email}" class="text-slate-500 hover:text-slate-800 inline-flex items-center gap-1">
+            <svg class="w-3 h-3 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/></svg>
+            <span>${escapeHtml(data.patient.email)}</span>
+          </a>
+        `;
+      }
+
+      notesLoadingSpinner.classList.add('hidden');
+      renderNotesAccordion(currentNotesList);
+    } catch (err: any) {
+      notesLoadingSpinner.classList.add('hidden');
+      notesModalPatientName.textContent = 'Error al cargar ficha';
+      notesAccordionList.innerHTML = `<p class="text-xs text-red-600 p-4 bg-red-50 rounded-xl">${escapeHtml(err.message || 'Error al obtener notas.')}</p>`;
+    }
+  }
+
+  function renderNotesAccordion(notes: any[]) {
+    notesCountBadge.textContent = String(notes.length);
+    notesAccordionList.innerHTML = '';
+
+    if (notes.length === 0) {
+      notesEmptyState.classList.remove('hidden');
+      return;
+    }
+    notesEmptyState.classList.add('hidden');
+
+    notes.forEach((note) => {
+      const isFelipe = note.professionalId === 'felipe';
+      const createdDate = new Date(note.createdAt);
+      const dateFormatted = createdDate.toLocaleDateString('es-CL', {
+        timeZone: 'America/Santiago',
+        weekday: 'short',
+        day: 'numeric',
+        month: 'short',
+        year: 'numeric'
+      });
+      const timeFormatted = createdDate.toLocaleTimeString('es-CL', {
+        timeZone: 'America/Santiago',
+        hour: '2-digit',
+        minute: '2-digit',
+        hour12: false
+      });
+
+      const updatedDate = new Date(note.updatedAt);
+      const isEdited = note.isEdited || updatedDate.getTime() > (createdDate.getTime() + 1000);
+      const editedLabel = isEdited ? `<span class="text-[10px] text-slate-400 italic font-normal">(editado)</span>` : '';
+
+      // Colores institucionales: Felipe (Azul Petróleo #134E5E) / Eduardo (Verde Salvia #2E4D38)
+      const borderClass = isFelipe ? 'border-l-4 border-l-[#134E5E]' : 'border-l-4 border-l-[#2E4D38]';
+      const badgeClass = isFelipe
+        ? 'bg-[#134E5E]/10 text-[#134E5E] border-[#134E5E]/20'
+        : 'bg-[#2E4D38]/10 text-[#2E4D38] border-[#2E4D38]/20';
+      const proTitle = isFelipe ? 'Felipe Méndez · Quiropraxia' : 'Eduardo Lagos · Acupuntura';
+
+      const card = document.createElement('div');
+      card.className = `bg-white rounded-xl border border-slate-200/90 shadow-2xs overflow-hidden transition-all ${borderClass}`;
+      card.setAttribute('data-note-id', note.id);
+
+      card.innerHTML = `
+        <!-- Barra de Cabecera Colapsada (Clickeable tipo Acordeón) -->
+        <button
+          type="button"
+          class="btn-toggle-note-accordion w-full px-4 py-3 flex items-center justify-between gap-3 text-left hover:bg-slate-50/80 transition-colors cursor-pointer select-none"
+          aria-expanded="false"
+        >
+          <div class="flex items-center gap-2.5 flex-wrap min-w-0">
+            <span class="text-xs font-bold text-slate-900 capitalize">${dateFormatted} · ${timeFormatted} hrs</span>
+            <span class="inline-flex items-center px-2 py-0.5 rounded-full text-[10px] font-semibold border ${badgeClass}">
+              ${proTitle}
+            </span>
+            ${editedLabel}
+          </div>
+          <div class="flex items-center gap-2 shrink-0">
+            <svg class="chevron-icon w-4 h-4 text-slate-400 transform transition-transform duration-200" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/>
+            </svg>
+          </div>
+        </button>
+
+        <!-- Contenido Expandible de la Nota -->
+        <div class="note-expand-body hidden border-t border-slate-100 p-4 bg-slate-50/40">
+          <div class="note-view-mode flex items-start justify-between gap-3">
+            <div class="note-text-content text-xs text-slate-800 leading-relaxed font-sans whitespace-pre-wrap flex-1 min-w-0">
+              ${escapeHtml(note.content)}
+            </div>
+            <button
+              type="button"
+              class="btn-edit-note p-1.5 rounded-lg text-slate-400 hover:text-slate-700 hover:bg-slate-200/60 transition-colors shrink-0 cursor-pointer"
+              title="Editar esta nota"
+              aria-label="Editar nota"
+            >
+              <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z"/>
+              </svg>
+            </button>
+          </div>
+
+          <!-- Modo Edición Inline -->
+          <div class="note-edit-mode hidden space-y-2.5 pt-1">
+            <textarea
+              class="input-edit-note w-full text-xs text-slate-900 bg-white border border-slate-300 rounded-xl p-3 focus:ring-2 focus:ring-emerald-500/20 focus:border-emerald-600 outline-none transition-all resize-y"
+              rows="3"
+            >${escapeHtml(note.content)}</textarea>
+            <p class="edit-note-error hidden text-xs text-red-600 font-medium"></p>
+            <div class="flex items-center justify-end gap-2">
+              <button
+                type="button"
+                class="btn-cancel-edit-note px-3 py-1.5 rounded-lg border border-slate-200 text-xs font-medium text-slate-600 hover:bg-slate-100 transition-colors cursor-pointer"
+              >
+                Cancelar
+              </button>
+              <button
+                type="button"
+                class="btn-save-edit-note px-3.5 py-1.5 rounded-lg bg-emerald-700 hover:bg-emerald-800 text-white text-xs font-semibold shadow-xs transition-colors cursor-pointer"
+              >
+                Guardar cambios
+              </button>
+            </div>
+          </div>
+        </div>
+      `;
+
+      // Accordion toggle click
+      const btnToggle = card.querySelector('.btn-toggle-note-accordion')!;
+      const expandBody = card.querySelector('.note-expand-body')!;
+      const chevron = card.querySelector('.chevron-icon')!;
+
+      btnToggle.addEventListener('click', () => {
+        const isExpanded = !expandBody.classList.contains('hidden');
+        if (isExpanded) {
+          expandBody.classList.add('hidden');
+          chevron.classList.remove('rotate-180');
+          btnToggle.setAttribute('aria-expanded', 'false');
+        } else {
+          expandBody.classList.remove('hidden');
+          chevron.classList.add('rotate-180');
+          btnToggle.setAttribute('aria-expanded', 'true');
+        }
+      });
+
+      // Edit mode toggle
+      const btnEdit = card.querySelector('.btn-edit-note')!;
+      const viewMode = card.querySelector('.note-view-mode')!;
+      const editMode = card.querySelector('.note-edit-mode')!;
+      const textareaEdit = card.querySelector('.input-edit-note') as HTMLTextAreaElement;
+      const btnCancelEdit = card.querySelector('.btn-cancel-edit-note')!;
+      const btnSaveEdit = card.querySelector('.btn-save-edit-note') as HTMLButtonElement;
+      const editError = card.querySelector('.edit-note-error')!;
+      const textContentEl = card.querySelector('.note-text-content')!;
+
+      btnEdit.addEventListener('click', () => {
+        viewMode.classList.add('hidden');
+        editMode.classList.remove('hidden');
+        textareaEdit.value = note.content;
+        textareaEdit.focus();
+      });
+
+      btnCancelEdit.addEventListener('click', () => {
+        editMode.classList.add('hidden');
+        viewMode.classList.remove('hidden');
+        editError.classList.add('hidden');
+      });
+
+      btnSaveEdit.addEventListener('click', async () => {
+        const newText = textareaEdit.value.trim();
+        if (!newText) {
+          editError.textContent = 'El contenido no puede estar vacío.';
+          editError.classList.remove('hidden');
+          return;
+        }
+
+        editError.classList.add('hidden');
+        btnSaveEdit.disabled = true;
+        btnSaveEdit.textContent = 'Guardando...';
+
+        try {
+          const res = await AgendamientoClient.updatePatientNote(note.id, newText, currentSession.csrfToken);
+          note.content = res.note.content;
+          note.isEdited = true;
+          note.updatedAt = res.note.updatedAt;
+
+          textContentEl.textContent = res.note.content;
+          editMode.classList.add('hidden');
+          viewMode.classList.remove('hidden');
+          btnSaveEdit.disabled = false;
+          btnSaveEdit.textContent = 'Guardar cambios';
+
+          // Actualizar marca (editado) en la cabecera de la tarjeta si no estaba
+          const headerBadgeWrap = card.querySelector('.btn-toggle-note-accordion > div')!;
+          if (!headerBadgeWrap.querySelector('.italic')) {
+            const span = document.createElement('span');
+            span.className = 'text-[10px] text-slate-400 italic font-normal';
+            span.textContent = '(editado)';
+            headerBadgeWrap.appendChild(span);
+          }
+        } catch (err: any) {
+          btnSaveEdit.disabled = false;
+          btnSaveEdit.textContent = 'Guardar cambios';
+          editError.textContent = err.message || 'Error al guardar cambios.';
+          editError.classList.remove('hidden');
+        }
+      });
+
+      notesAccordionList.appendChild(card);
+    });
+  }
+
+  // Guardar nueva nota (formulario superior)
+  btnSaveNewNote.addEventListener('click', async () => {
+    if (!currentNotesPatientKey) {
+      newNoteError.textContent = 'No se ha cargado la clave del paciente.';
+      newNoteError.classList.remove('hidden');
+      return;
+    }
+
+    const content = inputNewNote.value.trim();
+    if (!content) {
+      newNoteError.textContent = 'Escribe el contenido de la nota antes de guardar.';
+      newNoteError.classList.remove('hidden');
+      return;
+    }
+
+    newNoteError.classList.add('hidden');
+    btnSaveNewNote.disabled = true;
+    btnSaveNewNote.innerHTML = `
+      <svg class="w-3.5 h-3.5 animate-spin" viewBox="0 0 24 24" fill="none">
+        <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+        <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8v8H4z"></path>
+      </svg>
+      <span>Guardando...</span>
+    `;
+
+    try {
+      const res = await AgendamientoClient.createPatientNote(
+        currentNotesPatientKey,
+        {
+          content,
+          professionalId: activeProfessional,
+          bookingId: currentNotesBookingId || undefined
+        },
+        currentSession.csrfToken
+      );
+
+      inputNewNote.value = '';
+      btnSaveNewNote.disabled = false;
+      btnSaveNewNote.innerHTML = '<span>Guardar Nota</span>';
+
+      // Agregar al inicio de las notas y re-renderizar acordeón
+      currentNotesList.unshift(res.note);
+      renderNotesAccordion(currentNotesList);
+    } catch (err: any) {
+      btnSaveNewNote.disabled = false;
+      btnSaveNewNote.innerHTML = '<span>Guardar Nota</span>';
+      newNoteError.textContent = err.message || 'Error al guardar la nota.';
+      newNoteError.classList.remove('hidden');
+    }
+  });
+
+  // Cerrar Modal 3
+  btnCloseNotesModal.addEventListener('click', () => {
+    modalPatientNotes.classList.add('hidden');
+  });
+
+  modalPatientNotes.addEventListener('click', (e) => {
+    if (e.target === modalPatientNotes) {
+      modalPatientNotes.classList.add('hidden');
+    }
+  });
+
   // Cerrar modales
   document.querySelectorAll('.btn-close-modal').forEach((btn) => {
     btn.addEventListener('click', () => {
       modalTeamBooking.classList.add('hidden');
       modalCancelBooking.classList.add('hidden');
+      modalPatientNotes.classList.add('hidden');
     });
   });
 
@@ -943,6 +2138,7 @@ import { professionals } from '../data/professionals';
     if (e.key === 'Escape') {
       modalTeamBooking.classList.add('hidden');
       modalCancelBooking.classList.add('hidden');
+      modalPatientNotes.classList.add('hidden');
     }
   });
 
@@ -990,6 +2186,37 @@ import { professionals } from '../data/professionals';
         }
       });
     }
+  }
+
+  // LISTENERS DE BÚSQUEDA
+  if (inputPatientSearch) {
+    inputPatientSearch.addEventListener('input', () => {
+      clearTimeout(searchDebounceTimer);
+      searchDebounceTimer = setTimeout(() => {
+        performSearch(inputPatientSearch.value);
+      }, 300);
+    });
+
+    inputPatientSearch.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape') {
+        clearSearchState();
+        loadSchedule();
+      }
+    });
+  }
+
+  if (btnClearSearch) {
+    btnClearSearch.addEventListener('click', () => {
+      clearSearchState();
+      loadSchedule();
+    });
+  }
+
+  if (btnBannerClearSearch) {
+    btnBannerClearSearch.addEventListener('click', () => {
+      clearSearchState();
+      loadSchedule();
+    });
   }
 
   // Inicializar

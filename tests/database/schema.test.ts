@@ -19,9 +19,12 @@ function createTestDatabase(): DatabaseSync {
   const db = new DatabaseSync(':memory:');
   db.exec('PRAGMA foreign_keys = ON;');
 
-  const migrationPath = resolve(process.cwd(), 'migrations/0001_initial_schema.sql');
-  const sql = readFileSync(migrationPath, 'utf-8');
-  db.exec(sql);
+  const migrationFiles = ['0001_initial_schema.sql', '0002_attendance_tracking.sql', '0003_patient_notes.sql'];
+  for (const file of migrationFiles) {
+    const migrationPath = resolve(process.cwd(), 'migrations', file);
+    const sql = readFileSync(migrationPath, 'utf-8');
+    db.exec(sql);
+  }
 
   return db;
 }
@@ -317,6 +320,47 @@ test('SEC-ENC: Cifrado en reposo AES-256-GCM para PII y RUT en patient_profiles 
   const readDetails = await getBookingDetails(adapter, bookingRes.result.result.resourceId, { id: userId, isTeam: false });
   assert.strictEqual(readDetails.booking.patient?.rut, patientRut);
   assert.strictEqual(readDetails.booking.patient?.name, patientName);
+
+  db.close();
+});
+
+test('PATIENT-NOTES-SCHEMA: Tabla patient_notes, índices y restricciones CHECK', () => {
+  const db = createTestDatabase();
+
+  // 1. Verificar existencia de la tabla
+  const tables = db.prepare("SELECT name FROM sqlite_master WHERE type='table' AND name='patient_notes'").all() as any[];
+  assert.strictEqual(tables.length, 1, 'patient_notes debe existir');
+
+  // 2. Insertar usuario de prueba para autor
+  db.exec(`
+    INSERT INTO users (id, google_sub, name, email, created_at, updated_at)
+    VALUES ('usr_author_1', 'sub_author_1', 'Felipe Méndez', 'felipe@centrovidasana.cl', 1762440000, 1762440000);
+  `);
+
+  // 3. Inserción válida de nota
+  db.exec(`
+    INSERT INTO patient_notes (
+      id, patient_key, booking_id, professional_id, author_user_id, author_name, encrypted_content, created_at, updated_at
+    ) VALUES (
+      'note_1', 'RUT:12345678-K', null, 'felipe', 'usr_author_1', 'Felipe Méndez', 'ENC_DATA_TEST', 1762440000, 1762440000
+    );
+  `);
+
+  const note = db.prepare("SELECT * FROM patient_notes WHERE id = 'note_1'").get() as any;
+  assert.strictEqual(note.patient_key, 'RUT:12345678-K');
+  assert.strictEqual(note.professional_id, 'felipe');
+  assert.strictEqual(note.encrypted_content, 'ENC_DATA_TEST');
+
+  // 4. CHECK constraint para professional_id inválido
+  assert.throws(() => {
+    db.exec(`
+      INSERT INTO patient_notes (
+        id, patient_key, booking_id, professional_id, author_user_id, author_name, encrypted_content, created_at, updated_at
+      ) VALUES (
+        'note_invalid', 'RUT:12345678-K', null, 'invalid_pro', 'usr_author_1', 'Felipe', 'ENC', 1762440000, 1762440000
+      );
+    `);
+  }, /CHECK constraint failed/);
 
   db.close();
 });

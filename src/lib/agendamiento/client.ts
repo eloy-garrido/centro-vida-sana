@@ -10,7 +10,12 @@ import type {
   PatientProfilePayload,
   ProfessionalId,
   ResolveCommandResponse,
-  SessionResponse
+  SessionResponse,
+  AttendanceStatus,
+  PatientSearchResult,
+  BookingNotesResponse,
+  PatientNoteItem,
+  CreatePatientNoteRequest
 } from './types.ts';
 
 export class ApiError extends Error {
@@ -286,5 +291,113 @@ export const AgendamientoClient = {
         'If-Match': etag
       }
     });
+  },
+
+  /**
+   * Envía invitación por correo al paciente para calificar el centro en Google.
+   */
+  async sendReviewInviteEmail(
+    bookingId: string,
+    csrfToken: string
+  ): Promise<{ ok: boolean; message: string; messageId?: string }> {
+    return requestJson<{ ok: boolean; message: string; messageId?: string }>(
+      `/api/team/bookings/${bookingId}/send-review-invite`,
+      {
+        method: 'POST',
+        headers: {
+          'X-CSRF-Token': csrfToken
+        }
+      }
+    );
+  },
+
+  /**
+   * Actualiza el estado de asistencia de una cita ('pending' | 'attended' | 'no_show').
+   */
+  async updateAttendance(
+    bookingId: string,
+    attendanceStatus: AttendanceStatus,
+    csrfToken: string
+  ): Promise<{ ok: boolean; bookingId: string; attendanceStatus: AttendanceStatus; attendanceUpdatedAt: string }> {
+    return requestJson<{ ok: boolean; bookingId: string; attendanceStatus: AttendanceStatus; attendanceUpdatedAt: string }>(
+      `/api/team/bookings/${bookingId}/attendance`,
+      {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'X-CSRF-Token': csrfToken
+        },
+        body: JSON.stringify({ attendanceStatus })
+      }
+    );
+  },
+
+  /**
+   * Busca atenciones agendadas de pacientes por nombre, email o RUT en el historial clínico.
+   */
+  async searchPatientAppointments(
+    query: string,
+    csrfToken: string
+  ): Promise<PatientSearchResult> {
+    return requestJson<PatientSearchResult>(
+      '/api/team/patients/search',
+      {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'X-CSRF-Token': csrfToken
+        },
+        body: JSON.stringify({ query })
+      }
+    );
+  },
+
+  /**
+   * Obtiene la ficha del paciente y su historial de notas a partir del bookingId.
+   */
+  async getBookingNotes(bookingId: string): Promise<BookingNotesResponse> {
+    return requestJson<BookingNotesResponse>(`/api/team/bookings/${bookingId}/notes`);
+  },
+
+  /**
+   * Crea una nueva nota de atención para el paciente en el panel de equipo.
+   */
+  async createPatientNote(
+    patientKey: string,
+    payload: CreatePatientNoteRequest,
+    csrfToken: string
+  ): Promise<{ note: PatientNoteItem }> {
+    return requestJson<{ note: PatientNoteItem }>(
+      `/api/team/patients/${encodeURIComponent(patientKey)}/notes`,
+      {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'X-CSRF-Token': csrfToken
+        },
+        body: JSON.stringify(payload)
+      }
+    );
+  },
+
+  /**
+   * Actualiza el contenido de una nota clínica existente.
+   */
+  async updatePatientNote(
+    noteId: string,
+    content: string,
+    csrfToken: string
+  ): Promise<{ note: PatientNoteItem }> {
+    return requestJson<{ note: PatientNoteItem }>(
+      `/api/team/notes/${noteId}`,
+      {
+        method: 'PATCH',
+        headers: {
+          'Content-Type': 'application/json',
+          'X-CSRF-Token': csrfToken
+        },
+        body: JSON.stringify({ content })
+      }
+    );
   }
 };
