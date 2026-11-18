@@ -13,18 +13,25 @@ import { handleApiRequest } from './router.ts';
 let devDbAdapter: DatabaseAdapter | null = null;
 
 function loadLocalEnv(): void {
-  const envPath = resolve(process.cwd(), '.env');
-  if (existsSync(envPath)) {
-    const content = readFileSync(envPath, 'utf-8');
-    for (const line of content.split('\n')) {
-      const trimmed = line.trim();
-      if (!trimmed || trimmed.startsWith('#')) continue;
-      const idx = trimmed.indexOf('=');
-      if (idx > 0) {
-        const key = trimmed.slice(0, idx).trim();
-        const val = trimmed.slice(idx + 1).trim();
-        if (!process.env[key]) {
-          process.env[key] = val;
+  const envCandidates = [
+    resolve(process.cwd(), '.env'),
+    resolve(process.cwd(), '.dev.vars'),
+    resolve(process.cwd(), 'infra/cloudflare-staging/.dev.vars')
+  ];
+
+  for (const envPath of envCandidates) {
+    if (existsSync(envPath)) {
+      const content = readFileSync(envPath, 'utf-8');
+      for (const line of content.split('\n')) {
+        const trimmed = line.trim();
+        if (!trimmed || trimmed.startsWith('#')) continue;
+        const idx = trimmed.indexOf('=');
+        if (idx > 0) {
+          const key = trimmed.slice(0, idx).trim();
+          const val = trimmed.slice(idx + 1).trim();
+          if (!process.env[key]) {
+            process.env[key] = val;
+          }
         }
       }
     }
@@ -113,7 +120,10 @@ export async function handleDevApiRequest(req: IncomingMessage, res: ServerRespo
   });
 
   const adapter = getDevDatabase();
-  const webResponse = await handleApiRequest(webRequest, adapter, { isDev: true });
+  const webResponse = await handleApiRequest(webRequest, adapter, {
+    isDev: true,
+    env: { ...process.env } as Record<string, any>
+  });
 
   res.statusCode = webResponse.status;
   webResponse.headers.forEach((value, name) => {

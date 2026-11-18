@@ -80,7 +80,7 @@ test('REVIEW-03: Generación de enlace de WhatsApp para invitación a calificar 
   const patientPhone = '+56 9 8765 4321';
   const greeting = 'Hola Juan, ';
   const googleReviewsUrl = clinicInfo.social.googleReviews;
-  const waReviewMessage = `${greeting}esperamos que te encuentres muy bien tras tu atención en Centro Vida Sana Austral 🌿\n\nTu opinión es muy importante para nosotros y nos ayuda a que más personas encuentren atención de salud integral en Temuco. ¿Nos regalarías 1 minuto para dejarnos tu calificación y comentario en Google? ⭐⭐⭐⭐⭐\n\nPuedes hacerlo directamente aquí: ${googleReviewsUrl}\n\n¡Muchas gracias por tu confianza!`;
+  const waReviewMessage = `${greeting}esperamos que te encuentres muy bien tras tu atención en Centro Vida Sana Austral.\n\nTu opinión es muy importante para nosotros y nos ayuda a que más personas encuentren atención de salud integral en Temuco. ¿Nos regalarías 1 minuto para dejarnos tu calificación y comentario en Google?\n\nPuedes hacerlo directamente aquí: ${googleReviewsUrl}\n\n¡Muchas gracias por tu confianza!`;
 
   const waUrl = buildWhatsAppLink(patientPhone, waReviewMessage);
   assert.ok(waUrl);
@@ -208,6 +208,7 @@ test('REVIEW-04: Endpoint POST /api/team/bookings/:id/send-review-invite', async
   const successData = await successRes.json() as any;
   assert.strictEqual(successData.ok, true);
   assert.ok(successData.message.includes('claudia.soto@gmail.com'));
+  assert.strictEqual(successData.isMock, true);
 
   db.close();
 });

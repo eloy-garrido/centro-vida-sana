@@ -753,8 +753,11 @@ export async function handleApiRequest(
 
         return jsonResponse({
           ok: true,
-          message: `Invitación enviada con éxito a ${patient.email}`,
-          messageId: result.messageId
+          message: result.messageId === 'mock_review_invite_id'
+            ? `[Simulación] Correo simulado a ${patient.email} (falta RESEND_API_KEY)`
+            : `Invitación enviada con éxito a ${patient.email}`,
+          messageId: result.messageId,
+          isMock: result.messageId === 'mock_review_invite_id'
         }, 200);
       }
 

@@ -1075,7 +1075,7 @@ import { professionals } from '../data/professionals';
           const waUrl = buildWhatsAppLink(patientPhone, waMessage);
 
           const googleReviewsUrl = 'https://search.google.com/local/writereview?placeid=ChIJM0LHMS_VFJYRdPlffqEIVW8';
-          const waReviewMessage = `${greeting}esperamos que te encuentres muy bien tras tu atención en Centro Vida Sana Austral 🌿\n\nTu opinión es muy importante para nosotros y nos ayuda a que más personas encuentren atención de salud integral en Temuco. ¿Nos regalarías 1 minuto para dejarnos tu calificación y comentario en Google? ⭐⭐⭐⭐⭐\n\nPuedes hacerlo directamente aquí: ${googleReviewsUrl}\n\n¡Muchas gracias por tu confianza!`;
+          const waReviewMessage = `${greeting}esperamos que te encuentres muy bien tras tu atención en Centro Vida Sana Austral.\n\nTu opinión es muy importante para nosotros y nos ayuda a que más personas encuentren atención de salud integral en Temuco. ¿Nos regalarías 1 minuto para dejarnos tu calificación y comentario en Google?\n\nPuedes hacerlo directamente aquí: ${googleReviewsUrl}\n\n¡Muchas gracias por tu confianza!`;
           const waReviewUrl = buildWhatsAppLink(patientPhone, waReviewMessage);
 
           const rawVersion = (entry.version || 'v1').replace(/"/g, '');
@@ -1179,8 +1179,7 @@ import { professionals } from '../data/professionals';
                   <div class="inline-flex items-center rounded-xl border border-amber-200 bg-amber-50/70 p-0.5 text-xs shadow-2xs">
                     <span class="pl-2 pr-1.5 py-1 text-[11px] font-semibold text-amber-900 flex items-center gap-1 select-none">
                       <span class="text-amber-500 font-bold">⭐</span>
-                      <span class="hidden sm:inline">Pedir Reseña:</span>
-                      <span class="sm:hidden">Reseña:</span>
+                      <span>Reseña:</span>
                     </span>
                     ${waReviewUrl ? `
                       <a
@@ -1419,7 +1418,7 @@ import { professionals } from '../data/professionals';
       const waUrl = buildWhatsAppLink(patientPhone, waMessage);
 
       const googleReviewsUrl = 'https://search.google.com/local/writereview?placeid=ChIJM0LHMS_VFJYRdPlffqEIVW8';
-      const waReviewMessage = `${greeting}esperamos que te encuentres muy bien tras tu atención en Centro Vida Sana Austral 🌿\n\nTu opinión es muy importante para nosotros y nos ayuda a que más personas encuentren atención de salud integral en Temuco. ¿Nos regalarías 1 minuto para dejarnos tu calificación y comentario en Google? ⭐⭐⭐⭐⭐\n\nPuedes hacerlo directamente aquí: ${googleReviewsUrl}\n\n¡Muchas gracias por tu confianza!`;
+      const waReviewMessage = `${greeting}esperamos que te encuentres muy bien tras tu atención en Centro Vida Sana Austral.\n\nTu opinión es muy importante para nosotros y nos ayuda a que más personas encuentren atención de salud integral en Temuco. ¿Nos regalarías 1 minuto para dejarnos tu calificación y comentario en Google?\n\nPuedes hacerlo directamente aquí: ${googleReviewsUrl}\n\n¡Muchas gracias por tu confianza!`;
       const waReviewUrl = buildWhatsAppLink(patientPhone, waReviewMessage);
 
       const isCancelled = entry.status === 'cancelled';
@@ -1526,8 +1525,7 @@ import { professionals } from '../data/professionals';
               <div class="inline-flex items-center rounded-xl border border-amber-200 bg-amber-50/70 p-0.5 text-xs shadow-2xs">
                 <span class="pl-2 pr-1.5 py-1 text-[11px] font-semibold text-amber-900 flex items-center gap-1 select-none">
                   <span class="text-amber-500 font-bold">⭐</span>
-                  <span class="hidden sm:inline">Pedir Reseña:</span>
-                  <span class="sm:hidden">Reseña:</span>
+                  <span>Reseña:</span>
                 </span>
                 ${waReviewUrl ? `
                   <a
@@ -1654,12 +1652,21 @@ import { professionals } from '../data/professionals';
         try {
           const res = await AgendamientoClient.sendReviewInviteEmail(id, currentSession.csrfToken);
           buttonEl.classList.remove('text-amber-900', 'hover:bg-amber-100');
-          buttonEl.classList.add('bg-emerald-100', 'text-emerald-900');
-          buttonEl.innerHTML = `
-            <span class="text-emerald-700 font-bold">✓</span>
-            <span class="text-[11px]">¡Enviado!</span>
-          `;
-          alert(`¡Correo de calificación en Google enviado con éxito a ${name} (${email})!`);
+          if (res.isMock) {
+            buttonEl.classList.add('bg-amber-100', 'text-amber-900');
+            buttonEl.innerHTML = `
+              <span class="text-amber-700 font-bold">⚠️</span>
+              <span class="text-[11px]">Simulado</span>
+            `;
+            alert(`⚠️ [MODO SIMULACIÓN] No se encontró RESEND_API_KEY en el entorno. El correo a ${name} (${email}) fue simulado en la consola del servidor.`);
+          } else {
+            buttonEl.classList.add('bg-emerald-100', 'text-emerald-900');
+            buttonEl.innerHTML = `
+              <span class="text-emerald-700 font-bold">✓</span>
+              <span class="text-[11px]">¡Enviado!</span>
+            `;
+            alert(`¡Correo de calificación en Google enviado con éxito a ${name} (${email})!`);
+          }
         } catch (err: any) {
           buttonEl.disabled = false;
           buttonEl.innerHTML = originalHtml;

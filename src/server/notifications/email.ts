@@ -169,6 +169,24 @@ export function buildGoogleCalendarLink(options: {
 }
 
 /**
+ * Normaliza un número telefónico para enlace de WhatsApp (+569XXXXXXXX o 569XXXXXXXX).
+ */
+export function normalizePhoneForWhatsApp(phone: string): string {
+  if (!phone) return '';
+  const digits = phone.replace(/\D/g, '');
+  if (digits.startsWith('56') && digits.length >= 11) {
+    return digits;
+  }
+  if (digits.startsWith('9') && digits.length === 9) {
+    return `56${digits}`;
+  }
+  if (digits.length === 8) {
+    return `569${digits}`;
+  }
+  return digits;
+}
+
+/**
  * Codifica una cadena en Base64 compatible con Workers y Node.js.
  */
 function toBase64Utf8(str: string): string {
@@ -203,6 +221,7 @@ export function buildMimeEmail(options: {
     `Subject: ${encodedSubject}`,
     `MIME-Version: 1.0`,
     `Content-Type: text/html; charset=UTF-8`,
+    `Content-Language: es-CL`,
     `Content-Transfer-Encoding: base64`,
     ``,
     base64Body
@@ -210,93 +229,285 @@ export function buildMimeEmail(options: {
 }
 
 /**
- * Genera la plantilla HTML para el profesional (resumen clínico operativo).
+ * Genera la plantilla HTML para el profesional (resumen clínico operativo con alta ergonomía móvil).
  */
 export function renderBookingEmailHtml(data: BookingNotificationData): string {
   const prof = CLINIC_PROFESSIONALS[data.professionalId] || {
     name: data.professionalId,
-    discipline: 'Atención Clínica'
+    discipline: 'Atención Clínica',
+    title: 'Profesional de Salud',
+    phoneFormatted: '+569 7370 0616',
+    phoneRaw: '56973700616',
+    accentColor: '#134E5E',
+    lightColor: '#EBF4F6',
+    borderColor: '#C9DFE6'
   };
-  const fechaChile = formatChileDateTime(data.startAt);
 
-  return `<!DOCTYPE html>
-<html lang="es">
+  const dateParts = getChileDateTimeParts(data.startAt);
+  const patientFirstName = data.patient.name ? data.patient.name.trim().split(' ')[0] : 'paciente';
+
+  // Enlace directo de Google Calendar para la agenda del profesional
+  const profGcalUrl = buildGoogleCalendarLink({
+    title: `Cita: ${data.patient.name} (${prof.name})`,
+    details: `Atención clínica de ${prof.discipline}.\nPaciente: ${data.patient.name}\nTeléfono: ${data.patient.phone}\nCorreo: ${data.patient.email}${data.patient.rut ? '\nRUT: ' + data.patient.rut : ''}\nCódigo de cita: ${data.bookingId}\nGestión: https://centrovidasana.cl/agenda`,
+    location: 'Los Armiños 1620, Temuco, Chile',
+    startIso: data.startAt,
+    durationMinutes: 60
+  });
+
+  // Enlace directo de WhatsApp al paciente con mensaje contextualizado
+  const waDigits = normalizePhoneForWhatsApp(data.patient.phone);
+  const waPatientUrl = waDigits
+    ? `https://wa.me/${waDigits}?text=${encodeURIComponent(
+        `Hola ${patientFirstName}, te contacto de Centro Vida Sana respecto a tu cita del ${dateParts.fullDate} a las ${dateParts.time}.`
+      )}`
+    : '';
+
+  const telLink = data.patient.phone ? `tel:${data.patient.phone.replace(/\s+/g, '')}` : '';
+  const headerSubtitleColor = data.professionalId === 'felipe' ? '#BCE0EA' : '#A3D9A5';
+
+  return `<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="es" xml:lang="es">
 <head>
-  <meta charset="utf-8">
-  <title>Nuevo Agendamiento</title>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+  <meta http-equiv="Content-Language" content="es" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="x-apple-disable-message-reformatting" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <meta name="format-detection" content="telephone=no, date=no, address=no, email=no" />
+  <meta name="color-scheme" content="light dark" />
+  <meta name="supported-color-schemes" content="light dark" />
+  <title>Nueva cita agendada — ${prof.name}</title>
+  <style type="text/css">
+    html, body {
+      margin: 0 !important;
+      padding: 0 !important;
+      width: 100% !important;
+      min-width: 100% !important;
+      -webkit-text-size-adjust: 100% !important;
+      -ms-text-size-adjust: 100% !important;
+    }
+    table, td {
+      mso-table-lspace: 0pt !important;
+      mso-table-rspace: 0pt !important;
+    }
+    table {
+      border-spacing: 0 !important;
+      border-collapse: collapse !important;
+      table-layout: auto !important;
+    }
+    img {
+      -ms-interpolation-mode: bicubic;
+    }
+    a {
+      text-decoration: none;
+    }
+    @media only screen and (max-width: 600px) {
+      .email-wrapper {
+        padding: 8px 4px !important;
+      }
+      .email-container {
+        width: 100% !important;
+        max-width: 100% !important;
+        border-radius: 12px !important;
+      }
+      .header-cell {
+        padding: 20px 16px !important;
+      }
+      .content-cell {
+        padding: 20px 14px !important;
+      }
+      .card-cell {
+        padding: 14px 14px !important;
+      }
+      .mobile-stack {
+        display: block !important;
+        width: 100% !important;
+        max-width: 100% !important;
+        box-sizing: border-box !important;
+        padding-left: 0 !important;
+        padding-right: 0 !important;
+        padding-bottom: 8px !important;
+      }
+      .mobile-btn {
+        display: block !important;
+        width: 100% !important;
+        box-sizing: border-box !important;
+        text-align: center !important;
+      }
+      .time-heading {
+        font-size: 22px !important;
+      }
+    }
+  </style>
 </head>
-<body style="margin: 0; padding: 24px; background-color: #F8F9F6; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif; color: #151C17;">
-  <table width="100%" border="0" cellspacing="0" cellpadding="0" style="max-width: 600px; margin: 0 auto; background-color: #ffffff; border-radius: 12px; overflow: hidden; border: 1px solid #E2E8F0; box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);">
-    <!-- Header -->
+<body style="margin: 0; padding: 0 !important; width: 100% !important; background-color: #F4F6F2; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif; color: #151C17; -webkit-font-smoothing: antialiased;">
+  <!-- Preheader oculto para vista previa de bandeja de entrada -->
+  <div style="display: none; font-size: 1px; line-height: 1px; max-height: 0px; max-width: 0px; opacity: 0; overflow: hidden; mso-hide: all; font-family: sans-serif;">
+    Nueva cita: ${data.patient.name} para el ${dateParts.fullDate} a las ${dateParts.time}.
+  </div>
+
+  <!-- Contenedor exterior fluido -->
+  <table role="presentation" width="100%" border="0" cellspacing="0" cellpadding="0" style="background-color: #F4F6F2; width: 100% !important; margin: 0; padding: 0;">
     <tr>
-      <td style="background-color: #2E4D38; padding: 28px 32px; text-align: left;">
-        <span style="display: inline-block; font-size: 12px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.1em; color: #A3D9A5; margin-bottom: 6px;">Centro Vida Sana Austral</span>
-        <h1 style="margin: 0; font-size: 22px; font-weight: 700; color: #ffffff; line-height: 1.3;">Nueva cita agendada</h1>
-      </td>
-    </tr>
-    <!-- Content -->
-    <tr>
-      <td style="padding: 32px;">
-        <p style="margin: 0 0 20px 0; font-size: 15px; color: #4A5568; line-height: 1.5;">
-          Se ha confirmado un nuevo agendamiento a través del sistema web:
-        </p>
+      <td align="center" class="email-wrapper" style="padding: 24px 12px;">
         
-        <!-- Tarjeta de Atención -->
-        <table width="100%" border="0" cellspacing="0" cellpadding="0" style="background-color: #F8F9F6; border-left: 4px solid #134E5E; border-radius: 6px; margin-bottom: 24px;">
+        <!-- Tarjeta Principal con ancho máximo 580px y fluido en móvil -->
+        <table role="presentation" class="email-container" width="100%" border="0" cellspacing="0" cellpadding="0" style="max-width: 580px; width: 100%; margin: 0 auto; background-color: #ffffff; border-radius: 14px; overflow: hidden; border: 1px solid #E2E8F0; box-shadow: 0 4px 16px rgba(0, 0, 0, 0.06);">
+          
+          <!-- Encabezado con color de acento del profesional -->
           <tr>
-            <td style="padding: 16px 20px;">
-              <div style="font-size: 13px; font-weight: 600; color: #134E5E; text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 4px;">Profesional</div>
-              <div style="font-size: 17px; font-weight: 700; color: #151C17;">${prof.name}</div>
-              <div style="font-size: 14px; color: #4A5568; margin-top: 2px;">${prof.discipline}</div>
+            <td class="header-cell" style="background-color: ${prof.accentColor}; padding: 24px 28px; text-align: left;">
+              <table role="presentation" width="100%" border="0" cellspacing="0" cellpadding="0">
+                <tr>
+                  <td>
+                    <span style="display: inline-block; font-size: 11px; font-weight: 800; text-transform: uppercase; letter-spacing: 0.12em; color: ${headerSubtitleColor}; margin-bottom: 6px;">
+                      Centro Vida Sana Austral
+                    </span>
+                    <h1 style="margin: 0 0 6px 0; font-size: 22px; font-weight: 800; color: #ffffff; line-height: 1.25; letter-spacing: -0.01em;">
+                      Nueva cita agendada
+                    </h1>
+                    <div style="font-size: 13px; color: #ffffff; opacity: 0.95; line-height: 1.4;">
+                      Agenda de <strong>${prof.name}</strong> · ${prof.discipline}
+                    </div>
+                  </td>
+                </tr>
+              </table>
+            </td>
+          </tr>
+
+          <!-- Cuerpo del correo -->
+          <tr>
+            <td class="content-cell" style="padding: 24px 28px;">
               
-              <div style="margin-top: 14px; padding-top: 12px; border-top: 1px solid #E2E8F0;">
-                <div style="font-size: 13px; font-weight: 600; color: #2E4D38; text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 4px;">Fecha y Hora</div>
-                <div style="font-size: 16px; font-weight: 700; color: #151C17;">${fechaChile}</div>
-              </div>
+              <!-- Tarjeta 1: Fecha y Hora de la Atención (Máxima Jerarquía) -->
+              <table role="presentation" width="100%" border="0" cellspacing="0" cellpadding="0" style="background-color: ${prof.lightColor}; border: 1.5px solid ${prof.borderColor}; border-radius: 12px; margin-bottom: 20px; overflow: hidden;">
+                <tr>
+                  <td style="background-color: ${prof.accentColor}; padding: 7px 16px; text-align: left;">
+                    <span style="color: #ffffff; font-size: 11px; font-weight: 800; text-transform: uppercase; letter-spacing: 0.1em;">
+                      Horario de la Atención
+                    </span>
+                  </td>
+                </tr>
+                <tr>
+                  <td class="card-cell" style="padding: 18px 20px;">
+                    <div style="font-size: 13px; font-weight: 700; color: #4A5568; text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 4px;">
+                      🗓️ ${dateParts.weekday}
+                    </div>
+                    <div style="font-size: 18px; font-weight: 800; color: #151C17; margin-bottom: 12px;">
+                      ${dateParts.day} de ${dateParts.month}, ${dateParts.year}
+                    </div>
+
+                    <!-- Bloque de Hora Destacada -->
+                    <div style="display: inline-block; background-color: #ffffff; border: 1.5px solid ${prof.borderColor}; border-radius: 10px; padding: 8px 18px; margin-bottom: 12px;">
+                      <span style="font-size: 11px; font-weight: 700; color: #718096; text-transform: uppercase; letter-spacing: 0.05em; display: block; margin-bottom: 2px;">Hora confirmada</span>
+                      <span class="time-heading" style="font-size: 24px; font-weight: 900; color: ${prof.accentColor}; letter-spacing: -0.02em;">⏰ ${dateParts.time}</span>
+                    </div>
+
+                    <div style="font-size: 12px; color: #718096; margin-bottom: 12px;">
+                      Duración estándar de sesión: <strong>60 minutos</strong>
+                    </div>
+
+                    <!-- Botón para sincronizar al calendario del profesional -->
+                    <div>
+                      <a href="${profGcalUrl}" target="_blank" class="mobile-btn" style="display: inline-block; background-color: #ffffff; color: ${prof.accentColor}; border: 1.5px solid ${prof.accentColor}; text-decoration: none; font-size: 12px; font-weight: 700; padding: 8px 16px; border-radius: 8px; text-align: center;">
+                        📅 Añadir a mi Google Calendar
+                      </a>
+                    </div>
+                  </td>
+                </tr>
+              </table>
+
+              <!-- Tarjeta 2: Datos del Paciente y Acciones Rápidas -->
+              <table role="presentation" width="100%" border="0" cellspacing="0" cellpadding="0" style="background-color: #F8F9F6; border: 1px solid #E2E8F0; border-radius: 12px; margin-bottom: 24px; overflow: hidden;">
+                <tr>
+                  <td class="card-cell" style="padding: 18px 20px;">
+                    <div style="font-size: 11px; font-weight: 800; text-transform: uppercase; letter-spacing: 0.08em; color: #718096; margin-bottom: 4px;">
+                      👤 Datos del Paciente
+                    </div>
+                    <div style="font-size: 18px; font-weight: 800; color: #151C17; margin-bottom: 14px; word-break: break-word;">
+                      ${data.patient.name}
+                    </div>
+
+                    <!-- Botones de Acción Inmediata (WhatsApp y Llamada) -->
+                    ${(waPatientUrl || telLink) ? `
+                    <table role="presentation" width="100%" border="0" cellspacing="0" cellpadding="0" style="margin-bottom: 16px;">
+                      <tr>
+                        ${waPatientUrl ? `
+                        <td class="mobile-stack" style="padding-right: 6px; padding-bottom: 4px;">
+                          <a href="${waPatientUrl}" target="_blank" class="mobile-btn" style="display: inline-block; background-color: #25D366; color: #ffffff; text-decoration: none; font-size: 12px; font-weight: 700; padding: 10px 14px; border-radius: 8px; text-align: center;">
+                            💬 WhatsApp al paciente
+                          </a>
+                        </td>` : ''}
+                        ${telLink ? `
+                        <td class="mobile-stack" style="padding-left: ${waPatientUrl ? '6px' : '0'}; padding-bottom: 4px;">
+                          <a href="${telLink}" class="mobile-btn" style="display: inline-block; background-color: #ffffff; color: #151C17; border: 1px solid #CBD5E1; text-decoration: none; font-size: 12px; font-weight: 700; padding: 9px 14px; border-radius: 8px; text-align: center;">
+                            📞 Llamar (${data.patient.phone})
+                          </a>
+                        </td>` : ''}
+                      </tr>
+                    </table>` : ''}
+
+                    <!-- Detalle de Contacto e Identificación -->
+                    <table role="presentation" width="100%" border="0" cellspacing="0" cellpadding="0" style="border-top: 1px solid #E2E8F0; padding-top: 10px; font-size: 13px; line-height: 1.5;">
+                      <tr>
+                        <td style="padding: 6px 0; color: #718096; font-weight: 600; width: 75px; vertical-align: top;">Teléfono:</td>
+                        <td style="padding: 6px 0; color: #151C17; font-weight: 600; vertical-align: top;">
+                          ${telLink ? `<a href="${telLink}" style="color: ${prof.accentColor}; text-decoration: underline;">${data.patient.phone}</a>` : (data.patient.phone || 'No indicado')}
+                        </td>
+                      </tr>
+                      <tr>
+                        <td style="padding: 6px 0; color: #718096; font-weight: 600; width: 75px; vertical-align: top;">Correo:</td>
+                        <td style="padding: 6px 0; color: #151C17; vertical-align: top; word-break: break-all;">
+                          <a href="mailto:${data.patient.email}" style="color: ${prof.accentColor}; text-decoration: underline; font-weight: 600;">${data.patient.email}</a>
+                        </td>
+                      </tr>
+                      ${data.patient.rut ? `
+                      <tr>
+                        <td style="padding: 6px 0; color: #718096; font-weight: 600; width: 75px; vertical-align: top;">RUT:</td>
+                        <td style="padding: 6px 0; color: #151C17; font-weight: 700; vertical-align: top;">
+                          <span style="background-color: #EDF2F7; padding: 2px 8px; border-radius: 4px; font-family: monospace; font-size: 12px; display: inline-block;">${data.patient.rut}</span>
+                        </td>
+                      </tr>` : ''}
+                      <tr>
+                        <td style="padding: 6px 0; color: #718096; font-weight: 600; width: 75px; vertical-align: top;">Reserva:</td>
+                        <td style="padding: 6px 0; color: #718096; vertical-align: top; font-size: 12px;">
+                          <code style="background-color: #EDF2F7; padding: 2px 6px; border-radius: 4px; font-size: 11px; color: #4A5568;">${data.bookingId}</code>
+                        </td>
+                      </tr>
+                    </table>
+
+                  </td>
+                </tr>
+              </table>
+
+              <!-- Botón Principal: Acceso al Panel de la Agenda -->
+              <table role="presentation" width="100%" border="0" cellspacing="0" cellpadding="0">
+                <tr>
+                  <td align="center" style="padding-top: 4px;">
+                    <a href="https://centrovidasana.cl/agenda" class="mobile-btn" style="display: inline-block; background-color: ${prof.accentColor}; color: #ffffff; font-size: 14px; font-weight: 700; text-decoration: none; padding: 13px 28px; border-radius: 9px; box-shadow: 0 2px 6px rgba(0, 0, 0, 0.12); text-align: center;">
+                      📋 Ver en el Panel de la Agenda
+                    </a>
+                    <div style="font-size: 11px; color: #718096; margin-top: 8px;">
+                      Revisa tu horario, registra notas clínicas y gestiona la ficha del paciente
+                    </div>
+                  </td>
+                </tr>
+              </table>
+
             </td>
           </tr>
-        </table>
 
-        <!-- Datos del Paciente -->
-        <h3 style="margin: 0 0 12px 0; font-size: 15px; font-weight: 700; color: #151C17; border-bottom: 1px solid #E2E8F0; padding-bottom: 8px;">
-          Datos del Paciente
-        </h3>
-        <table width="100%" border="0" cellspacing="0" cellpadding="4" style="font-size: 14px; margin-bottom: 24px;">
+          <!-- Pie del Correo -->
           <tr>
-            <td width="35%" style="color: #718096; font-weight: 500;">Nombre completo:</td>
-            <td style="color: #151C17; font-weight: 600;">${data.patient.name}</td>
-          </tr>
-          <tr>
-            <td style="color: #718096; font-weight: 500;">Teléfono:</td>
-            <td style="color: #151C17; font-weight: 600;"><a href="tel:${data.patient.phone}" style="color: #134E5E; text-decoration: none;">${data.patient.phone}</a></td>
-          </tr>
-          <tr>
-            <td style="color: #718096; font-weight: 500;">Correo:</td>
-            <td style="color: #151C17;"><a href="mailto:${data.patient.email}" style="color: #134E5E; text-decoration: none;">${data.patient.email}</a></td>
-          </tr>
-          ${data.patient.rut ? `
-          <tr>
-            <td style="color: #718096; font-weight: 500;">Documento (RUT):</td>
-            <td style="color: #151C17; font-weight: 600;">${data.patient.rut}</td>
-          </tr>` : ''}
-        </table>
-
-        <!-- Botón / Acceso a la Agenda -->
-        <table width="100%" border="0" cellspacing="0" cellpadding="0">
-          <tr>
-            <td align="center" style="padding-top: 8px;">
-              <a href="https://centrovidasana.cl/agenda" style="display: inline-block; background-color: #134E5E; color: #ffffff; font-size: 14px; font-weight: 600; text-decoration: none; padding: 12px 28px; border-radius: 8px; box-shadow: 0 2px 4px rgba(19, 78, 94, 0.2);">
-                Ver Panel de la Agenda
-              </a>
+            <td style="background-color: #F8F9F6; padding: 18px 24px; text-align: center; font-size: 12px; color: #718096; border-top: 1px solid #E2E8F0; line-height: 1.5;">
+              <strong style="color: #4A5568;">Centro Vida Sana Austral</strong> · Los Armiños 1620, Temuco<br>
+              Notificación automática del sistema de agendamiento web
             </td>
           </tr>
+
         </table>
-      </td>
-    </tr>
-    <!-- Footer -->
-    <tr>
-      <td style="background-color: #F8F9F6; padding: 16px 32px; text-align: center; font-size: 12px; color: #718096; border-top: 1px solid #E2E8F0;">
-        Notificación automática generada por Centro Vida Sana Austral • Los Armiños 1620, Temuco
+
       </td>
     </tr>
   </table>
@@ -536,7 +747,7 @@ export async function sendPatientConfirmationEmail(
       };
 
       const dateParts = getChileDateTimeParts(data.startAt);
-      const fromAddress = env?.RESEND_FROM_EMAIL || 'Centro Vida Sana <reservas@centrovidasana.cl>';
+      const fromAddress = env?.RESEND_FROM_EMAIL || (typeof process !== 'undefined' ? process.env?.RESEND_FROM_EMAIL : undefined) || 'Centro Vida Sana <reservas@centrovidasana.cl>';
       const subject = `🌿 Cita Confirmada: ${dateParts.weekday} ${dateParts.day} de ${dateParts.month} (${dateParts.time}) con ${prof.name}`;
       const html = renderPatientConfirmationEmailHtml(data);
 
@@ -844,7 +1055,7 @@ export async function sendPatientReviewInviteEmail(
       title: 'Profesional de Salud'
     };
 
-    const fromAddress = env?.RESEND_FROM_EMAIL || 'Centro Vida Sana <reservas@centrovidasana.cl>';
+    const fromAddress = env?.RESEND_FROM_EMAIL || (typeof process !== 'undefined' ? process.env?.RESEND_FROM_EMAIL : undefined) || 'Centro Vida Sana <reservas@centrovidasana.cl>';
     const subject = `🌿 ¿Cómo fue tu experiencia con ${prof.name}? Califícanos en Google ⭐`;
     const html = renderPatientReviewInviteEmailHtml(data);
 

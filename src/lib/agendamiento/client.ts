@@ -299,8 +299,8 @@ export const AgendamientoClient = {
   async sendReviewInviteEmail(
     bookingId: string,
     csrfToken: string
-  ): Promise<{ ok: boolean; message: string; messageId?: string }> {
-    return requestJson<{ ok: boolean; message: string; messageId?: string }>(
+  ): Promise<{ ok: boolean; message: string; messageId?: string; isMock?: boolean }> {
+    return requestJson<{ ok: boolean; message: string; messageId?: string; isMock?: boolean }>(
       `/api/team/bookings/${bookingId}/send-review-invite`,
       {
         method: 'POST',
